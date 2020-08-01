@@ -360,7 +360,7 @@ class EntryPointNode(Node):
             ']'
 
 class SwitchAggNode(Node):
-    def __init__(self, root: Node) -> None:
+    def __init__(self, root: SwitchNode) -> None:
         Node.__init__(self, f'sw!{root.name}')
         self.root = root
         self.goto_node = GotoNode(f'sw-end!{root.name}')
@@ -371,8 +371,33 @@ class SwitchAggNode(Node):
                 '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
-        return f'SwitchAgg[name={self.name}' + \
+        return f'SwitchAggNode[name={self.name}' + \
             f', root={self.root}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
+            ']'
+
+class ElifAggNode(Node):
+    Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
+
+    def __init__(self, name: str, rules: List[ElifAggNode.Rule], default: Node) -> None:
+        Node.__init__(self, name)
+        self.rules = rules
+        self.default = default
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        code = ''
+        for query, params, value, node in self.rules:
+            not_s = 'not ' if not value else ''
+            el_s = 'el' if code else ''
+            code += _indent(indent_level) + f'{el_s}if {not_s}{query.format(params)}:\n' + \
+                    node.generate_code(indent_level + 1)
+        code += f'{_indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
+        return code + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
+
+    def __str__(self) -> str:
+        return f'ElifAggNode[name={self.name}' + \
+            f', rules={self.rules}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
@@ -445,8 +470,8 @@ class CFG:
                     else:
                         self.__convert_root_to_entrypoints(r)
 
-    def __detach_nodes(self, src: Node, dest: Union[EntryPointNode, RootNode]) -> None:
-        new_call_node = SubflowNode(f'ext!{src.name}', '', dest.name if isinstance(dest, RootNode) else dest.entry_label)
+    def __detach_nodes(self, src: Node, dest: Node, entry_point: str) -> None:
+        new_call_node = SubflowNode(f'ext!{src.name}-{dest.name}', '', entry_point)
         self.nodes[new_call_node.name] = new_call_node
 
         src.out_edges.remove(dest)
@@ -467,7 +492,7 @@ class CFG:
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
-            self.__detach_nodes(caller, new_root)
+            self.__detach_nodes(caller, entry_point, new_root.name)
 
         entry_point.in_edges = [new_root]
         self.nodes[new_root.name] = new_root
@@ -485,7 +510,7 @@ class CFG:
         for node in excl:
             leaving_nodes: Set[EntryPointNode] = set(node.out_edges).intersection(labels) # type: ignore
             for label in leaving_nodes:
-                self.__detach_nodes(node, label)
+                self.__detach_nodes(node, label, label.entry_label)
 
     def __get_exclusive_subgraph(self, root: RootNode) -> Tuple[Set[Node], Set[Node]]:
         reachable = set(self.__find_postorder(root))
@@ -499,11 +524,12 @@ class CFG:
         for node in exclusive:
             connections.update(set(node.out_edges) - exclusive)
 
-        print('for', root.name, 'exclusive', [r.name for r in exclusive], 'connections', [r.name for r in connections])
-
         return exclusive, connections
 
     def __convert_node_to_entrypoint(self, node: Node, name: str) -> EntryPointNode:
+        if isinstance(node, EntryPointNode):
+            return node
+
         entry_point_node = EntryPointNode(f'{node.name}-entrypoint', name)
         entry_point_node.add_out_edge(node)
         entry_point_node.in_edges = node.in_edges
@@ -579,9 +605,12 @@ class CFG:
     def __find_reverse_postorder(self, root: Node) -> List[Node]:
         return self.__find_postorder(root)[::-1]
 
+    def __path_exists(self, src: Node, dest: Node) -> bool:
+        # todo: don't be this dumb
+        return dest in self.__find_postorder(src)
+
     def __collapse_cases(self) -> None:
         for root in self.roots:
-            # print(root.name)
             dom = self.__find_dominator_tree(root)
             visited = {n: False for n in dom.keys()}
             for node in self.__find_postorder(root):
@@ -591,7 +620,6 @@ class CFG:
                     continue
 
                 # require: all children to be dominated by this node except TerminalNode
-                # return: node dominated by this node with max number of in edges
                 if not all(dom[child] is node or isinstance(child, TerminalNode) for child in node.out_edges):
                     continue
 
@@ -599,20 +627,26 @@ class CFG:
                 for k in self.__find_postorder(node)[:-1]:
                     if k not in dom:
                         continue
-                    if dom[k] is node or node.terminal_node is k:
+                    if dom[k] is node or (isinstance(k, TerminalNode) and self.__find_dominator_tree(node)[k] is node):
+                        if not all(
+                            # self.__find_dominator_tree(child).get(k, None) is child for child in node.out_edges
+                            self.__path_exists(child, k) for child in node.out_edges
+                        ):
+                            continue
+
                         # prefer: non-child (if any), max in_edges
-                        if end is None or (end in node.out_edges and k not in node.out_edges) or len(k.in_edges) > len(end.in_edges):
-                            # print(node.name, k.name)
+                        if end is None:# or (end in node.out_edges and k not in node.out_edges):#or len(k.in_edges) > len(end.in_edges):
                             end = k
 
-                assert end is not None
+                if end is None:
+                    continue
 
                 node = self.__collapse_case(node, end, dom)
                 visited[node] = True
                 dom = self.__find_dominator_tree(root) # don't actually have to recompute all..
 
-    def __collapse_case(self, switch: Node, end: Node, dom: Dict[Node, Node]) -> Node:
-        # print('collapse', switch.name, end.name)
+    def __collapse_case(self, switch: SwitchNode, end: Node, dom: Dict[Node, Node]) -> Node:
+        print('collapse', switch.name, end.name)
         sw = SwitchAggNode(switch)
         for in_node in switch.in_edges:
             sw.add_in_edge(in_node)
@@ -629,7 +663,7 @@ class CFG:
         if isinstance(end, TerminalNode):
             inner_terminal = end
 
-        s = [switch]
+        s: List[Node] = [switch]
         deleted = []
         while s:
             n = s.pop()
@@ -646,6 +680,7 @@ class CFG:
                 end.in_edges.remove(n)
 
             if n.name in self.nodes:
+                print('del', n.name)
                 del self.nodes[n.name]
                 deleted.append(n)
 
@@ -666,7 +701,7 @@ class CFG:
     def generate_code(self) -> str:
         code = '\n'.join(root.generate_code() for root in self.roots).split('\n')
 
-        # strip ununsed labels, indent level 1 returns
+        # strip ununsed labels
         goto_regex = re.compile('^\s*goto (\S+)')
         label_regex = re.compile('^\s*(\S+)::')
 
@@ -679,7 +714,7 @@ class CFG:
         stripped_code = []
         for line in code:
             m = label_regex.match(line)
-            if (not m or m.group(1) in used) and line != _indent(1) + 'return':
+            if (not m or m.group(1) in used):
                 stripped_code.append(line)
 
         return '\n'.join(stripped_code)
@@ -773,10 +808,11 @@ class CFG:
 
         for entry_point in flowchart.entry_points:
             node = RootNode(entry_point.name)
-            main_event = entry_point.main_event.v.name
+            if entry_point.main_event.v is not None:
+                main_event = entry_point.main_event.v.name
 
-            node.add_out_edge(cfg.nodes[main_event])
-            cfg.nodes[main_event].add_in_edge(node)
+                node.add_out_edge(cfg.nodes[main_event])
+                cfg.nodes[main_event].add_in_edge(node)
 
             cfg.nodes[entry_point.name] = node
             cfg.roots.append(node)

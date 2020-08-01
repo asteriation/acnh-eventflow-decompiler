@@ -1,587 +1,256 @@
 {
     "EventFlowSystemActor": {
         "actions": {
-            "SetupActorPosition": {
+            "EventFlagSystemAdd": {
                 "params": [
-                    {
-                        "name": "Type",
-                        "type": "any"
-                    }
-                ]
-            },
-            "FadeOut": {
-                "params": [
-                    {
-                        "name": "FadeOutKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeColorString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutSpeed",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInSpeed",
-                        "type": "any"
-                    },
-                    {
-                        "name": "IsUseDucking",
-                        "type": "any"
-                    }
-                ]
-            },
-            "FadeIn": {
-                "params": [
-                    {
-                        "name": "IsWait",
-                        "type": "any"
-                    }
-                ]
-            },
-            "WaitFrame": {
-                "params": [
-                    {
-                        "name": "WaitFrame",
-                        "type": "any"
-                    }
-                ]
-            },
-            "EventFlagSystemOn": {
-                "params": [
-                    {
-                        "name": "AccessKey",
-                        "type": "any"
-                    }
-                ]
-            },
-            "CameraSetDemoParam": {
-                "params": [
-                    {
-                        "name": "CameraInterpolateKey",
-                        "type": "any"
-                    },
-                    {
-                        "name": "CameraTargetKey",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Arg",
-                        "type": "any"
-                    },
-                    {
-                        "name": "AdjustAngleYOnLeave",
-                        "type": "any"
-                    },
-                    {
-                        "name": "UseNearCulling",
-                        "type": "any"
-                    },
-                    {
-                        "name": "CameraParamKey",
-                        "type": "any"
-                    },
-                    {
-                        "name": "AdjustAngleYOnEnter",
-                        "type": "any"
-                    }
-                ]
-            },
-            "SetNpcAIBlackBoardByLabel": {
-                "params": [
-                    {
-                        "name": "Key",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Value",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Option",
-                        "type": "any"
-                    },
-                    {
-                        "name": "NpcLabel",
-                        "type": "any"
-                    }
-                ]
+                    { "name": "AccessKey", "type": "str" },
+                    { "name": "AddNum", "type": "int" }
+                ],
+                "conversion": "event_flags[<AccessKey>] += <AddNum>"
             },
             "EventFlagSystemSet": {
                 "params": [
-                    {
-                        "name": "AccessKey",
-                        "type": "any"
-                    },
-                    {
-                        "name": "SetNum",
-                        "type": "any"
-                    }
+                    { "name": "AccessKey", "type": "str" },
+                    { "name": "SetNum", "type": "int" }
+                ],
+                "conversion": "event_flags[<AccessKey>] = <SetNum>"
+            },
+            "EventFlagSystemOn": {
+                "params": [
+                    { "name": "AccessKey", "type": "str" }
+                ],
+                "conversion": "event_flags[<AccessKey>] = 1"
+            },
+            "EventFlagSystemOff": {
+                "params": [
+                    { "name": "AccessKey", "type": "str" }
+                ],
+                "conversion": "event_flags[<AccessKey>] = 0"
+            },
+            "StructureMoveSaveIndex": {
+                "params": [
+                    { "name": "IndexType", "type": "int" }
                 ]
             },
-            "ReservePlayerMutterDemo": {
+            "EventFlagOffAllLiver": {
                 "params": [
-                    {
-                        "name": "EventFileName",
-                        "type": "any"
-                    },
-                    {
-                        "name": "EntryPointName",
-                        "type": "any"
-                    },
-                    {
-                        "name": "MutterStartTiming",
-                        "type": "any"
-                    },
-                    {
-                        "name": "IsResistNpcCast",
-                        "type": "any"
-                    }
+                    { "name": "AccessKey", "type": "str" }
                 ]
             },
-            "SystemReenterStage": {
+            "EventFlaResetAllLiver": {
                 "params": [
-                    {
-                        "name": "Type",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeColorString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutSpeed",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInSpeed",
-                        "type": "any"
-                    }
+                    { "name": "AccessKey", "type": "str" }
                 ]
             },
-            "EnvSetDemoTime": {
+            "SetWeatherPattern": {
                 "params": [
-                    {
-                        "name": "Second",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Hour",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Minute",
-                        "type": "any"
-                    }
-                ]
-            },
-            "BGMPropertyControl": {
-                "params": [
-                    {
-                        "name": "BGMProperty",
-                        "type": "any"
-                    }
-                ]
-            },
-            "RequestRecreateFtr": {
-                "params": []
-            },
-            "SystemRequestChangeStage": {
-                "params": [
-                    {
-                        "name": "TargetStage",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeColorString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutSpeed",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInSpeed",
-                        "type": "any"
-                    }
-                ]
-            },
-            "SoundTriggerEmit": {
-                "params": [
-                    {
-                        "name": "FadeHandleId",
-                        "type": "any"
-                    },
-                    {
-                        "name": "AssetKeyName",
-                        "type": "any"
-                    }
-                ]
-            },
-            "UILogoAppear": {
-                "params": [
-                    {
-                        "name": "SelectKind",
-                        "type": "any"
-                    }
-                ]
-            },
-            "WaitFaderSleep": {
-                "params": []
-            },
-            "SystemFaderRelease": {
-                "params": []
-            },
-            "DeleteTargetItem": {
-                "params": [
-                    {
-                        "name": "ItemUniqueId",
-                        "type": "any"
-                    },
-                    {
-                        "name": "DeleteNum",
-                        "type": "any"
-                    },
-                    {
-                        "name": "IsPriorityFewItems",
-                        "type": "any"
-                    }
+                    { "name": "PatternName", "type": "str" }
                 ]
             },
             "SetSubflowResult": {
                 "params": [
-                    {
-                        "name": "ResultValue",
-                        "type": "any"
-                    },
-                    {
-                        "name": "SetIndex",
-                        "type": "any"
-                    }
-                ]
-            },
-            "ReturnStage": {
-                "params": [
-                    {
-                        "name": "FadeOutKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInKindString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeColorString",
-                        "type": "any"
-                    },
-                    {
-                        "name": "NextInfoKey",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeOutSpeed",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FadeInSpeed",
-                        "type": "any"
-                    }
-                ]
-            },
-            "ReserveNpcCommand": {
-                "params": [
-                    {
-                        "name": "Command",
-                        "type": "any"
-                    }
-                ]
-            },
-            "SystemMailSendDirect": {
-                "params": [
-                    {
-                        "name": "FromType",
-                        "type": "any"
-                    },
-                    {
-                        "name": "FileIndex",
-                        "type": "any"
-                    },
-                    {
-                        "name": "LabelIndex",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Present",
-                        "type": "any"
-                    }
-                ]
-            },
-            "TimeLock": {
-                "params": [
-                    {
-                        "name": "TimeLockType",
-                        "type": "any"
-                    }
-                ]
-            },
-            "StartupMailSend": {
-                "params": [
-                    {
-                        "name": "VersionUp",
-                        "type": "any"
-                    },
-                    {
-                        "name": "BundledEdition",
-                        "type": "any"
-                    },
-                    {
-                        "name": "AoC",
-                        "type": "any"
-                    }
-                ]
+                    { "name": "SetIndex", "type": "int" },
+                    { "name": "ResultValue", "type": "int" }
+                ],
+                "conversion": "subflow_results[<SetIndex>] = <ResultValue>"
             }
         },
         "queries": {
             "EventFlagSystemBool": {
                 "params": [
-                    {
-                        "name": "AccessKey",
-                        "type": "any"
-                    }
+                    { "name": "AccessKey", "type": "str" }
                 ],
-                "return": "any"
+                "return": "bool",
+                "conversion": "event_flags[<AccessKey>]"
             },
-            "UIPocketMenuItemSelected": {
+            "EventFlagSystemInt": {
                 "params": [
-                    {
-                        "name": "ItemUniqueID",
-                        "type": "int"
-                    }
+                    { "name": "AccessKey", "type": "str" },
+                    { "name": "FlagCheckType", "type": "int" },
+                    { "name": "Border", "type": "int" }
                 ],
                 "return": "bool"
             },
-            "OfficeLevel": {
+            "IsDoneBcatProcess": {
                 "params": [],
-                "return": "any"
+                "return": "bool"
             },
-            "ShopLevel": {
+            "PlayAccountIsPlayerVillager": {
                 "params": [],
-                "return": "any"
+                "return": "bool"
             },
-            "EnvSameDate": {
+            "PassDaysSincePreviousGrowUp": {
+                "params": [],
+                "return": "bool"
+            },
+            "IsGamePlayTime": {
+                "params": [],
+                "return": "bool"
+            },
+            "IsSharePlay": {
                 "params": [
-                    {
-                        "name": "CheckDateType",
-                        "type": "any"
-                    },
-                    {
-                        "name": "TimeType",
-                        "type": "any"
-                    }
+                    { "name": "TargetMode", "type": "any" }
+                ],
+                "return": "bool"
+            },
+            "BackDaysSincePreviousGrowUp": {
+                "params": [],
+                "return": "bool"
+            },
+            "CheckErrorType": {
+                "params": [
+                    { "name": "ErrorType", "type": "int" }
+                ],
+                "return": "bool"
+            },
+            "IsRawDataCheck": {
+                "params": [
+                    { "name": "IsRawDataCheck", "type": "bool" }
+                ],
+                "return": "bool"
+            },
+            "GrowUpInterval": {
+                "params": [
+                    { "name": "Interval", "type": "int" }
                 ],
                 "return": "any"
             },
-            "GeneralTalkChoice3": {
+            "NetIsDreaming": {
                 "params": [],
-                "return": "any"
+                "return": "bool"
+            },
+            "PlayerHasCraftRecipe": {
+                "params": [
+                    { "name": "ItemUniqueId", "type": "int" },
+                    { "name": "UnlockType", "type": "str" }
+                ],
+                "return": "bool"
+            },
+            "RandomChoice2": {
+                "params": [
+                    { "name": "ChoiceNumber", "type": "int" }
+                ],
+                "return": "int2"
+            },
+            "SubflowResultChoice4": {
+                "params": [
+                    { "name": "SetIndex", "type": "str" }
+                ],
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int4"
+            },
+            "SubflowResultChoice5": {
+                "params": [
+                    { "name": "SetIndex", "type": "str" }
+                ],
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int5"
+            },
+            "NpcHouseNum": {
+                "params": [
+                    { "name": "NpcHouseType", "type": "str" },
+                    { "name": "Num", "type": "int" }
+                ],
+                "conversion": "<.name>(<NpcHouseType>) <= <Num>",
+                "return": "bool"
+            },
+            "GlobalEventStart": {
+                "params": [
+                    { "name": "EventLabelString", "type": "str" }
+                ],
+                "return": "bool"
+            },
+            "EventBranch": {
+                "params": [
+                    { "name": "CheckNowTime", "type": "bool" },
+                    { "name": "AddDay", "type": "int" }
+                ],
+                "return": "int"
+            },
+            "VillageScoreCheckNatural": {
+                "params": [
+                    { "name": "BorderValue", "type": "int" }
+                ],
+                "conversion": "EventFlowSystemActor.VillageScoreNatural >= <BorderValue>",
+                "return": "bool"
+            },
+            "VillageScoreCheckLife": {
+                "params": [
+                    { "name": "BorderValue", "type": "int" }
+                ],
+                "conversion": "EventFlowSystemActor.VillageScoreLife >= <BorderValue>",
+                "return": "bool"
+            },
+            "VillageScoreVeryMessy": {
+                "params": [
+                    { "name": "BorderHalfUnit", "type": "int" },
+                    { "name": "BorderBlockNum", "type": "int" }
+                ],
+                "return": "bool"
+            },
+            "VillageScorePutUnitIconNum": {
+                "params": [
+                    { "name": "BorderValue", "type": "int" }
+                ],
+                "conversion": "<.name> >= <BorderValue>",
+                "return": "bool"
+            },
+            "VillageScoreCheckTreeNum": {
+                "params": [
+                    { "name": "BorderNum", "type": "int" }
+                ],
+                "conversion": "EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>",
+                "return": "bool"
+            },
+            "VillageScoreCheckLifeDeltaBeforeDay": {
+                "params": [
+                    { "name": "DeltaPoint", "type": "int" }
+                ],
+                "conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>",
+                "return": "bool"
+            },
+            "VillageScoreCheckNaturalDeltaBeforeDay": {
+                "params": [
+                    { "name": "DeltaPoint", "type": "int" }
+                ],
+                "conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>",
+                "return": "bool"
             },
             "GeneralTalkChoice2": {
                 "params": [],
-                "return": "any"
+                "return": "int2"
             },
             "RandomChoiceExcludePrevious3": {
                 "params": [
-                    {
-                        "name": "IsSetSpeakerChoiceResult",
-                        "type": "any"
-                    },
-                    {
-                        "name": "ChoiceNumber",
-                        "type": "any"
-                    }
+                    { "name": "IsSetSpeakerChoiceResult", "type": "bool" },
+                    { "name": "ChoiceNumber", "type": "int" }
                 ],
-                "return": "any"
+                "return": "int3"
             },
-            "RandomChoice4": {
+            "CatalogItemFrom": {
                 "params": [
-                    {
-                        "name": "ChoiceNumber",
-                        "type": "any"
-                    }
+                    { "name": "ItemFromType", "type": "str" }
                 ],
-                "return": "any"
+                "return": "bool"
             },
-            "RandomChoiceExcludePrevious2": {
+            "PercentChoice": {
                 "params": [
-                    {
-                        "name": "ChoiceNumber",
-                        "type": "any"
-                    },
-                    {
-                        "name": "IsSetSpeakerChoiceResult",
-                        "type": "any"
-                    }
+                    { "name": "Percent", "type": "int" }
                 ],
-                "return": "any"
-            },
-            "HasTargetItem": {
-                "params": [
-                    {
-                        "name": "ItemUniqueId",
-                        "type": "any"
-                    },
-                    {
-                        "name": "NeedNum",
-                        "type": "any"
-                    }
-                ],
-                "return": "any"
-            },
-            "LandFruit": {
-                "params": [],
-                "return": "any"
-            },
-            "ShoppingCapacity": {
-                "params": [
-                    {
-                        "name": "ItemUniqueId",
-                        "type": "any"
-                    },
-                    {
-                        "name": "CapacityCheckType",
-                        "type": "any"
-                    }
-                ],
-                "return": "any"
-            },
-            "EnvTimeZone": {
-                "params": [],
-                "return": "any"
-            },
-            "SubflowResultChoice8": {
-                "params": [
-                    {
-                        "name": "SetIndex",
-                        "type": "any"
-                    }
-                ],
-                "return": "any"
+                "return": "bool"
             }
         }
     },
     "MainNpc": {
-        "actions": {
-            "OpenMessageWindow": {
+        "actions": {},
+        "queries": {
+            "EventRewardItem": {
                 "params": [
-                    {
-                        "name": "MessageID",
-                        "type": "any"
-                    },
-                    {
-                        "name": "IsCloseMessageWindow",
-                        "type": "any"
-                    }
-                ]
-            },
-            "NpcDelivery": {
-                "params": [
-                    {
-                        "name": "Command",
-                        "type": "any"
-                    },
-                    {
-                        "name": "Option",
-                        "type": "any"
-                    }
-                ]
-            },
-            "SetDeliveryItemAtRandom": {
-                "params": [
-                    {
-                        "name": "ItemUniqueID",
-                        "type": "any"
-                    },
-                    {
-                        "name": "ApplyToSave",
-                        "type": "any"
-                    },
-                    {
-                        "name": "ItemRemakeDecideType",
-                        "type": "any"
-                    },
-                    {
-                        "name": "RemakePatternIndex",
-                        "type": "any"
-                    }
-                ]
-            },
-            "SetNpcName": {
-                "params": [
-                    {
-                        "name": "NpcNameType",
-                        "type": "any"
-                    },
-                    {
-                        "name": "ID",
-                        "type": "any"
-                    }
-                ]
-            },
-            "NpcRequestAction": {
-                "params": [
-                    {
-                        "name": "ActionIdx",
-                        "type": "any"
-                    }
-                ]
-            },
-            "NpcSetRewardRecipe": {
-                "params": [
-                    {
-                        "name": "ItemUniqueId",
-                        "type": "any"
-                    },
-                    {
-                        "name": "DIYNpcItem",
-                        "type": "any"
-                    }
-                ]
-            },
-            "RequestSimple": {
-                "params": [
-                    {
-                        "name": "AsCommand",
-                        "type": "any"
-                    },
-                    {
-                        "name": "WaitFinish",
-                        "type": "any"
-                    }
-                ]
+                    { "name": "ItemUniqueID", "type": "int" }
+                ],
+                "return": "bool"
             }
-        },
-        "queries": {}
+        }
     }
 }
+
