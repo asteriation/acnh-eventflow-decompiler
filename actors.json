@@ -1,0 +1,587 @@
+{
+    "EventFlowSystemActor": {
+        "actions": {
+            "SetupActorPosition": {
+                "params": [
+                    {
+                        "name": "Type",
+                        "type": "any"
+                    }
+                ]
+            },
+            "FadeOut": {
+                "params": [
+                    {
+                        "name": "FadeOutKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeColorString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutSpeed",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInSpeed",
+                        "type": "any"
+                    },
+                    {
+                        "name": "IsUseDucking",
+                        "type": "any"
+                    }
+                ]
+            },
+            "FadeIn": {
+                "params": [
+                    {
+                        "name": "IsWait",
+                        "type": "any"
+                    }
+                ]
+            },
+            "WaitFrame": {
+                "params": [
+                    {
+                        "name": "WaitFrame",
+                        "type": "any"
+                    }
+                ]
+            },
+            "EventFlagSystemOn": {
+                "params": [
+                    {
+                        "name": "AccessKey",
+                        "type": "any"
+                    }
+                ]
+            },
+            "CameraSetDemoParam": {
+                "params": [
+                    {
+                        "name": "CameraInterpolateKey",
+                        "type": "any"
+                    },
+                    {
+                        "name": "CameraTargetKey",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Arg",
+                        "type": "any"
+                    },
+                    {
+                        "name": "AdjustAngleYOnLeave",
+                        "type": "any"
+                    },
+                    {
+                        "name": "UseNearCulling",
+                        "type": "any"
+                    },
+                    {
+                        "name": "CameraParamKey",
+                        "type": "any"
+                    },
+                    {
+                        "name": "AdjustAngleYOnEnter",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SetNpcAIBlackBoardByLabel": {
+                "params": [
+                    {
+                        "name": "Key",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Value",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Option",
+                        "type": "any"
+                    },
+                    {
+                        "name": "NpcLabel",
+                        "type": "any"
+                    }
+                ]
+            },
+            "EventFlagSystemSet": {
+                "params": [
+                    {
+                        "name": "AccessKey",
+                        "type": "any"
+                    },
+                    {
+                        "name": "SetNum",
+                        "type": "any"
+                    }
+                ]
+            },
+            "ReservePlayerMutterDemo": {
+                "params": [
+                    {
+                        "name": "EventFileName",
+                        "type": "any"
+                    },
+                    {
+                        "name": "EntryPointName",
+                        "type": "any"
+                    },
+                    {
+                        "name": "MutterStartTiming",
+                        "type": "any"
+                    },
+                    {
+                        "name": "IsResistNpcCast",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SystemReenterStage": {
+                "params": [
+                    {
+                        "name": "Type",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeColorString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutSpeed",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInSpeed",
+                        "type": "any"
+                    }
+                ]
+            },
+            "EnvSetDemoTime": {
+                "params": [
+                    {
+                        "name": "Second",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Hour",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Minute",
+                        "type": "any"
+                    }
+                ]
+            },
+            "BGMPropertyControl": {
+                "params": [
+                    {
+                        "name": "BGMProperty",
+                        "type": "any"
+                    }
+                ]
+            },
+            "RequestRecreateFtr": {
+                "params": []
+            },
+            "SystemRequestChangeStage": {
+                "params": [
+                    {
+                        "name": "TargetStage",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeColorString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutSpeed",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInSpeed",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SoundTriggerEmit": {
+                "params": [
+                    {
+                        "name": "FadeHandleId",
+                        "type": "any"
+                    },
+                    {
+                        "name": "AssetKeyName",
+                        "type": "any"
+                    }
+                ]
+            },
+            "UILogoAppear": {
+                "params": [
+                    {
+                        "name": "SelectKind",
+                        "type": "any"
+                    }
+                ]
+            },
+            "WaitFaderSleep": {
+                "params": []
+            },
+            "SystemFaderRelease": {
+                "params": []
+            },
+            "DeleteTargetItem": {
+                "params": [
+                    {
+                        "name": "ItemUniqueId",
+                        "type": "any"
+                    },
+                    {
+                        "name": "DeleteNum",
+                        "type": "any"
+                    },
+                    {
+                        "name": "IsPriorityFewItems",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SetSubflowResult": {
+                "params": [
+                    {
+                        "name": "ResultValue",
+                        "type": "any"
+                    },
+                    {
+                        "name": "SetIndex",
+                        "type": "any"
+                    }
+                ]
+            },
+            "ReturnStage": {
+                "params": [
+                    {
+                        "name": "FadeOutKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInKindString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeColorString",
+                        "type": "any"
+                    },
+                    {
+                        "name": "NextInfoKey",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeOutSpeed",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FadeInSpeed",
+                        "type": "any"
+                    }
+                ]
+            },
+            "ReserveNpcCommand": {
+                "params": [
+                    {
+                        "name": "Command",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SystemMailSendDirect": {
+                "params": [
+                    {
+                        "name": "FromType",
+                        "type": "any"
+                    },
+                    {
+                        "name": "FileIndex",
+                        "type": "any"
+                    },
+                    {
+                        "name": "LabelIndex",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Present",
+                        "type": "any"
+                    }
+                ]
+            },
+            "TimeLock": {
+                "params": [
+                    {
+                        "name": "TimeLockType",
+                        "type": "any"
+                    }
+                ]
+            },
+            "StartupMailSend": {
+                "params": [
+                    {
+                        "name": "VersionUp",
+                        "type": "any"
+                    },
+                    {
+                        "name": "BundledEdition",
+                        "type": "any"
+                    },
+                    {
+                        "name": "AoC",
+                        "type": "any"
+                    }
+                ]
+            }
+        },
+        "queries": {
+            "EventFlagSystemBool": {
+                "params": [
+                    {
+                        "name": "AccessKey",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "UIPocketMenuItemSelected": {
+                "params": [
+                    {
+                        "name": "ItemUniqueID",
+                        "type": "int"
+                    }
+                ],
+                "return": "bool"
+            },
+            "OfficeLevel": {
+                "params": [],
+                "return": "any"
+            },
+            "ShopLevel": {
+                "params": [],
+                "return": "any"
+            },
+            "EnvSameDate": {
+                "params": [
+                    {
+                        "name": "CheckDateType",
+                        "type": "any"
+                    },
+                    {
+                        "name": "TimeType",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "GeneralTalkChoice3": {
+                "params": [],
+                "return": "any"
+            },
+            "GeneralTalkChoice2": {
+                "params": [],
+                "return": "any"
+            },
+            "RandomChoiceExcludePrevious3": {
+                "params": [
+                    {
+                        "name": "IsSetSpeakerChoiceResult",
+                        "type": "any"
+                    },
+                    {
+                        "name": "ChoiceNumber",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "RandomChoice4": {
+                "params": [
+                    {
+                        "name": "ChoiceNumber",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "RandomChoiceExcludePrevious2": {
+                "params": [
+                    {
+                        "name": "ChoiceNumber",
+                        "type": "any"
+                    },
+                    {
+                        "name": "IsSetSpeakerChoiceResult",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "HasTargetItem": {
+                "params": [
+                    {
+                        "name": "ItemUniqueId",
+                        "type": "any"
+                    },
+                    {
+                        "name": "NeedNum",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "LandFruit": {
+                "params": [],
+                "return": "any"
+            },
+            "ShoppingCapacity": {
+                "params": [
+                    {
+                        "name": "ItemUniqueId",
+                        "type": "any"
+                    },
+                    {
+                        "name": "CapacityCheckType",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            },
+            "EnvTimeZone": {
+                "params": [],
+                "return": "any"
+            },
+            "SubflowResultChoice8": {
+                "params": [
+                    {
+                        "name": "SetIndex",
+                        "type": "any"
+                    }
+                ],
+                "return": "any"
+            }
+        }
+    },
+    "MainNpc": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": [
+                    {
+                        "name": "MessageID",
+                        "type": "any"
+                    },
+                    {
+                        "name": "IsCloseMessageWindow",
+                        "type": "any"
+                    }
+                ]
+            },
+            "NpcDelivery": {
+                "params": [
+                    {
+                        "name": "Command",
+                        "type": "any"
+                    },
+                    {
+                        "name": "Option",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SetDeliveryItemAtRandom": {
+                "params": [
+                    {
+                        "name": "ItemUniqueID",
+                        "type": "any"
+                    },
+                    {
+                        "name": "ApplyToSave",
+                        "type": "any"
+                    },
+                    {
+                        "name": "ItemRemakeDecideType",
+                        "type": "any"
+                    },
+                    {
+                        "name": "RemakePatternIndex",
+                        "type": "any"
+                    }
+                ]
+            },
+            "SetNpcName": {
+                "params": [
+                    {
+                        "name": "NpcNameType",
+                        "type": "any"
+                    },
+                    {
+                        "name": "ID",
+                        "type": "any"
+                    }
+                ]
+            },
+            "NpcRequestAction": {
+                "params": [
+                    {
+                        "name": "ActionIdx",
+                        "type": "any"
+                    }
+                ]
+            },
+            "NpcSetRewardRecipe": {
+                "params": [
+                    {
+                        "name": "ItemUniqueId",
+                        "type": "any"
+                    },
+                    {
+                        "name": "DIYNpcItem",
+                        "type": "any"
+                    }
+                ]
+            },
+            "RequestSimple": {
+                "params": [
+                    {
+                        "name": "AsCommand",
+                        "type": "any"
+                    },
+                    {
+                        "name": "WaitFinish",
+                        "type": "any"
+                    }
+                ]
+            }
+        },
+        "queries": {}
+    }
+}
