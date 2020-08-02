@@ -147,8 +147,20 @@ class Predicate(ABC):
     def generate_code(self) -> str:
         pass
 
-    def not_(self) -> Predicate:
+    def __invert__(self) -> Predicate:
         return NotPredicate(self)
+
+    def __and__(self, other: Predicate) -> Predicate:
+        assert isinstance(other, Predicate)
+        if isinstance(other, AndPredicate):
+            return AndPredicate([self]) & other
+        return AndPredicate([self, other])
+
+    def __or__(self, other: Predicate) -> Predicate:
+        assert isinstance(other, Predicate)
+        if isinstance(other, OrPredicate):
+            return OrPredicate([self]) | other
+        return OrPredicate([self, other])
 
 class ConstPredicate(Predicate):
     def __init__(self, value: bool) -> None:
@@ -166,11 +178,14 @@ class QueryPredicate(Predicate):
         self.values = values
         self.negated = False
 
+        if self.query.rv == 'bool' and self.values == [False]:
+            self.negated = True
+
     def generate_code(self) -> str:
         if self.query.rv == 'bool':
             if len(self.values) == 1:
-                not_s = 'not ' if self.values[0] == self.negated else ''
-                return not_s + self.query.format(self.params)
+                __invert__s = 'not ' if self.negated else ''
+                return __invert__s + self.query.format(self.params)
             else:
                 return 'False' if self.negated else 'True'
         else:
@@ -182,7 +197,7 @@ class QueryPredicate(Predicate):
                 vals_s = [repr(v) for v in self.values]
                 return f'{self.query.format(self.params)} {op} ({", ".join(vals_s)})'
 
-    def not_(self) -> Predicate:
+    def __invert__(self) -> Predicate:
         qp = QueryPredicate(self.query, self.params, self.values)
         qp.negated = not self.negated
         return qp
@@ -194,8 +209,59 @@ class NotPredicate(Predicate):
     def generate_code(self) -> str:
         return f'not ({self.inner.generate_code()})'
 
-    def not_(self) -> Predicate:
+    def __invert__(self) -> Predicate:
         return self.inner
+
+class AndPredicate(Predicate):
+    def __init__(self, inners: List[Predicate]) -> None:
+        self.inners = inners
+
+    def generate_code(self) -> str:
+        return ' and '.join([f'({inner.generate_code()})' for inner in self.inners])
+
+    def __invert__(self) -> Predicate:
+        # if the majority of inner predicates are negated, convert to or
+        num_not_predicates = sum(
+            isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated)    
+            for p in self.inners
+        )
+        print(self.generate_code(), num_not_predicates, len(self.inners))
+        print([p.generate_code() for p in self.inners])
+        print([isinstance(p, NotPredicate) for p in self.inners])
+        print([isinstance(p, QueryPredicate) and p.negated for p in self.inners])
+        if num_not_predicates * 2 > len(self.inners):
+            return OrPredicate([~p for p in self.inners])
+        return Predicate.__invert__(self)
+
+    def __and__(self, other: Predicate) -> Predicate:
+        assert isinstance(other, Predicate)
+
+        if isinstance(other, AndPredicate):
+            return AndPredicate(self.inners + other.inners)
+        else:
+            return AndPredicate(self.inners + [other])
+
+class OrPredicate(Predicate):
+    def __init__(self, inners: List[Predicate]) -> None:
+        self.inners = inners
+
+    def generate_code(self) -> str:
+        return ' or '.join([f'({inner.generate_code()})' for inner in self.inners])
+
+    def __invert__(self) -> Predicate:
+        # if the majority of inner predicates are negated, convert to or
+        num_not_predicates = sum(1 for p in self.inners if isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated))
+        if num_not_predicates * 2 > len(self.inners):
+            return AndPredicate([~p for p in self.inners])
+        return Predicate.__invert__(self)
+
+    def __or__(self, other: Predicate) -> Predicate:
+        assert isinstance(other, Predicate)
+
+        if isinstance(other, OrPredicate):
+            return OrPredicate(self.inners + other.inners)
+        else:
+            return OrPredicate(self.inners + [other])
 
 class Node(ABC):
     def __init__(self, name: str) -> None:
@@ -324,8 +390,8 @@ class SwitchNode(Node):
                         return f'{_indent(indent_level)}if {s}{self.query.format(self.params)}:\n' + \
                                 self.out_edges[0].generate_code(indent_level + 1)
                     else:
-                        not_s = '' if not values[0] else 'not '
-                        return f'{_indent(indent_level)}if {not_s}{self.query.format(self.params)}:\n' + \
+                        __invert__s = '' if not values[0] else 'not '
+                        return f'{_indent(indent_level)}if {__invert__s}{self.query.format(self.params)}:\n' + \
                                 self.terminal_node.generate_code(indent_level + 1) + \
                                 self.out_edges[0].generate_code(indent_level)
             else:
@@ -352,9 +418,9 @@ class SwitchNode(Node):
                 return f'{_indent(indent_level)}if {self.query.format(self.params)} {op}:\n' + \
                         self.out_edges[0].generate_code(indent_level + 1)
             else:
-                not_op = f'!= {repr(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(repr(v) for v in values) + ')'
+                __invert__op = f'!= {repr(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(repr(v) for v in values) + ')'
 
-                return f'{_indent(indent_level)}if {self.query.format(self.params)} {not_op}:\n' + \
+                return f'{_indent(indent_level)}if {self.query.format(self.params)} {__invert__op}:\n' + \
                         self.terminal_node.generate_code(indent_level + 1) + \
                         self.out_edges[0].generate_code(indent_level)
         else:
@@ -736,6 +802,49 @@ class CFG:
                 del self.nodes[node.name]
                 self.nodes[ifelse_node.name] = ifelse_node
 
+    def __collapse_andor(self) -> None:
+        for root in self.roots:
+            change = True
+            while change:
+                change = False
+                for node in self.__find_postorder(root):
+                    if not isinstance(node, IfElseNode):
+                        continue
+                    if len(node.rules) != 1:
+                        continue
+                    ifelse_children = [c for c in node.out_edges if isinstance(c, IfElseNode)][::-1]
+                    for child in ifelse_children:
+                        if len(child.rules) != 1:
+                            continue
+                        if len(child.in_edges) != 1:
+                            continue
+                        other_child, = [c for c in node.out_edges if c is not child]
+                        if other_child not in child.out_edges:
+                            continue
+
+                        true_branch, = [c for c in child.out_edges if c is not other_child]
+                        false_branch = other_child
+
+                        # get predicate for node -> child branch
+                        node_predicate = node.rules[0].predicate
+                        if node.default is child:
+                            node_predicate = ~node_predicate
+                        # get predicate for child -> true_branch
+                        child_predicate = child.rules[0].predicate
+                        if child.default is true_branch:
+                            child_predicate = ~child_predicate
+
+                        # replace node + child with [predicate, true_branch], default=false_branch
+                        predicate = node_predicate & child_predicate
+                        new_node = IfElseNode(node.name, [
+                            IfElseNode.Rule(predicate, true_branch)
+                        ], false_branch)
+
+                        self.__merge_coupled_nodes(node, child, new_node)
+
+                        change = True
+                        break
+
     def __collapse_if(self) -> None:
         for root in self.roots:
             for node in self.__find_postorder(root):
@@ -747,7 +856,7 @@ class CFG:
                     value_branch = node.rules[0].node
                     else_branch = node.default
                 elif isinstance(node.rules[0].node, IfElseNode) and len(node.rules[0].node.in_edges) == 1:
-                    predicate = node.rules[0].predicate.not_()
+                    predicate = ~node.rules[0].predicate
                     value_branch = node.default
                     else_branch = node.rules[0].node
                 else:
@@ -758,21 +867,29 @@ class CFG:
                     *else_branch.rules
                 ], else_branch.default)
 
-                ifelse_node.in_edges = node.in_edges
-                for caller in node.in_edges:
-                    caller.reroute_out_edge(node, ifelse_node)
-
-                ifelse_node.add_out_edge(value_branch)
-                value_branch.reroute_in_edge(node, ifelse_node)
-
-                for exit_node in else_branch.out_edges:
-                    ifelse_node.add_out_edge(exit_node)
-                    exit_node.reroute_in_edge(else_branch, ifelse_node)
-
-                self.nodes[node.name] = ifelse_node
-                del self.nodes[else_branch.name]
-
+                self.__merge_coupled_nodes(node, else_branch, ifelse_node)
                 self.__try_collapse_block(root, ifelse_node)
+
+    def __merge_coupled_nodes(self, parent_node: Node, child_node: Node, new_node: Node) -> None:
+        assert child_node.in_edges == [parent_node]
+
+        new_node.in_edges = parent_node.in_edges
+        for caller in parent_node.in_edges:
+            caller.reroute_out_edge(parent_node, new_node)
+
+        for parent_out in parent_node.out_edges:
+            if parent_out is child_node:
+                continue
+            new_node.add_out_edge(parent_out)
+            parent_out.reroute_in_edge(parent_node, new_node)
+
+        for exit_node in child_node.out_edges:
+            new_node.add_out_edge(exit_node)
+            exit_node.reroute_in_edge(child_node, new_node)
+
+        del self.nodes[parent_node.name]
+        del self.nodes[child_node.name]
+        self.nodes[new_node.name] = new_node
 
     def __collapse_cases(self) -> None:
         for root in self.roots:
@@ -983,6 +1100,7 @@ class CFG:
 
         cfg.__add_terminal_nodes()
         cfg.__convert_switch_to_if()
+        cfg.__collapse_andor()
         cfg.__collapse_if()
         cfg.__collapse_cases()
 
