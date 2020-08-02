@@ -2,282 +2,5271 @@
     "EventFlowSystemActor": {
         "actions": {
             "EventFlagSystemAdd": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" },
-                    { "name": "AddNum", "type": "int" }
-                ],
+                "params": {
+                    "AccessKey": "str",
+                    "AddNum": "int"
+                },
                 "conversion": "event_flags[<AccessKey>] += <AddNum>"
             },
             "EventFlagSystemSet": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" },
-                    { "name": "SetNum", "type": "int" }
-                ],
+                "params": {
+                    "AccessKey": "str",
+                    "SetNum": "int"
+                },
                 "conversion": "event_flags[<AccessKey>] = <SetNum>"
             },
             "EventFlagSystemOn": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" }
-                ],
+                "params": {
+                    "AccessKey": "str"
+                },
                 "conversion": "event_flags[<AccessKey>] = 1"
             },
             "EventFlagSystemOff": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" }
-                ],
+                "params": {
+                    "AccessKey": "str"
+                },
                 "conversion": "event_flags[<AccessKey>] = 0"
             },
             "StructureMoveSaveIndex": {
-                "params": [
-                    { "name": "IndexType", "type": "int" }
-                ]
+                "params": {
+                    "IndexType": "int"
+                }
             },
             "EventFlagOffAllLiver": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" }
-                ]
+                "params": {
+                    "AccessKey": "str"
+                }
             },
             "EventFlaResetAllLiver": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" }
-                ]
+                "params": {
+                    "AccessKey": "str"
+                }
             },
             "SetWeatherPattern": {
-                "params": [
-                    { "name": "PatternName", "type": "str" }
-                ]
+                "params": {
+                    "PatternName": "str"
+                }
             },
             "SetSubflowResult": {
-                "params": [
-                    { "name": "SetIndex", "type": "int" },
-                    { "name": "ResultValue", "type": "int" }
-                ],
+                "params": {
+                    "SetIndex": "int",
+                    "ResultValue": "int"
+                },
                 "conversion": "subflow_results[<SetIndex>] = <ResultValue>"
+            },
+            "ReservePlayerMutterDemo": {
+                "params": {
+                    "EntryPointName": "str",
+                    "MutterStartTiming": "str",
+                    "EventFileName": "str",
+                    "IsResistNpcCast": "bool"
+                }
+            },
+            "ExitFlowchart": {
+                "params": {}
+            },
+            "CameraSetDemoParam": {
+                "params": {
+                    "CameraTargetKey": "str",
+                    "CameraParamKey": "str",
+                    "CameraInterpolateKey": "str",
+                    "UseNearCulling": "bool",
+                    "AdjustAngleYOnEnter": "bool",
+                    "AdjustAngleYOnLeave": "bool",
+                    "Arg": "int"
+                }
+            },
+            "WaitFrame": {
+                "params": {
+                    "WaitFrame": "int"
+                }
+            },
+            "SetBirthdayVillagerName": {
+                "params": {
+                    "Target": "int",
+                    "TagID": "int"
+                }
+            },
+            "PlayerSetCraftRecipe": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "UnlockType": "str"
+                }
+            },
+            "SystemMailSend": {
+                "params": {
+                    "FromType": "str",
+                    "FileIndex": "str",
+                    "Route": "str",
+                    "Present": "str",
+                    "TagType": "str",
+                    "ToSharePlayer": "bool",
+                    "LabelIndex": "int"
+                }
+            },
+            "SystemRequestChangeStage": {
+                "params": {
+                    "TargetStage": "str",
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "SoundDuckingOn": {
+                "params": {
+                    "Id": "int"
+                }
+            },
+            "SoundDuckingOff": {
+                "params": {
+                    "Id": "int"
+                }
+            },
+            "BGMPropertyControl": {
+                "params": {
+                    "BGMProperty": "int"
+                }
+            },
+            "FadeIn": {
+                "params": {
+                    "IsWait": "bool"
+                }
+            },
+            "SetupActorPosition": {
+                "params": {
+                    "Type": "int"
+                }
+            },
+            "UIDemoClock": {
+                "params": {
+                    "DisplayFrame": "int"
+                }
+            },
+            "WaitFaderSleep": {
+                "params": {}
+            },
+            "MessageSuspend": {
+                "params": {}
+            },
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "StoreNormalCamera": {
+                "params": {
+                    "IsImmediately": "bool"
+                }
+            },
+            "FadeOut": {
+                "params": {
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float",
+                    "IsUseDucking": "bool"
+                }
+            },
+            "SetCountDownCamera": {
+                "params": {
+                    "CameraActionKindString": "str"
+                }
+            },
+            "SwapSpeaker": {
+                "params": {
+                    "SwapSpeaker": "str",
+                    "DispNameTag": "bool"
+                }
+            },
+            "RequestRecreateFtr": {
+                "params": {}
+            },
+            "RequestStartPeriodicalFireworks": {
+                "params": {}
+            },
+            "CompleteSettlerQuestSubject": {
+                "params": {
+                    "SettlerType": "int"
+                }
+            },
+            "DecideSettlerNpc": {
+                "params": {
+                    "SettlerType": "int"
+                }
+            },
+            "NpcSetRewardRecipe": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "DIYNpcItem": "bool"
+                }
+            },
+            "SelectRewardItemDirect": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "SetNum": "int",
+                    "ItemRemakeDecideType": "str",
+                    "RemakePatternIndex": "int"
+                }
+            },
+            "UIAudioHandling": {
+                "params": {}
+            },
+            "SetTagFromSystem": {
+                "params": {
+                    "TagID": "int",
+                    "TagType": "str",
+                    "SetTagType": "str",
+                    "AccessKey": "str",
+                    "Value": "int"
+                }
+            },
+            "NpcSelectMessage": {
+                "params": {
+                    "StartType0": "str",
+                    "StartType1": "str",
+                    "StartType2": "str",
+                    "StartType3": "str",
+                    "MessageID0": "str",
+                    "MessageID1": "str",
+                    "MessageID2": "str",
+                    "MessageID3": "str"
+                }
+            },
+            "SoundTriggerEmit": {
+                "params": {
+                    "AssetKeyName": "str",
+                    "FadeHandleId": "int"
+                }
+            },
+            "TurnOffTempAudioMusic": {
+                "params": {}
+            },
+            "TurnOffEventPlazaDuckingJudge": {
+                "params": {}
+            },
+            "TurnOffForceMaxVolumeForAudioMusic": {
+                "params": {}
+            },
+            "UIClosetLotteryHandling": {
+                "params": {}
+            },
+            "UICoordinateEditHandling": {
+                "params": {}
+            },
+            "UIClosetHandling": {
+                "params": {}
+            },
+            "UIClosetBalloonDisappear": {
+                "params": {}
+            },
+            "UIClosetCreate": {
+                "params": {}
+            },
+            "UIClosetBalloonAppearHandling": {
+                "params": {}
+            },
+            "UICharactermakingHandling": {
+                "params": {
+                    "CharctermakingFilterType": "str"
+                }
+            },
+            "SaveSetFromUIResult": {
+                "params": {
+                    "SaveType": "str"
+                }
+            },
+            "UICharactermakingCreate": {
+                "params": {}
+            },
+            "UIPostHandling": {
+                "params": {}
+            },
+            "UIWaitReceivingMailAppear": {
+                "params": {}
+            },
+            "CheckFreeCommunication": {
+                "params": {
+                    "isShowUI": "bool"
+                }
+            },
+            "UIPostCreate": {
+                "params": {}
+            },
+            "NetFriendMailCheck": {
+                "params": {}
+            },
+            "SystemSetTagRadioPlayMusic": {
+                "params": {}
+            },
+            "UIStampRallyMuseumFromStampRackHandling": {
+                "params": {}
+            },
+            "UIItemSelectWindowHandling": {
+                "params": {
+                    "ItemUniqueID": "int",
+                    "ItemKindType": "str",
+                    "Mode": "str",
+                    "ItemFilterType": "str",
+                    "FilterType": "str",
+                    "IsSingleSelect": "bool"
+                }
+            },
+            "SystemDeletePlayerItem": {
+                "params": {
+                    "DeleteType": "str",
+                    "DeleteNum": "int"
+                }
+            },
+            "UISoftwareKeyboardHandling": {
+                "params": {
+                    "FormType": "str",
+                    "IsClearString": "bool"
+                }
+            },
+            "SetTagFromUIResult": {
+                "params": {
+                    "TagID": "int",
+                    "TagType": "str"
+                }
+            },
+            "UIMoneyDisappear": {
+                "params": {}
+            },
+            "BellCountDown": {
+                "params": {
+                    "Money": "int",
+                    "Reverse": "bool"
+                }
+            },
+            "UIMoneyAppear": {
+                "params": {}
+            },
+            "SetItemToPocket": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "SetNum": "int"
+                }
+            },
+            "SetCalcPriceBySolo": {
+                "params": {}
+            },
+            "UIMiniGameTimerAppear": {
+                "params": {
+                    "Time": "int",
+                    "CounterUIType": "str"
+                }
+            },
+            "SetSharePlayChangeCondition": {
+                "params": {
+                    "Lock": "bool"
+                }
+            },
+            "SetSharePlaySubToolCondition": {
+                "params": {
+                    "IsEnable": "bool"
+                }
+            },
+            "SetBirthdayPToldlPartySharePlayFlag": {
+                "params": {}
+            },
+            "SetPlayerNameCallCamperNpc": {
+                "params": {}
+            },
+            "Set6thVillager": {
+                "params": {
+                    "Step": "int"
+                }
+            },
+            "SystemDecideFaceCard": {
+                "params": {
+                    "GameType": "str"
+                }
+            },
+            "UIMiniGameHighAndLowHandling": {
+                "params": {
+                    "Command": "str"
+                }
+            },
+            "SelectRewardItemCampGame": {
+                "params": {
+                    "CamperRewardType": "str"
+                }
+            },
+            "UISelectNpcMoveOut": {
+                "params": {
+                    "MoveOutNpcType": "str"
+                }
+            },
+            "UIMsgCardAdrHandling": {
+                "params": {
+                    "MsgCardAdrType": "str"
+                }
+            },
+            "SelectMoveOutNpcRandom": {
+                "params": {}
+            },
+            "SetCheckResultConvReaction": {
+                "params": {
+                    "CheckResult": "int"
+                }
+            },
+            "CameraReserveFirstStateCommand": {
+                "params": {
+                    "Command": "str"
+                }
+            },
+            "MiniGameSilentCancel": {
+                "params": {}
+            },
+            "NextLPFadeTime": {
+                "params": {
+                    "FadeSec": "float"
+                }
+            },
+            "RevokeTreasureQuest": {
+                "params": {}
+            },
+            "UIBoardHandling": {
+                "params": {}
+            },
+            "UICreatureHarvestBoxHandling": {
+                "params": {
+                    "mMode": "int"
+                }
+            },
+            "PublicWorksSetName": {
+                "params": {
+                    "TagID": "int"
+                }
+            },
+            "PublicWorksSetBell": {
+                "params": {
+                    "TagID": "int",
+                    "MoneyType": "str"
+                }
+            },
+            "PublicWorksUpdate": {
+                "params": {}
+            },
+            "UITenKeyHandling": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "UILostListHandling": {
+                "params": {}
+            },
+            "UIMsgCardSelectHandling": {
+                "params": {}
+            },
+            "UIMsgCardEditTextHandling": {
+                "params": {
+                    "TempFormType": "str"
+                }
+            },
+            "DropIntoPostOffice": {
+                "params": {
+                    "TmpMailInstance": "str"
+                }
+            },
+            "ChangeAddressUnfinishMail": {
+                "params": {}
+            },
+            "UIDateHandling": {
+                "params": {
+                    "DateInputType": "str"
+                }
+            },
+            "ReserveFutureMail": {
+                "params": {}
+            },
+            "UIFutureMsgCardHandling": {
+                "params": {}
+            },
+            "UIDateCreate": {
+                "params": {
+                    "CreateDateType": "str"
+                }
+            },
+            "DeleteFutureMail": {
+                "params": {}
+            },
+            "ReturnToPocketFutureMailPresent": {
+                "params": {}
+            },
+            "MessageLockNext": {
+                "params": {
+                    "WaitIconType": "int"
+                }
+            },
+            "NetConnectInit": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetCheckNSA": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "MessageUnlockNext": {
+                "params": {}
+            },
+            "NetSendMail": {
+                "params": {}
+            },
+            "ReturnAttachedPresentToBaggage": {
+                "params": {}
+            },
+            "NetUpdateFriendList": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "UIAddresseeFriendHandling": {
+                "params": {}
+            },
+            "NetSendMailPreProc": {
+                "params": {
+                    "FlowType": "str"
+                }
+            },
+            "SaveSimpleSave": {
+                "params": {
+                    "Process": "str"
+                }
+            },
+            "NetSendMailAfterFailProc": {
+                "params": {}
+            },
+            "UISaveIconAppear": {
+                "params": {}
+            },
+            "UISaveIconDisappear": {
+                "params": {}
+            },
+            "SuspendSharePlayCtrlCheck": {
+                "params": {}
+            },
+            "ResumeSharePlayCtrlCheck": {
+                "params": {}
+            },
+            "UITempMsgCardHandling": {
+                "params": {}
+            },
+            "SetTagNameUnfinishMail": {
+                "params": {
+                    "ID": "int",
+                    "TagType": "str"
+                }
+            },
+            "CreateChoiceMailDestination": {
+                "params": {
+                    "IsNoCancel": "bool"
+                }
+            },
+            "DeleteUnfinishMail": {
+                "params": {}
+            },
+            "NetEndSessionVillage": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "CloseVillageGate": {
+                "params": {}
+            },
+            "StartAmiiboPhone": {
+                "params": {
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "ReadAmiibo": {
+                "params": {
+                    "EntryVariableKeyInt_ReadPadId": "str"
+                }
+            },
+            "ChangeAmiiboNPC": {
+                "params": {
+                    "Kind": "str"
+                }
+            },
+            "AmiiboNpcOpenMessage": {
+                "params": {
+                    "MessageID": "str"
+                }
+            },
+            "CheckNfpController": {
+                "params": {
+                    "EntryVariableKeyInt_NpadId": "str"
+                }
+            },
+            "EntryVariableSet": {
+                "params": {
+                    "Key": "str",
+                    "SetValue": "any"
+                },
+                "conversion": "entry_variables[<Key>] = <SetValue>"
+            },
+            "SetAmiiboCamperNPC": {
+                "params": {}
+            },
+            "ReturnStage": {
+                "params": {
+                    "NextInfoKey": "str",
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "SystemFaderRelease": {
+                "params": {}
+            },
+            "NpcEventItemSet": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "TagID": "int",
+                    "InsertTarget": "str",
+                    "EntryVariableKeyInt_ItemPrice": "str"
+                }
+            },
+            "DeleteSelectedSettlerQuestInsideMaterial": {
+                "params": {
+                    "SettlerType": "int",
+                    "InsideMaterialType": "int"
+                }
+            },
+            "DecideOpenCraftRecipe": {
+                "params": {
+                    "CraftRecipeOpenType": "str"
+                }
+            },
+            "OpenSelectedSequenceCraftRecipe": {
+                "params": {}
+            },
+            "DecideEventRewardDIYRecipe": {
+                "params": {
+                    "UnlockType": "str"
+                }
+            },
+            "UIMyDesignExchangeMenuHandling": {
+                "params": {}
+            },
+            "MyDesignExchangeResetError": {
+                "params": {}
+            },
+            "UINetConnectWaitDisappear": {
+                "params": {}
+            },
+            "UINetConnectWaitAppear": {
+                "params": {}
+            },
+            "NetSearchMyDesign": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "WaitDownloadMyDesignDataForPreview": {
+                "params": {}
+            },
+            "UIMyDesignSelectHandling": {
+                "params": {
+                    "Mode": "int",
+                    "Category": "int",
+                    "Author": "int",
+                    "Holder": "int",
+                    "UsageType": "int"
+                }
+            },
+            "UIMyDesignExchangeInfoHandling": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "NetGetDesignerID": {
+                "params": {
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "UIMyDesignExchangeListHandling": {
+                "params": {}
+            },
+            "NetDeleteMyDesign": {
+                "params": {}
+            },
+            "UIMyDesignExchangeSearchHandling": {
+                "params": {}
+            },
+            "UIMyDesignExchangeFavoriteHandling": {
+                "params": {}
+            },
+            "UIMessageWindowForPocket": {
+                "params": {}
+            },
+            "ItemRemove": {
+                "params": {}
+            },
+            "PlayerBirthdayScheduleEnd": {
+                "params": {}
+            },
+            "PlayerBirthdayRestoreBGM": {
+                "params": {}
+            },
+            "SetNpcAIBlackBoardByLabel": {
+                "params": {
+                    "Key": "str",
+                    "Value": "int",
+                    "NpcLabel": "str",
+                    "Option": "int"
+                }
+            },
+            "UIMiniGameFinishAppear": {
+                "params": {}
+            },
+            "NpcQuestFlagOn": {
+                "params": {
+                    "QuestFlag": "str"
+                }
+            },
+            "SetTreasureFindState": {
+                "params": {}
+            },
+            "PlayerDrawEasterEggRecipe": {
+                "params": {
+                    "EggType": "str"
+                }
+            },
+            "NpcPlayerActivity": {
+                "params": {
+                    "ActivityType": "str"
+                }
+            },
+            "SystemReenterStage": {
+                "params": {
+                    "Type": "int",
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "NpcInitializeActivity": {
+                "params": {
+                    "VillagerIndex": "int"
+                }
+            },
+            "SystemMailSendDirect": {
+                "params": {
+                    "FromType": "str",
+                    "FileIndex": "str",
+                    "Present": "str",
+                    "LabelIndex": "int"
+                }
+            },
+            "StartupMailSend": {
+                "params": {
+                    "VersionUp": "bool",
+                    "BundledEdition": "bool",
+                    "AoC": "bool"
+                }
+            },
+            "CalendarEventStartFor2P": {
+                "params": {}
+            },
+            "ResetNpcScheduleForStart": {
+                "params": {}
+            },
+            "SaveUpdateBackupCustomData": {
+                "params": {}
+            },
+            "BuildStructureErrorMsg": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                }
+            },
+            "BuildStructurePlayReport": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                }
+            },
+            "StructureStartPreviewGuide": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                }
+            },
+            "StructureDeletePreviewGuide": {
+                "params": {
+                    "IsImmediately": "bool"
+                }
+            },
+            "UIMenuDeviceAppear": {
+                "params": {
+                    "EventType": "str",
+                    "Application": "str"
+                }
+            },
+            "ClearBoxTransfer": {
+                "params": {}
+            },
+            "DeleteSelectUIItem": {
+                "params": {
+                    "DeleteNum": "int"
+                }
+            },
+            "PlayReport": {
+                "params": {
+                    "Num0": "int",
+                    "PlayReportKind": "str"
+                }
+            },
+            "DeleteTargetItem": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "DeleteNum": "int",
+                    "IsPriorityFewItems": "bool"
+                }
+            },
+            "ShopSellCalc": {
+                "params": {
+                    "EntryVariableKeyInt_SellTotal": "str",
+                    "Rate": "float",
+                    "ExpensivePurchase": "bool",
+                    "IsBox": "bool"
+                }
+            },
+            "ShopSellDone": {
+                "params": {
+                    "Rate": "float",
+                    "IsBox": "bool"
+                }
+            },
+            "UISelectedItemMoveChest": {
+                "params": {}
+            },
+            "PlayerBaggageOperationForEvent": {
+                "params": {
+                    "OperationType": "str"
+                }
+            },
+            "NetCloseSession": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetOpenSession": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "OpenVillageGate": {
+                "params": {
+                    "IsColDisable": "bool"
+                }
+            },
+            "UIVersionGuideDisappear": {
+                "params": {
+                    "OutType": "str"
+                }
+            },
+            "NetInitLocal": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetCreateSessionVillage": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "NetShutdown": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetFindSessionVillage": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "OpenVillageList": {
+                "params": {}
+            },
+            "NetJoinSessionVillage": {
+                "params": {}
+            },
+            "NetDemoLock": {
+                "params": {
+                    "Situation": "int"
+                }
+            },
+            "UIVersionGuideAppear": {
+                "params": {
+                    "InType": "str",
+                    "Mount": "str"
+                }
+            },
+            "UISoftwareKeyboardPasswordHandling": {
+                "params": {
+                    "IsClearString": "bool"
+                }
+            },
+            "NetLeaveSessionVillage": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetDestroySessionVillage": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "RunCheckArtCamera": {
+                "params": {}
+            },
+            "HoldGalleryCamera": {
+                "params": {}
+            },
+            "UIShopMoneyDisappear": {
+                "params": {}
+            },
+            "NextGoTo": {
+                "params": {
+                    "NextInfoKey": "str",
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "UIIllegalReportHandling": {
+                "params": {
+                    "ReportTarget": "int"
+                }
+            },
+            "NetCaptureScreenshot": {
+                "params": {}
+            },
+            "UIShopBuyHandling": {
+                "params": {
+                    "ItemBitType": "str"
+                }
+            },
+            "UIShopBuyTailorCreate": {
+                "params": {}
+            },
+            "UnlockRandomItemRemakeCommonPattern": {
+                "params": {}
+            },
+            "UIStampRallyMuseumFromOwlHandling": {
+                "params": {
+                    "CardType": "str"
+                }
+            },
+            "UIShopBuyAppear": {
+                "params": {
+                    "ItemBitType": "str"
+                }
+            },
+            "EntryVariableAdd": {
+                "params": {
+                    "Key": "str",
+                    "AddValue": "int"
+                },
+                "conversion": "entry_variables[<Key>] += <AddValue>"
+            },
+            "ReserveNpcCommand": {
+                "params": {
+                    "Command": "str"
+                }
+            },
+            "PlayerHouseSetRoofColor": {
+                "params": {
+                    "RoofColor": "str"
+                }
+            },
+            "UIMapRemoveHandling": {
+                "params": {}
+            },
+            "StructureOrderRemoveBridgeSlope": {
+                "params": {}
+            },
+            "UIMapRemoveCreate": {
+                "params": {}
+            },
+            "UICustomHomeHandling": {
+                "params": {
+                    "SelectType": "str"
+                }
+            },
+            "StructureMoveSetTag": {
+                "params": {
+                    "Type": "int",
+                    "TagID": "int"
+                }
+            },
+            "SetHideObjectVisible": {
+                "params": {}
+            },
+            "NetGetPOPID": {
+                "params": {
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "UploadProfile": {
+                "params": {
+                    "IsSkipError": "bool"
+                }
+            },
+            "NotifyUseNSOAppli": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "UIMelodyEditHandling": {
+                "params": {}
+            },
+            "UIMelodyEditCreate": {
+                "params": {}
+            },
+            "NetExitDream": {
+                "params": {
+                    "IsErrorExit": "bool"
+                }
+            },
+            "StartMeasurePlayTime": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "StopMeasurePlayTime": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "TapSmoke": {
+                "params": {
+                    "SmokeTypeString": "str"
+                }
+            },
+            "ChangeSwitchIdrDreamAromaPot": {
+                "params": {
+                    "IsOn": "bool"
+                }
+            },
+            "SetEnableDofFadeForDream": {
+                "params": {}
+            },
+            "SoundSceneChangeFadeOutDucking": {
+                "params": {
+                    "Id": "int"
+                }
+            },
+            "EntryBirthDayMessage": {
+                "params": {}
+            },
+            "SetBirthDayTag": {
+                "params": {}
+            },
+            "SaveOnBackupRestoringSettingNotice": {
+                "params": {}
+            },
+            "RequetCtrlConnectSupport": {
+                "params": {
+                    "RequestCount": "int"
+                }
+            },
+            "SetControllerStyle": {
+                "params": {
+                    "ControllerStyle": "int"
+                }
+            },
+            "TimeLock": {
+                "params": {
+                    "TimeLockType": "str"
+                }
+            },
+            "OverWriteFadeSetting": {
+                "params": {
+                    "FadeInKindString": "str",
+                    "FadeOutKindString": "str",
+                    "FadeColorString": "str",
+                    "FadeInSpeed": "float",
+                    "FadeOutSpeed": "float"
+                }
+            },
+            "SetCheckResultStructureDoor": {
+                "params": {
+                    "CheckResult": "int"
+                }
+            },
+            "DisappearChatBaloon": {
+                "params": {
+                    "BaloonType": "str"
+                }
+            },
+            "ReserveSystemFlowDemo": {
+                "params": {
+                    "EntryName": "str",
+                    "FlowFile": "str"
+                }
+            },
+            "NetBreakUpSessionVillage": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetForceQuitSession": {
+                "params": {}
+            },
+            "UIMenuProfileOthersHandling": {
+                "params": {}
+            },
+            "SaveGrowUp": {
+                "params": {
+                    "GrowUpSituation": "str"
+                }
+            },
+            "SaveAfterGrowUp": {
+                "params": {}
+            },
+            "NetReceiveMail": {
+                "params": {}
+            },
+            "DemoSetShareStartFlag": {
+                "params": {}
+            },
+            "SaveSimpleLoad": {
+                "params": {
+                    "Process": "str"
+                }
+            },
+            "SetupSharePlay": {
+                "params": {
+                    "IsAfterRollback": "bool"
+                }
+            },
+            "SpecialDemoStart": {
+                "params": {
+                    "Kind": "str"
+                }
+            },
+            "NetUpdateFriendLandWithInterval": {
+                "params": {
+                    "Interval": "int"
+                }
+            },
+            "NetReceiveBcat": {
+                "params": {}
+            },
+            "SetBcatProcess": {
+                "params": {}
+            },
+            "EventFlagResetAllLiver": {
+                "params": {
+                    "AccessKey": "str"
+                }
+            },
+            "VillageScoreNaturalReflectLandSave": {
+                "params": {}
+            },
+            "VillageScoreLifeReflectLandSave": {
+                "params": {}
+            },
+            "CalcJuneBrideScore": {
+                "params": {}
+            },
+            "UIGuideBalloonWeddingParty": {
+                "params": {
+                    "GuideType": "int"
+                }
+            },
+            "NextLPFadeOff": {
+                "params": {}
+            },
+            "SystemBGMVolumeFadeOut": {
+                "params": {
+                    "FadeCurveType": "int",
+                    "FadeSec": "float",
+                    "DelaySec": "float"
+                }
+            },
+            "WeddingBGMStart": {
+                "params": {}
+            },
+            "AfterWeddingBGMEnd": {
+                "params": {}
+            },
+            "MuseumNameBoardFossilCamera": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                }
+            },
+            "MuseumNameBoardCamera": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                }
+            },
+            "MuseumNameBoardArtCamera": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                }
+            },
+            "OpenMessageNameBoardArtExplain": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str",
+                    "DisplayNum": "int"
+                }
+            },
+            "NetWaitDemo": {
+                "params": {
+                    "Kind": "str"
+                }
+            },
+            "NetEnterDream": {
+                "params": {}
+            },
+            "NetReturnFromDream": {
+                "params": {}
+            },
+            "NetReplyDream": {
+                "params": {
+                    "Kind": "str"
+                }
+            },
+            "NetDemoNextStep": {
+                "params": {
+                    "Step": "str"
+                }
+            },
+            "UISonkatsuPointAppear": {
+                "params": {}
+            },
+            "LifeSupportPointCountDown": {
+                "params": {
+                    "Point": "int",
+                    "Reverse": "bool"
+                }
+            },
+            "UISonkatsuPointDisappear": {
+                "params": {}
+            },
+            "WaitSpecialDemoEnter": {
+                "params": {
+                    "Type": "str"
+                }
+            },
+            "SpecialDemoEnd": {
+                "params": {
+                    "Kind": "str"
+                }
+            },
+            "CreateSelectNpc": {
+                "params": {
+                    "IsAmiibo": "bool"
+                }
+            },
+            "UIPhotoIslandInteriorEditGuideOff": {
+                "params": {}
+            },
+            "SetAmiiboReadOn": {
+                "params": {}
+            },
+            "UIAmiiboPreviousNoticeGuideCreate": {
+                "params": {}
+            },
+            "EventFlagTempAllClear": {
+                "params": {}
+            },
+            "NetLoginNEX": {
+                "params": {
+                    "Command": "str",
+                    "IsErrorHandling": "bool"
+                }
+            },
+            "NetCheckProfileBan": {
+                "params": {
+                    "IsSkipError": "bool"
+                }
+            },
+            "ControllerConnect": {
+                "params": {
+                    "EntryVariableKeyInt_PlayerIndex": "str"
+                }
+            },
+            "ControllerConnectBegin": {
+                "params": {}
+            },
+            "ControllerConnectEnd": {
+                "params": {
+                    "IsNormalEnd": "bool"
+                }
+            },
+            "DemoShareStartEnd": {
+                "params": {}
+            },
+            "StartSharePlay": {
+                "params": {}
+            },
+            "ControllerConnectTimerStart": {
+                "params": {
+                    "Second": "int"
+                }
+            },
+            "EventFlagAllSharePlayPlayer": {
+                "params": {
+                    "AccessKey": "str"
+                }
+            },
+            "ControllerConnectTimerClose": {
+                "params": {}
+            },
+            "PrepareSharePlayEntry": {
+                "params": {}
+            },
+            "CancelSharePlayEntry": {
+                "params": {}
+            },
+            "QuitSharePlay": {
+                "params": {}
+            },
+            "UIMsgCardAdrCreate": {
+                "params": {
+                    "MsgCardAdrType": "str"
+                }
+            },
+            "PreviewStructure": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                }
+            },
+            "DeletePreviewStructure": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str"
+                }
+            },
+            "BuildStructure": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                }
+            },
+            "UITitleHandling": {
+                "params": {}
+            },
+            "NoticeGameStartForPlayReport": {
+                "params": {}
+            },
+            "EnvWeatherArea": {
+                "params": {
+                    "WeatherAreaLand": "str"
+                }
+            },
+            "EnvSetDemoTime": {
+                "params": {
+                    "Second": "int",
+                    "Hour": "int",
+                    "Minute": "int"
+                }
+            },
+            "UILogoAppear": {
+                "params": {
+                    "SelectKind": "str"
+                }
             }
         },
         "queries": {
             "EventFlagSystemBool": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" }
-                ],
-                "return": "bool",
-                "conversion": "event_flags[<AccessKey>]"
+                "params": {
+                    "AccessKey": "str"
+                },
+                "conversion": "event_flags[<AccessKey>]",
+                "return": "bool"
             },
             "EventFlagSystemInt": {
-                "params": [
-                    { "name": "AccessKey", "type": "str" },
-                    { "name": "FlagCheckType", "type": "int" },
-                    { "name": "Border", "type": "int" }
-                ],
+                "params": {
+                    "AccessKey": "str",
+                    "FlagCheckType": "int",
+                    "Border": "int"
+                },
                 "return": "bool"
             },
             "IsDoneBcatProcess": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "PlayAccountIsPlayerVillager": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "PassDaysSincePreviousGrowUp": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "IsGamePlayTime": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "IsSharePlay": {
-                "params": [
-                    { "name": "TargetMode", "type": "any" }
-                ],
+                "params": {
+                    "TargetMode": "int"
+                },
                 "return": "bool"
             },
             "BackDaysSincePreviousGrowUp": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "CheckErrorType": {
-                "params": [
-                    { "name": "ErrorType", "type": "int" }
-                ],
+                "params": {
+                    "ErrorType": "int"
+                },
                 "return": "bool"
             },
             "IsRawDataCheck": {
-                "params": [
-                    { "name": "IsRawDataCheck", "type": "bool" }
-                ],
+                "params": {
+                    "IsRawDataCheck": "bool"
+                },
                 "return": "bool"
             },
             "GrowUpInterval": {
-                "params": [
-                    { "name": "Interval", "type": "int" }
-                ],
-                "return": "any"
+                "params": {
+                    "Interval": "int"
+                },
+                "return": "bool"
             },
             "NetIsDreaming": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "PlayerHasCraftRecipe": {
-                "params": [
-                    { "name": "ItemUniqueId", "type": "int" },
-                    { "name": "UnlockType", "type": "str" }
-                ],
+                "params": {
+                    "ItemUniqueId": "int",
+                    "UnlockType": "str"
+                },
                 "return": "bool"
             },
             "RandomChoice2": {
-                "params": [
-                    { "name": "ChoiceNumber", "type": "int" }
-                ],
+                "params": {
+                    "ChoiceNumber": "int"
+                },
                 "return": "int2"
             },
             "SubflowResultChoice4": {
-                "params": [
-                    { "name": "SetIndex", "type": "str" }
-                ],
+                "params": {
+                    "SetIndex": "str"
+                },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int4"
             },
             "SubflowResultChoice5": {
-                "params": [
-                    { "name": "SetIndex", "type": "str" }
-                ],
+                "params": {
+                    "SetIndex": "str"
+                },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int5"
             },
             "NpcHouseNum": {
-                "params": [
-                    { "name": "NpcHouseType", "type": "str" },
-                    { "name": "Num", "type": "int" }
-                ],
+                "params": {
+                    "NpcHouseType": "str",
+                    "Num": "int"
+                },
                 "conversion": "<.name>(<NpcHouseType>) <= <Num>",
                 "return": "bool"
             },
             "GlobalEventStart": {
-                "params": [
-                    { "name": "EventLabelString", "type": "str" }
-                ],
+                "params": {
+                    "EventLabelString": "str"
+                },
                 "return": "bool"
             },
             "EventBranch": {
-                "params": [
-                    { "name": "CheckNowTime", "type": "bool" },
-                    { "name": "AddDay", "type": "int" }
-                ],
+                "params": {
+                    "CheckNowTime": "bool",
+                    "AddDay": "int"
+                },
                 "return": "int"
             },
             "VillageScoreCheckNatural": {
-                "params": [
-                    { "name": "BorderValue", "type": "int" }
-                ],
+                "params": {
+                    "BorderValue": "int"
+                },
                 "conversion": "EventFlowSystemActor.VillageScoreNatural >= <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckLife": {
-                "params": [
-                    { "name": "BorderValue", "type": "int" }
-                ],
+                "params": {
+                    "BorderValue": "int"
+                },
                 "conversion": "EventFlowSystemActor.VillageScoreLife >= <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreVeryMessy": {
-                "params": [
-                    { "name": "BorderHalfUnit", "type": "int" },
-                    { "name": "BorderBlockNum", "type": "int" }
-                ],
+                "params": {
+                    "BorderHalfUnit": "int",
+                    "BorderBlockNum": "int"
+                },
                 "return": "bool"
             },
             "VillageScorePutUnitIconNum": {
-                "params": [
-                    { "name": "BorderValue", "type": "int" }
-                ],
+                "params": {
+                    "BorderValue": "int"
+                },
                 "conversion": "<.name> >= <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckTreeNum": {
-                "params": [
-                    { "name": "BorderNum", "type": "int" }
-                ],
+                "params": {
+                    "BorderNum": "int"
+                },
                 "conversion": "EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>",
                 "return": "bool"
             },
             "VillageScoreCheckLifeDeltaBeforeDay": {
-                "params": [
-                    { "name": "DeltaPoint", "type": "int" }
-                ],
+                "params": {
+                    "DeltaPoint": "int"
+                },
                 "conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>",
                 "return": "bool"
             },
             "VillageScoreCheckNaturalDeltaBeforeDay": {
-                "params": [
-                    { "name": "DeltaPoint", "type": "int" }
-                ],
+                "params": {
+                    "DeltaPoint": "int"
+                },
                 "conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>",
                 "return": "bool"
             },
             "GeneralTalkChoice2": {
-                "params": [],
+                "params": {},
                 "return": "int2"
             },
             "RandomChoiceExcludePrevious3": {
-                "params": [
-                    { "name": "IsSetSpeakerChoiceResult", "type": "bool" },
-                    { "name": "ChoiceNumber", "type": "int" }
-                ],
+                "params": {
+                    "IsSetSpeakerChoiceResult": "bool",
+                    "ChoiceNumber": "int"
+                },
                 "return": "int3"
             },
             "CatalogItemFrom": {
-                "params": [
-                    { "name": "ItemFromType", "type": "str" }
-                ],
+                "params": {
+                    "ItemFromType": "str"
+                },
                 "return": "bool"
             },
             "PercentChoice": {
-                "params": [
-                    { "name": "Percent", "type": "int" }
-                ],
-                "return": "bool"
+                "params": {
+                    "Percent": "int"
+                },
+                "return": "int2"
             },
             "EventCheck": {
-                "params": [
-                    { "name": "EventLabelString", "type": "str" }
-                ],
+                "params": {
+                    "EventLabelString": "str"
+                },
                 "return": "int"
             },
             "HasBellCount": {
-                "params": [
-                    { "name": "Money", "type": "str" }
-                ],
+                "params": {
+                    "Money": "str"
+                },
                 "return": "bool"
             },
             "SystemHasBaggageSpace": {
-                "params": [
-                    { "name": "CheckNum", "type": "int" },
-                    { "name": "CheckTargrt", "type": "str" }
-                ],
+                "params": {
+                    "CheckNum": "int",
+                    "CheckTargrt": "str"
+                },
                 "return": "bool"
             },
             "FinalFireworksFes": {
-                "params": [],
+                "params": {},
                 "return": "bool"
             },
             "IsMyVillage": {
-                "params": [],
+                "params": {},
                 "return": "bool"
+            },
+            "TermEventNow": {
+                "params": {
+                    "EventLabelString": "str",
+                    "CheckNowTime": "bool"
+                },
+                "return": "bool"
+            },
+            "SystemCheckNowStage": {
+                "params": {
+                    "CheckStage": "str"
+                },
+                "return": "bool"
+            },
+            "EventNpcSet": {
+                "params": {
+                    "EventLabelString": "str"
+                },
+                "return": "bool"
+            },
+            "EnvHourCompare": {
+                "params": {
+                    "Hour": "int",
+                    "Minute": "int",
+                    "IsMidNight": "bool",
+                    "IsOverGrowUpTime": "bool"
+                },
+                "return": "int3"
+            },
+            "NetHasVisitor": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckFirstEnterPlayerCreateParam": {
+                "params": {
+                    "Param": "str"
+                },
+                "return": "bool"
+            },
+            "NetIsConnected": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsUnlockedAllItemRemakeCommonPattern": {
+                "params": {},
+                "return": "bool"
+            },
+            "RandomChoiceExcludePrevious2": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int2"
+            },
+            "EnvHourTwentyFour": {
+                "params": {},
+                "return": "int24"
+            },
+            "MuseumLevel": {
+                "params": {},
+                "return": "int3"
+            },
+            "CheckEntryVariableInt": {
+                "params": {
+                    "Value": "int",
+                    "CheckType": "int",
+                    "CheckValue": "int"
+                },
+                "return": "bool"
+            },
+            "ShopLevel": {
+                "params": {},
+                "return": "int3"
+            },
+            "OfficeLevel": {
+                "params": {},
+                "return": "int3"
+            },
+            "IsReturnJuneBridePhotoStudio": {
+                "params": {},
+                "return": "bool"
+            },
+            "SubflowResultChoice2": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int2"
+            },
+            "SubflowResultChoice6": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int6"
+            },
+            "EnvTimeZone": {
+                "params": {},
+                "return": "int6"
+            },
+            "EnvSameDate": {
+                "params": {
+                    "CheckDateType": "str",
+                    "TimeType": "str"
+                },
+                "return": "bool"
+            },
+            "EnvMonth": {
+                "params": {},
+                "return": "int12"
+            },
+            "EnvWeatherArea": {
+                "params": {},
+                "return": "int2"
+            },
+            "CountBirthdayVillager": {
+                "params": {},
+                "return": "int10"
+            },
+            "MainPlayerIsBirthday": {
+                "params": {
+                    "IsCheckNpcReservePlayerBirthday": "bool"
+                },
+                "return": "bool"
+            },
+            "FacilityOpenPastDays": {
+                "params": {
+                    "CountFacilityType": "str",
+                    "Days": "int"
+                },
+                "return": "bool"
+            },
+            "IsCampSiteOccupied": {
+                "params": {},
+                "return": "bool"
+            },
+            "EnvWeather": {
+                "params": {},
+                "return": "int8"
+            },
+            "SubflowResultChoice9": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int9"
+            },
+            "SubflowResultChoice8": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int8"
+            },
+            "SubflowResultChoice10": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int10"
+            },
+            "SubflowResultChoice7": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int7"
+            },
+            "SubflowResultChoice3": {
+                "params": {
+                    "SetIndex": "str"
+                },
+                "conversion": "subflow_results[<SetIndex>]",
+                "return": "int3"
+            },
+            "LandFruit": {
+                "params": {},
+                "return": "int5"
+            },
+            "EnvSpecialWeather": {
+                "params": {},
+                "return": "int10"
+            },
+            "EnvDayOfWeek": {
+                "params": {},
+                "return": "int7"
+            },
+            "GlobalEventNow": {
+                "params": {
+                    "EventLabelString": "str",
+                    "DayType": "str",
+                    "CheckNowTime": "bool"
+                },
+                "return": "bool"
+            },
+            "EnvCheckBetweenDate": {
+                "params": {
+                    "Month0": "int",
+                    "Day0": "int",
+                    "Month1": "int",
+                    "Day1": "int",
+                    "TimeType": "str"
+                },
+                "return": "bool"
+            },
+            "RandomChoice7": {
+                "params": {
+                    "ChoiceNumber": "int"
+                },
+                "return": "int7"
+            },
+            "EnvSeason": {
+                "params": {},
+                "return": "int4"
+            },
+            "EnvConstellation": {
+                "params": {
+                    "ConstellationCheckType": "str"
+                },
+                "return": "int12"
+            },
+            "IsSettlerQuestOutsideComplete": {
+                "params": {
+                    "SettlerType": "int",
+                    "OutsideCheckType": "int"
+                },
+                "return": "bool"
+            },
+            "PlayerHouseLevel": {
+                "params": {},
+                "return": "int9"
+            },
+            "PlayerVillagerCount": {
+                "params": {
+                    "Count": "int"
+                },
+                "return": "bool"
+            },
+            "PlayerPastDaysFromLastPlay": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "UIResultMenuDecide": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsPlayingAudioMusic": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsLastControlAudioMusic": {
+                "params": {},
+                "return": "bool"
+            },
+            "VillagerNpcNum": {
+                "params": {
+                    "Num": "int",
+                    "IncludeNotLiving": "bool"
+                },
+                "return": "bool"
+            },
+            "RandomChoiceExcludePrevious9": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int9"
+            },
+            "UIIsExistCoordinateSet": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIClosetItemNum": {
+                "params": {},
+                "return": "int5"
+            },
+            "GeneralTalkChoice3": {
+                "params": {},
+                "return": "int3"
+            },
+            "SystemRadioPlayMusic": {
+                "params": {},
+                "return": "bool"
+            },
+            "RandomChoiceExcludePrevious7": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int7"
+            },
+            "RandomChoiceExcludePrevious4": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int4"
+            },
+            "RandomChoiceExcludePrevious5": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int5"
+            },
+            "ShoppingCapacity": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "CapacityCheckType": "str"
+                },
+                "return": "bool"
+            },
+            "RandomChoiceExcludePrevious8": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int8"
+            },
+            "SystemCheckPlayerTool": {
+                "params": {},
+                "return": "int22"
+            },
+            "NowRoomFtrNum": {
+                "params": {
+                    "Count": "int"
+                },
+                "return": "bool"
+            },
+            "SystemCountPlayerNum": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "CurrentRegionLanguage": {
+                "params": {
+                    "SettingType": "str"
+                },
+                "return": "int14"
+            },
+            "EnvHourOverGrowUp": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerIsEquipItem": {
+                "params": {
+                    "EquipRequireType": "str",
+                    "PutawayType": "bool",
+                    "ReferenceLook": "bool",
+                    "ItemUniqueID1": "int",
+                    "ItemUniqueID2": "int",
+                    "ItemUniqueID3": "int",
+                    "ItemUniqueID4": "int",
+                    "ItemUniqueID5": "int",
+                    "ItemUniqueID6": "int",
+                    "ItemUniqueID7": "int",
+                    "ItemUniqueID8": "int"
+                },
+                "return": "bool"
+            },
+            "ComparePlayerCreateTime": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "BridgeNum": {
+                "params": {
+                    "BridgeJudgeType": "str",
+                    "Num": "int"
+                },
+                "return": "bool"
+            },
+            "SlopeNum": {
+                "params": {
+                    "SlopeJudgeType": "str",
+                    "Num": "int"
+                },
+                "return": "bool"
+            },
+            "RandomChoice3": {
+                "params": {
+                    "ChoiceNumber": "int"
+                },
+                "return": "int3"
+            },
+            "UISelectedItemIsWrapping": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "return": "bool"
+            },
+            "ItemIsDecoratedAtTalkNpcHouse": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "return": "bool"
+            },
+            "UISelectedItemIsEquiped": {
+                "params": {
+                    "TargetCharacter": "int",
+                    "JudgeTarget": "str",
+                    "ReferenceLook": "bool"
+                },
+                "return": "bool"
+            },
+            "KindBitParamItemSelectInclude": {
+                "params": {
+                    "BitParamType": "str",
+                    "JudgeTarget": "str"
+                },
+                "return": "bool"
+            },
+            "UICheckSelectedItemPrice": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "MultiKindItemSelectInclude": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ItemKindType1": "str",
+                    "ItemKindType2": "str",
+                    "ItemKindType3": "str",
+                    "ItemKindType4": "str",
+                    "ItemKindType5": "str",
+                    "ItemKindType6": "str",
+                    "ItemKindType7": "str",
+                    "ItemKindType8": "str"
+                },
+                "return": "bool"
+            },
+            "MultiItemSelectInclude": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ItemUniqueID1": "int",
+                    "ItemUniqueID2": "int",
+                    "ItemUniqueID3": "int",
+                    "ItemUniqueID4": "int",
+                    "ItemUniqueID5": "int",
+                    "ItemUniqueID6": "int",
+                    "ItemUniqueID7": "int",
+                    "ItemUniqueID8": "int"
+                },
+                "return": "bool"
+            },
+            "HasKindItem": {
+                "params": {
+                    "CheckItemKindType": "str",
+                    "ItemKindType": "str",
+                    "ItemFilterType": "str"
+                },
+                "return": "bool"
+            },
+            "IsHoldPlayerBirthdayThisYear": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerBirthdayIsSpecialDay": {
+                "params": {},
+                "return": "int7"
+            },
+            "PlayerGender": {
+                "params": {},
+                "return": "int2"
+            },
+            "PercentChoice3": {
+                "params": {
+                    "PercentA": "int",
+                    "PercentB": "int",
+                    "PercentC": "int"
+                },
+                "return": "int3"
+            },
+            "HasTargetItem": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "NeedNum": "int"
+                },
+                "return": "bool"
+            },
+            "NpcQuestIsLimitOver": {
+                "params": {
+                    "QuestType": "str"
+                },
+                "return": "bool"
+            },
+            "RandomChoice6": {
+                "params": {
+                    "ChoiceNumber": "int"
+                },
+                "return": "int6"
+            },
+            "SystemIsCanNotLookFace": {
+                "params": {},
+                "return": "bool"
+            },
+            "SystemCheckPastDaysFromPlayerMade": {
+                "params": {
+                    "CheckDays": "int"
+                },
+                "return": "bool"
+            },
+            "IsExistBirthdayPlayerInSub": {
+                "params": {},
+                "return": "bool"
+            },
+            "CanScheduleNowPlayerBirthdayParty": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsInsectChasingPlayer": {
+                "params": {
+                    "CheckInsect": "int"
+                },
+                "return": "bool"
+            },
+            "MultiKindItemSelectIncludeChoice5": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ChoiceNumber": "int",
+                    "ItemKindTypeA": "str",
+                    "ItemKindTypeB": "str",
+                    "ItemKindTypeC": "str",
+                    "ItemKindTypeD": "str"
+                },
+                "return": "int5"
+            },
+            "MultiMessageCategoryItemSelectInclude": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ItemCategoryType1": "str",
+                    "ItemCategoryType2": "str",
+                    "ItemCategoryType3": "str",
+                    "ItemCategoryType4": "str",
+                    "ItemCategoryType5": "str",
+                    "ItemCategoryType6": "str",
+                    "ItemCategoryType7": "str",
+                    "ItemCategoryType8": "str"
+                },
+                "return": "bool"
+            },
+            "MultiKindItemSelectIncludeChoice4": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ChoiceNumber": "int",
+                    "ItemKindTypeA": "str",
+                    "ItemKindTypeB": "str",
+                    "ItemKindTypeC": "str"
+                },
+                "return": "int4"
+            },
+            "CheckMoveOutNpcIsMoveKitVillager": {
+                "params": {},
+                "return": "bool"
+            },
+            "GeneralTalkChoice4": {
+                "params": {},
+                "return": "int4"
+            },
+            "SystemIsCorrectFaceCard": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsAbandonedHouseNpc": {
+                "params": {
+                    "MoveOutNpcType": "str"
+                },
+                "return": "bool"
+            },
+            "PlayerHasCampCraftRecipe": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcGeneralTalkChoice": {
+                "params": {},
+                "return": "int5"
+            },
+            "MuseumRoomDonateRate": {
+                "params": {
+                    "Rate": "int"
+                },
+                "return": "bool"
+            },
+            "IsTheDayAfterTalkPlayerBithday": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsVillageGateOpened": {
+                "params": {},
+                "return": "bool"
+            },
+            "InsectFishBoxIsEmpty": {
+                "params": {},
+                "return": "bool"
+            },
+            "DonationDone": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIIsAdrSelect": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasFreeInPostOffice": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "ExistUnfinishMail": {
+                "params": {},
+                "return": "bool"
+            },
+            "ReservedFutureMail": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIManageFutureMessage": {
+                "params": {},
+                "return": "bool"
+            },
+            "ReservedFutureMailWithPresent": {
+                "params": {},
+                "return": "bool"
+            },
+            "CanReturnToPocketFutureMailPresent": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetHasPOPID": {
+                "params": {
+                    "IsRawDataCheck": "bool"
+                },
+                "return": "bool"
+            },
+            "IsApprovedFreeCommunication": {
+                "params": {},
+                "return": "bool"
+            },
+            "LimitSendMailToFriend": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasAttachedPresent": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetHasAddressData": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "UnfinishMailToType": {
+                "params": {},
+                "return": "int5"
+            },
+            "UIManageUnfinishedMessage": {
+                "params": {},
+                "return": "int4"
+            },
+            "IsValidUnfinishMailTo": {
+                "params": {},
+                "return": "int4"
+            },
+            "GeneralTalkChoice5": {
+                "params": {},
+                "return": "int5"
+            },
+            "UIGetMessageCardEditCancelStatus": {
+                "params": {},
+                "return": "int3"
+            },
+            "CheckAmiiboNPC": {
+                "params": {
+                    "Kind": "str"
+                },
+                "return": "bool"
+            },
+            "IsAmiiboNpcMigrated": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsCallableAmiiboNpc": {
+                "params": {
+                    "Purpose": "str"
+                },
+                "return": "bool"
+            },
+            "IsAlreadyCalledAmiiboNpc": {
+                "params": {
+                    "Purpose": "str"
+                },
+                "return": "bool"
+            },
+            "IsAcceptableAmiibo": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsAcquaintanceAmiiboNPC": {
+                "params": {},
+                "return": "bool"
+            },
+            "NfpErrorType": {
+                "params": {},
+                "return": "int3"
+            },
+            "NfcDisabled": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsAmiiboNpcLiving": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsAmiiboNpcSick": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsAmiiboNpcVisiting": {
+                "params": {},
+                "return": "bool"
+            },
+            "AmiiboNameWithTitle": {
+                "params": {},
+                "return": "int2"
+            },
+            "IsAmiiboNpcMoveOut": {
+                "params": {},
+                "return": "int3"
+            },
+            "AmiiboNpcIsIncludedCamperList": {
+                "params": {},
+                "return": "bool"
+            },
+            "VillageFlower": {
+                "params": {
+                    "VillageFlowerType": "str"
+                },
+                "return": "int8"
+            },
+            "IsSettlerQuestInsideMaterialSelect": {
+                "params": {
+                    "SettlerType": "int",
+                    "InsideMaterialType": "int"
+                },
+                "return": "bool"
+            },
+            "IsDuringBusinessHours": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "IsMadeCraftUnlockRecipe": {
+                "params": {
+                    "UnlockType": "str",
+                    "CheckUnlockMode": "str"
+                },
+                "return": "bool"
+            },
+            "RandomChoice5": {
+                "params": {
+                    "ChoiceNumber": "int"
+                },
+                "return": "int5"
+            },
+            "MyDesignExchangeMenuResult": {
+                "params": {},
+                "return": "int7"
+            },
+            "NetHasDesignerID": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasAbleDisplayMyDesign": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsReachedUploadCountMax": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIMyDesignExchangeUploadResult": {
+                "params": {},
+                "return": "int3"
+            },
+            "IsMatchedOwnDesignerIdAndInputDesignerId": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsFoundMyDesign": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "UIMyDesignDownloadWindowChoiceResult": {
+                "params": {},
+                "return": "int3"
+            },
+            "IsSpecifiedMyDesignPosted": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsMyDesignProInMyDesignExchange": {
+                "params": {},
+                "return": "bool"
+            },
+            "MyDesignExchangeNetworkError": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsValidID": {
+                "params": {
+                    "Kind": "str"
+                },
+                "return": "bool"
+            },
+            "GeneralTalkChoice6": {
+                "params": {},
+                "return": "int6"
+            },
+            "IsSoloPlayController": {
+                "params": {},
+                "return": "bool"
+            },
+            "ItemRemove": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIPocketMenuItemSelected": {
+                "params": {
+                    "ItemUniqueID": "int"
+                },
+                "return": "bool"
+            },
+            "PlayerGetEasterEggRecipe": {
+                "params": {},
+                "return": "bool"
+            },
+            "CatchFesFreeQuery2": {
+                "params": {
+                    "CatchFesQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "IncludeHorizontalController": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasObstacle": {
+                "params": {
+                    "StructureType": "str",
+                    "StructureBuildPosType": "str",
+                    "StructureBuildTiming": "str"
+                },
+                "return": "bool"
+            },
+            "CanBuildHere": {
+                "params": {
+                    "StructureBuildPosType": "str",
+                    "StructureType": "str",
+                    "StructureBuildTiming": "str"
+                },
+                "return": "bool"
+            },
+            "UIResultHousingKitNpcType": {
+                "params": {},
+                "return": "int2"
+            },
+            "IsRunningMiniGame": {
+                "params": {
+                    "MiniGameType": "str"
+                },
+                "return": "bool"
+            },
+            "UIResultItemWindowNumCheck": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "Num": "int"
+                },
+                "return": "bool"
+            },
+            "BeyWeekEndEvent": {
+                "params": {},
+                "return": "int3"
+            },
+            "MoneyCapacity": {
+                "params": {
+                    "AddMoney": "str",
+                    "SellType": "str"
+                },
+                "return": "int3"
+            },
+            "UIMiniGameCanStart": {
+                "params": {},
+                "return": "bool"
+            },
+            "ChyWeekEndEvent": {
+                "params": {},
+                "return": "int3"
+            },
+            "UISelectedItemCanMoveChest": {
+                "params": {},
+                "return": "bool"
+            },
+            "PurchaseBoxFreeQuery2": {
+                "params": {
+                    "PurchaseBoxQueryType": "str",
+                    "SellTotal": "int"
+                },
+                "return": "bool"
+            },
+            "YMD": {
+                "params": {
+                    "Year": "int",
+                    "Month": "int",
+                    "Day": "int",
+                    "TimeType": "str"
+                },
+                "return": "int3"
+            },
+            "NetMode": {
+                "params": {},
+                "return": "int3"
+            },
+            "NetFoundVillageNum": {
+                "params": {},
+                "return": "int3"
+            },
+            "NetIsDecidedVillage": {
+                "params": {},
+                "return": "int3"
+            },
+            "NetIsNeedPassword": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "NetAllSessionIsFull": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetLockFailReason": {
+                "params": {},
+                "return": "int3"
+            },
+            "NetHasFriend": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsFriendOnlySession": {
+                "params": {
+                    "Type": "str"
+                },
+                "return": "bool"
+            },
+            "NetIsInviteFriend": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetSessionCreateSetting": {
+                "params": {},
+                "return": "int3"
+            },
+            "RandomChoice4": {
+                "params": {
+                    "ChoiceNumber": "int"
+                },
+                "return": "int4"
+            },
+            "RandomChoiceExcludePrevious10": {
+                "params": {
+                    "ChoiceNumber": "int",
+                    "IsSetSpeakerChoiceResult": "bool"
+                },
+                "return": "int10"
+            },
+            "UIIllegalReportResult": {
+                "params": {},
+                "return": "bool"
+            },
+            "OverwriteEquipedMyDesign": {
+                "params": {},
+                "return": "bool"
+            },
+            "UIShopBuyTailorResult": {
+                "params": {},
+                "return": "int5"
+            },
+            "UIShopBuyTailorIsWear": {
+                "params": {},
+                "return": "bool"
+            },
+            "MuseumComplete": {
+                "params": {},
+                "return": "bool"
+            },
+            "MuseumDonationNumCheck": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "ExpensivePurchase": {
+                "params": {},
+                "return": "bool"
+            },
+            "ItemValuables": {
+                "params": {},
+                "return": "bool"
+            },
+            "SelectCeremony": {
+                "params": {},
+                "return": "int8"
+            },
+            "UIRemoveStructureType": {
+                "params": {},
+                "return": "int2"
+            },
+            "IsFirstNpcLiveInTent": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsUnconnectedPlayerVillagerGreaterThan": {
+                "params": {
+                    "Count": "int"
+                },
+                "return": "bool"
+            },
+            "IsUnconnectedVillageLeader": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveIsExist": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsAppError": {
+                "params": {
+                    "Process": "str"
+                },
+                "return": "bool"
+            },
+            "UIResultMelodyEdit": {
+                "params": {},
+                "return": "int3"
+            },
+            "MultiFromItemSelectInclude": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ItemFromType1": "str",
+                    "ItemFromType2": "str",
+                    "ItemFromType3": "str",
+                    "ItemFromType4": "str",
+                    "ItemFromType5": "str",
+                    "ItemFromType6": "str",
+                    "ItemFromType7": "str",
+                    "ItemFromType8": "str"
+                },
+                "return": "bool"
+            },
+            "ExistPlayerAcceptingBirthDayMessage": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveLastBackupElapsedDaysGreaterThan": {
+                "params": {
+                    "Days": "int"
+                },
+                "return": "bool"
+            },
+            "SaveIsOnBackupRestoringSettingNotice": {
+                "params": {},
+                "return": "bool"
+            },
+            "ControllerIsConnected": {
+                "params": {},
+                "return": "bool"
+            },
+            "MessageUseBCancel": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsPlayerBirthdayRoom": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetCanRequestLeave": {
+                "params": {},
+                "return": "bool"
+            },
+            "JuneBrideScoreCheck": {
+                "params": {
+                    "ScoreTypeString": "str",
+                    "Num": "int"
+                },
+                "return": "bool"
+            },
+            "CheckCalledNpcNumNormal": {
+                "params": {
+                    "NpcNum": "int"
+                },
+                "return": "bool"
+            },
+            "AlwAlpIsOnBedJuneBride": {
+                "params": {},
+                "return": "bool"
+            },
+            "MuseumNameboardIsStillHaveDonateItem": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "MuseumNameboardIsNeedCameraTargetKind": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "MuseumNameboardCheckDonateBoardItemKind": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "int5"
+            },
+            "MuseumNameBoardIsExistVillageDonatePlayer": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "MuseumNameBoardIsCompleteFossilItem": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "MuseumNameBoardIsDonateFossilItemSomeOne": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "MuseumNameBoardIsSingleFossilSet": {
+                "params": {
+                    "EntryVariableKeyInt_LoopNum": "str"
+                },
+                "return": "bool"
+            },
+            "NetDemoType": {
+                "params": {},
+                "return": "int6"
+            },
+            "NetDreamingTime": {
+                "params": {
+                    "CheckValue": "int"
+                },
+                "return": "bool"
+            },
+            "NetIsDemoPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsDifferentAreaVisit": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasSpaceCreateNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "CalledNpcNum": {
+                "params": {
+                    "CalledNpcNum": "int"
+                },
+                "return": "bool"
+            },
+            "CheckEntryVariableBool": {
+                "params": {
+                    "Value": "str"
+                },
+                "conversion": "entry_variables[<Value>]",
+                "return": "bool"
+            },
+            "ControllerConnectNum": {
+                "params": {},
+                "return": "int2"
+            },
+            "CountSharePlayerNum": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "EventFlagAllSharePlayPlayer": {
+                "params": {
+                    "AccessKey": "str"
+                },
+                "return": "bool"
+            },
+            "ControllerConnectResult": {
+                "params": {},
+                "return": "int3"
+            },
+            "CountWaitingPlayerNum": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "GeneralTalkChoice7": {
+                "params": {},
+                "return": "int7"
+            },
+            "UITitleResult": {
+                "params": {},
+                "return": "int3"
+            },
+            "NxRegionCode": {
+                "params": {},
+                "return": "int6"
             }
         }
     },
     "MainNpc": {
-        "actions": {},
+        "actions": {
+            "NpcChangeTurnDefaultState": {
+                "params": {
+                    "StateName": "str",
+                    "SubEntryName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "IsChangePreState": "bool",
+                    "IsChangeSameState": "bool",
+                    "ArgFlag0": "bool",
+                    "ArgInt0": "int",
+                    "ArgFloat0": "float",
+                    "ArgStr1": "str"
+                }
+            },
+            "NpcSetTalkDistance": {
+                "params": {
+                    "Distance": "float"
+                }
+            },
+            "NpcAISetting": {
+                "params": {
+                    "SettingType": "int",
+                    "Flag": "bool"
+                }
+            },
+            "NpcChangeAIState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEventFlowName": "str",
+                    "TalkEntryPointName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool"
+                }
+            },
+            "NpcDisableServiceMotion": {
+                "params": {}
+            },
+            "NpcChangeConversationPretenseState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int",
+                    "ArgStr0": "str"
+                }
+            },
+            "NpcRegistAIBlackBoard": {
+                "params": {
+                    "Key": "str",
+                    "Value": "int"
+                }
+            },
+            "NpcSetAIBlackBoard": {
+                "params": {
+                    "Key": "str",
+                    "Value": "int"
+                }
+            },
+            "NpcAISetRequestSpeakFunc": {
+                "params": {
+                    "SpeakType": "str",
+                    "IsPlayingWithOther": "bool"
+                }
+            },
+            "NpcChangeSpNpcTurnState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int",
+                    "ArgInt1": "int",
+                    "ArgInt2": "int",
+                    "ArgInt3": "int",
+                    "ArgFlag0": "bool",
+                    "ArgFlag1": "bool",
+                    "ArgStr0": "str",
+                    "ArgStr1": "str"
+                }
+            },
+            "NpcChangeBlockWanderState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgFlag0": "bool",
+                    "ArgInt0": "int",
+                    "ArgInt1": "int",
+                    "ArgInt2": "int",
+                    "ArgInt3": "int"
+                }
+            },
+            "SetSpecialPos": {
+                "params": {
+                    "SetPosType": "str"
+                }
+            },
+            "NpcChangeInvisibleState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int"
+                }
+            },
+            "SetNpcSpeakFlow": {
+                "params": {
+                    "EntryName": "str",
+                    "FlowName": "str"
+                }
+            },
+            "NpcAIDefaultSetting": {
+                "params": {
+                    "ClearPreset": "int"
+                }
+            },
+            "SetIsStartNeedActivity": {
+                "params": {
+                    "UpdateRequest": "str"
+                }
+            },
+            "NpcChangeWaitState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int",
+                    "ArgFlag0": "bool",
+                    "ArgStr0": "str"
+                }
+            },
+            "EventFlagNpcOff": {
+                "params": {
+                    "AccessKey": "str"
+                }
+            },
+            "NpcChangeSpVisitorTurnState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int",
+                    "ArgInt1": "int",
+                    "ArgInt2": "int",
+                    "ArgInt3": "int",
+                    "ArgFlag0": "bool",
+                    "ArgFlag1": "bool",
+                    "ArgStr0": "str",
+                    "ArgStr1": "str"
+                }
+            },
+            "NpcChangeHeadCtrlMode": {
+                "params": {
+                    "HeadCtrlMode": "str",
+                    "IsUseTiredLookAt": "bool"
+                }
+            },
+            "SetSightRange": {
+                "params": {
+                    "Distance": "int",
+                    "Angle": "int"
+                }
+            },
+            "NpcAISetPosByRail": {
+                "params": {
+                    "RailID": "int",
+                    "PointIdx": "int",
+                    "SetAngle": "float",
+                    "IsSetAngle": "bool"
+                }
+            },
+            "SetDefaultWaitAs": {
+                "params": {
+                    "NpcWaitAsType": "str"
+                }
+            },
+            "GulFreeAction": {
+                "params": {
+                    "GulActionType": "str"
+                }
+            },
+            "NpcAISetExitStrc": {
+                "params": {
+                    "Reaction": "str",
+                    "TriggerType": "str",
+                    "Frame": "int"
+                }
+            },
+            "SelectFreeCFurnitureFurniture": {
+                "params": {
+                    "SelectType": "int"
+                }
+            },
+            "NpcAITalkCastSetting": {
+                "params": {
+                    "SetupKey": "str"
+                }
+            },
+            "SetNpcFeel": {
+                "params": {
+                    "Feel": "str",
+                    "Second": "int"
+                }
+            },
+            "SetNpcTalkFlowName": {
+                "params": {
+                    "EventFlowName": "str",
+                    "EntryPointName": "str"
+                }
+            },
+            "SetSurpriseMoveSetting": {
+                "params": {}
+            },
+            "NpcSetHitTimer": {
+                "params": {
+                    "Timer": "int"
+                }
+            },
+            "NpcClearHitParam": {
+                "params": {}
+            },
+            "NpcBalloonRequest": {
+                "params": {
+                    "AppearType": "str",
+                    "MessageID": "str",
+                    "XLinkAction": "str",
+                    "DispFrame": "int"
+                }
+            },
+            "NpcChangeGoToDestinationState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int",
+                    "ArgInt1": "int",
+                    "ArgInt2": "int"
+                }
+            },
+            "NpcChangeChangeHandToolState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "HandToolItem": "str"
+                }
+            },
+            "EventFlagNpcOn": {
+                "params": {
+                    "AccessKey": "str"
+                }
+            },
+            "NpcChangeOwlWaitState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgStr0": "str",
+                    "ArgFlag0": "flag",
+                    "ArgInt0": "int"
+                }
+            },
+            "NpcChangeOwlPostTalkState": {
+                "params": {
+                    "StateName": "str",
+                    "TalkEntryPointName": "str",
+                    "TalkEventFlowName": "str",
+                    "SubEntryName": "str",
+                    "IsChangeSameState": "bool",
+                    "IsChangePreState": "bool",
+                    "ArgInt0": "int"
+                }
+            },
+            "NpcAddBlackBoard": {
+                "params": {
+                    "Key": "str",
+                    "AddValue": "int"
+                }
+            },
+            "NpcChangeAIStateCstm": {
+                "params": {
+                    "TalkEventFlowName": "str",
+                    "TalkEntryPointName": "str",
+                    "CstmType": "int",
+                    "ExtendParam": "str"
+                }
+            },
+            "NpcAISetPosByNextInfo": {
+                "params": {
+                    "NextGoTo": "str",
+                    "OffsetX": "int",
+                    "OffsetZ": "int"
+                }
+            },
+            "ServiceMotionControl": {
+                "params": {
+                    "CanServiceMotion": "bool"
+                }
+            },
+            "NpcAISetCheckRobFunc": {
+                "params": {
+                    "TalkEventFlowName": "str",
+                    "TalkEntryPointName": "str",
+                    "AIEntryPointName": "str",
+                    "CheckRobType": "str",
+                    "IsUnregist": "bool",
+                    "RobContinue": "bool"
+                }
+            },
+            "SystemSetInviteQuestEnterTime": {
+                "params": {}
+            },
+            "SystemSetInviteQuestNpcEnterFlag": {
+                "params": {}
+            },
+            "NpcAISetPos": {
+                "params": {
+                    "SetAngle": "float",
+                    "SetPosX": "float",
+                    "SetPosZ": "float",
+                    "IsUseCreateOffset": "bool"
+                }
+            },
+            "NpcReservrForErase": {
+                "params": {}
+            },
+            "NpcAISetLookIKParamKey": {
+                "params": {
+                    "ParamKey": "str"
+                }
+            },
+            "StopLiveMusicShufflePlay": {
+                "params": {}
+            },
+            "NpcAISetStandupBeforeTalk": {
+                "params": {}
+            },
+            "SetDeliveryItemAtRandom": {
+                "params": {
+                    "ItemUniqueID": "int",
+                    "ApplyToSave": "bool",
+                    "ItemRemakeDecideType": "str",
+                    "RemakePatternIndex": "int"
+                }
+            },
+            "NpcDelivery": {
+                "params": {
+                    "Option": "str",
+                    "Command": "int"
+                }
+            },
+            "ShopBuyDone": {
+                "params": {
+                    "UseTailorTicket": "bool",
+                    "Set5": "bool"
+                }
+            },
+            "SetDeliveryItem": {
+                "params": {
+                    "SetItemTarget": "int",
+                    "ApplyToSave": "bool"
+                }
+            },
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "SetNpcName": {
+                "params": {
+                    "ID": "int",
+                    "NpcNameType": "int"
+                }
+            },
+            "NpcAITalkSubCastEntry": {
+                "params": {
+                    "CastID": "int",
+                    "FindLabel": "str"
+                }
+            },
+            "RequestSimple": {
+                "params": {
+                    "AsCommand": "str",
+                    "WaitFinish": "bool"
+                }
+            },
+            "CharacterEmoticonAction": {
+                "params": {
+                    "Reaction": "str",
+                    "MessageID": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            },
+            "CancelTodayVisitorNpc": {
+                "params": {}
+            },
+            "NpcCopyPhrase": {
+                "params": {}
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "EmoticonTalkMessage": {
+                "params": {}
+            },
+            "NpcSelectMessage": {
+                "params": {
+                    "StartType0": "str",
+                    "StartType1": "str",
+                    "StartType2": "str",
+                    "StartType3": "str",
+                    "MessageID0": "str",
+                    "MessageID1": "str",
+                    "MessageID2": "str",
+                    "MessageID3": "str"
+                }
+            },
+            "SetApproachTalkItem": {
+                "params": {
+                    "SetType": "int"
+                }
+            },
+            "SetItemName": {
+                "params": {
+                    "ID": "int",
+                    "ItemTarget": "int",
+                    "TagType": "int"
+                }
+            },
+            "RegistToReleaseItemList": {
+                "params": {
+                    "Route": "int"
+                }
+            },
+            "NpcSetExchangeMoney": {
+                "params": {
+                    "EntryVariableKeyInt_ItemPrice": "str",
+                    "EntryVariableKeyBool_Reverse": "str",
+                    "AddType": "str",
+                    "PriceType": "str"
+                }
+            },
+            "SetItemToNpcStockList": {
+                "params": {
+                    "NpcStockTarget": "int",
+                    "GetRoute": "int"
+                }
+            },
+            "SetNpcMoveoutStopInfo": {
+                "params": {
+                    "MoveOutStatus": "int"
+                }
+            },
+            "SetPlayerName": {
+                "params": {
+                    "PlayerNameType": "int"
+                }
+            },
+            "NpcSetRewardRecipe": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "DIYNpcItem": "bool"
+                }
+            },
+            "SetEasterApproachVillagerIndex": {
+                "params": {
+                    "ApproachType": "int"
+                }
+            },
+            "NpcDecideRewardByCondition": {
+                "params": {
+                    "Price": "int",
+                    "ItemGroup": "int",
+                    "GreatorEqual": "bool",
+                    "NotCollect": "bool"
+                }
+            },
+            "SetIslandReputationApproachVillagerIndex": {
+                "params": {
+                    "ApproachType": "int"
+                }
+            },
+            "NpcMailSend": {
+                "params": {
+                    "FileIndex": "str",
+                    "Present": "str",
+                    "LabelIndex": "str",
+                    "Route": "str",
+                    "TagType": "str"
+                }
+            },
+            "WrapDeliveryItem": {
+                "params": {}
+            },
+            "NpcSelectFreeTalk": {
+                "params": {
+                    "StartType0": "str",
+                    "StartType1": "str",
+                    "StartType2": "str",
+                    "StartType3": "str",
+                    "MessageID0": "str",
+                    "MessageID1": "str",
+                    "MessageID2": "str",
+                    "MessageID3": "str",
+                    "IsCheckAttr": "bool"
+                }
+            },
+            "NpcOpenFreeMessage": {
+                "params": {
+                    "OpenMessageType": "str"
+                }
+            },
+            "SetClothesXItemsTag": {
+                "params": {
+                    "MessageType": "int"
+                }
+            },
+            "NpcDecideSelectSellBuyPrice": {
+                "params": {
+                    "BuyPriceType": "str"
+                }
+            },
+            "NpcAddFriendship": {
+                "params": {
+                    "AddValue": "int"
+                }
+            },
+            "SetPriceCalcItem": {
+                "params": {
+                    "ItemType": "int"
+                }
+            },
+            "EventFlagNpcSet": {
+                "params": {
+                    "AccessKey": "str",
+                    "SetNum": "int"
+                }
+            },
+            "SelectFreeBFurnitureFurniture": {
+                "params": {}
+            },
+            "SetHandleNameTag": {
+                "params": {
+                    "ID": "int"
+                }
+            },
+            "DecideHandleNameMemory": {
+                "params": {
+                    "SearchTarget": "int"
+                }
+            },
+            "NpcOpenRumorMessage": {
+                "params": {}
+            },
+            "DecideRumorPlayer": {
+                "params": {
+                    "SelectPlayerType": "int"
+                }
+            },
+            "SetRumorDSkipInfo": {
+                "params": {}
+            },
+            "EventFlagNpcAdd": {
+                "params": {
+                    "AccessKey": "str",
+                    "AddNum": "int"
+                }
+            },
+            "DecideFreeIType": {
+                "params": {}
+            },
+            "DecideFreeIReward": {
+                "params": {}
+            },
+            "NpcDecideGeneralQuestReward": {
+                "params": {
+                    "RewardTypeSub": "int",
+                    "RewardType": "int"
+                }
+            },
+            "NpcMailSendRandom": {
+                "params": {
+                    "FileIndex": "str",
+                    "LabelIndexBegin": "int",
+                    "LabelIndexEnd": "int",
+                    "TagType": "str",
+                    "Present": "str",
+                    "Route": "str"
+                }
+            },
+            "NpcPlayReport": {
+                "params": {
+                    "NpcPlayReportKind": "str",
+                    "Num0": "int"
+                }
+            },
+            "SetDeliveryItemApplySave": {
+                "params": {}
+            },
+            "SetBirthdayPresentFlag": {
+                "params": {}
+            },
+            "DecideEventReward": {
+                "params": {
+                    "RewardType": "str"
+                }
+            },
+            "NpcWearNewYearHat": {
+                "params": {}
+            },
+            "NpcDecideVisitPresent": {
+                "params": {
+                    "RewardType": "int",
+                    "RewardTypeSub": "int"
+                }
+            },
+            "QuestStartOpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool",
+                    "IsEnd": "bool"
+                }
+            },
+            "NpcQuestControl": {
+                "params": {
+                    "Next": "str"
+                }
+            },
+            "NpcDecideCatchRequestItem": {
+                "params": {}
+            },
+            "SetDeliveryQuestInfo": {
+                "params": {}
+            },
+            "NpcSetShowFlag": {
+                "params": {}
+            },
+            "SetDeliveryClothToChange": {
+                "params": {
+                    "ClothType": "int"
+                }
+            },
+            "NpcQuestFlagOn": {
+                "params": {
+                    "QuestFlag": "str"
+                }
+            },
+            "SetDeliveryClothInfo": {
+                "params": {
+                    "ClothType": "int"
+                }
+            },
+            "NpcQuestFlagOff": {
+                "params": {
+                    "QuestFlag": "str"
+                }
+            },
+            "UpdateNpcUsuallyTops": {
+                "params": {
+                    "Target": "str"
+                }
+            },
+            "SetDeliveryQuizChoice": {
+                "params": {}
+            },
+            "NpcDecideDeliveryQuestReward": {
+                "params": {
+                    "RewardTypeSub": "int",
+                    "RewardType": "int"
+                }
+            },
+            "SetDeliveryCategoryTag": {
+                "params": {}
+            },
+            "NpcSetQuestRewardToPlayerBaggage": {
+                "params": {
+                    "SetType": "str"
+                }
+            },
+            "NpcTreasureQuestSetting": {
+                "params": {}
+            },
+            "NpcChangeHandTool": {
+                "params": {
+                    "HandToolItemID": "int",
+                    "SpecificToolKindString": "str",
+                    "IsImmediately": "bool"
+                }
+            },
+            "NpcTreasureToDust": {
+                "params": {}
+            },
+            "NpcSetReactionType": {
+                "params": {
+                    "ReactionType": "str"
+                }
+            },
+            "NpcSetLastLandWord": {
+                "params": {}
+            },
+            "NpcPastDaysFromLastTalkDateToTag": {
+                "params": {}
+            },
+            "NpcSetFeelSource": {
+                "params": {
+                    "FeelSource": "int"
+                }
+            },
+            "NpcSetFeelSourceActorName": {
+                "params": {}
+            },
+            "NpcFixedInducement": {
+                "params": {}
+            },
+            "ClearInduceFailRelationFlag": {
+                "params": {}
+            },
+            "NpcSetMoveLandWord": {
+                "params": {}
+            },
+            "MessageSuspend": {
+                "params": {}
+            },
+            "NpcOpenFacilityMessage": {
+                "params": {}
+            },
+            "SetItemColorName": {
+                "params": {
+                    "ID": "int",
+                    "TargetItem": "int"
+                }
+            },
+            "SetMoneyApplySave": {
+                "params": {}
+            },
+            "NpcDecideRewardFloorWall": {
+                "params": {
+                    "RewardType": "int",
+                    "RewardTypeSub": "int"
+                }
+            },
+            "RequestNpcSubHandToolAction": {
+                "params": {
+                    "SubHandToolAction": "str"
+                }
+            },
+            "SetInvitePlayerName": {
+                "params": {}
+            },
+            "MoveIntoLandForSale": {
+                "params": {}
+            },
+            "SaveCampNpcQuestFtr": {
+                "params": {}
+            },
+            "NpcSetTalkManualChoice": {
+                "params": {}
+            },
+            "SetSettlerQuestInduceNpc": {
+                "params": {}
+            },
+            "SetReplaceSNPCMsgLabel": {
+                "params": {}
+            },
+            "ShopSellCalc": {
+                "params": {
+                    "EntryVariableKeyInt_SellTotal": "str",
+                    "IsBox": "bool",
+                    "Rate": "float",
+                    "ExpensivePurchase": "bool"
+                }
+            },
+            "BeySetFishToy": {
+                "params": {}
+            },
+            "SetOrderBeforeItem": {
+                "params": {
+                    "ItemType": "str"
+                }
+            },
+            "NpcDecideOrderBeforeItem": {
+                "params": {
+                    "ItemType": "str"
+                }
+            },
+            "SmartPhone": {
+                "params": {
+                    "ActionType": "int"
+                }
+            },
+            "NpcStartAS": {
+                "params": {
+                    "ASType": "str",
+                    "IsContinueEmot": "bool",
+                    "IsWaitEnd": "bool"
+                }
+            },
+            "ShopSellDone": {
+                "params": {
+                    "Rate": "float",
+                    "IsBox": "bool"
+                }
+            },
+            "InsectFishBoxSellCalc": {
+                "params": {
+                    "EntryVariableKeyInt_SellTotal": "str",
+                    "Rate": "float"
+                }
+            },
+            "InsectFishBoxSellDone": {
+                "params": {
+                    "Rate": "float"
+                }
+            },
+            "ChmFreeAction": {
+                "params": {
+                    "ChmActionType": "str"
+                }
+            },
+            "SetEventRewardToPlayerBaggage": {
+                "params": {
+                    "SetType": "str"
+                }
+            },
+            "BoaFirstTagSet": {
+                "params": {
+                    "Param0": "int"
+                }
+            },
+            "BoaSecondTagSet": {
+                "params": {
+                    "Param0": "int",
+                    "Param1": "int"
+                }
+            },
+            "BoaBuyDone": {
+                "params": {}
+            },
+            "ChySetInsectToy": {
+                "params": {}
+            },
+            "CmlTagSet": {
+                "params": {
+                    "Param0": "int",
+                    "Param1": "int",
+                    "Param2": "int"
+                }
+            },
+            "CmlSelectWallFloor": {
+                "params": {
+                    "CmlItemKind": "str"
+                }
+            },
+            "CmlBuyDone": {
+                "params": {
+                    "Size": "int"
+                }
+            },
+            "NpcWaitTurn": {
+                "params": {}
+            },
+            "NpcRequestAction": {
+                "params": {
+                    "ActionIdx": "int"
+                }
+            },
+            "FoxItemCheck": {
+                "params": {}
+            },
+            "FoxSetBuyItem": {
+                "params": {}
+            },
+            "FoxSoldOutTagVisible": {
+                "params": {}
+            },
+            "ShopCheckItemSet": {
+                "params": {
+                    "BlackBoardKey": "str",
+                    "ShopType": "str"
+                }
+            },
+            "NpcChangeNameStatus": {
+                "params": {
+                    "NameStatus": "int"
+                }
+            },
+            "HgcSetOutfit": {
+                "params": {}
+            },
+            "HgcThemeMessage": {
+                "params": {}
+            },
+            "HghFreeAction": {
+                "params": {
+                    "HghActionType": "str"
+                }
+            },
+            "CameraForWallHangingMyDesign": {
+                "params": {}
+            },
+            "TalkCamera": {
+                "params": {
+                    "IsInterpolate": "bool",
+                    "Option": "int"
+                }
+            },
+            "HghRevertToTailorDefault": {
+                "params": {}
+            },
+            "HghSetTagMannequinItem": {
+                "params": {}
+            },
+            "HghSetMannequinSelectItem": {
+                "params": {
+                    "Select": "int"
+                }
+            },
+            "OwlOpenItemMessage": {
+                "params": {}
+            },
+            "OwlDinosaurTagSet": {
+                "params": {}
+            },
+            "OwlDonationDone": {
+                "params": {
+                    "EntryVariableKeyBool_MultiComplete": "str",
+                    "EntryVariableKeyInt_CompleteRoomType": "str"
+                }
+            },
+            "OwlFossilAppraise": {
+                "params": {}
+            },
+            "DecideEventRewardDIYRecipe": {
+                "params": {
+                    "UnlockType": "str"
+                }
+            },
+            "SetKabuka": {
+                "params": {}
+            },
+            "SetTwinsTag": {
+                "params": {}
+            },
+            "ResetNpcSchedule": {
+                "params": {}
+            },
+            "SetCeremonyChoice": {
+                "params": {}
+            },
+            "SetBridgeSlopeKitToPlayerBaggage": {
+                "params": {
+                    "ItemType": "int"
+                }
+            },
+            "NpcRailMove": {
+                "params": {
+                    "RailID": "int",
+                    "PointA": "int",
+                    "PointB": "int",
+                    "MoveType": "int",
+                    "IsReverse": "bool",
+                    "IsWarp": "bool"
+                }
+            },
+            "NpcMoveToPlayer": {
+                "params": {}
+            },
+            "RcoStandUpChair": {
+                "params": {}
+            },
+            "SmartPhoneSE": {
+                "params": {
+                    "XLinkKey": "str",
+                    "ActionType": "int"
+                }
+            },
+            "CountdownRctManualChoice": {
+                "params": {}
+            },
+            "RctSetNewYearHat": {
+                "params": {
+                    "SelectIndex": "int"
+                }
+            },
+            "SeoReaction": {
+                "params": {
+                    "ReactionType": "str"
+                }
+            },
+            "SeoMoveCameraOut": {
+                "params": {}
+            },
+            "SeoWarpBuoyOut": {
+                "params": {}
+            },
+            "NpcVoiceEchoOn": {
+                "params": {}
+            },
+            "NpcVoiceEchoOff": {
+                "params": {}
+            },
+            "SzaAchievementChangeSymbol": {
+                "params": {
+                    "ChangeSymbolType": "str"
+                }
+            },
+            "SzaUgcReset": {
+                "params": {
+                    "ResetNpcUgcType": "str"
+                }
+            },
+            "SzaPlayMelody": {
+                "params": {}
+            },
+            "TkkRequestSongSet": {
+                "params": {
+                    "SelectSongMethod": "str",
+                    "SelectFeelType": "str"
+                }
+            },
+            "TkkFreeAction": {
+                "params": {
+                    "TkkActionType": "str"
+                }
+            },
+            "NpcSetPlayerProfileComment": {
+                "params": {}
+            }
+        },
         "queries": {
             "EventRewardItem": {
-                "params": [
-                    { "name": "ItemUniqueID", "type": "int" }
-                ],
+                "params": {
+                    "ItemUniqueID": "int"
+                },
+                "return": "bool"
+            },
+            "NpcCheckStateSelectTiming": {
+                "params": {
+                    "AISelectorTiming": "str"
+                },
+                "return": "bool"
+            },
+            "NpcBlackBoard": {
+                "params": {
+                    "Key": "str",
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "IsNpcPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "FacilityNpcState": {
+                "params": {},
+                "return": "int3"
+            },
+            "EventFlagNpcBool": {
+                "params": {
+                    "AccessKey": "str"
+                },
+                "return": "bool"
+            },
+            "IsTargetNpcHouse": {
+                "params": {},
+                "return": "bool"
+            },
+            "CanMoveUnit": {
+                "params": {
+                    "IsExpandArea": "bool"
+                },
+                "return": "bool"
+            },
+            "NpcIsInvisible": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsSurpriseVisitNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsQuestClient": {
+                "params": {
+                    "QuestType": "str",
+                    "CheckPlayer": "bool",
+                    "IncludeFinish": "bool"
+                },
+                "return": "bool"
+            },
+            "NpcBirthdayCast": {
+                "params": {},
+                "return": "int5"
+            },
+            "NpcHasFreeMessage": {
+                "params": {
+                    "QueryMessageType": "str"
+                },
+                "return": "bool"
+            },
+            "IsInTheActOfDIY": {
+                "params": {},
+                "return": "bool"
+            },
+            "ToCatnap": {
+                "params": {},
+                "return": "bool"
+            },
+            "DevideCountDownState": {
+                "params": {},
+                "return": "int9"
+            },
+            "IsVisitOtherNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "InDIYArea": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckNowNpcFeel": {
+                "params": {},
+                "return": "int5"
+            },
+            "ToCatnapAgain": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcHitNum": {
+                "params": {
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "NpcIsFleaHolder": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsHitByNet": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckCurrentNpcAIState": {
+                "params": {
+                    "StateName": "str"
+                },
+                "return": "bool"
+            },
+            "NpcMoveOutState": {
+                "params": {},
+                "return": "int5"
+            },
+            "CheckNpcAIFlag": {
+                "params": {
+                    "AIFlag": "str"
+                },
+                "return": "bool"
+            },
+            "IsWarningInsect": {
+                "params": {},
+                "return": "int3"
+            },
+            "IsApproachAllowed": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcCanStartApproach": {
+                "params": {},
+                "return": "bool"
+            },
+            "EventFlagNpcInt": {
+                "params": {
+                    "AccessKey": "str",
+                    "FlagCheckType": "int",
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "LookToSky": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckNpcTool": {
+                "params": {},
+                "return": "int6"
+            },
+            "IsInEventPlazaArea": {
+                "params": {
+                    "CountdownBoard": "bool"
+                },
+                "return": "bool"
+            },
+            "NpcIsEquipedHandTool": {
+                "params": {
+                    "ToolType": "int"
+                },
+                "return": "bool"
+            },
+            "CountdownTalkPrevState": {
+                "params": {},
+                "return": "int4"
+            },
+            "EmoticonCanGet": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcAIIsArriveDestination": {
+                "params": {},
+                "return": "int2"
+            },
+            "NpcIsSitting": {
+                "params": {},
+                "return": "int6"
+            },
+            "NpcNowPosture": {
+                "params": {},
+                "return": "int4"
+            },
+            "DevideFireWorksEventState": {
+                "params": {},
+                "return": "int6"
+            },
+            "FireworksTalkPrevState": {
+                "params": {},
+                "return": "int4"
+            },
+            "PlayerFind": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsTreasureHuntLimitOver2": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsTreasureFind": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsQuestLimitOver": {
+                "params": {},
+                "return": "bool"
+            },
+            "SystemIsVisitQuestPlayerEntered": {
+                "params": {},
+                "return": "bool"
+            },
+            "SystemVisitQuestKind": {
+                "params": {
+                    "VisitType": "str"
+                },
+                "return": "bool"
+            },
+            "SystemIsInviteQuestNpcEntered": {
+                "params": {},
+                "return": "bool"
+            },
+            "HghFreeQuery2": {
+                "params": {
+                    "HghQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "NpcIsCreateAngle": {
+                "params": {},
+                "return": "bool"
+            },
+            "TkkFreeQuery2": {
+                "params": {
+                    "TkkQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "IsExistMoveNpc": {
+                "params": {
+                    "MoveOut": "bool"
+                },
+                "return": "bool"
+            },
+            "EnvPublicAnnouncement": {
+                "params": {
+                    "EnvAnnounceQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "IsSamePhrase": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcCanStartQuest": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcHaveQuestType": {
+                "params": {
+                    "IncludeFinish": "str"
+                },
+                "return": "int8"
+            },
+            "CheckNpcFavorLevel": {
+                "params": {},
+                "return": "int6"
+            },
+            "NpcCheckPastDays": {
+                "params": {
+                    "AccessKey": "str",
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "HasNpcWantedItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcCanStartApBNickname": {
+                "params": {},
+                "return": "int3"
+            },
+            "CheckNpcApproachType": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcCheckSameWordFromSwkbd": {
+                "params": {
+                    "CheckType": "str"
+                },
+                "return": "bool"
+            },
+            "IsMovingConsultationPlayerNotLiving": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckNpcLook": {
+                "params": {},
+                "return": "int"
+            },
+            "IsFirewoksApproachNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "EnvWeatherNNpcTalkCustom": {
+                "params": {},
+                "return": "int7"
+            },
+            "CheckNpcActivity": {
+                "params": {
+                    "Activity": "str"
+                },
+                "return": "bool"
+            },
+            "CheckNpcTalkType": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsNnpcTent": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsExistOtherNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasPlayerActivitySinceMoveIn": {
+                "params": {
+                    "CheckPlayerType": "int"
+                },
+                "return": "bool"
+            },
+            "CanSelectRumorMessage": {
+                "params": {
+                    "RumorType": "int"
+                },
+                "return": "bool"
+            },
+            "NpcLivingDays": {
+                "params": {
+                    "CheckDays": "int"
+                },
+                "return": "bool"
+            },
+            "HasHandleNameMemory": {
+                "params": {},
+                "return": "bool"
+            },
+            "HandleNameTalkDayInterval": {
+                "params": {
+                    "Days": "int",
+                    "CheckTarget": "int"
+                },
+                "return": "bool"
+            },
+            "NpcBirthType": {
+                "params": {
+                    "BirthType": "str"
+                },
+                "return": "bool"
+            },
+            "NpcHasAcquaintanceshipRumorPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsFriendRumorPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsRumorActionDaysAgo": {
+                "params": {},
+                "return": "int4"
+            },
+            "NpcIsRewardDecided": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsSameBirthdayNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "TodayIsNpcBirthday": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsEquipItem": {
+                "params": {
+                    "EquipRequireType": "str",
+                    "ItemUniqueID1": "int",
+                    "ItemUniqueID2": "int",
+                    "ItemUniqueID3": "int",
+                    "ItemUniqueID4": "int",
+                    "ItemUniqueID5": "int",
+                    "ItemUniqueID6": "int",
+                    "ItemUniqueID7": "int",
+                    "ItemUniqueID8": "int"
+                },
+                "return": "bool"
+            },
+            "NpcCheckCatchQuestType": {
+                "params": {},
+                "return": "int4"
+            },
+            "NpcTreasureQuestDifficulty": {
+                "params": {},
+                "return": "int2"
+            },
+            "NpcIsQuestFlagOn": {
+                "params": {
+                    "QuestFlag": "str"
+                },
+                "return": "bool"
+            },
+            "NpcCatchQuestFishNormalType": {
+                "params": {},
+                "return": "int2"
+            },
+            "NpcCatchQuestInsectNormalType": {
+                "params": {},
+                "return": "int7"
+            },
+            "IsSelectNpcRequestedItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcQuestReward": {
+                "params": {},
+                "return": "int3"
+            },
+            "NpcCatchQuestInsectType": {
+                "params": {},
+                "return": "int8"
+            },
+            "NpcCatchQuestFishAppearType": {
+                "params": {},
+                "return": "int5"
+            },
+            "DeliveryQuestType": {
+                "params": {},
+                "return": "int5"
+            },
+            "DeliveryItemIsFavor": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckClientNpcLook": {
+                "params": {},
+                "return": "int8"
+            },
+            "DeliveryOriginalIsReadyMade": {
+                "params": {},
+                "return": "bool"
+            },
+            "DeliveryIsSameClothAsNowWear": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsBeforeClothFromPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsDeliveryQuizRightAnswer": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRewardType": {
+                "params": {},
+                "return": "int6"
+            },
+            "DeliveryQuestItemKind": {
+                "params": {},
+                "return": "int2"
+            },
+            "DeliveryQuestReceiveNpcLook": {
+                "params": {},
+                "return": "int8"
+            },
+            "HasDeliveryItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "HasOpenedDeliveryItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcLostQuestType": {
+                "params": {},
+                "return": "int4"
+            },
+            "HasNpcRequestedItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcSickCuredBeforeYesterday": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcTreasureBurySuccess": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsNpcDIYRecipeCollected": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsEarlyLateReactionSituation": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcInducementType": {
+                "params": {},
+                "return": "int5"
+            },
+            "NpcIsInducementPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "InducePlayerExist": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcIsMovingRoom": {
+                "params": {},
+                "return": "int3"
+            },
+            "SkyVariation": {
+                "params": {},
+                "return": "int6"
+            },
+            "NpcPastYMFromLastTalkDate": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcFeelSource": {
+                "params": {},
+                "return": "int3"
+            },
+            "IsFeelSourcePlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsDisableWorry": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsInduceFailedReasonFixUp": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcInviteCheck": {
+                "params": {
+                    "Type": "int"
+                },
+                "return": "bool"
+            },
+            "NpcCanStartReactQuestTalk": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcActivityType": {
+                "params": {},
+                "return": "int2"
+            },
+            "IsDeliveryQuestReceiver": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsWatchItemDonated": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsWatchItemDiveFish": {
+                "params": {},
+                "return": "bool"
+            },
+            "OwlIsDonation": {
+                "params": {
+                    "DonationCheckItemType": "str"
+                },
+                "return": "bool"
+            },
+            "NpcIsAbleEquipSelectItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsNpcPlayerRelativeItem": {
+                "params": {},
+                "return": "int5"
+            },
+            "IsFavoriteMusic": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "return": "bool"
+            },
+            "NpcRace": {
+                "params": {
+                    "Race": "str"
+                },
+                "return": "bool"
+            },
+            "CheckNpcMoveIn": {
+                "params": {
+                    "MoveInCheckType": "str"
+                },
+                "return": "bool"
+            },
+            "CheckCamperNpcMovePoint": {
+                "params": {},
+                "return": "int4"
+            },
+            "HasCamperQuestItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsSameNpcLiving": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckCamperNpcHandheldItem": {
+                "params": {},
+                "return": "int6"
+            },
+            "CanInduceNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsSettlerQuestInducedNpc": {
+                "params": {},
+                "return": "bool"
+            },
+            "ContinuousNpcTalkCount": {
+                "params": {
+                    "TalkCount": "int"
+                },
+                "return": "bool"
+            },
+            "CheckNpcCharacterSize": {
+                "params": {},
+                "return": "int4"
+            },
+            "BeyHaveThreeOrMoreSameFish": {
+                "params": {},
+                "return": "bool"
+            },
+            "BeyDailyFishSize": {
+                "params": {},
+                "return": "int4"
+            },
+            "ChmFreeQuery2": {
+                "params": {
+                    "ChmQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "BoaCanSetKabu": {
+                "params": {},
+                "return": "int3"
+            },
+            "ChyHaveThreeOrMoreSameInsect": {
+                "params": {},
+                "return": "bool"
+            },
+            "ChyIfSpecialInsect": {
+                "params": {},
+                "return": "bool"
+            },
+            "ChyCheckSpecialInsect": {
+                "params": {},
+                "return": "int6"
+            },
+            "FoxIsSoldOut": {
+                "params": {},
+                "return": "bool"
+            },
+            "FoxCheckItemBuyPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "FoxCheckItemBuyVillager": {
+                "params": {},
+                "return": "bool"
+            },
+            "FoxItemCheck": {
+                "params": {},
+                "return": "bool"
+            },
+            "ShopHasBellCount": {
+                "params": {
+                    "Rate": "float"
+                },
+                "return": "bool"
+            },
+            "FoxBuyGalleryForThisIsland": {
+                "params": {},
+                "return": "bool"
+            },
+            "FoxBuySelectType": {
+                "params": {},
+                "return": "int2"
+            },
+            "GulFreeQuery2": {
+                "params": {
+                    "GulQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "HgcFashionCheckResult": {
+                "params": {},
+                "return": "int4"
+            },
+            "HgcFreeQuery2": {
+                "params": {
+                    "HgcQueryType": "str"
+                },
+                "return": "bool"
+            },
+            "HgcPlayerDefaultOutfit": {
+                "params": {},
+                "return": "bool"
+            },
+            "HgcIsChangeOutfit": {
+                "params": {},
+                "return": "bool"
+            },
+            "HghMydesignOwner": {
+                "params": {},
+                "return": "bool"
+            },
+            "HghCoodinateItemNum": {
+                "params": {},
+                "return": "int6"
+            },
+            "CheckMannequinCamera": {
+                "params": {},
+                "return": "int2"
+            },
+            "OwlDonationItemType": {
+                "params": {},
+                "return": "item7"
+            },
+            "OwlDonationFossilIsParts": {
+                "params": {},
+                "return": "bool"
+            },
+            "OwlDonationFossilComplete": {
+                "params": {},
+                "return": "bool"
+            },
+            "OwlMuseumMultiComplete": {
+                "params": {},
+                "return": "bool"
+            },
+            "OwlMuseumCompleteRoomType": {
+                "params": {},
+                "return": "int7"
+            },
+            "OwlDonationFakeRate": {
+                "params": {},
+                "return": "int3"
+            },
+            "OwlDonationSameItem": {
+                "params": {},
+                "return": "bool"
+            },
+            "AppraiseFossilDonationRate": {
+                "params": {},
+                "return": "int3"
+            },
+            "NpcIsTalkedFromBehind": {
+                "params": {},
+                "return": "bool"
+            },
+            "RcmBuySelectType": {
+                "params": {},
+                "return": "int2"
+            },
+            "NpcLabel": {
+                "params": {
+                    "NpcLabel": "str"
+                },
+                "return": "bool"
+            },
+            "SeoAppearSide": {
+                "params": {},
+                "return": "int2"
+            },
+            "SeoCanReturnSwim": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcHasPlayerProfileComment": {
+                "params": {},
+                "return": "bool"
+            }
+        }
+    },
+    "Npc_4": {
+        "actions": {
+            "CharacterEmoticonAction": {
+                "params": {
+                    "MessageID": "str",
+                    "Reaction": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            },
+            "SetNpcName": {
+                "params": {
+                    "ID": "int",
+                    "NpcNameType": "int"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "ChangeNpcPlace": {
+                "params": {
+                    "NpcPlace": "str"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "Npc_5": {
+        "actions": {
+            "ChangeNpcPlace": {
+                "params": {
+                    "NpcPlace": "str"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "Npc_3": {
+        "actions": {
+            "CharacterEmoticonAction": {
+                "params": {
+                    "MessageID": "str",
+                    "Reaction": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            },
+            "SetNpcName": {
+                "params": {
+                    "ID": "int",
+                    "NpcNameType": "int"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "Player": {
+        "actions": {
+            "PlayerStickLightNewYear": {
+                "params": {}
+            },
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "PlayerWorkbenchThinking": {
+                "params": {}
+            },
+            "PlayerChangeStateDemoTalk": {
+                "params": {}
+            },
+            "PlayerClearFoodPowerup": {
+                "params": {}
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            },
+            "PlayerStartAnimeBedWaitWithHandsClasped": {
+                "params": {}
+            },
+            "PlayerOutfitFieldMakeToolKit": {
+                "params": {
+                    "FieldMakeToolKit": "str"
+                }
+            },
+            "SmartPhone": {
+                "params": {
+                    "ActionType": "int"
+                }
+            },
+            "PlayerChangeDemoState": {
+                "params": {
+                    "ChangeDemoState": "str"
+                }
+            },
+            "SmartPhoneSE": {
+                "params": {
+                    "XLinkKey": "str",
+                    "ActionType": "int"
+                }
+            },
+            "PlayerOpenFishGetMessage": {
+                "params": {}
+            },
+            "PlayerPlayPutawayWaitAnimation": {
+                "params": {}
+            },
+            "PlayerPlayWaitAnimation": {
+                "params": {}
+            },
+            "PlayerPutawayFish": {
+                "params": {}
+            },
+            "PlayerOpenDiveFishGetMessage": {
+                "params": {}
+            },
+            "PlayerPlayCompleteAnimation": {
+                "params": {}
+            },
+            "PlayerOpenInsectGetMessage": {
+                "params": {}
+            },
+            "PlayerOpenShellFishGetMessage": {
+                "params": {}
+            },
+            "PlayerWaitAsFinish": {
+                "params": {}
+            },
+            "PlayerOpenEmoticonGetMessage": {
+                "params": {}
+            },
+            "CharacterEmoticonAction": {
+                "params": {
+                    "MessageID": "str",
+                    "Reaction": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            },
+            "PlayerDemoTurn": {
+                "params": {
+                    "Direction4": "str"
+                }
+            },
+            "PlayerMoveToTarget": {
+                "params": {
+                    "MiddleTargetX": "float",
+                    "MiddleTargetZ": "float",
+                    "TargetX": "float",
+                    "TargetZ": "float",
+                    "StateAfterWait": "str",
+                    "UseStateAfterWait": "bool",
+                    "PosIsOffset": "bool"
+                }
+            },
+            "PlayerRequestSimple": {
+                "params": {
+                    "AsCommand": "str",
+                    "WaitFinish": "bool"
+                }
+            },
+            "PlayerWaitTurn": {
+                "params": {}
+            },
+            "PlayerStartAnimeBedWaitOpenEyes": {
+                "params": {}
+            }
+        },
+        "queries": {
+            "PlayerIsUseCoordinate": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerOutfitMarinesuit": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerBedWaitCanopy": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerCheckWaitType": {
+                "params": {
+                    "PlayerWaitType": "str"
+                },
+                "return": "bool"
+            },
+            "PlayerOutfitFieldMakeToolKit": {
+                "params": {},
+                "return": "int4"
+            },
+            "PlayerCheckAI": {
+                "params": {
+                    "PlayerEventFlowAI": "str"
+                },
+                "return": "bool"
+            },
+            "PlayerHasExchaneableItem": {
+                "params": {
+                    "CheckKindBury": "bool",
+                    "CheckKindPut": "bool",
+                    "CheckKindFishAndDiveFish": "bool",
+                    "CheckKindInsect": "bool"
+                },
+                "return": "bool"
+            },
+            "PlayerGetDemoCheckItem": {
+                "params": {
+                    "CheckItem": "str"
+                },
+                "return": "bool"
+            },
+            "PlayerGetDemoCollectStatus": {
+                "params": {
+                    "PlayerGetDemoCollectStatus": "str"
+                },
+                "return": "bool"
+            },
+            "PlayerIsForbidMainChange": {
+                "params": {},
+                "return": "bool"
+            }
+        }
+    },
+    "Npc_1": {
+        "actions": {
+            "NpcRequestAction": {
+                "params": {
+                    "ActionIdx": "int"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "Npc_2": {
+        "actions": {
+            "NpcRequestAction": {
+                "params": {
+                    "ActionIdx": "int"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "SubNpc": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "CharacterEmoticonAction": {
+                "params": {
+                    "MessageID": "str",
+                    "Reaction": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            }
+        },
+        "queries": {
+            "EventFlagNpcBool": {
+                "params": {
+                    "AccessKey": "str"
+                },
+                "return": "bool"
+            },
+            "NpcCheckPastDays": {
+                "params": {
+                    "AccessKey": "str",
+                    "Border": "int"
+                },
+                "return": "bool"
+            },
+            "NpcIsFleaHolder": {
+                "params": {},
+                "return": "bool"
+            }
+        }
+    },
+    "GeneralObject": {
+        "actions": {
+            "StartAnimation": {
+                "params": {
+                    "ActionName": "str",
+                    "ActionType": "str"
+                }
+            },
+            "SetTagFromSystem": {
+                "params": {
+                    "TagID": "int",
+                    "TagType": "str",
+                    "SetTagType": "str",
+                    "AccessKey": "str",
+                    "Value": "int"
+                }
+            }
+        },
+        "queries": {
+            "SettlerQuest": {
+                "params": {},
+                "return": "int4"
+            },
+            "CheckLockReason": {
+                "params": {},
+                "return": "int6"
+            },
+            "HouseOwnerLooks": {
+                "params": {},
+                "return": "int8"
+            },
+            "HouseIsTent": {
+                "params": {},
+                "return": "bool"
+            },
+            "CheckPlayerHouseLockReason": {
+                "params": {},
+                "return": "int3"
+            }
+        }
+    },
+    "DynamicCast_rco": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "SmartPhone": {
+                "params": {
+                    "ActionType": "int"
+                }
+            },
+            "RcoStandUpChair": {
+                "params": {}
+            },
+            "NpcWaitTurn": {
+                "params": {}
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "SnowMan": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "DecideEventReward": {
+                "params": {
+                    "RewardType": "str"
+                }
+            }
+        },
+        "queries": {
+            "SnowManGrade": {
+                "params": {},
+                "return": "int4"
+            },
+            "SnowManIsSnowMeltSeason": {
+                "params": {},
+                "return": "bool"
+            },
+            "SnowManAge": {
+                "params": {},
+                "return": "int4"
+            },
+            "IsMadeSnowManPlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "SnowManIsHeadSmallerThanBody": {
+                "params": {},
+                "return": "bool"
+            }
+        }
+    },
+    "DynamicCast_dod": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            },
+            "TurnBody": {
+                "params": {
+                    "TurnTarget": "int",
+                    "TurnAngle": "float"
+                }
+            },
+            "NpcStartAS": {
+                "params": {
+                    "ASType": "str",
+                    "IsWaitEnd": "bool",
+                    "IsContinueEmot": "bool"
+                }
+            },
+            "TurnNeck": {
+                "params": {
+                    "TurnTarget": "int"
+                }
+            },
+            "CharacterEmoticonAction": {
+                "params": {
+                    "MessageID": "str",
+                    "Reaction": "str",
+                    "Frame": "int",
+                    "PlayerAutoEnd": "bool",
+                    "Continue": "bool"
+                }
+            },
+            "NpcWaitTurn": {
+                "params": {}
+            },
+            "NpcWaitTalkPrepare": {
+                "params": {}
+            }
+        },
+        "queries": {}
+    },
+    "HaniwaKun": {
+        "actions": {
+            "OpenMessageWindow": {
+                "params": {
+                    "MessageID": "str",
+                    "IsCloseMessageWindow": "bool"
+                }
+            }
+        },
+        "queries": {}
+    },
+    "Ftr": {
+        "actions": {
+            "FtrOpenMessageBromideMotto": {
+                "params": {}
+            },
+            "FtrSetTagBromideInfo": {
+                "params": {}
+            },
+            "FtrChangeSwitch": {
+                "params": {
+                    "IsOn": "bool"
+                }
+            },
+            "OpenMessageStampRackSpotName": {
+                "params": {}
+            },
+            "OpenMessageStampRackSpotExplain": {
+                "params": {}
+            },
+            "FtrTrashBoxRingSE": {
+                "params": {}
+            }
+        },
+        "queries": {
+            "IsTargetFtr": {
+                "params": {
+                    "ItemUniqueId": "int"
+                },
+                "return": "bool"
+            },
+            "IsMyPost": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsOnStarterFtrSwitch": {
+                "params": {},
                 "return": "bool"
             }
         }
     }
 }
-

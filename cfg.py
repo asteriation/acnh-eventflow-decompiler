@@ -42,7 +42,7 @@ class Action:
 
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
-            'params': [{'name': p.name, 'type': p.type} for p in self.params],
+            'params': {p.name: p.type for p in self.params},
         }
         if not self.default:
             e['conversion'] = self.conversion
@@ -85,7 +85,7 @@ class Query:
 
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
-            'params': [{'name': p.name, 'type': p.type} for p in self.params],
+            'params': {p.name: p.type for p in self.params},
         }
         if not self.default:
             e['conversion'] = self.conversion
@@ -222,13 +222,9 @@ class AndPredicate(Predicate):
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
         num_not_predicates = sum(
-            isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated)    
+            isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated)
             for p in self.inners
         )
-        print(self.generate_code(), num_not_predicates, len(self.inners))
-        print([p.generate_code() for p in self.inners])
-        print([isinstance(p, NotPredicate) for p in self.inners])
-        print([isinstance(p, QueryPredicate) and p.negated for p in self.inners])
         if num_not_predicates * 2 > len(self.inners):
             return OrPredicate([~p for p in self.inners])
         return Predicate.__invert__(self)
@@ -284,10 +280,12 @@ class Node(ABC):
         self.out_edges.remove(dest)
 
     def reroute_in_edge(self, old_src: Node, new_src: Node) -> None:
-        self.in_edges[self.in_edges.index(old_src)] = new_src
+        if old_src in self.in_edges:
+            self.in_edges[self.in_edges.index(old_src)] = new_src
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
-        self.out_edges[self.out_edges.index(old_dest)] = new_dest
+        if old_dest in self.out_edges:
+            self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
     @abstractmethod
     def generate_code(self, indent_level: int = 0) -> str:
@@ -340,6 +338,11 @@ class SwitchNode(Node):
         self.cases: Dict[str, List[Any]] = {}
         self.terminal_node: Optional[TerminalNode] = None
 
+        if self.query.rv.startswith('int') and self.query.rv != 'int':
+            assert sum(len(x) for x in self.cases.values()) <= int(self.query.rv[3:])
+        elif self.query.rv == 'bool':
+            assert sum(len(x) for x in self.cases.values()) <= 2
+
     def del_out_edge(self, dest: Node) -> None:
         Node.del_out_edge(self, dest)
         if dest.name in self.cases:
@@ -375,6 +378,12 @@ class SwitchNode(Node):
         self.terminal_node = terminal_node
 
     def generate_code(self, indent_level: int = 0) -> str:
+        if len(self.cases) == 0:
+            if self.terminal_node:
+                return self.terminal_node.generate_code(indent_level)
+            else:
+                return ''
+
         if self.query.rv == 'bool':
             if len(self.cases) == 1:
                 values = [*self.cases.values()][0]
@@ -409,9 +418,14 @@ class SwitchNode(Node):
                         false_node.generate_code(indent_level + 1)
         elif len(self.cases) == 1:
             # if [query] in (...), if [query] = X ... else return -> negate and return unless goto
+            values = [*self.cases.values()][0]
+            if self.query.rv.startswith('int') and self.query.rv != 'int' and \
+                    len(values) == int(self.query.rv[3:]):
+                # all branches identical, no branch needd
+                return self.out_edges[0].generate_code(indent_level)
+
             assert self.terminal_node is not None
 
-            values = [*self.cases.values()][0]
             if isinstance(self.terminal_node, GotoNode):
                 op = f'== {repr(values[0])}' if len(values) == 1 else 'in (' + ', '.join(repr(v) for v in values) + ')'
 
@@ -567,6 +581,7 @@ class IfElseNode(Node):
     def __str__(self) -> str:
         return f'IfElseNode[name={self.name}' + \
             f', rules={self.rules}' + \
+            f', default={self.default}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
@@ -917,9 +932,8 @@ class CFG:
             if not all(self.__path_exists(child, k) for child in node.out_edges):
                 continue
 
-            # prefer max in_edges if given a choice
-            if end is None or len(k.in_edges) > len(end.in_edges):
-                end = k
+            end = k
+            break
 
         return end
 
@@ -928,6 +942,9 @@ class CFG:
         end = self.__find_block_end(root, dom)
 
         if end is None: # no end found, do not collapse
+            return root
+
+        if end in root.out_edges: # nothing to collapse
             return root
 
         print('Collapsing', root.name, 'to', end.name)
@@ -1013,17 +1030,18 @@ class CFG:
         cfg.actors = {r.identifier.name: Actor(r.identifier.name) for r in flowchart.actors}
         for actor_name, d in actor_data.items():
             if actor_name not in cfg.actors:
-                continue
+                cfg.actors[actor_name] = Actor(actor_name)
+                # continue
             for action, info in d['actions'].items():
                 cfg.actors[actor_name].register_action(Action(
                     action,
-                    [Param(p['name'], p['type']) for p in info['params']],
+                    [Param(name, type_) for name, type_ in info['params'].items()],
                     info.get('conversion', None),
                 ))
             for query, info in d['queries'].items():
                 cfg.actors[actor_name].register_query(Query(
                     query,
-                    [Param(p['name'], p['type']) for p in info['params']],
+                    [Param(name, type_) for name, type_ in info['params'].items()],
                     info.get('return', 'any'),
                     info.get('conversion', None),
                 ))
@@ -1104,13 +1122,18 @@ class CFG:
         cfg.__collapse_if()
         cfg.__collapse_cases()
 
-        for a in cfg.actors.values():
-            print(a)
+        # for a in cfg.actors.values():
+            # print(a)
 
         return cfg
 
 import sys
 import json
+for z in ('NNPC_FreeD_RumorFavorite','SNPC_alp_01_Studio','SNPC_gst','SNPC_pyn_01_EasterPreVisit','SNPC_sza_GEvent_Countdown','System_BootSequence',):
+    if z in sys.argv[1]:
+        raise ValueError('infinite loop file')
+
+
 with open(sys.argv[1] if len(sys.argv) >= 2 else 'bfevfl/System_GrowUp.bfevfl', 'rb') as f:
     with open('actors.json', 'rt') as af:
         actor_data = json.load(af)
@@ -1118,4 +1141,5 @@ with open(sys.argv[1] if len(sys.argv) >= 2 else 'bfevfl/System_GrowUp.bfevfl', 
 
     print(cfg.generate_code())
     # print(json.dumps(cfg.export_actors(), indent=4))
-
+# inverted MultiKindItemSelectInclude - like strcmp?.. check functions, border, etc.
+# lol: NNPC_Talk_General(continuousnpctalkcount)
