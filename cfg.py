@@ -142,6 +142,61 @@ class Actor:
             self.name: e
         }
 
+class Predicate(ABC):
+    @abstractmethod
+    def generate_code(self) -> str:
+        pass
+
+    def not_(self) -> Predicate:
+        return NotPredicate(self)
+
+class ConstPredicate(Predicate):
+    def __init__(self, value: bool) -> None:
+        self.value = value
+
+    def generate_code(self) -> str:
+        return repr(self.value)
+
+class QueryPredicate(Predicate):
+    def __init__(self, query: Query, params: Dict[str, Any], values: List[Any]) -> None:
+        assert len(values) > 0
+
+        self.query = query
+        self.params = params
+        self.values = values
+        self.negated = False
+
+    def generate_code(self) -> str:
+        if self.query.rv == 'bool':
+            if len(self.values) == 1:
+                not_s = 'not ' if self.values[0] == self.negated else ''
+                return not_s + self.query.format(self.params)
+            else:
+                return 'False' if self.negated else 'True'
+        else:
+            if len(self.values) == 1:
+                op = '!=' if self.negated else '=='
+                return f'{self.query.format(self.params)} {op} {repr(self.values[0])}'
+            else:
+                op = 'not in' if self.negated else 'in'
+                vals_s = [repr(v) for v in self.values]
+                return f'{self.query.format(self.params)} {op} ({", ".join(vals_s)})'
+
+    def not_(self) -> Predicate:
+        qp = QueryPredicate(self.query, self.params, self.values)
+        qp.negated = not self.negated
+        return qp
+
+class NotPredicate(Predicate):
+    def __init__(self, inner: Predicate) -> None:
+        self.inner = inner
+
+    def generate_code(self) -> str:
+        return f'not ({self.inner.generate_code()})'
+
+    def not_(self) -> Predicate:
+        return self.inner
+
 class Node(ABC):
     def __init__(self, name: str) -> None:
         self.name = name
@@ -149,10 +204,12 @@ class Node(ABC):
         self.out_edges: List[Node] = []
 
     def add_in_edge(self, src: Node) -> None:
-        self.in_edges.append(src)
+        if src not in self.in_edges:
+            self.in_edges.append(src)
 
     def add_out_edge(self, dest: Node) -> None:
-        self.out_edges.append(dest)
+        if dest not in self.out_edges:
+            self.out_edges.append(dest)
 
     def del_in_edge(self, src: Node) -> None:
         self.in_edges.remove(src)
@@ -417,7 +474,7 @@ class GroupNode(Node):
             ']'
 
 class IfElseNode(Node):
-    Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
+    Rule = namedtuple('Rule', ['predicate', 'node'])
 
     def __init__(self, name: str, rules: List[IfElseNode.Rule], default: Node) -> None:
         Node.__init__(self, name)
@@ -426,13 +483,20 @@ class IfElseNode(Node):
 
     def generate_code(self, indent_level: int = 0) -> str:
         code = ''
-        for query, params, value, node in self.rules:
-            not_s = 'not ' if not value else ''
+        for predicate, node in self.rules:
             el_s = 'el' if code else ''
-            code += _indent(indent_level) + f'{el_s}if {not_s}{query.format(params)}:\n' + \
+            code += _indent(indent_level) + f'{el_s}if {predicate.generate_code()}:\n' + \
                     node.generate_code(indent_level + 1)
         code += f'{_indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
         return code
+
+    def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
+        Node.reroute_out_edge(self, old_dest, new_dest)
+        for i in range(len(self.rules)):
+            if self.rules[i].node is old_dest:
+                self.rules[i] = IfElseNode.Rule(self.rules[i].predicate, new_dest)
+        if self.default is old_dest:
+            self.default = new_dest
 
     def __str__(self) -> str:
         return f'IfElseNode[name={self.name}' + \
@@ -637,79 +701,78 @@ class CFG:
         # todo: don't be this dumb
         return dest in self.__find_postorder(src)
 
-    def __collapse_elif(self) -> None:
+    def __convert_switch_to_if(self) -> None:
         for root in self.roots:
             for node in self.__find_postorder(root):
                 if not isinstance(node, SwitchNode):
                     continue
-
-                bsc_info = self.__extract_binary_switch_chain_node(node)
-                if bsc_info is None:
+                if len(node.out_edges) != 2:
                     continue
-                switch_branch, value_branch = bsc_info
 
-                if isinstance(switch_branch, SwitchNode):
-                    if switch_branch.query.rv != 'bool':
-                        continue
+                inner: Node
+                default: Node
 
-                    inner: Node
-                    default: Node
-                    if len(switch_branch.cases) == 1:
-                        assert switch_branch.terminal_node is not None
+                if len(node.cases) == 1:
+                    assert node.terminal_node is not None
 
-                        inner = switch_branch.out_edges[0]
-                        default = switch_branch.terminal_node
-                    else:
-                        inner = switch_branch.out_edges[0]
-                        default = switch_branch.out_edges[1]
-
-                    elif_node = IfElseNode(node.name, [
-                        IfElseNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
-                        IfElseNode.Rule(switch_branch.query, switch_branch.params, switch_branch.cases[inner.name][0], inner),
-                    ], default)
+                    inner = node.out_edges[0]
+                    default = node.terminal_node
                 else:
-                    elif_node = IfElseNode(node.name, [
-                        IfElseNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
-                        *switch_branch.rules
-                    ], switch_branch.default)
+                    inner = node.out_edges[0]
+                    default = node.out_edges[1]
 
-                elif_node.in_edges = node.in_edges
+                ifelse_node = IfElseNode(node.name, [
+                    IfElseNode.Rule(QueryPredicate(node.query, node.params, node.cases[inner.name]), inner)
+                ], default)
+
+                ifelse_node.in_edges = node.in_edges
                 for caller in node.in_edges:
-                    caller.reroute_out_edge(node, elif_node)
+                    caller.reroute_out_edge(node, ifelse_node)
 
-                elif_node.add_out_edge(value_branch)
-                value_branch.reroute_in_edge(node, elif_node)
+                for exit_node in node.out_edges:
+                    ifelse_node.add_out_edge(exit_node)
+                    exit_node.reroute_in_edge(node, ifelse_node)
 
-                for exit_node in switch_branch.out_edges:
-                    elif_node.add_out_edge(exit_node)
-                    exit_node.reroute_in_edge(switch_branch, elif_node)
+                del self.nodes[node.name]
+                self.nodes[ifelse_node.name] = ifelse_node
 
-                self.nodes[node.name] = elif_node
-                del self.nodes[switch_branch.name]
+    def __collapse_if(self) -> None:
+        for root in self.roots:
+            for node in self.__find_postorder(root):
+                if not isinstance(node, IfElseNode) or len(node.rules) != 1:
+                    continue
 
-                self.__try_collapse_block(root, elif_node)
+                if isinstance(node.default, IfElseNode) and len(node.default.in_edges) == 1:
+                    predicate = node.rules[0].predicate
+                    value_branch = node.rules[0].node
+                    else_branch = node.default
+                elif isinstance(node.rules[0].node, IfElseNode) and len(node.rules[0].node.in_edges) == 1:
+                    predicate = node.rules[0].predicate.not_()
+                    value_branch = node.default
+                    else_branch = node.rules[0].node
+                else:
+                    continue
 
+                ifelse_node = IfElseNode(node.name, [
+                    IfElseNode.Rule(predicate, value_branch),
+                    *else_branch.rules
+                ], else_branch.default)
 
-    def __extract_binary_switch_chain_node(self, node: SwitchNode) -> Optional[Tuple[Union[SwitchNode, IfElseNode], Node]]:
-        if node.query.rv != 'bool' or len(node.cases) != 2:
-            return None
+                ifelse_node.in_edges = node.in_edges
+                for caller in node.in_edges:
+                    caller.reroute_out_edge(node, ifelse_node)
 
-        switch_branch: Optional[Union[SwitchNode, IfElseNode]] = None
-        value_branch: Optional[Node] = None
+                ifelse_node.add_out_edge(value_branch)
+                value_branch.reroute_in_edge(node, ifelse_node)
 
-        for child in node.out_edges:
-            if isinstance(child, (SwitchNode, IfElseNode)):
-                switch_branch = child
-            else:
-                value_branch = child
+                for exit_node in else_branch.out_edges:
+                    ifelse_node.add_out_edge(exit_node)
+                    exit_node.reroute_in_edge(else_branch, ifelse_node)
 
-        if switch_branch is None or value_branch is None:
-            return None
+                self.nodes[node.name] = ifelse_node
+                del self.nodes[else_branch.name]
 
-        if len(switch_branch.in_edges) > 1:
-            return None
-
-        return switch_branch, value_branch
+                self.__try_collapse_block(root, ifelse_node)
 
     def __collapse_cases(self) -> None:
         for root in self.roots:
@@ -919,7 +982,8 @@ class CFG:
         # todo: handle loops
 
         cfg.__add_terminal_nodes()
-        cfg.__collapse_elif()
+        cfg.__convert_switch_to_if()
+        cfg.__collapse_if()
         cfg.__collapse_cases()
 
         for a in cfg.actors.values():
