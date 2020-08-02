@@ -154,6 +154,18 @@ class Node(ABC):
     def add_out_edge(self, dest: Node) -> None:
         self.out_edges.append(dest)
 
+    def del_in_edge(self, src: Node) -> None:
+        self.in_edges.remove(src)
+
+    def del_out_edge(self, dest: Node) -> None:
+        self.out_edges.remove(dest)
+
+    def reroute_in_edge(self, old_src: Node, new_src: Node) -> None:
+        self.in_edges[self.in_edges.index(old_src)] = new_src
+
+    def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
+        self.out_edges[self.out_edges.index(old_dest)] = new_dest
+
     @abstractmethod
     def generate_code(self, indent_level: int = 0) -> str:
         pass
@@ -204,6 +216,23 @@ class SwitchNode(Node):
         self.params = params
         self.cases: Dict[str, List[Any]] = {}
         self.terminal_node: Optional[TerminalNode] = None
+
+    def del_out_edge(self, dest: Node) -> None:
+        Node.del_out_edge(self, dest)
+        if dest.name in self.cases:
+            del self.cases[dest.name]
+        if self.terminal_node is dest:
+            self.terminal_node = None
+
+    def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
+        Node.reroute_out_edge(self, old_dest, new_dest)
+        if old_dest.name in self.cases:
+            c = self.cases[old_dest.name]
+            del self.cases[old_dest.name]
+            self.cases[new_dest.name] = c
+        if self.terminal_node is old_dest:
+            assert isinstance(new_dest, TerminalNode)
+            self.terminal_node = new_dest
 
     def add_case(self, node_name: str, value: Any) -> None:
         if node_name not in self.cases:
@@ -377,10 +406,10 @@ class SwitchAggNode(Node):
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
-class ElifAggNode(Node):
+class BinaryElifAggNode(Node):
     Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
 
-    def __init__(self, name: str, rules: List[ElifAggNode.Rule], default: Node) -> None:
+    def __init__(self, name: str, rules: List[BinaryElifAggNode.Rule], default: Node) -> None:
         Node.__init__(self, name)
         self.rules = rules
         self.default = default
@@ -393,10 +422,10 @@ class ElifAggNode(Node):
             code += _indent(indent_level) + f'{el_s}if {not_s}{query.format(params)}:\n' + \
                     node.generate_code(indent_level + 1)
         code += f'{_indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
-        return code + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
+        return code
 
     def __str__(self) -> str:
-        return f'ElifAggNode[name={self.name}' + \
+        return f'BinaryElifAggNode[name={self.name}' + \
             f', rules={self.rules}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
@@ -474,16 +503,9 @@ class CFG:
         new_call_node = SubflowNode(f'ext!{src.name}-{dest.name}', '', entry_point)
         self.nodes[new_call_node.name] = new_call_node
 
-        src.out_edges.remove(dest)
-        dest.in_edges.remove(src)
-
-        src.add_out_edge(new_call_node)
+        src.reroute_out_edge(dest, new_call_node)
+        dest.del_in_edge(src)
         new_call_node.add_in_edge(src)
-
-        if isinstance(src, SwitchNode):
-            if dest.name in src.cases:
-                src.cases[new_call_node.name] = src.cases[dest.name]
-                del src.cases[dest.name]
 
     def __detach_root(self, root: RootNode) -> RootNode:
         entry_point = root.out_edges[0]
@@ -536,13 +558,7 @@ class CFG:
         node.in_edges = [entry_point_node]
 
         for caller in entry_point_node.in_edges:
-            caller.out_edges.remove(node)
-            caller.add_out_edge(entry_point_node)
-
-            if isinstance(caller, SwitchNode):
-                if node.name in caller.cases:
-                    caller.cases[entry_point_node.name] = caller.cases[node.name]
-                    del caller.cases[node.name]
+            caller.reroute_out_edge(node, entry_point_node)
 
         self.nodes[entry_point_node.name] = entry_point_node
         return entry_point_node
@@ -609,6 +625,89 @@ class CFG:
         # todo: don't be this dumb
         return dest in self.__find_postorder(src)
 
+    def __collapse_elif(self) -> None:
+        for root in self.roots:
+            dom = self.__find_dominator_tree(root)
+            for node in self.__find_postorder(root):
+                if not isinstance(node, SwitchNode):
+                    continue
+
+                bsc_info = self.__extract_binary_switch_chain_node(node)
+                if bsc_info is None:
+                    continue
+                switch_branch, value_branch = bsc_info
+
+                # TODO FIX - hack to avoid collapsing OR/AND pattern because
+                # it produces a ton of duplicated blocks of code, but it also
+                # prevents collapsing where collapsing should happen
+                if value_branch in switch_branch.out_edges:
+                    continue
+
+                if isinstance(switch_branch, SwitchNode):
+                    if switch_branch.query.rv != 'bool':
+                        continue
+
+                    inner: Node
+                    default: Node
+                    if len(switch_branch.cases) == 1:
+                        assert switch_branch.terminal_node is not None
+
+                        inner = switch_branch.out_edges[0]
+                        default = switch_branch.terminal_node
+                    else:
+                        inner = switch_branch.out_edges[0]
+                        default = switch_branch.out_edges[1]
+
+                    elif_node = BinaryElifAggNode(node.name, [
+                        BinaryElifAggNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
+                        BinaryElifAggNode.Rule(switch_branch.query, switch_branch.params, switch_branch.cases[inner.name][0], inner),
+                    ], default)
+                else:
+                    elif_node = BinaryElifAggNode(node.name, [
+                        BinaryElifAggNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
+                        *switch_branch.rules
+                    ], switch_branch.default)
+
+                elif_node.in_edges = node.in_edges
+                for caller in node.in_edges:
+                    caller.reroute_out_edge(node, elif_node)
+
+                elif_node.add_out_edge(value_branch)
+                value_branch.reroute_in_edge(node, elif_node)
+
+                for exit_node in switch_branch.out_edges:
+                    elif_node.add_out_edge(exit_node)
+                    exit_node.reroute_in_edge(switch_branch, elif_node)
+
+                self.nodes[node.name] = elif_node
+                del self.nodes[switch_branch.name]
+
+    def __extract_binary_switch_chain_node(self, node: SwitchNode) -> Optional[Tuple[Union[SwitchNode, BinaryElifAggNode], Node]]:
+        if node.query.rv != 'bool' or len(node.cases) != 2:
+            return None
+
+        switch_branch: Optional[Union[SwitchNode, BinaryElifAggNode]] = None
+        value_branch: Optional[Node] = None
+
+        for child in node.out_edges:
+            if isinstance(child, (SwitchNode, BinaryElifAggNode)):
+                switch_branch = child
+            else:
+                value_branch = child
+
+        if switch_branch is None or value_branch is None:
+            return None
+
+        if len(switch_branch.in_edges) > 1:
+            return None
+
+        return switch_branch, value_branch
+
+# class BinaryElifAggNode(Node):
+    # Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
+
+    # def __init__(self, name: str, rules: List[BinaryElifAggNode.Rule], default: Node) -> None:
+
     def __collapse_cases(self) -> None:
         for root in self.roots:
             dom = self.__find_dominator_tree(root)
@@ -646,16 +745,10 @@ class CFG:
                 dom = self.__find_dominator_tree(root) # don't actually have to recompute all..
 
     def __collapse_case(self, switch: SwitchNode, end: Node, dom: Dict[Node, Node]) -> Node:
-        print('collapse', switch.name, end.name)
         sw = SwitchAggNode(switch)
         for in_node in switch.in_edges:
             sw.add_in_edge(in_node)
-            in_node.out_edges.remove(switch)
-            in_node.add_out_edge(sw)
-
-            if isinstance(in_node, SwitchNode):
-                in_node.cases[sw.name] = in_node.cases[switch.name]
-                del in_node.cases[switch.name]
+            in_node.reroute_out_edge(switch, sw)
         switch.in_edges = []
 
         inner_terminal: TerminalNode = sw.goto_node
@@ -671,16 +764,12 @@ class CFG:
                 continue
 
             if end in n.out_edges:
-                n.out_edges.remove(end)
-                if isinstance(n, SwitchNode):
-                    if end.name in n.cases:
-                        del n.cases[end.name]
+                n.del_out_edge(end)
 
             if n in end.in_edges:
-                end.in_edges.remove(n)
+                end.del_in_edge(n)
 
             if n.name in self.nodes:
-                print('del', n.name)
                 del self.nodes[n.name]
                 deleted.append(n)
 
@@ -818,13 +907,15 @@ class CFG:
             cfg.roots.append(node)
 
         cfg.__separate_overlapping_flows()
-        # todo: break cycles
+
+        # todo: handle loops
 
         cfg.__add_terminal_nodes()
+        cfg.__collapse_elif()
         cfg.__collapse_cases()
 
-        # for a in cfg.actors.values():
-            # print(a)
+        for a in cfg.actors.values():
+            print(a)
 
         return cfg
 

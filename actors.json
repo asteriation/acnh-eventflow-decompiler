@@ -238,6 +238,33 @@
                     { "name": "Percent", "type": "int" }
                 ],
                 "return": "bool"
+            },
+            "EventCheck": {
+                "params": [
+                    { "name": "EventLabelString", "type": "str" }
+                ],
+                "return": "int"
+            },
+            "HasBellCount": {
+                "params": [
+                    { "name": "Money", "type": "str" }
+                ],
+                "return": "bool"
+            },
+            "SystemHasBaggageSpace": {
+                "params": [
+                    { "name": "CheckNum", "type": "int" },
+                    { "name": "CheckTargrt", "type": "str" }
+                ],
+                "return": "bool"
+            },
+            "FinalFireworksFes": {
+                "params": [],
+                "return": "bool"
+            },
+            "IsMyVillage": {
+                "params": [],
+                "return": "bool"
             }
         }
     },
