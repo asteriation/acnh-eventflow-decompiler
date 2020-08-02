@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections import namedtuple
 import re
-from typing import Any, List, Dict, Optional, Union, Set, Tuple
+from typing import Any, List, Dict, Optional, Union, Set, Tuple, Callable
 
 import evfl
 
@@ -362,7 +362,7 @@ class TerminalNode(Node):
 
 class GotoNode(TerminalNode):
     def __init__(self, name: str) -> None:
-        Node.__init__(self, name)
+        TerminalNode.__init__(self, name)
 
     def generate_code(self, indent_level: int = 0) -> str:
         return f'{_indent(indent_level)}goto {self.name}\n'
@@ -372,6 +372,16 @@ class GotoNode(TerminalNode):
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
+
+class NoopTerminalNode(TerminalNode):
+    def __init__(self, name: str) -> None:
+        TerminalNode.__init__(self, name)
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        return ''
+
+    def __str__(self) -> str:
+        return 'Noop' + TerminalNode.__str__(self)
 
 class EntryPointNode(Node):
     def __init__(self, name: str, entry_label: Optional[str] = None) -> None:
@@ -388,11 +398,11 @@ class EntryPointNode(Node):
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
-class SwitchAggNode(Node):
-    def __init__(self, root: SwitchNode) -> None:
-        Node.__init__(self, f'sw!{root.name}')
+class GroupNode(Node):
+    def __init__(self, root: Node) -> None:
+        Node.__init__(self, f'grp!{root.name}')
         self.root = root
-        self.goto_node = GotoNode(f'sw-end!{root.name}')
+        self.goto_node = GotoNode(f'grp-end!{root.name}')
 
     def generate_code(self, indent_level: int = 0) -> str:
         return self.root.generate_code(indent_level) + \
@@ -400,16 +410,16 @@ class SwitchAggNode(Node):
                 '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
-        return f'SwitchAggNode[name={self.name}' + \
+        return f'GroupNode[name={self.name}' + \
             f', root={self.root}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
-class BinaryElifAggNode(Node):
+class IfElseNode(Node):
     Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
 
-    def __init__(self, name: str, rules: List[BinaryElifAggNode.Rule], default: Node) -> None:
+    def __init__(self, name: str, rules: List[IfElseNode.Rule], default: Node) -> None:
         Node.__init__(self, name)
         self.rules = rules
         self.default = default
@@ -425,7 +435,7 @@ class BinaryElifAggNode(Node):
         return code
 
     def __str__(self) -> str:
-        return f'BinaryElifAggNode[name={self.name}' + \
+        return f'IfElseNode[name={self.name}' + \
             f', rules={self.rules}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
@@ -605,21 +615,23 @@ class CFG:
                     changed = True
         return dom
 
-    def __find_postorder_helper(self, root: Node, visited: Dict[str, bool]) -> List[Node]:
-        po = []
+    def __find_postorder_helper(self, root: Node, pred: Callable[[Node], bool], visited: Dict[str, bool]) -> List[Node]:
+        po: List[Node] = []
+        if not pred(root):
+            return po
         for node in root.out_edges:
             if not visited[node.name]:
                 visited[node.name] = True
-                po.extend(self.__find_postorder_helper(node, visited))
+                po.extend(self.__find_postorder_helper(node, pred, visited))
         po.append(root)
         return po
 
-    def __find_postorder(self, root: Node) -> List[Node]:
+    def __find_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
         visited = {name: False for name in self.nodes.keys()}
-        return self.__find_postorder_helper(root, visited)
+        return self.__find_postorder_helper(root, pred, visited)
 
-    def __find_reverse_postorder(self, root: Node) -> List[Node]:
-        return self.__find_postorder(root)[::-1]
+    def __find_reverse_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
+        return self.__find_postorder(root, pred)[::-1]
 
     def __path_exists(self, src: Node, dest: Node) -> bool:
         # todo: don't be this dumb
@@ -627,7 +639,6 @@ class CFG:
 
     def __collapse_elif(self) -> None:
         for root in self.roots:
-            dom = self.__find_dominator_tree(root)
             for node in self.__find_postorder(root):
                 if not isinstance(node, SwitchNode):
                     continue
@@ -636,12 +647,6 @@ class CFG:
                 if bsc_info is None:
                     continue
                 switch_branch, value_branch = bsc_info
-
-                # TODO FIX - hack to avoid collapsing OR/AND pattern because
-                # it produces a ton of duplicated blocks of code, but it also
-                # prevents collapsing where collapsing should happen
-                if value_branch in switch_branch.out_edges:
-                    continue
 
                 if isinstance(switch_branch, SwitchNode):
                     if switch_branch.query.rv != 'bool':
@@ -658,13 +663,13 @@ class CFG:
                         inner = switch_branch.out_edges[0]
                         default = switch_branch.out_edges[1]
 
-                    elif_node = BinaryElifAggNode(node.name, [
-                        BinaryElifAggNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
-                        BinaryElifAggNode.Rule(switch_branch.query, switch_branch.params, switch_branch.cases[inner.name][0], inner),
+                    elif_node = IfElseNode(node.name, [
+                        IfElseNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
+                        IfElseNode.Rule(switch_branch.query, switch_branch.params, switch_branch.cases[inner.name][0], inner),
                     ], default)
                 else:
-                    elif_node = BinaryElifAggNode(node.name, [
-                        BinaryElifAggNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
+                    elif_node = IfElseNode(node.name, [
+                        IfElseNode.Rule(node.query, node.params, node.cases[value_branch.name][0], value_branch),
                         *switch_branch.rules
                     ], switch_branch.default)
 
@@ -682,15 +687,18 @@ class CFG:
                 self.nodes[node.name] = elif_node
                 del self.nodes[switch_branch.name]
 
-    def __extract_binary_switch_chain_node(self, node: SwitchNode) -> Optional[Tuple[Union[SwitchNode, BinaryElifAggNode], Node]]:
+                self.__try_collapse_block(root, elif_node)
+
+
+    def __extract_binary_switch_chain_node(self, node: SwitchNode) -> Optional[Tuple[Union[SwitchNode, IfElseNode], Node]]:
         if node.query.rv != 'bool' or len(node.cases) != 2:
             return None
 
-        switch_branch: Optional[Union[SwitchNode, BinaryElifAggNode]] = None
+        switch_branch: Optional[Union[SwitchNode, IfElseNode]] = None
         value_branch: Optional[Node] = None
 
         for child in node.out_edges:
-            if isinstance(child, (SwitchNode, BinaryElifAggNode)):
+            if isinstance(child, (SwitchNode, IfElseNode)):
                 switch_branch = child
             else:
                 value_branch = child
@@ -703,60 +711,60 @@ class CFG:
 
         return switch_branch, value_branch
 
-# class BinaryElifAggNode(Node):
-    # Rule = namedtuple('Rule', ['query', 'params', 'value', 'node'])
-
-    # def __init__(self, name: str, rules: List[BinaryElifAggNode.Rule], default: Node) -> None:
-
     def __collapse_cases(self) -> None:
         for root in self.roots:
-            dom = self.__find_dominator_tree(root)
-            visited = {n: False for n in dom.keys()}
             for node in self.__find_postorder(root):
-                visited[node] = True
-
                 if not isinstance(node, SwitchNode):
                     continue
 
-                # require: all children to be dominated by this node except TerminalNode
-                if not all(dom[child] is node or isinstance(child, TerminalNode) for child in node.out_edges):
+                node = self.__try_collapse_block(root, node)
+
+    def __find_block_end(self, node: Node, dom: Dict[Node, Node]) -> Optional[Node]:
+        if not all(dom[child] is node or isinstance(child, TerminalNode) for child in node.out_edges):
+            return None
+
+        end: Optional[Node] = None
+        for k in self.__find_postorder(node)[:-1]:
+            if k not in dom:
+                continue
+            if dom[k] is not node:
+                continue
+            if isinstance(k, TerminalNode):
+                inner_dom = self.__find_dominator_tree(node)
+                if inner_dom[k] is not node:
                     continue
 
-                end: Optional[Node] = None
-                for k in self.__find_postorder(node)[:-1]:
-                    if k not in dom:
-                        continue
-                    if dom[k] is node or (isinstance(k, TerminalNode) and self.__find_dominator_tree(node)[k] is node):
-                        if not all(
-                            # self.__find_dominator_tree(child).get(k, None) is child for child in node.out_edges
-                            self.__path_exists(child, k) for child in node.out_edges
-                        ):
-                            continue
+            if not all(self.__path_exists(child, k) for child in node.out_edges):
+                continue
 
-                        # prefer: non-child (if any), max in_edges
-                        if end is None:# or (end in node.out_edges and k not in node.out_edges):#or len(k.in_edges) > len(end.in_edges):
-                            end = k
+            # prefer max in_edges if given a choice
+            if end is None or len(k.in_edges) > len(end.in_edges):
+                end = k
 
-                if end is None:
-                    continue
+        return end
 
-                node = self.__collapse_case(node, end, dom)
-                visited[node] = True
-                dom = self.__find_dominator_tree(root) # don't actually have to recompute all..
+    def __try_collapse_block(self, entry: Node, root: Node) -> Node:
+        dom = self.__find_dominator_tree(entry)
+        end = self.__find_block_end(root, dom)
 
-    def __collapse_case(self, switch: SwitchNode, end: Node, dom: Dict[Node, Node]) -> Node:
-        sw = SwitchAggNode(switch)
-        for in_node in switch.in_edges:
+        if end is None: # no end found, do not collapse
+            return root
+
+        print('Collapsing', root.name, 'to', end.name)
+
+        sw = GroupNode(root)
+        for in_node in root.in_edges:
             sw.add_in_edge(in_node)
-            in_node.reroute_out_edge(switch, sw)
-        switch.in_edges = []
+            in_node.reroute_out_edge(root, sw)
+        root.in_edges = []
 
         inner_terminal: TerminalNode = sw.goto_node
+
         # avoid goto -> return
         if isinstance(end, TerminalNode):
             inner_terminal = end
 
-        s: List[Node] = [switch]
+        s: List[Node] = [root]
         deleted = []
         while s:
             n = s.pop()
@@ -785,7 +793,7 @@ class CFG:
 
         self.nodes[sw.name] = sw
 
-        return switch
+        return sw
 
     def generate_code(self) -> str:
         code = '\n'.join(root.generate_code() for root in self.roots).split('\n')
