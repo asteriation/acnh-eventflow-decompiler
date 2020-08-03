@@ -12,6 +12,32 @@ Param = namedtuple('Param', ['name', 'type'], defaults=['any'])
 def _indent(level: int) -> str:
     return ' ' * (4 * level) # 4 spaces per level
 
+def _format_type(type_: str, value: Any) -> str:
+    if type_.startswith('int'):
+        assert isinstance(value, int)
+        if type_ != 'int':
+            n = int(type_[3:])
+            assert 0 <= value < n
+        return repr(int(value))
+    elif type_.startswith('enum'):
+        assert not isinstance(value, bool) and isinstance(value, int)
+        vals = type_[5:-1].split(',')
+        assert 0 <= value < len(vals)
+        return vals[value]
+    elif type_ == 'float':
+        assert not isinstance(value, bool) and isinstance(value, (int, float))
+        return repr(float(value))
+    elif type_ == 'str':
+        assert isinstance(value, str)
+        return repr(value)
+    elif type_ == 'bool':
+        assert isinstance(value, bool) or (isinstance(value, int) and 0 <= value <= 1)
+        return 'true' if value else 'false'
+    elif type_ == 'any':
+        return repr(value)
+    else:
+        raise ValueError(f'bad type: {type_}')
+
 class Action:
     def __init__(self, name: str, params: List[Param], conversion: Optional[str] = None) -> None:
         self.name = name
@@ -23,10 +49,12 @@ class Action:
     def format(self, params: Dict[str, Any]) -> str:
         conversion = self.conversion.replace('<.name>', self.name)
         for p in self.params:
-            if p.name not in params:
-                value = repr(None)
-            else:
-                value = repr(params[p.name])
+            assert p.name in params
+            try:
+                value = _format_type(p.type, params[p.name])
+            except:
+                print(self, p, params)
+                raise
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
 
@@ -54,21 +82,32 @@ class Action:
         }
 
 class Query:
-    def __init__(self, name: str, params: List[Param], rv: str = 'any', conversion: Optional[str] = None) -> None:
+    def __init__(self, name: str, params: List[Param], rv: str = 'any', inverted: bool = False, conversion: Optional[str] = None, neg_conversion: Optional[str] = None) -> None:
         self.name = name
         self.params = params
         self.rv = rv
+        self.inverted = inverted
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
+        self.neg_conversion = neg_conversion.replace('<.conversion>', self.conversion) if neg_conversion else f'not {self.conversion}'
         self.default = conversion is None
         self.auto = False
+        self.num_values = int(rv[3:]) if rv.startswith('int') and rv != 'int' else \
+                len(rv[5:-1].split(',')) if rv.startswith('enum') else \
+                2 if rv == 'bool' else \
+                1000000000
 
-    def format(self, params: Dict[str, Any]) -> str:
-        conversion = self.conversion.replace('<.name>', self.name)
+    def format(self, params: Dict[str, Any], negated: bool) -> str:
+        if negated:
+            conversion = self.neg_conversion.replace('<.name>', self.name)
+        else:
+            conversion = self.conversion.replace('<.name>', self.name)
         for p in self.params:
-            if p.name not in params:
-                value = repr(None)
-            else:
-                value = repr(params[p.name])
+            assert p.name in params
+            try:
+                value = _format_type(p.type, params[p.name])
+            except:
+                print(self, p, params)
+                raise
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
 
@@ -87,6 +126,8 @@ class Query:
         e: Dict[str, Any] = {
             'params': {p.name: p.type for p in self.params},
         }
+        if self.inverted:
+            e['inverted'] = True
         if not self.default:
             e['conversion'] = self.conversion
         e['return'] = self.rv
@@ -167,7 +208,7 @@ class ConstPredicate(Predicate):
         self.value = value
 
     def generate_code(self) -> str:
-        return repr(self.value)
+        return _format_type('bool', self.value)
 
 class QueryPredicate(Predicate):
     def __init__(self, query: Query, params: Dict[str, Any], values: List[Any]) -> None:
@@ -181,21 +222,31 @@ class QueryPredicate(Predicate):
         if self.query.rv == 'bool' and self.values == [False]:
             self.negated = True
 
+        if query.inverted:
+            self.negated = not self.negated
+
     def generate_code(self) -> str:
         if self.query.rv == 'bool':
             if len(self.values) == 1:
-                __invert__s = 'not ' if self.negated else ''
-                return __invert__s + self.query.format(self.params)
+                return self.query.format(self.params, self.negated)
             else:
                 return 'False' if self.negated else 'True'
         else:
             if len(self.values) == 1:
                 op = '!=' if self.negated else '=='
-                return f'{self.query.format(self.params)} {op} {repr(self.values[0])}'
+                try:
+                    return f'{self.query.format(self.params, False)} {op} {_format_type(self.query.rv, self.values[0])}'
+                except:
+                    print(self.query, self.values)
+                    raise
             else:
                 op = 'not in' if self.negated else 'in'
-                vals_s = [repr(v) for v in self.values]
-                return f'{self.query.format(self.params)} {op} ({", ".join(vals_s)})'
+                try:
+                    vals_s = [_format_type(self.query.rv, v) for v in self.values]
+                except:
+                    print(self.query, self.values)
+                    raise
+                return f'{self.query.format(self.params, False)} {op} ({", ".join(vals_s)})'
 
     def __invert__(self) -> Predicate:
         qp = QueryPredicate(self.query, self.params, self.values)
@@ -287,6 +338,9 @@ class Node(ABC):
         if old_dest in self.out_edges:
             self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
+    def simplify(self) -> None:
+        pass
+
     @abstractmethod
     def generate_code(self, indent_level: int = 0) -> str:
         pass
@@ -336,7 +390,7 @@ class SwitchNode(Node):
         self.query = query
         self.params = params
         self.cases: Dict[str, List[Any]] = {}
-        self.terminal_node: Optional[TerminalNode] = None
+        self.terminal_node: Optional[Node] = None
 
         if self.query.rv.startswith('int') and self.query.rv != 'int':
             assert sum(len(x) for x in self.cases.values()) <= int(self.query.rv[3:])
@@ -357,7 +411,6 @@ class SwitchNode(Node):
             del self.cases[old_dest.name]
             self.cases[new_dest.name] = c
         if self.terminal_node is old_dest:
-            assert isinstance(new_dest, TerminalNode)
             self.terminal_node = new_dest
 
     def add_case(self, node_name: str, value: Any) -> None:
@@ -365,7 +418,7 @@ class SwitchNode(Node):
             self.cases[node_name] = []
         self.cases[node_name].append(value)
 
-    def register_terminal_node(self, terminal_node: TerminalNode) -> None:
+    def register_terminal_node(self, terminal_node: Node) -> None:
         # todo: improve when switch node doesn't need a terminal node contact
         if self.query.rv == 'bool' and (sum(len(x) for x in self.cases.values()) == 2) or \
                 (self.query.rv.startswith('int') and self.query.rv != 'int' and (sum(len(x) for x in self.cases.values()) == int(self.query.rv[3:]))):
@@ -395,12 +448,11 @@ class SwitchNode(Node):
                     assert self.terminal_node is not None
 
                     if isinstance(self.terminal_node, GotoNode):
-                        s = '' if values[0] else 'not '
-                        return f'{_indent(indent_level)}if {s}{self.query.format(self.params)}:\n' + \
+                        return f'{_indent(indent_level)}if {self.query.format(self.params, not values[0])}:\n' + \
                                 self.out_edges[0].generate_code(indent_level + 1)
                     else:
                         __invert__s = '' if not values[0] else 'not '
-                        return f'{_indent(indent_level)}if {__invert__s}{self.query.format(self.params)}:\n' + \
+                        return f'{_indent(indent_level)}if k{self.query.format(self.params, values[0])}):\n' + \
                                 self.terminal_node.generate_code(indent_level + 1) + \
                                 self.out_edges[0].generate_code(indent_level)
             else:
@@ -412,31 +464,34 @@ class SwitchNode(Node):
                     true_node, false_node = self.out_edges
                 else:
                     false_node, true_node = self.out_edges
-                return f'{_indent(indent_level)}if {self.query.format(self.params)}:\n' + \
+                return f'{_indent(indent_level)}if {self.query.format(self.params, False)}:\n' + \
                         true_node.generate_code(indent_level + 1) + \
                         f'{_indent(indent_level)}else:\n' + \
                         false_node.generate_code(indent_level + 1)
         elif len(self.cases) == 1:
             # if [query] in (...), if [query] = X ... else return -> negate and return unless goto
             values = [*self.cases.values()][0]
-            if self.query.rv.startswith('int') and self.query.rv != 'int' and \
-                    len(values) == int(self.query.rv[3:]):
+            if len(values) == self.query.num_values:
                 # all branches identical, no branch needd
                 return self.out_edges[0].generate_code(indent_level)
 
             assert self.terminal_node is not None
 
-            if isinstance(self.terminal_node, GotoNode):
-                op = f'== {repr(values[0])}' if len(values) == 1 else 'in (' + ', '.join(repr(v) for v in values) + ')'
+            try:
+                if isinstance(self.terminal_node, GotoNode):
+                    op = f'== {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(_format_type(self.query.rv, v) for v in values) + ')'
 
-                return f'{_indent(indent_level)}if {self.query.format(self.params)} {op}:\n' + \
-                        self.out_edges[0].generate_code(indent_level + 1)
-            else:
-                __invert__op = f'!= {repr(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(repr(v) for v in values) + ')'
+                    return f'{_indent(indent_level)}if {self.query.format(self.params, False)} {op}:\n' + \
+                            self.out_edges[0].generate_code(indent_level + 1)
+                else:
+                    __invert__op = f'!= {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'not in (' + ', '.join(_format_type(self.query.rv, v) for v in values) + ')'
 
-                return f'{_indent(indent_level)}if {self.query.format(self.params)} {__invert__op}:\n' + \
-                        self.terminal_node.generate_code(indent_level + 1) + \
-                        self.out_edges[0].generate_code(indent_level)
+                    return f'{_indent(indent_level)}if {self.query.format(self.params, False)} {__invert__op}:\n' + \
+                            self.terminal_node.generate_code(indent_level + 1) + \
+                            self.out_edges[0].generate_code(indent_level)
+            except:
+                print(self.query, values)
+                raise
         else:
             # generic case:
             # f{name} = [query]
@@ -445,14 +500,18 @@ class SwitchNode(Node):
 
             cases: List[str] = []
             for event, values in self.cases.items():
-                else_s = 'el' if cases else ''
-                op_s = f'== {repr(values[0])}' if len(values) == 1 else 'in (' + ', '.join(repr(v)  for v in values) + ')'
-                cases.append(
-                        f'{_indent(indent_level)}{else_s}if {vname} {op_s}:\n' +
-                        [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1)
-                )
+                try:
+                    else_s = 'el' if cases else ''
+                    op_s = f'== {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(_format_type(self.query.rv, v)  for v in values) + ')'
+                    cases.append(
+                            f'{_indent(indent_level)}{else_s}if {vname} {op_s}:\n' +
+                            [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1)
+                    )
+                except:
+                    print(self.query, values)
+                    raise
 
-            return f'{_indent(indent_level)}{vname} = {self.query.format(self.params)}\n' + ''.join(cases)
+            return f'{_indent(indent_level)}{vname} = {self.query.format(self.params, False)}\n' + ''.join(cases)
 
     def __str__(self) -> str:
         return f'SwitchNode[name={self.name}' + \
@@ -510,15 +569,15 @@ class GotoNode(TerminalNode):
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
-class NoopTerminalNode(TerminalNode):
+class NoopNode(Node):
     def __init__(self, name: str) -> None:
-        TerminalNode.__init__(self, name)
+        Node.__init__(self, name)
 
     def generate_code(self, indent_level: int = 0) -> str:
-        return ''
+        return f'{_indent(indent_level)}pass\n'
 
     def __str__(self) -> str:
-        return 'Noop' + TerminalNode.__str__(self)
+        return 'Noop' + Node.__str__(self)
 
 class EntryPointNode(Node):
     def __init__(self, name: str, entry_label: Optional[str] = None) -> None:
@@ -541,6 +600,17 @@ class GroupNode(Node):
         self.root = root
         self.goto_node = GotoNode(f'grp-end!{root.name}')
 
+    def simplify(self) -> None:
+        visited = {self.root}
+        s = [self.root]
+        while s:
+            n = s.pop()
+            n.simplify()
+            for c in n.out_edges:
+                if c not in visited:
+                    visited.add(c)
+                    s.append(c)
+
     def generate_code(self, indent_level: int = 0) -> str:
         return self.root.generate_code(indent_level) + \
                 (f'{_indent(indent_level - 1)}{self.goto_node.name}::\n' if self.goto_node.in_edges else '') + \
@@ -561,17 +631,32 @@ class IfElseNode(Node):
         self.rules = rules
         self.default = default
 
+    def simplify(self) -> None:
+        # prefer non-negated penultimate branch if possible
+        penul_p = self.rules[-1].predicate
+        if isinstance(penul_p, NotPredicate) or (isinstance(penul_p, QueryPredicate) and penul_p.negated):
+            self.rules[-1], self.default = IfElseNode.Rule(~self.rules[-1].predicate, self.default), self.rules[-1].node
+
+        # prefer else branch for noops if easily swappable (last if branch)
+        if isinstance(self.rules[-1].node, NoopNode) and not isinstance(self.default, NoopNode):
+            self.rules[-1], self.default = IfElseNode.Rule(~self.rules[-1].predicate, self.default), self.rules[-1].node
+
     def generate_code(self, indent_level: int = 0) -> str:
         code = ''
         for predicate, node in self.rules:
             el_s = 'el' if code else ''
             code += _indent(indent_level) + f'{el_s}if {predicate.generate_code()}:\n' + \
                     node.generate_code(indent_level + 1)
-        code += f'{_indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
+        if not isinstance(self.default, NoopNode):
+            code += f'{_indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
         return code
+
+    def del_out_edge(self, dest: Node) -> None:
+        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         Node.reroute_out_edge(self, old_dest, new_dest)
+
         for i in range(len(self.rules)):
             if self.rules[i].node is old_dest:
                 self.rules[i] = IfElseNode.Rule(self.rules[i].predicate, new_dest)
@@ -654,7 +739,15 @@ class CFG:
                     else:
                         self.__convert_root_to_entrypoints(r)
 
-    def __detach_nodes(self, src: Node, dest: Node, entry_point: str) -> None:
+    def __detach_nodes_with_noop(self, src: Node, dest: Node) -> None:
+        new_noop_node = NoopNode(f'noop!{src.name}-{dest.name}')
+        self.nodes[new_noop_node.name] = new_noop_node
+
+        src.reroute_out_edge(dest, new_noop_node)
+        dest.del_in_edge(src)
+        new_noop_node.add_in_edge(src)
+
+    def __detach_nodes_with_call(self, src: Node, dest: Node, entry_point: str) -> None:
         new_call_node = SubflowNode(f'ext!{src.name}-{dest.name}', '', entry_point)
         self.nodes[new_call_node.name] = new_call_node
 
@@ -669,7 +762,7 @@ class CFG:
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
-            self.__detach_nodes(caller, entry_point, new_root.name)
+            self.__detach_nodes_with_call(caller, entry_point, new_root.name)
 
         entry_point.in_edges = [new_root]
         self.nodes[new_root.name] = new_root
@@ -687,7 +780,7 @@ class CFG:
         for node in excl:
             leaving_nodes: Set[EntryPointNode] = set(node.out_edges).intersection(labels) # type: ignore
             for label in leaving_nodes:
-                self.__detach_nodes(node, label, label.entry_label)
+                self.__detach_nodes_with_call(node, label, label.entry_label)
 
     def __get_exclusive_subgraph(self, root: RootNode) -> Tuple[Set[Node], Set[Node]]:
         reachable = set(self.__find_postorder(root))
@@ -782,6 +875,29 @@ class CFG:
         # todo: don't be this dumb
         return dest in self.__find_postorder(src)
 
+    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], added_entrypoints: Dict[Node, Node]) -> None:
+        active.add(node)
+
+        for nxt in node.out_edges[:]:
+            if nxt not in visited and nxt not in active:
+                self.__split_loops_helper(nxt, active, visited, added_entrypoints)
+            elif nxt in active and nxt not in visited:
+                entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
+                self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label)
+
+                active.add(entrypoint)
+                added_entrypoints[nxt] = entrypoint
+
+        active.remove(node)
+        visited.add(node)
+        if node in added_entrypoints:
+            active.remove(added_entrypoints[node])
+            visited.add(added_entrypoints[node])
+
+    def __split_loops(self) -> None:
+        for root in self.roots:
+            self.__split_loops_helper(root, set(), set(), {})
+
     def __convert_switch_to_if(self) -> None:
         for root in self.roots:
             for node in self.__find_postorder(root):
@@ -875,6 +991,14 @@ class CFG:
                     value_branch = node.default
                     else_branch = node.rules[0].node
                 else:
+                    self.__try_collapse_block(root, node)
+                    continue
+
+                # try not to join with ifelse block if it would add a noop branch
+                if self.__path_exists(else_branch, value_branch):
+                    node.rules[0] = IfElseNode.Rule(~predicate, else_branch)
+                    node.default = value_branch
+                    self.__try_collapse_block(root, node)
                     continue
 
                 ifelse_node = IfElseNode(node.name, [
@@ -944,10 +1068,14 @@ class CFG:
         if end is None: # no end found, do not collapse
             return root
 
-        if end in root.out_edges: # nothing to collapse
+        if root.out_edges == [end]: # nothing to collapse
             return root
 
-        print('Collapsing', root.name, 'to', end.name)
+        # detach end from root if necessary
+        if end in root.out_edges:
+            self.__detach_nodes_with_noop(root, end)
+
+        # print('Collapsing', root.name, 'to', end.name)
 
         sw = GroupNode(root)
         for in_node in root.in_edges:
@@ -955,11 +1083,11 @@ class CFG:
             in_node.reroute_out_edge(root, sw)
         root.in_edges = []
 
-        inner_terminal: TerminalNode = sw.goto_node
+        inner_terminal: Node = sw.goto_node
 
         # avoid goto -> return
         if isinstance(end, TerminalNode):
-            inner_terminal = end
+            inner_terminal = NoopNode(f'grp-end!{root.name}')
 
         s: List[Node] = [root]
         deleted = []
@@ -991,6 +1119,10 @@ class CFG:
         self.nodes[sw.name] = sw
 
         return sw
+
+    def __simplify_all(self) -> None:
+        for node in self.nodes.values():
+            node.simplify()
 
     def generate_code(self) -> str:
         code = '\n'.join(root.generate_code() for root in self.roots).split('\n')
@@ -1043,7 +1175,9 @@ class CFG:
                     query,
                     [Param(name, type_) for name, type_ in info['params'].items()],
                     info.get('return', 'any'),
+                    info.get('inverted', False),
                     info.get('conversion', None),
+                    info.get('neg_conversion', None),
                 ))
 
         for a in cfg.actors.values():
@@ -1113,14 +1247,19 @@ class CFG:
             cfg.roots.append(node)
 
         cfg.__separate_overlapping_flows()
-
-        # todo: handle loops
-
         cfg.__add_terminal_nodes()
-        cfg.__convert_switch_to_if()
-        cfg.__collapse_andor()
-        cfg.__collapse_if()
-        cfg.__collapse_cases()
+
+        old_nodes = None
+        while old_nodes != set(cfg.nodes.values()):
+            old_nodes = set(cfg.nodes.values())
+
+            cfg.__split_loops()
+            cfg.__convert_switch_to_if()
+            cfg.__collapse_andor()
+            cfg.__collapse_if()
+            cfg.__collapse_cases()
+
+            cfg.__simplify_all()
 
         # for a in cfg.actors.values():
             # print(a)
@@ -1129,15 +1268,16 @@ class CFG:
 
 import sys
 import json
-for z in ('NNPC_FreeD_RumorFavorite','SNPC_alp_01_Studio','SNPC_gst','SNPC_pyn_01_EasterPreVisit','SNPC_sza_GEvent_Countdown','System_BootSequence',):
-    if z in sys.argv[1]:
-        raise ValueError('infinite loop file')
-
 
 with open(sys.argv[1] if len(sys.argv) >= 2 else 'bfevfl/System_GrowUp.bfevfl', 'rb') as f:
     with open('actors.json', 'rt') as af:
         actor_data = json.load(af)
-    cfg = CFG.read(f.read(), actor_data)
+    try:
+        cfg = CFG.read(f.read(), actor_data)
+        # cfg.generate_code()
+    except:
+        raise
+        # sys.exit(1)
 
     print(cfg.generate_code())
     # print(json.dumps(cfg.export_actors(), indent=4))

@@ -221,7 +221,7 @@
                     "TagType": "str",
                     "SetTagType": "str",
                     "AccessKey": "str",
-                    "Value": "int"
+                    "Value": "any"
                 }
             },
             "NpcSelectMessage": {
@@ -338,8 +338,8 @@
             },
             "BellCountDown": {
                 "params": {
-                    "Money": "int",
-                    "Reverse": "bool"
+                    "Money": "any",
+                    "Reverse": "any"
                 }
             },
             "UIMoneyAppear": {
@@ -842,7 +842,7 @@
             "DeleteTargetItem": {
                 "params": {
                     "ItemUniqueId": "int",
-                    "DeleteNum": "int",
+                    "DeleteNum": "any",
                     "IsPriorityFewItems": "bool"
                 }
             },
@@ -1041,7 +1041,7 @@
             },
             "UploadProfile": {
                 "params": {
-                    "IsSkipError": "bool"
+                    "IsSkipError": "any"
                 }
             },
             "NotifyUseNSOAppli": {
@@ -1314,7 +1314,7 @@
             },
             "NetCheckProfileBan": {
                 "params": {
-                    "IsSkipError": "bool"
+                    "IsSkipError": "str"
                 }
             },
             "ControllerConnect": {
@@ -1405,6 +1405,59 @@
                 "params": {
                     "SelectKind": "str"
                 }
+            },
+            "UICatalogGiftHandling": {
+                "params": {}
+            },
+            "CommuneMailSend": {
+                "params": {
+                    "FromType": "str",
+                    "FileIndex": "str",
+                    "Route": "str",
+                    "LabelIndex": "int",
+                    "Present": "str",
+                    "TagType": "str"
+                }
+            },
+            "DeleteRequireExchangeItem": {
+                "params": {}
+            },
+            "SelectMysteryTour": {
+                "params": {
+                    "TourSelectType": "int"
+                }
+            },
+            "UIMyDesignFireworksHandling": {
+                "params": {}
+            },
+            "UIMyDesignFireworksCreate": {
+                "params": {}
+            },
+            "SaveVersionCheck": {
+                "params": {}
+            },
+            "UIBootBGChangeDialog": {
+                "params": {}
+            },
+            "SaveVersionConvert": {
+                "params": {}
+            },
+            "SaveCopyToEnv": {
+                "params": {}
+            },
+            "CreateStaticField": {
+                "params": {}
+            },
+            "SaveRemove": {
+                "params": {
+                    "Process": "str"
+                }
+            },
+            "SavePlayerRegionLanguageUpdate": {
+                "params": {}
+            },
+            "NetEnsureNSA": {
+                "params": {}
             }
         },
         "queries": {
@@ -1476,6 +1529,7 @@
                     "ItemUniqueId": "int",
                     "UnlockType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoice2": {
@@ -1486,14 +1540,14 @@
             },
             "SubflowResultChoice4": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int4"
             },
             "SubflowResultChoice5": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int5"
@@ -1503,7 +1557,9 @@
                     "NpcHouseType": "str",
                     "Num": "int"
                 },
-                "conversion": "<.name>(<NpcHouseType>) <= <Num>",
+                "inverted": true,
+                "conversion": "<.name>(<NpcHouseType>) >= <Num>",
+                "neg_conversion": "<.name>(<NpcHouseType>) < <Num>",
                 "return": "bool"
             },
             "GlobalEventStart": {
@@ -1521,16 +1577,18 @@
             },
             "VillageScoreCheckNatural": {
                 "params": {
-                    "BorderValue": "int"
+                    "BorderValue": "float"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNatural >= <BorderValue>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreNatural < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckLife": {
                 "params": {
-                    "BorderValue": "int"
+                    "BorderValue": "float"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLife >= <BorderValue>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreLife < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreVeryMessy": {
@@ -1545,6 +1603,7 @@
                     "BorderValue": "int"
                 },
                 "conversion": "<.name> >= <BorderValue>",
+                "neg_conversion": "<.name> < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckTreeNum": {
@@ -1552,6 +1611,7 @@
                     "BorderNum": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreTreeNum < <BorderNum>",
                 "return": "bool"
             },
             "VillageScoreCheckLifeDeltaBeforeDay": {
@@ -1559,6 +1619,7 @@
                     "DeltaPoint": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay < <DeltaPoint>",
                 "return": "bool"
             },
             "VillageScoreCheckNaturalDeltaBeforeDay": {
@@ -1566,6 +1627,7 @@
                     "DeltaPoint": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay < <DeltaPoint>",
                 "return": "bool"
             },
             "GeneralTalkChoice2": {
@@ -1599,7 +1661,7 @@
             },
             "HasBellCount": {
                 "params": {
-                    "Money": "str"
+                    "Money": "any"
                 },
                 "return": "bool"
             },
@@ -1608,6 +1670,7 @@
                     "CheckNum": "int",
                     "CheckTargrt": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "FinalFireworksFes": {
@@ -1677,11 +1740,11 @@
             },
             "MuseumLevel": {
                 "params": {},
-                "return": "int3"
+                "return": "int4"
             },
             "CheckEntryVariableInt": {
                 "params": {
-                    "Value": "int",
+                    "Value": "str",
                     "CheckType": "int",
                     "CheckValue": "int"
                 },
@@ -1701,14 +1764,14 @@
             },
             "SubflowResultChoice2": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int2"
             },
             "SubflowResultChoice6": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int6"
@@ -1759,35 +1822,35 @@
             },
             "SubflowResultChoice9": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int9"
             },
             "SubflowResultChoice8": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int8"
             },
             "SubflowResultChoice10": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int10"
             },
             "SubflowResultChoice7": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int7"
             },
             "SubflowResultChoice3": {
                 "params": {
-                    "SetIndex": "str"
+                    "SetIndex": "int"
                 },
                 "conversion": "subflow_results[<SetIndex>]",
                 "return": "int3"
@@ -2101,6 +2164,7 @@
                     "ItemUniqueId": "int",
                     "NeedNum": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcQuestIsLimitOver": {
@@ -2458,6 +2522,7 @@
                 "params": {
                     "ItemUniqueID": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerGetEasterEggRecipe": {
@@ -2750,7 +2815,7 @@
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
-                "return": "int5"
+                "return": "int6"
             },
             "MuseumNameBoardIsExistVillageDonatePlayer": {
                 "params": {
@@ -2848,6 +2913,74 @@
             "NxRegionCode": {
                 "params": {},
                 "return": "int6"
+            },
+            "HasFreeInCommuneMail": {
+                "params": {},
+                "return": "bool"
+            },
+            "PlayerIsMadeCraftRecipe": {
+                "params": {
+                    "CheckMode": "str",
+                    "MadeItemID0": "int",
+                    "MadeItemID1": "int",
+                    "MadeItemID2": "int",
+                    "MadeItemID3": "int",
+                    "MadeItemID4": "int",
+                    "MadeItemID5": "int",
+                    "MadeItemID6": "int",
+                    "MadeItemID7": "int"
+                },
+                "return": "bool"
+            },
+            "IsEnableToGetEggBasket": {
+                "params": {
+                    "NeedNum": "int"
+                },
+                "return": "bool"
+            },
+            "UIIsRegisteredMyDesignFireworks": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveVersionCheck": {
+                "params": {},
+                "return": "int"
+            },
+            "SaveProcIsSuccess": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveIsNotFound": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveIsBroken": {
+                "params": {},
+                "return": "bool"
+            },
+            "SaveRestoreSeqStartCheck": {
+                "params": {},
+                "return": "bool"
+            },
+            "IsRequiredLanguageChangeAnnounce": {
+                "params": {},
+                "return": "bool"
+            },
+            "PreviousRegionLanguage": {
+                "params": {},
+                "return": "int14"
+            },
+            "IsFullPlayerVillager": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsRegisteredSameNA": {
+                "params": {},
+                "return": "bool"
+            },
+            "NetIsAvailableNA": {
+                "params": {},
+                "return": "bool"
             }
         }
     },
@@ -2863,7 +2996,7 @@
                     "IsChangeSameState": "bool",
                     "ArgFlag0": "bool",
                     "ArgInt0": "int",
-                    "ArgFloat0": "float",
+                    "ArgFloat0": "any",
                     "ArgStr1": "str"
                 }
             },
@@ -2994,7 +3127,7 @@
                     "SubEntryName": "str",
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
-                    "ArgInt0": "int",
+                    "ArgInt0": "any",
                     "ArgFlag0": "bool",
                     "ArgStr0": "str"
                 }
@@ -3109,8 +3242,8 @@
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
                     "ArgInt0": "int",
-                    "ArgInt1": "int",
-                    "ArgInt2": "int"
+                    "ArgInt1": "any",
+                    "ArgInt2": "any"
                 }
             },
             "NpcChangeChangeHandToolState": {
@@ -3121,7 +3254,7 @@
                     "SubEntryName": "str",
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
-                    "HandToolItem": "str"
+                    "HandToolItem": "int"
                 }
             },
             "EventFlagNpcOn": {
@@ -3138,7 +3271,7 @@
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
                     "ArgStr0": "str",
-                    "ArgFlag0": "flag",
+                    "ArgFlag0": "bool",
                     "ArgInt0": "int"
                 }
             },
@@ -3377,7 +3510,7 @@
                 "params": {
                     "FileIndex": "str",
                     "Present": "str",
-                    "LabelIndex": "str",
+                    "LabelIndex": "int",
                     "Route": "str",
                     "TagType": "str"
                 }
@@ -3684,8 +3817,8 @@
             "NpcStartAS": {
                 "params": {
                     "ASType": "str",
-                    "IsContinueEmot": "bool",
-                    "IsWaitEnd": "bool"
+                    "IsWaitEnd": "bool",
+                    "IsContinueEmot": "any"
                 }
             },
             "ShopSellDone": {
@@ -3917,6 +4050,63 @@
                 }
             },
             "NpcSetPlayerProfileComment": {
+                "params": {}
+            },
+            "NpcRumorDecidePlayer": {
+                "params": {
+                    "RumorPlayerSelectType": "str"
+                }
+            },
+            "NpcRumorDecideTopic": {
+                "params": {
+                    "TopicSelectType": "str"
+                }
+            },
+            "NpcRumorOpenMessage": {
+                "params": {
+                    "MessageBaseLabel": "str",
+                    "RumorMessageType": "str"
+                }
+            },
+            "NpcRumorTagSet": {
+                "params": {}
+            },
+            "NpcRumorResetLastDenyTime": {
+                "params": {}
+            },
+            "NpcRumorSaveAnswer": {
+                "params": {}
+            },
+            "NpcGstChange": {
+                "params": {
+                    "CurrentType": "int"
+                }
+            },
+            "GstDecideReward": {
+                "params": {
+                    "NotCollect": "bool",
+                    "ItemGroup": "any",
+                    "PriceBottom": "int",
+                    "PriceTop": "int"
+                }
+            },
+            "PynSetExchangeItem": {
+                "params": {
+                    "ItemUniqueId": "int"
+                }
+            },
+            "PynAddExchangeItem": {
+                "params": {}
+            },
+            "PynDeleteTargetExchangeEgg": {
+                "params": {}
+            },
+            "PynSetEggExchangeRate": {
+                "params": {
+                    "ExchangeNum": "int"
+                }
+            },
+            "PynCalcExchangeEggNum": {
                 "params": {}
             }
         },
@@ -4652,7 +4842,7 @@
             },
             "HghMydesignOwner": {
                 "params": {},
-                "return": "bool"
+                "return": "int3"
             },
             "HghCoodinateItemNum": {
                 "params": {},
@@ -4664,7 +4854,7 @@
             },
             "OwlDonationItemType": {
                 "params": {},
-                "return": "item7"
+                "return": "int7"
             },
             "OwlDonationFossilIsParts": {
                 "params": {},
@@ -4717,6 +4907,56 @@
                 "return": "bool"
             },
             "NpcHasPlayerProfileComment": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRumorIsAnsweredTargetTopic": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcCheckMoveInBeforePlayer": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRumorIsSelectedAllDeny": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRumorCheckAllDenyProgressDays": {
+                "params": {
+                    "ProgressDays": "int"
+                },
+                "return": "bool"
+            },
+            "NpcRumorIsAskedOwn": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRumorIsEqualNpcChoice": {
+                "params": {
+                    "RumorFavoriteChoiceTarget": "any"
+                },
+                "return": "int4"
+            },
+            "NpcRumorIsEqualPreviousChoice": {
+                "params": {},
+                "return": "bool"
+            },
+            "NpcRumorIsExistAnswerTopic": {
+                "params": {},
+                "return": "bool"
+            },
+            "PynCheckCraftItemNum": {
+                "params": {
+                    "SetNum": "int"
+                },
+                "return": "bool"
+            },
+            "PynHaveExchangeItemEnough": {
+                "params": {},
+                "return": "bool"
+            },
+            "PynIsEnableToExchangeEgg": {
                 "params": {},
                 "return": "bool"
             }
@@ -5041,6 +5281,24 @@
                     "PlayerAutoEnd": "bool",
                     "Continue": "bool"
                 }
+            },
+            "SetDeliveryItem": {
+                "params": {
+                    "ApplyToSave": "bool",
+                    "SetItemTarget": "bool"
+                }
+            },
+            "SetEventRewardToPlayerBaggage": {
+                "params": {
+                    "SetType": "str"
+                }
+            },
+            "SetItemName": {
+                "params": {
+                    "ItemTarget": "int",
+                    "ID": "int",
+                    "TagType": "int"
+                }
             }
         },
         "queries": {
@@ -5077,7 +5335,7 @@
                     "TagType": "str",
                     "SetTagType": "str",
                     "AccessKey": "str",
-                    "Value": "int"
+                    "Value": "any"
                 }
             }
         },
@@ -5192,7 +5450,7 @@
                 "params": {
                     "ASType": "str",
                     "IsWaitEnd": "bool",
-                    "IsContinueEmot": "bool"
+                    "IsContinueEmot": "any"
                 }
             },
             "TurnNeck": {
