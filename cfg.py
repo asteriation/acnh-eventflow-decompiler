@@ -508,7 +508,7 @@ class SwitchNode(Node):
                             [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1)
                     )
                 except:
-                    print(self.query, values)
+                    print(self.query, self.cases.values())
                     raise
 
             return f'{_indent(indent_level)}{vname} = {self.query.format(self.params, False)}\n' + ''.join(cases)
@@ -518,6 +518,51 @@ class SwitchNode(Node):
             f', query={self.query}' + \
             f', params={self.params}' + \
             f', cases={self.cases}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
+            ']'
+
+class ForkNode(Node):
+    def __init__(self, name: str, join_node: JoinNode, forks: List[str]) -> None:
+        Node.__init__(self, name)
+        self.join_node = join_node
+        self.forks = forks
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        s = f'{_indent(indent_level)}fork:\n'
+        self.join_node.disable()
+        for i, e in enumerate(self.out_edges):
+            s += f'{_indent(indent_level + 1)}branch{i}:\n{e.generate_code(indent_level + 2)}'
+        self.join_node.enable()
+        return s + self.join_node.generate_code(indent_level)
+
+    def __str__(self) -> str:
+        return f'ForkNode[name={self.name}' + \
+            f', join_node={self.join_node.name}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
+            ']'
+
+class JoinNode(Node):
+    def __init__(self, name: str, nxt: Optional[str]) -> None:
+        Node.__init__(self, name)
+        self.nxt = nxt
+        self.disabled = False
+
+    def disable(self) -> None:
+        self.disabled = True
+
+    def enable(self) -> None:
+        self.disabled = False
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        if not self.disabled:
+            return "\n".join(e.generate_code(indent_level) for e in self.out_edges)
+        else:
+            return ''
+
+    def __str__(self) -> str:
+        return f'JoinNode[name={self.name}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
@@ -1212,6 +1257,22 @@ class CFG:
                 node = SwitchNode(name, q, params)
                 for value, ev in cases.items():
                     node.add_case(ev.v.name, value)
+            elif isinstance(event, evfl.event.ForkEvent):
+                join = event.join.v.name
+                forks = [f.v.name for f in event.forks] if event.forks else []
+
+                join_node = JoinNode(join, None) if join not in cfg.nodes else cfg.nodes[join]
+                cfg.nodes[join] = join_node
+                node = ForkNode(name, join_node, forks)
+                node.add_out_edge(join_node)
+                join_node.add_in_edge(node)
+            elif isinstance(event, evfl.JoinEvent):
+                if name not in cfg.nodes:
+                    node = JoinNode(name, event.nxt.v.name if event.nxt.v else None)
+                else:
+                    node = cfg.nodes[name]
+                    assert isinstance(node, JoinNode)
+                    node.nxt = event.nxt.v.name if event.nxt.v else None
             elif isinstance(event, evfl.event.SubFlowEvent):
                 ns = event.res_flowchart_name
                 called = event.entry_point_name
@@ -1224,12 +1285,16 @@ class CFG:
             cfg.nodes[name] = node
 
         for name, node in cfg.nodes.items():
-            if isinstance(node, ActionNode) or isinstance(node, SubflowNode):
+            if isinstance(node, ActionNode) or isinstance(node, SubflowNode) or isinstance(node, JoinNode):
                 if node.nxt is not None:
                     node.add_out_edge(cfg.nodes[node.nxt])
                     cfg.nodes[node.nxt].add_in_edge(node)
             elif isinstance(node, SwitchNode):
                 for out_name in node.cases.keys():
+                    node.add_out_edge(cfg.nodes[out_name])
+                    cfg.nodes[out_name].add_in_edge(node)
+            elif isinstance(node, ForkNode):
+                for out_name in node.forks:
                     node.add_out_edge(cfg.nodes[out_name])
                     cfg.nodes[out_name].add_in_edge(node)
             else:
