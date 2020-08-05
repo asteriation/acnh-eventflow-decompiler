@@ -1,0 +1,120 @@
+flow Root:
+    if EventFlowSystemActor.NetHasVisitor():
+        if not event_flags_system['cPlayer:SzaTalkAtOfficeToday']:
+            run Sza_Common_Greet
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:801', false)
+    elif event_flags_system['cPlayer:SzaHeardAboutIslandEvaluation']:
+entrypoint Event48:
+        if not event_flags_system['cPlayer:SzaTalkAtOfficeToday']:
+            run Sza_Common_Greet
+            if subflow_results[0] != 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002', false)
+entrypoint Event11:
+            if event_flags_system['cLand:IslandEvaluationUnlock']:
+                event_flags_system['cPlayer:IslandEvaluationUnlockMyself'] = true
+                event_flags_system['cPlayer:SzaHeardAboutIslandEvaluation'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_02', false)
+                run szaSel5B
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_01', false)
+                run szaSel4B
+        elif event_flags_system['cLand:IslandEvaluationUnlock']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_04', false)
+entrypoint Event14:
+            fEvent14 = EventFlowSystemActor.GeneralTalkChoice5()
+            if fEvent14 == 0:
+                run SNPC_sza_50_IslandEvaluation::Root
+            elif fEvent14 == 1:
+                run SNPC_sza_01_Towntune::Root
+            elif fEvent14 == 2:
+                run SNPC_sza_01_Flag::Root
+            elif fEvent14 == 3:
+                run SNPC_sza_01_Sonmin::Root
+            elif fEvent14 == 4:
+                run Sza_Cmn_Cancel
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_03', false)
+entrypoint Event15:
+            fEvent15 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent15 == 0:
+                run SNPC_sza_01_Towntune::Root
+            elif fEvent15 == 1:
+                run SNPC_sza_01_Flag::Root
+            elif fEvent15 == 2:
+                run SNPC_sza_01_Sonmin::Root
+            elif fEvent15 == 3:
+                run Sza_Cmn_Cancel
+    elif event_flags_system['cLand:IslandEvaluationUnlock']:
+        run SNPC_sza_01_Office_1_Entries::Sza_EvaluationExplanation
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002', false)
+        run szaNormalSeq
+    else:
+        run Sza_Common_Select
+    return
+
+flow Sza_Common_Greet:
+    event_flags_system['cPlayer:SzaTalkAtOfficeToday'] = true
+    if not EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+        fEvent50 = EventFlowSystemActor.EnvTimeZone()
+        if fEvent50 in (0, 1):
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_01', false)
+        elif fEvent50 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_02', false)
+        elif fEvent50 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_03', false)
+        elif fEvent50 in (4, 5):
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_04', false)
+        if EventFlowSystemActor.MainPlayerIsBirthday(false):
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:001_01', false)
+            run sub_Event58
+    elif EventFlowSystemActor.MainPlayerIsBirthday(false):
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_06', false)
+        run sub_Event58
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_05', false)
+        run sub_Event58
+    return
+
+flow szaSel5B:
+    run Event14
+    return
+
+flow szaSel4B:
+    run Event15
+    return
+
+flow szaNormalSeq:
+    run Event11
+    return
+
+flow Sza_Cmn_Cancel:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:003', true)
+    if event_flags_system['cPlayer:RcoAwaitingExplanation']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:003_01', false)
+    return
+
+flow Sza_CmnSel_Again:
+    if event_flags_system['cLand:IslandEvaluationUnlock']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_06', false)
+        run szaSel5B
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_05', false)
+        run szaSel4B
+    return
+
+flow Sza_Common_Select:
+    run Event48
+    return
+
+flow Root_ForVisitor:
+    if event_flags_system['cPlayerVisit:V_Sza_TalkInside1st']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:911', false)
+    else:
+        event_flags_system['cPlayerVisit:V_Sza_TalkInside1st'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:901', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:902', false)
+    return
+
+flow sub_Event58:
+    subflow_results[0] = 1
+

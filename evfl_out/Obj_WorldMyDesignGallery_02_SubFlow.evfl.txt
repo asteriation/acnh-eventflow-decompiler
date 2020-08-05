@@ -1,0 +1,30 @@
+flow GetMyIdList:
+    if not event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList']:
+        EventFlowSystemActor.UINetConnectWaitAppear()
+        EventFlowSystemActor.NetSearchMyDesign('cMyIDList')
+        EventFlowSystemActor.UINetConnectWaitDisappear()
+        if EventFlowSystemActor.CheckErrorType(2):
+            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+        else:
+            event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = true
+    return
+
+flow WaitForPreview:
+    EventFlowSystemActor.WaitDownloadMyDesignDataForPreview()
+    return
+
+flow PreCheckConnection:
+    EventFlowSystemActor.MyDesignExchangeResetError()
+    EventFlowSystemActor.NetConnectInit('cConnectInet', true)
+    if EventFlowSystemActor.CheckErrorType(2):
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0810', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+        else:
+            run PreCheckConnection
+    else:
+        EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
+        if EventFlowSystemActor.CheckErrorType(2):
+            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+    return
+

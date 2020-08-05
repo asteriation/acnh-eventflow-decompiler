@@ -1,0 +1,11 @@
+flow Root:
+    EventFlowSystemActor.SystemFaderRelease()
+    EventFlowSystemActor.CameraSetDemoParam('Keep', 'Cut0End', 'Cut0', false, false, false, 0)
+    EventFlowSystemActor.WaitFaderSleep()
+    EventFlowSystemActor.UILogoAppear('cTitle')
+    EventFlowSystemActor.WaitFrame(260)
+    EventFlowSystemActor.SoundTriggerEmit('Flight_Landing', -1)
+    EventFlowSystemActor.WaitFrame(100)
+    EventFlowSystemActor.SystemRequestChangeStage('cFrontOfAirPort', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+

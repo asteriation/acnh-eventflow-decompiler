@@ -1,0 +1,92 @@
+flow Impl:
+    if EventFlowSystemActor.IsSharePlay(0):
+entrypoint Event19:
+        EventFlowSystemActor.ControllerConnectBegin()
+        entry_variables['PlayerIndex'] = 0
+entrypoint Event20:
+        EventFlowSystemActor.SetTagFromSystem(0, 'cConnectCtrlPlayerName', 'cDegit', '', 'PlayerIndex')
+        EventFlowSystemActor.ControllerConnectTimerStart(30)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:007', false)
+        EventFlowSystemActor.ControllerConnect('PlayerIndex')
+        if EventFlowSystemActor.CheckErrorType(1):
+            EventFlowSystemActor.ControllerConnectTimerClose()
+            run sub_grp!Event31
+        else:
+            EventFlowSystemActor.ControllerConnectTimerClose()
+            fEvent37 = EventFlowSystemActor.ControllerConnectResult()
+            if fEvent37 == 0:
+                EventFlowSystemActor.MessageSuspend()
+                EventFlowSystemActor.WaitFrame(45)
+                entry_variables['PlayerIndex'] += 1
+                if EventFlowSystemActor.ControllerConnectNum() == 0:
+                    EventFlowSystemActor.ControllerConnectEnd(true)
+                    run StartPlay
+                else:
+                    run NextPlayer
+            elif fEvent37 == 2:
+                EventFlowSystemActor.ControllerConnectEnd(true)
+                if EventFlowSystemActor.CountSharePlayerNum(4):
+                    EventFlowSystemActor.RequetCtrlConnectSupport(4)
+                elif EventFlowSystemActor.CountSharePlayerNum(3):
+                    EventFlowSystemActor.RequetCtrlConnectSupport(3)
+                else:
+                    EventFlowSystemActor.RequetCtrlConnectSupport(2)
+                if EventFlowSystemActor.CheckErrorType(1):
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:010', true)
+                    run System_SharePlay_Exit::Root
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:011', false)
+                    run StartPlay
+            elif fEvent37 == 1:
+                run sub_grp!Event31
+    else:
+        run System_Controller::SetupSoloController
+    return
+
+flow Restart:
+    run Event19
+    return
+
+flow NextPlayer:
+    entry_variables['PlayerIndex'] = 'BaseIndex'
+    run Event20
+    return
+
+flow StartPlay:
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.StartSharePlay()
+    if not EventFlowSystemActor.EventFlagAllSharePlayPlayer('cPlayer:SharePlayGuideDone'):
+        EventFlowSystemActor.EventFlagAllSharePlayPlayer('cPlayer:SharePlayGuideDone')
+        run System_SharePlay_Entry::SharePlay_HowToPlay
+    return
+
+flow Root:
+    EventFlowSystemActor.WaitFaderSleep()
+    run Impl
+    EventFlowSystemActor.DemoShareStartEnd()
+    return
+
+flow sub_grp!Event31:
+    if entry_variables['PlayerIndex'] < 1:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:009', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Restart
+        else:
+            EventFlowSystemActor.ControllerConnectEnd(true)
+            if EventFlowSystemActor.CountSharePlayerNum(4):
+                EventFlowSystemActor.RequetCtrlConnectSupport(4)
+            elif EventFlowSystemActor.CountSharePlayerNum(3):
+                EventFlowSystemActor.RequetCtrlConnectSupport(3)
+            else:
+                EventFlowSystemActor.RequetCtrlConnectSupport(2)
+            if EventFlowSystemActor.CheckErrorType(1):
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:010', true)
+                run System_SharePlay_Exit::Root
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:011', false)
+                run StartPlay
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:008', true)
+        EventFlowSystemActor.ControllerConnectEnd(false)
+        run System_SharePlay_Exit::Root
+

@@ -1,0 +1,4 @@
+flow Root:
+    MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:321', false)
+    return
+

@@ -1,0 +1,15 @@
+flow Root:
+    if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+        if not event_flag_npc['cNpcMemory:NewYearGreetingFlag']:
+            MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/React/BO_React_NewYear', '', '', '')
+            event_flags_npc['cNpcMemory:NewYearGreetingFlag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    elif (EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cNowTime')) and (not event_flag_npc['cNpcMemory:ChineseNewYearGreetingFlag']):
+        MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/React/BO_React_NewYear_Chinese', '', '', '')
+        event_flags_npc['cNpcMemory:ChineseNewYearGreetingFlag'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Root
+
+flow sub_tm!Root:
+    return
+

@@ -1,0 +1,39 @@
+flow Init:
+    run AI_NPC_Gul::InitCommon
+    if event_flags_system['cLand:JohnnySitUpFlag']:
+        run AI_NPC_Gul::InitWakeup
+    else:
+        run AI_NPC_Gul::InitSleep
+    return
+
+flow Root:
+    if MainNpc.NpcCheckStateSelectTiming('cInit'):
+        if event_flags_system['cLand:JohnnySitUpFlag']:
+            if MainNpc.CanMoveUnit(true):
+                run AI_NPC_Gul::SetStateWakeup
+                run sub_Event15
+            else:
+                MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+                event_flags_system['cLand:JohnnyInvisible'] = true
+        elif MainNpc.CanMoveUnit(false):
+            run AI_NPC_Gul::SetStateSleep
+            run sub_Event15
+        else:
+            MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+            event_flags_system['cLand:JohnnyInvisible'] = true
+    elif event_flags_system['cLand:JohnnyInvisible']:
+        MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+        event_flags_system['cLand:JohnnyInvisible'] = true
+    elif event_flags_system['cLand:JohnnySitUpFlag']:
+        run AI_NPC_Gul::SetStateWakeup
+    else:
+        run AI_NPC_Gul::SetStateSleep
+    return
+
+flow Hit:
+    MainNpc.NpcChangeAIState('cHit', 'SNPC_gulB', 'Root', '', false, false)
+    return
+
+flow sub_Event15:
+    event_flags_system['cLand:JohnnyInvisible'] = false
+

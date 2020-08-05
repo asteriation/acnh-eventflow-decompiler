@@ -1,0 +1,22 @@
+flow SetupSoloController:
+    if EventFlowSystemActor.ControllerIsConnected():
+        if EventFlowSystemActor.IsSoloPlayController():
+            EventFlowSystemActor.SetControllerStyle(0)
+        elif EventFlowSystemActor.IncludeHorizontalController():
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:014', false)
+            EventFlowSystemActor.SetControllerStyle(0)
+            EventFlowSystemActor.RequetCtrlConnectSupport(1)
+            EventFlowSystemActor.MessageSuspend()
+        else:
+            EventFlowSystemActor.SetControllerStyle(0)
+            if not EventFlowSystemActor.IsSoloPlayController():
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:014', false)
+                EventFlowSystemActor.SetControllerStyle(0)
+                EventFlowSystemActor.RequetCtrlConnectSupport(1)
+                EventFlowSystemActor.MessageSuspend()
+    else:
+        EventFlowSystemActor.SetControllerStyle(0)
+        EventFlowSystemActor.RequetCtrlConnectSupport(1)
+        EventFlowSystemActor.MessageSuspend()
+    return
+

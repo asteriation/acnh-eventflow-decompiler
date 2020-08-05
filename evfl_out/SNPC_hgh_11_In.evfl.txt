@@ -1,0 +1,37 @@
+flow Root:
+    event_flags_system['cPlayer:KinuyoForcesTalkTodayFlag'] = true
+    event_flags_system['cPlayerTemp:KinuyoTalkSceneFlag'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:001', false)
+    run Hgh_1stExplain
+    event_flags_system['cPlayerTemp:TailorChkObject'] = false
+    return
+
+flow Hgh_1stExplain:
+    if event_flags_system['cPlayer:KinuyoTalkInTailorFlag']:
+        if event_flags_system['cPlayer:KinuyoMydesginMachineFlag']:
+            event_flags_system['cPlayerTemp:TailorChkObject'] = false
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_01_03', false)
+            event_flags_system['cPlayer:KinuyoMydesginMachineFlag'] = true
+    elif EventFlowSystemActor.IsMyVillage():
+        event_flags_system['cPlayer:KinuyoTalkInTailorFlag'] = true
+        if not event_flags_system['cPlayer:KinuyoTalkBoforeFlag']:
+            event_flags_system['cPlayer:KinuyoTalkBoforeFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:005', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006', false)
+        elif event_flags_system['cPlayer:KinuyoTailorBuildFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:002', false)
+            run sub_Event7
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:003', false)
+            run sub_Event7
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_01_02', false)
+        event_flags_system['cPlayer:KinuyoMydesginMachineFlag'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_02', false)
+    else:
+        event_flags_system['cPlayerTemp:TailorChkObject'] = false
+    return
+
+flow sub_Event7:
+    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
+

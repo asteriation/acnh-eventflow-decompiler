@@ -1,0 +1,10 @@
+flow Root:
+entrypoint Event2:
+    run NNPC_Talk_Situation::Root
+    run NNPC_Talk_General::Root
+    return
+
+flow Root_Main:
+    run Event2
+    return
+

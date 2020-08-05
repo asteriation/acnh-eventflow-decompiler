@@ -1,0 +1,73 @@
+flow Root:
+    if (event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not MainNpc.IsSamePhrase()):
+        MainNpc.NpcCopyPhrase()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:201', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:202', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:203', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:204', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:205', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:206', false)
+    else:
+        run sub_grp!Event55
+    return
+
+flow sub_grp!Event55:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:001', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:002', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:003', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:004', false)
+        fEvent46 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+        if fEvent46 == 0:
+            SubNpc.TurnNeck(0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:005', false)
+        elif fEvent46 == 1:
+            SubNpc.TurnNeck(0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:006', false)
+        elif fEvent46 == 2:
+            SubNpc.TurnNeck(0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:007', false)
+        elif fEvent46 == 3:
+            SubNpc.TurnNeck(0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:008', false)
+        elif fEvent46 == 4:
+            SubNpc.TurnNeck(0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:009', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:010', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:011', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:101', false)
+        fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent7 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:102', false)
+        elif fEvent7 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:103', false)
+        elif fEvent7 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:104', false)
+        Player.TurnNeck(1)
+        fEvent3 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent3 == 0:
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:105', false)
+        elif fEvent3 == 1:
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:106', false)
+        elif fEvent3 == 2:
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:107', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:108', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:109', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:110', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_OT:111', false)
+

@@ -1,0 +1,34 @@
+flow EntryPoint_Depart:
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0', 'cDefault', false, false, false, 0)
+    Player.PlayerMoveToTarget(160.0, 165.0, 0.0, 0.0, 'cAutoWait', false, false)
+    Player.TurnBody(12, 180.0)
+    Player.PlayerWaitTurn()
+    EventFlowSystemActor.OpenVillageGate(true)
+    Player.PlayerMoveToTarget(160.0, 125.0, 0.0, 0.0, 'cAutoWait', false, false)
+    MainNpc.TurnNeck(11)
+    fork:
+        branch0:
+        branch1:
+            Player.PlayerMoveToTarget(190.0, 125.0, 0.0, 0.0, 'cAutoWait', false, false)
+        branch2:
+            EventFlowSystemActor.WaitFrame(10)
+            Npc_1.NpcRailMove(0, -1, -1, 1, false, true)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.TurnBody(1, 0.0)
+        branch2:
+            Npc_1.TurnBody(0, 0.0)
+    EventFlowSystemActor.WaitFrame(25)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('DodRoger', '', 0, true, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('DodRoger', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(20)
+    EventFlowSystemActor.BGMPropertyControl(75)
+    EventFlowSystemActor.SoundTriggerEmit('Airplane_Takeoff', -1)
+    EventFlowSystemActor.NetEnterVillage()
+    return
+

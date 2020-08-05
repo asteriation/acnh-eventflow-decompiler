@@ -1,0 +1,7 @@
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Telepathy:020', false)
+    else:
+        Player.OpenMessageWindow('TalkSys/SYS_Player:701', false)
+    return
+

@@ -1,0 +1,4 @@
+flow Root:
+    MainNpc.OpenMessageWindow('', false)
+    return
+

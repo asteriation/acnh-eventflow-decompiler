@@ -1,0 +1,70 @@
+flow Root:
+entrypoint Event27:
+    if EventFlowSystemActor.MuseumNameboardIsStillHaveDonateItem('LoopNum'):
+        EventFlowSystemActor.SetTagFromSystem(0, 'cMuseumNameboardItem', 'cDegit', '', 0)
+        if EventFlowSystemActor.MuseumNameboardIsNeedCameraTargetKind('LoopNum'):
+            if entry_variables['LoopNum'] == 0:
+                fEvent25 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
+                if fEvent25 in (0, 1, 5):
+                    EventFlowSystemActor.MuseumNameBoardCamera('LoopNum')
+                elif fEvent25 in (3, 4):
+                    EventFlowSystemActor.MuseumNameBoardArtCamera('LoopNum')
+                elif fEvent25 == 2:
+                    if (EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum')) or (EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne('LoopNum')):
+                        EventFlowSystemActor.MuseumNameBoardFossilCamera('LoopNum')
+            else:
+                fEvent9 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
+                if fEvent9 in (0, 1, 5):
+                    EventFlowSystemActor.MuseumNameBoardCamera('LoopNum')
+                elif fEvent9 in (3, 4):
+                    EventFlowSystemActor.MuseumNameBoardArtCamera('LoopNum')
+                elif fEvent9 == 2:
+                    if (EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum')) or (EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne('LoopNum')):
+                        EventFlowSystemActor.MuseumNameBoardFossilCamera('LoopNum')
+        fEvent17 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
+        if fEvent17 == 0:
+            if EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:002', false)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:008', false)
+        elif fEvent17 == 1:
+            if EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:001', false)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:007', false)
+        elif fEvent17 == 2:
+            if not EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:009', false)
+            elif not EventFlowSystemActor.MuseumNameBoardIsSingleFossilSet('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:003', true)
+            elif EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:010', true)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:011', true)
+        elif fEvent17 in (3, 4, 5):
+            if EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer('LoopNum'):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:012', false)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:013', false)
+            EventFlowSystemActor.OpenMessageNameBoardArtExplain('LoopNum', 0)
+            EventFlowSystemActor.OpenMessageNameBoardArtExplain('LoopNum', 1)
+        entry_variables['LoopNum'] += 1
+        run Event27
+    elif entry_variables['LoopNum'] == 0:
+        EventFlowSystemActor.StoreNormalCamera(false)
+        run sub_tm!Root
+    else:
+        fEvent23 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
+        if fEvent23 == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:005', false)
+        elif fEvent23 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
+        elif fEvent23 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:006', false)
+        elif fEvent23 in (3, 4, 5):
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:014', false)
+        run sub_tm!Root
+
+flow sub_tm!Root:
+    return
+

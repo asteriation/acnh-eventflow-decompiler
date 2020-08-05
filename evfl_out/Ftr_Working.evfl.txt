@@ -1,0 +1,487 @@
+flow Root:
+entrypoint Event115:
+    EventFlowSystemActor.SoundDuckingOn(18)
+    if EventFlowSystemActor.IsMyVillage():
+        if (EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi')) or (EventFlowSystemActor.SystemCheckNowStage('cIdrOffice')):
+            run sub_grp!Event84
+        elif not event_flags_system['cPlayer:MainmenuRecipe']:
+            run RecipeUIDisable
+        elif (not EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (not EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse')):
+            run WorkingTable_Normal
+        else:
+            run sub_Event55
+    elif event_flags_system['cPlayer:MainmenuRecipe']:
+        run WorkingTable_Borrow
+    else:
+        run RecipeUIDisable
+    return
+
+flow DIY:
+    EventFlowSystemActor.UIWorkingHandling('cCraft')
+    if not EventFlowSystemActor.UIResultMenuDecide():
+        EventFlowSystemActor.SoundDuckingOff(18)
+    elif EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
+        event_flags_system['cPlayer:RcoDoneDIYmyself'] = true
+        event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow'] = true
+        subflow_results[0] = 0
+        subflow_results[1] = 0
+        run Workbench_Cmn_DIYdemo
+        run ChkCraftWoodBridge
+        run ChkCraftCampKit
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.BGMPropertyControl(21)
+            Player.PlayerWorkbenchPutaway(false)
+            Player.PlayerDemoTurnToStarter()
+            EventFlowSystemActor.WaitFrame(10)
+            EventFlowSystemActor.BGMPropertyControl(22)
+            Player.PlayerWorkbenchThinking()
+            run DIY
+        else:
+            run Workbench_Cmn_DIYfinish
+    else:
+        subflow_results[0] = 0
+        subflow_results[1] = 0
+        run Workbench_Cmn_DIYdemo
+        run ChkCraftWoodBridge
+        run ChkCraftCampKit
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.BGMPropertyControl(21)
+            Player.PlayerWorkbenchPutaway(false)
+            Player.PlayerDemoTurnToStarter()
+            EventFlowSystemActor.WaitFrame(10)
+            EventFlowSystemActor.BGMPropertyControl(22)
+            Player.PlayerWorkbenchThinking()
+            run DIY
+        else:
+            run Workbench_Cmn_DIYfinish
+    return
+
+flow Remake:
+    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelectRemake', '', 'cWorkBenchRemake', false)
+    if EventFlowSystemActor.UIResultMenuDecide():
+        EventFlowSystemActor.UIWorkingHandling('cRemakeSelect')
+        if EventFlowSystemActor.UIResultMenuDecide():
+            subflow_results[0] = 1
+            subflow_results[1] = 0
+            run Workbench_Cmn_DIYdemo
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                EventFlowSystemActor.BGMPropertyControl(21)
+                Player.PlayerWorkbenchPutaway(true)
+                Player.PlayerDemoTurnToStarter()
+                EventFlowSystemActor.WaitFrame(10)
+                EventFlowSystemActor.BGMPropertyControl(22)
+                Player.PlayerWorkbenchThinking()
+                run Remake
+            else:
+                run Workbench_Cmn_DIYfinish
+        else:
+            run Remake
+    else:
+        EventFlowSystemActor.SoundDuckingOff(18)
+    return
+
+flow WorkingTable_Normal:
+    Player.PlayerWorkbenchThinking()
+    if event_flags_system['cPlayer:EnableDiyRemake']:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:001', true)
+        fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent1 == 0:
+            run DIY
+        elif fEvent1 == 1:
+            run Remake
+        elif fEvent1 == 2:
+            run Cancel
+    else:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:001_01', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run DIY
+        else:
+            run Cancel
+    return
+
+flow Root_Tutorial:
+    run Event115
+    return
+
+flow RcoDIYtrialOngoing:
+    if not EventFlowSystemActor.HasTargetItem(2500, 5):
+        DynamicCast_rco.RcoStandUpChair()
+        DynamicCast_rco.TurnBody(10, 0.0)
+        DynamicCast_rco.NpcWaitTurn()
+        MainNpc.TalkCamera(true, 0)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:911', false)
+        run sub_Event216
+    elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        DynamicCast_rco.RcoStandUpChair()
+        DynamicCast_rco.TurnBody(10, 0.0)
+        DynamicCast_rco.NpcWaitTurn()
+        MainNpc.TalkCamera(true, 0)
+        if not event_flags_system['cPlayer:RcoDIYtrialGetMaterial']:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:921', true)
+        EventFlowSystemActor.PlayerSetCraftRecipe(65534, 'DIYtutorial1')
+entrypoint Event94:
+        Player.PlayerDemoTurn('cNorth')
+        Player.TurnNeck(11)
+        Player.TurnBody(11, 0.0)
+        EventFlowSystemActor.UIWorkingHandling('cCraftTutorial')
+        if EventFlowSystemActor.UIResultMenuDecide():
+            subflow_results[0] = 0
+            subflow_results[1] = 1
+            run Workbench_Cmn_DIYdemo
+            fork:
+                branch0:
+                branch1:
+                    DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:922', true)
+                branch2:
+                    run Workbench_Cmn_DIYfinish
+            DynamicCast_rco.SmartPhone(0)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:922_01', true)
+            run Demo_Common_PhoneCall::SendingDataWithP_DynamicJoin
+            event_flags_system['cPlayer:MainmenuRecipe'] = true
+            EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cRecipe')
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:923', false)
+            run Demo_Common_PhoneCall::PuttingMobileAwayWithP_DynamicJoin
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:923_01', false)
+            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:923_02', false)
+            else:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:923_03', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(65534, 'DIYtutorial2')
+            if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                run UnlockAddRecipeFor2P
+            event_flags_system['cPlayer:RcoDIYtrialOngoing'] = false
+            event_flags_system['cLand:FlightBalloonEnable'] = true
+            event_flags_system['cLand:MessageBottleAvailable'] = true
+            EventFlowSystemActor.SoundDuckingOff(18)
+        else:
+            run DIY_DisableCancel
+    else:
+        DynamicCast_rco.RcoStandUpChair()
+        DynamicCast_rco.TurnBody(10, 0.0)
+        DynamicCast_rco.NpcWaitTurn()
+        MainNpc.TalkCamera(true, 0)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:912', false)
+        run sub_Event216
+    return
+
+flow DIY_DisableCancel:
+    run Event94
+    return
+
+flow WorkingTable_Borrow:
+    Player.PlayerWorkbenchThinking()
+    if event_flags_system['cPlayer:EnableDiyRemake']:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:021', false)
+        fEvent44 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent44 == 0:
+            run DIY
+        elif fEvent44 == 2:
+            run Cancel
+        elif fEvent44 == 1:
+            if EventFlowSystemActor.IsMyVillage():
+                run Remake
+            elif event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable']:
+                run sub_Event45
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_WorkingTable:022', false)
+                event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable'] = true
+                run sub_Event45
+    else:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:021_01', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run DIY
+        else:
+            run Cancel
+    return
+
+flow ChkCraftWoodBridge:
+    if (EventFlowSystemActor.PlayerHasCraftRecipe(7211, '')) and (EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 7211, 65534, 65534, 65534, 65534, 65534, 65534, 65534)):
+        EventFlowSystemActor.PlayerResetCraftRecipe('WoodBridge')
+        if EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
+            event_flags_system['cPlayer:ImmQBridgeMadeinRcoTent'] = true
+    return
+
+flow ChkCraftCampKit:
+    if (EventFlowSystemActor.PlayerHasCraftRecipe(5166, '')) and (EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 5166, 65534, 65534, 65534, 65534, 65534, 65534, 65534)):
+        EventFlowSystemActor.PlayerResetCraftRecipe('CampSite')
+        if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
+            event_flags_system['cPlayer:IslandDevQuestCampMadeRcotent'] = true
+    return
+
+flow RcoWorkingTableNormal:
+    Player.PlayerWorkbenchThinking()
+    if event_flags_system['cPlayer:EnableDiyRemake']:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:011_01', false)
+        fEvent181 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent181 == 0:
+            run DIY
+        elif fEvent181 == 1:
+            run Remake
+        elif fEvent181 == 2:
+            run Cancel
+    else:
+        Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:011', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run DIY
+        else:
+            run Cancel
+    return
+
+flow RcoRemakeTrialOngoing:
+    if not EventFlowSystemActor.HasTargetItem(3436, 1):
+        run RcoWorkingTableRemakeWorkshop
+    elif EventFlowSystemActor.NetHasVisitor():
+        run RcoWorkingTableRemakeWorkshop
+    else:
+        event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+        DynamicCast_rco.RcoStandUpChair()
+        DynamicCast_rco.NpcWaitTalkPrepare()
+        DynamicCast_rco.TurnBody(10, 0.0)
+        DynamicCast_rco.NpcWaitTurn()
+        Player.PlayerChangeStateDemoTalk()
+        Player.TurnBody(0, 0.0)
+        EventFlowSystemActor.NpcEventItemSet(3436, 0, 'cTalk', 'ItemPrice')
+        if not event_flags_system['cPlayer:RcoRemakeTrialGetFurniture']:
+            event_flags_system['cPlayer:RcoRemakeTrialGetFurniture'] = false
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:301', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:302', false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                run sub_grp!Event158
+            else:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:303', false)
+                event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull'] = true
+                EventFlowSystemActor.SoundDuckingOff(18)
+        elif not EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            run RcoWorkingTableRemakeWorkshop
+        elif event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull']:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_02', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:302', false)
+            run sub_grp!Event158
+        else:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_01', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:302', false)
+            run sub_grp!Event158
+    return
+
+flow RecipeUIDisable:
+    Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:002', false)
+entrypoint Event201:
+    EventFlowSystemActor.SoundDuckingOff(18)
+    return
+
+flow Cancel:
+    EventFlowSystemActor.SoundDuckingOff(18)
+    return
+
+flow RcoWorkingTableRemakeWorkshop:
+    Player.PlayerWorkbenchThinking()
+    Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:011_02', false)
+    fEvent208 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent208 == 0:
+        run DIY
+    elif fEvent208 == 2:
+        run Cancel
+    elif fEvent208 == 1:
+        if EventFlowSystemActor.NetHasVisitor():
+            run VisitorOnMyIsland
+        else:
+            EventFlowSystemActor.SoundDuckingOff(18)
+            event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+            event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = true
+            run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
+    return
+
+flow VisitorOnMyIsland:
+    Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:051', false)
+    run Event201
+    return
+
+flow Workbench_Cmn_DIYdemo:
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+    EventFlowSystemActor.BGMPropertyControl(19)
+    if subflow_results[0] == 0:
+        EventFlowSystemActor.SaveSetFromUIResult('cWorkCraft')
+        Player.PlayerWorkbenchMaking(false)
+        EventFlowSystemActor.BGMPropertyControl(20)
+        if subflow_results[1] == 0:
+            Player.PlayerWorkbenchGetDemo(false, false, false)
+            Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:031', true)
+        else:
+            fork:
+                branch0:
+                branch1:
+                    Player.PlayerWorkbenchGetDemo(true, true, false)
+                    Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:031_01', true)
+                branch2:
+                    DynamicCast_rco.NpcReaction('cAccomplish')
+    else:
+        EventFlowSystemActor.SaveSetFromUIResult('cWorkRemake')
+        Player.PlayerWorkbenchMaking(true)
+        EventFlowSystemActor.BGMPropertyControl(20)
+        if subflow_results[1] == 0:
+            Player.PlayerWorkbenchGetDemo(false, false, true)
+            Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:032', false)
+        else:
+            fork:
+                branch0:
+                branch1:
+                    Player.PlayerWorkbenchGetDemo(true, true, true)
+                    Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:032_01', true)
+                branch2:
+                    DynamicCast_rco.NpcReaction('cAccomplish')
+    return
+
+flow Workbench_Cmn_DIYfinish:
+    EventFlowSystemActor.BGMPropertyControl(21)
+    if subflow_results[1] == 0:
+        EventFlowSystemActor.StoreNormalCamera(false)
+        if subflow_results[0] == 0:
+            Player.PlayerWorkbenchPutaway(false)
+        else:
+            Player.PlayerWorkbenchPutaway(true)
+        EventFlowSystemActor.SoundDuckingOff(18)
+    else:
+        EventFlowSystemActor.BGMPropertyControl(22)
+        EventFlowSystemActor.WaitFrame(30)
+        if subflow_results[0] == 0:
+            Player.PlayerWorkbenchPutaway(false)
+        else:
+            Player.PlayerWorkbenchPutaway(true)
+        EventFlowSystemActor.WaitFrame(15)
+        Player.TurnBody(0, 0.0)
+    return
+
+flow RemakeWS_SharePlay:
+    run Event159
+    return
+
+flow UnlockAddRecipeFor2P:
+    if EventFlowSystemActor.ShopLevel() in (NooksCrannyInitial, NooksCrannyUpgraded):
+        EventFlowSystemActor.PlayerSetCraftRecipe(3068, 'None')
+        if event_flags_system['cLand:MuseumConstructionToday']:
+            EventFlowSystemActor.PlayerSetCraftRecipe(4703, 'None')
+            run sub_grp!Event266
+        else:
+            fEvent257 = EventFlowSystemActor.MuseumLevel()
+            if fEvent257 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                EventFlowSystemActor.PlayerSetCraftRecipe(4703, 'None')
+                run sub_grp!Event266
+            elif fEvent257 in (BlathersNotMovedIn, BlathersTent):
+                run sub_grp!Event266
+    return
+
+flow Root_Tutorial_Init:
+    MainNpc.NpcAISetting(4, false)
+    return
+
+flow sub_grp!Event84:
+    if event_flags_system['cPlayer:MainmenuRecipe']:
+        if event_flags_system['cPlayer:EnableDiyRemake']:
+            run RcoWorkingTableNormal
+        elif event_flags_system['cPlayer:RcoRemakeTrialOngoing']:
+            run RcoRemakeTrialOngoing
+        elif event_flags_system['cPlayer:RcoEnableRemakeTrial']:
+            run RcoWorkingTableRemakeWorkshop
+        else:
+            run RcoWorkingTableNormal
+    elif not event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
+        run RecipeUIDisable
+    elif event_flags_system['cPlayer:RcoHeardDetailDIYtrial']:
+        if EventFlowSystemActor.NetHasVisitor():
+            run VisitorOnMyIsland
+        else:
+            run RcoDIYtrialOngoing
+    elif EventFlowSystemActor.NetHasVisitor():
+        run RecipeUIDisable
+    elif MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:901', false)
+        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+            MainNpc.RcoStandUpChair()
+            MainNpc.TalkCamera(true, 0)
+        EventFlowSystemActor.SoundDuckingOff(18)
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAskDIYtrial
+    else:
+        MainNpc.TalkCamera(true, 0)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:901', false)
+        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+            MainNpc.RcoStandUpChair()
+            MainNpc.TalkCamera(true, 0)
+        EventFlowSystemActor.SoundDuckingOff(18)
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAskDIYtrial
+
+flow sub_Event55:
+    run WorkingTable_Borrow
+
+flow sub_Event216:
+    EventFlowSystemActor.SoundDuckingOff(18)
+
+flow sub_Event45:
+    run Remake
+
+flow sub_grp!Event158:
+    fEvent158 = EventFlowSystemActor.OfficeLevel()
+    if fEvent158 == ResServiceBuilding:
+entrypoint Event159:
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304_01', true)
+        EventFlowSystemActor.SetItemToPocket(2513, 50)
+        Player.TurnBody(11, 0.0)
+        Player.TurnNeck(11)
+        Player.PlayerDemoTurn('cNorth')
+        Player.PlayerWaitTurn()
+        EventFlowSystemActor.UIItemSelectWindowHandling(3436, '', 'cItemSelectRemakeTutorial', '', 'cItemName', false)
+        EventFlowSystemActor.UIWorkingHandling('cRemakeSelectTutorial')
+        subflow_results[0] = 1
+        subflow_results[1] = 1
+        run Workbench_Cmn_DIYdemo
+        fork:
+            branch0:
+            branch1:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:401', false)
+            branch2:
+                run Workbench_Cmn_DIYfinish
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:402', false)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:403', true)
+        event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = false
+        event_flags_system['cPlayer:RcoEnableRemakeTrial'] = false
+        event_flags_system['cPlayer:EnableDiyRemake'] = true
+        EventFlowSystemActor.SoundDuckingOff(18)
+    elif fEvent158 in (ResServiceTent0, ResServiceTent1):
+        if EventFlowSystemActor.IsSharePlay(0):
+            run RemakeWS_SharePlay
+        else:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304', true)
+            if event_flags_system['cLandTemp:RcoRemakeWSInThisScene']:
+                pass
+            else:
+                DynamicCast_rco.NpcRailMove(2, 0, 1, 0, false, false)
+                event_flags_system['cLandTemp:RcoRemakeWSInThisScene'] = true
+            DynamicCast_rco.SetDeliveryItemAtRandom(2513, false, 'cVillageRemakePattern', 0)
+            DynamicCast_rco.NpcDelivery('Default', 1)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304_02', true)
+            EventFlowSystemActor.SetItemToPocket(2513, 50)
+            Player.TurnBody(11, 0.0)
+            Player.TurnNeck(11)
+            Player.PlayerDemoTurn('cNorth')
+            Player.PlayerWaitTurn()
+            EventFlowSystemActor.UIItemSelectWindowHandling(3436, '', 'cItemSelectRemakeTutorial', '', 'cItemName', false)
+            EventFlowSystemActor.UIWorkingHandling('cRemakeSelectTutorial')
+            subflow_results[0] = 1
+            subflow_results[1] = 1
+            run Workbench_Cmn_DIYdemo
+            fork:
+                branch0:
+                branch1:
+                    DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:401', false)
+                branch2:
+                    run Workbench_Cmn_DIYfinish
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:402', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:403', true)
+            event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = false
+            event_flags_system['cPlayer:RcoEnableRemakeTrial'] = false
+            event_flags_system['cPlayer:EnableDiyRemake'] = true
+            EventFlowSystemActor.SoundDuckingOff(18)
+
+flow sub_grp!Event266:
+    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+        EventFlowSystemActor.PlayerSetCraftRecipe(2615, 'None')
+

@@ -1,0 +1,7 @@
+flow Root:
+    EventFlowSystemActor.QuitSharePlay()
+    EventFlowSystemActor.MessageSuspend()
+    event_flags_system['cPlayer:EquipLicenseHelmet'] = false
+    EventFlowSystemActor.SystemRequestChangeStage('cGrowUpPlayerSwitch', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+    return
+

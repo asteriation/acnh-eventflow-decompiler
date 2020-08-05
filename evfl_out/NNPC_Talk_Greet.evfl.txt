@@ -1,0 +1,116 @@
+flow Root:
+    MainNpc.NpcSetTalkManualChoice()
+    if event_flag_npc['cNpcMemory:StoodUpFlag']:
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Connect_StandingUp', '', '', '', true)
+        event_flags_npc['cNpcMemory:StoodUpFlag'] = false
+    elif not EventFlowSystemActor.IsMyVillage():
+        run NNPC_Talk_GreetV::Root
+    elif event_flags_npc['cNpcMemory:ContinuousTalkCount'] < 1:
+        if not ((MainNpc.NpcLivingDays(5)) and (EventFlowSystemActor.SystemCheckPastDaysFromPlayerMade(5))):
+            if event_flags_system['cPlayer:NnpcFinishHintTalk']:
+                event_flags_npc['cNpcMemory:Again2Count'] += 1
+            run Greet_LifeStart
+        elif event_flags_npc['cNpcMemory:ContinuousTalkCount'] >= 5:
+            run Greet_Again1
+        else:
+            event_flags_npc['cNpcMemory:Again2Count'] += 1
+            run Greet_Again2
+    elif EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+        if event_flags_npc['cNpcMemory:TalkCountInNpcHouseToday'] < 3:
+            run Greet_House3
+        elif event_flags_npc['cNpcMemory:TalkCountInNpcHouseToday'] < 1:
+            run Greet_House2
+        elif MainNpc.NpcIsExistOtherNpc():
+            MainNpc.SetNpcName(0, 16)
+            MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House_H', '', '', '', true)
+        else:
+            run Greet_House1
+    elif MainNpc.ContinuousNpcTalkCount(5):
+        run Greet_Field3
+    elif MainNpc.ContinuousNpcTalkCount(1):
+        run Greet_XX2
+    elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
+        MainNpc.SetNpcName(0, 15)
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House_G', '', '', '', true)
+    else:
+        run Greet_Field1
+    return
+
+flow Greet_Again2:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Again2', '', '', '')
+    return
+
+flow Greet_Again1:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Again1', '', '', '')
+    return
+
+flow Greet_Field3:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field3', '', '', '')
+    return
+
+flow Greet_House2:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House2', '', '', '')
+    return
+
+flow Greet_House3:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House3', '', '', '')
+    return
+
+flow Greet_Field1:
+    fEvent137 = MainNpc.EnvWeatherNNpcTalkCustom()
+    if fEvent137 == 0:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 1:
+        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 2:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 3:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 4:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 5:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    elif fEvent137 == 6:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Field1', '', '', '')
+    return
+
+flow Greet_XX2:
+    fEvent24 = MainNpc.EnvWeatherNNpcTalkCustom()
+    if fEvent24 == 0:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Fine2', '', '', '')
+    elif fEvent24 == 1:
+        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Fine2', '', '', '')
+    elif fEvent24 == 2:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Rain2', '', '', '')
+    elif fEvent24 == 3:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Rain2', '', '', '')
+    elif fEvent24 == 4:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Snow2', '', '', '')
+    elif fEvent24 == 5:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Snow2', '', '', '')
+    elif fEvent24 == 6:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Fine2', '', '', '')
+    return
+
+flow Greet_House1:
+    fEvent12 = MainNpc.EnvWeatherNNpcTalkCustom()
+    if fEvent12 == 0:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 1:
+        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 2:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 3:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 4:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 5:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    elif fEvent12 == 6:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_House1', '', '', '')
+    return
+
+flow Greet_LifeStart:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_Greet_Again_LifeStart', '', '', '')
+    return
+

@@ -1,0 +1,13 @@
+flow Root:
+    run NNPC_FreeH::Progress_InHouse_Chk
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeEF::FreeF_Chk
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeD::KeywordC
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeG::Root
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeC::FunitureN_Chk
+    run NNPC_FreeC::RoomN_Chk
+    return
+

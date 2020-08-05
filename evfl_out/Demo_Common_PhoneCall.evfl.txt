@@ -1,0 +1,158 @@
+flow CallIn:
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhoneSE('Phone_Incoming', 0)
+    EventFlowSystemActor.WaitFrame(25)
+    MainNpc.CharacterEmoticonAction('Shocked', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(5)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:015_01', true)
+    MainNpc.SmartPhone(0)
+    MainNpc.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhoneSE('Phone_Incoming', 1)
+    MainNpc.SmartPhoneSE('Phone_Unlock', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhone(5)
+    MainNpc.SmartPhone(2)
+    return
+
+flow FinishCall:
+    MainNpc.SmartPhone(3)
+    EventFlowSystemActor.WaitFrame(1)
+    MainNpc.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhoneSE('Phone_Unlock', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhone(1)
+    return
+
+flow SendingDataOneWay:
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.SmartPhone(0)
+    MainNpc.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(40)
+    MainNpc.SmartPhone(5)
+    return
+
+flow SendingDataWithP:
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhone(0)
+    fork:
+        branch0:
+        branch1:
+            Player.SmartPhone(4)
+        branch2:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 30, true, false)
+    run Event23
+    return
+
+flow PuttingMobileAwayWithP:
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SmartPhone(1)
+        branch2:
+            EventFlowSystemActor.WaitFrame(15)
+            Player.SmartPhone(1)
+    return
+
+flow SendingDataWithP_Owl:
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SmartPhone(0)
+        branch2:
+            EventFlowSystemActor.WaitFrame(30)
+            Player.SmartPhone(0)
+    Player.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(5)
+    MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+entrypoint Event23:
+    EventFlowSystemActor.WaitFrame(20)
+    MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
+    MainNpc.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.SmartPhoneSE('Phone_Recieving', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.SmartPhone(5)
+    Player.SmartPhone(5)
+    return
+
+flow MakingPhoneCall:
+    EventFlowSystemActor.WaitFrame(5)
+    DynamicCast_rco.SmartPhone(0)
+    DynamicCast_rco.SmartPhone(4)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhone(2)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 0)
+    EventFlowSystemActor.WaitFrame(120)
+    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 1)
+    EventFlowSystemActor.WaitFrame(1)
+    DynamicCast_rco.SmartPhoneSE('Phone_Unlock', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    return
+
+flow FinishingPhoneCall:
+    EventFlowSystemActor.WaitFrame(5)
+    DynamicCast_rco.SmartPhone(3)
+    EventFlowSystemActor.WaitFrame(1)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    return
+
+flow SendingDataOneWay_DynamicJoin:
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhone(0)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(40)
+    DynamicCast_rco.SmartPhone(5)
+    return
+
+flow SendingDataWithP_DynamicJoin:
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhone(0)
+    fork:
+        branch0:
+        branch1:
+            Player.SmartPhone(4)
+        branch2:
+            DynamicCast_rco.CharacterEmoticonAction('Smiling', '', 30, true, false)
+    EventFlowSystemActor.WaitFrame(20)
+    DynamicCast_rco.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.SmartPhoneSE('Phone_Recieving', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhone(5)
+    Player.SmartPhone(5)
+    return
+
+flow PuttingMobileAwayWithP_DynamicJoin:
+    fork:
+        branch0:
+        branch1:
+            DynamicCast_rco.SmartPhone(1)
+        branch2:
+            EventFlowSystemActor.WaitFrame(15)
+            Player.SmartPhone(1)
+    return
+

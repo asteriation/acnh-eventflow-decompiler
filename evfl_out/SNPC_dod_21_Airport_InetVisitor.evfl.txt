@@ -1,0 +1,532 @@
+flow EntryPoint_ResearchInet:
+    if EventFlowSystemActor.NetIsNeedPassword('cNeedPassword'):
+        run EntryPoint_Reinput_Keyword
+    else:
+        EventFlowSystemActor.MessageLockNext(1)
+        run SNPC_dod_AirPort::EntryPoint_PreProcedure
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+        EventFlowSystemActor.NetFindSessionVillage('cRetry')
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.MessageUnlockNext()
+        run Event94
+    return
+
+flow EntryPoint_RockRetryInet:
+    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+    run Event48
+    return
+
+flow EntryPoint_InetVisitor:
+    if not event_flags_system['cPlayer:OdekakeFirstInternet']:
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:092', true)
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0804', true)
+        event_flags_system['cPlayer:OdekakeFirstInternet'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:130', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.MessageSuspend()
+        run SNPC_dod_AirPort::EntryPoint_PreProcedure
+        run System_ServerRegistration::UserRegist
+        run SNPC_dod_AirPort::EntryPoint_PostProcedure
+        if (event_flags_system['cPlayer:UploadPlayerProfileIllegal']) and (not event_flags_system['cPlayer:ImprovePlayerProfile']):
+            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:700', true)
+        else:
+entrypoint Event18:
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:500', true)
+            fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent19 == 1:
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:600', true)
+                EventFlowSystemActor.UISoftwareKeyboardPasswordHandling(true)
+entrypoint Event24:
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                    EventFlowSystemActor.MessageLockNext(1)
+                    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+                    EventFlowSystemActor.NetFindSessionVillage('cPassword')
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.MessageUnlockNext()
+entrypoint Event94:
+                    run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                    fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
+                    if fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                    elif fEvent35 == 2:
+                        EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
+                        event_flags_system['cPlayerTemp:AirportTripListError'] = false
+                        EventFlowSystemActor.OpenVillageList()
+                        if event_flags_system['cPlayerTemp:AirportTripListError']:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                            fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
+                            if fEvent61 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent61 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 1:
+                        if EventFlowSystemActor.NetAllSessionIsFull():
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                run EntryPoint_ResearchInet
+                            else:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:104', false)
+                            fEvent41 = EventFlowSystemActor.GeneralTalkChoice3()
+                            if fEvent41 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent41 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent41 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                else:
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    run SNPC_dod_AirPort::EntryPoint_Cancel
+            elif fEvent19 == 2:
+                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                run SNPC_dod_AirPort::EntryPoint_Cancel
+            elif fEvent19 == 0:
+                if not EventFlowSystemActor.NetHasFriend():
+                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:220', true)
+                elif event_flags_system['cPlayer:MainmenuFriendList']:
+                    EventFlowSystemActor.MessageLockNext(1)
+                    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+                    EventFlowSystemActor.NetFindSessionVillage('cFriend')
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.MessageUnlockNext()
+entrypoint Event94:
+                    run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                    fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
+                    if fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                    elif fEvent35 == 2:
+                        EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
+                        event_flags_system['cPlayerTemp:AirportTripListError'] = false
+                        EventFlowSystemActor.OpenVillageList()
+                        if event_flags_system['cPlayerTemp:AirportTripListError']:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                            fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
+                            if fEvent61 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent61 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 1:
+                        if EventFlowSystemActor.NetAllSessionIsFull():
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                run EntryPoint_ResearchInet
+                            else:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:104', false)
+                            fEvent41 = EventFlowSystemActor.GeneralTalkChoice3()
+                            if fEvent41 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent41 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent41 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                else:
+                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                    EventFlowSystemActor.MessageLockNext(1)
+                    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+                    EventFlowSystemActor.NetFindSessionVillage('cFriend')
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.MessageUnlockNext()
+entrypoint Event94:
+                    run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                    fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
+                    if fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                    elif fEvent35 == 2:
+                        EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
+                        event_flags_system['cPlayerTemp:AirportTripListError'] = false
+                        EventFlowSystemActor.OpenVillageList()
+                        if event_flags_system['cPlayerTemp:AirportTripListError']:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                            fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
+                            if fEvent61 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent61 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 1:
+                        if EventFlowSystemActor.NetAllSessionIsFull():
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                run EntryPoint_ResearchInet
+                            else:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:104', false)
+                            fEvent41 = EventFlowSystemActor.GeneralTalkChoice3()
+                            if fEvent41 == 1:
+                                run EntryPoint_ResearchInet
+                            elif fEvent41 == 2:
+                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent41 == 0:
+                                if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
+                                    run SNPC_dod_22_Airport_InstallFriendList::Root
+                                run SNPC_dod_AirPort::EntryPoint_PreProcedure
+                                EventFlowSystemActor.MessageLockNext(1)
+                                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+                                EventFlowSystemActor.NetJoinSessionVillage()
+entrypoint Event48:
+                                EventFlowSystemActor.NetDemoLock(0)
+                                EventFlowSystemActor.MessageSuspend()
+                                EventFlowSystemActor.MessageUnlockNext()
+                                run SNPC_dod_AirPort::EntryPoint_PostProcedure
+                                if EventFlowSystemActor.CheckErrorType(2):
+                                    fEvent12 = EventFlowSystemActor.NetLockFailReason()
+                                    if fEvent12 == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
+                                        fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
+                                        if fEvent53 == 1:
+                                            run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                run sub_Event57
+                                            else:
+                                                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                                run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 2:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run sub_Event57
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                else:
+                                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                        run SNPC_dod_AirPort::LandMakingRemove_Visitor
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
+                                    run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+    else:
+        run SNPC_dod_AirPort::EntryPoint_Cancel
+    return
+
+flow EntryPoint_Reinput_Keyword:
+    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+    EventFlowSystemActor.UISoftwareKeyboardPasswordHandling(false)
+    run Event24
+    return
+
+flow EntryPoint_Reselect:
+    run Event18
+    return
+
+flow sub_Event57:
+    run EntryPoint_RockRetryInet
+

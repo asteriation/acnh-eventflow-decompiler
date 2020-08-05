@@ -1,0 +1,21 @@
+flow Root:
+    if (not MainNpc.NpcCheckStateSelectTiming('cInit')) and (MainNpc.NpcBlackBoard('GiveScallop', 0)):
+        MainNpc.NpcChangeAIState('cSeoSurface', 'SNPC_seo', 'Root', '', false, false)
+    else:
+        MainNpc.NpcChangeAIState('cInvisible', 'SNPC_seo', 'Root', '', false, true)
+        MainNpc.SetDefaultWaitAs('cSeoSwimWait')
+        MainNpc.NpcAISetting(4, false)
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(8, false)
+    MainNpc.NpcAISetting(4, false)
+    MainNpc.NpcAISetting(11, false)
+    MainNpc.NpcRegistAIBlackBoard('GiveScallop', -1)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(18, true)
+    return
+

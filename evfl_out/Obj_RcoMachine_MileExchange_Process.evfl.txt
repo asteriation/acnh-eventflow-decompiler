@@ -1,0 +1,44 @@
+flow MileExchange_SetHowtoItem:
+    subflow_results[1] = 0
+    subflow_results[2] = 0
+    if any (12185, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[2] = 1
+    elif any (9049, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 0
+    elif any (9050, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 1
+    elif any (9051, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 2
+    elif any (9052, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 3
+    elif any (11140, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 4
+    elif any (9616, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        subflow_results[1] = 5
+    else:
+        subflow_results[2] = 2
+    return
+
+flow ReceiveLisenceEnable:
+    if any (8780, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_River', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8781, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Cliff', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (9771, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8773, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path0', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8774, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path1', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8775, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path2', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8776, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path3', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8777, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path4', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    elif any (8778, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path5', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    else:
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_App_Licence_Path6', 'cNowDemoEnd', 'Player_GetDemo_MileExchange', true)
+    return
+

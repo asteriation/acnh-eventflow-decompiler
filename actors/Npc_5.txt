@@ -1,0 +1,15 @@
+Actor Npc_5
+actions:
+- Npc_5.ChangeNpcPlace(NpcPlace: str)
+queries:
+Actor GeneralObject
+actions:
+- GeneralObject.StartAnimation(ActionName: str, ActionType: str)
+- GeneralObject.SetTagFromSystem(TagID: int, TagType: str, SetTagType: str, AccessKey: str, Value: any)
+queries:
+- GeneralObject.SettlerQuest() -> int4
+- GeneralObject.CheckLockReason() -> int6
+- GeneralObject.HouseOwnerLooks() -> int8
+- GeneralObject.HouseIsTent() -> bool
+- GeneralObject.CheckPlayerHouseLockReason() -> int3
+

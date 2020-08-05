@@ -1,0 +1,67 @@
+flow Root:
+    if EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:StampRallyRunningForPlayer']:
+            Ftr.OpenMessageStampRackSpotName()
+            Ftr.OpenMessageStampRackSpotExplain()
+            EventFlowSystemActor.UIStampRallyMuseumFromStampRackHandling()
+            if EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect'):
+                if EventFlowSystemActor.IsMyVillage():
+                    if (not event_flags_system['cPlayer:OwlStampGotInsect']) and (event_flags_system['cPlayer:OwlInsectStampRally1']) and (event_flags_system['cPlayer:OwlInsectStampRally2']) and (event_flags_system['cPlayer:OwlInsectStampRally3']):
+                        run sub_Event40
+                elif (not event_flags_system['cPlayerVisit:OwlStampGotInsect']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally1']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally2']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally3']):
+                    run sub_Event40
+            elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFish'):
+                if EventFlowSystemActor.IsMyVillage():
+                    if (not event_flags_system['cPlayer:OwlStampGotFish']) and (event_flags_system['cPlayer:OwlFishStampRally1']) and (event_flags_system['cPlayer:OwlFishStampRally2']) and (event_flags_system['cPlayer:OwlFishStampRally3']):
+                        run sub_Event41
+                elif (not event_flags_system['cPlayerVisit:OwlStampGotFish']) and (event_flags_system['cPlayerVisit:OwlFishStampRally1']) and (event_flags_system['cPlayerVisit:OwlFishStampRally2']) and (event_flags_system['cPlayerVisit:OwlFishStampRally3']):
+                    run sub_Event41
+            elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil'):
+                if EventFlowSystemActor.IsMyVillage():
+                    if (not event_flags_system['cPlayer:OwlStampGotFossil']) and (event_flags_system['cPlayer:OwlFossilStampRally1']) and (event_flags_system['cPlayer:OwlFossilStampRally2']) and (event_flags_system['cPlayer:OwlFossilStampRally3']):
+                        run sub_Event42
+                elif (not event_flags_system['cPlayerVisit:OwlStampGotFossil']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally1']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally2']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally3']):
+                    run sub_Event42
+        else:
+            run sub_Event37
+    elif event_flags_system['cPlayerVisit:StampRallyRunningForPlayer']:
+        Ftr.OpenMessageStampRackSpotName()
+        Ftr.OpenMessageStampRackSpotExplain()
+        EventFlowSystemActor.UIStampRallyMuseumFromStampRackHandling()
+        if EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect'):
+            if EventFlowSystemActor.IsMyVillage():
+                if (not event_flags_system['cPlayer:OwlStampGotInsect']) and (event_flags_system['cPlayer:OwlInsectStampRally1']) and (event_flags_system['cPlayer:OwlInsectStampRally2']) and (event_flags_system['cPlayer:OwlInsectStampRally3']):
+                    run sub_Event40
+            elif (not event_flags_system['cPlayerVisit:OwlStampGotInsect']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally1']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally2']) and (event_flags_system['cPlayerVisit:OwlInsectStampRally3']):
+                run sub_Event40
+        elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFish'):
+            if EventFlowSystemActor.IsMyVillage():
+                if (not event_flags_system['cPlayer:OwlStampGotFish']) and (event_flags_system['cPlayer:OwlFishStampRally1']) and (event_flags_system['cPlayer:OwlFishStampRally2']) and (event_flags_system['cPlayer:OwlFishStampRally3']):
+                    run sub_Event41
+            elif (not event_flags_system['cPlayerVisit:OwlStampGotFish']) and (event_flags_system['cPlayerVisit:OwlFishStampRally1']) and (event_flags_system['cPlayerVisit:OwlFishStampRally2']) and (event_flags_system['cPlayerVisit:OwlFishStampRally3']):
+                run sub_Event41
+        elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil'):
+            if EventFlowSystemActor.IsMyVillage():
+                if (not event_flags_system['cPlayer:OwlStampGotFossil']) and (event_flags_system['cPlayer:OwlFossilStampRally1']) and (event_flags_system['cPlayer:OwlFossilStampRally2']) and (event_flags_system['cPlayer:OwlFossilStampRally3']):
+                    run sub_Event42
+            elif (not event_flags_system['cPlayerVisit:OwlStampGotFossil']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally1']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally2']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally3']):
+                run sub_Event42
+    else:
+        run sub_Event37
+    run sub_tm!Root
+
+flow sub_tm!Root:
+    return
+
+flow sub_Event40:
+    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:301', false)
+
+flow sub_Event41:
+    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:302', false)
+
+flow sub_Event42:
+    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:303', false)
+
+flow sub_Event37:
+    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:304', false)
+

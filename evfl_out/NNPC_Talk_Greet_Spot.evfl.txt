@@ -1,0 +1,91 @@
+flow Root:
+    MainNpc.NpcSetTalkManualChoice()
+    if EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Museum_Insect
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFish'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Museum_Fish
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Museum_Fossil
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    elif EventFlowSystemActor.SystemCheckNowStage('cMametubu'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Store
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    elif EventFlowSystemActor.SystemCheckNowStage('cTailor'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Tailor
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    elif EventFlowSystemActor.SystemCheckNowStage('cMuseumArt'):
+        if event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] >= 1:
+            run Greet_Museum_Art
+            run sub_Event21
+        else:
+            run NNPC_Talk_Greet::Greet_Again1
+            run sub_Event21
+    return
+
+flow Greet_Museum_Insect:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:002', false)
+    return
+
+flow Greet_Store:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:006', false)
+    return
+
+flow Greet_Tailor:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:007', false)
+    return
+
+flow Greet_Museum_Fish:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:003', false)
+    return
+
+flow Greet_Museum_Fossil:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:004', false)
+    return
+
+flow Greet_Museum_Art:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Greet/BO_Greet_Spot:005', false)
+    return
+
+flow sub_Event21:
+    event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] += 1
+

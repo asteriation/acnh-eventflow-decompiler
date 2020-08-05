@@ -1,0 +1,249 @@
+flow Root:
+    run Demo_PublicAnnouncement_22_CmnNoNewsChk::Root
+    if subflow_results[0] == 0:
+        if subflow_results[15] != 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:901', true)
+        elif subflow_results[12] != 0:
+            run Demo_PublicAnnouncement_41_CmnNoNews_Hint::SeasonNews_Rco
+        elif EventFlowSystemActor.EnvSameDate('cEndOfTheYear', 'cNowTime'):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:601', false)
+        else:
+            fEvent87 = EventFlowSystemActor.EnvSpecialWeather()
+            if fEvent87 in (1, 2):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:602', false)
+                run sub_Event100
+            elif fEvent87 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:603', false)
+                run sub_Event100
+            elif fEvent87 in (4, 5, 6, 7, 8, 9):
+                run RcoNoNews_Normal
+            elif fEvent87 == 0:
+entrypoint Event21:
+                if event_flags_system['cPlayer:PAnnounceHintRnd']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:801', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:802', false)
+                    if EventFlowSystemActor.PercentChoice(30):
+                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:701', false)
+                        run Demo_PublicAnnouncement_41_CmnNoNews_Hint::Root
+                    else:
+                        event_flags_system['cPlayer:PAnnounceHintRnd'] = false
+                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:803', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
+                else:
+                    event_flags_system['cPlayer:PAnnounceHintRnd'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:800', false)
+                    run Demo_PublicAnnouncement_41_CmnNoNews_Hint::Root
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
+    elif subflow_results[15] == 0:
+        if subflow_results[12] != 0:
+            run Demo_PublicAnnouncement_41_CmnNoNews_Hint::SeasonNews_Sza
+        elif EventFlowSystemActor.EnvSameDate('cEndOfTheMonth', 'cGrowUpTime'):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:801', false)
+            if EventFlowSystemActor.EnvHourCompare(2, -1, true, false) != 0:
+                run sub_Event7
+            elif EventFlowSystemActor.EnvHourCompare(0, -1, true, false) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:802', false)
+                run Sza_LastDayOfMonthA
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:803', false)
+                run Sza_LastDayOfMonthB
+        else:
+            fEvent92 = EventFlowSystemActor.EnvSpecialWeather()
+            if fEvent92 == 0:
+                run SzaNoNews_Normal
+            elif fEvent92 in (1, 2):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:600', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:602', false)
+                run sub_Event7
+            elif fEvent92 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:600', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:603', false)
+                run sub_Event7
+            elif fEvent92 in (4, 5, 6, 7, 8, 9):
+                run SzaNoNews_Normal
+    else:
+        run sub_Event7
+    return
+
+flow Sza_LastDayOfMonthA:
+    fEvent36 = EventFlowSystemActor.EnvMonth()
+    if fEvent36 == 0:
+        run Jan
+    elif fEvent36 == 1:
+        run February
+    elif fEvent36 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_03', false)
+    elif fEvent36 == 3:
+        run April
+    elif fEvent36 == 4:
+        run May
+    elif fEvent36 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_06', false)
+    elif fEvent36 == 6:
+        run July
+    elif fEvent36 == 7:
+        run August
+    elif fEvent36 == 8:
+        run September
+    elif fEvent36 == 9:
+        run October
+    elif fEvent36 == 10:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_11', false)
+    return
+
+flow Sza_LastDayOfMonthB:
+    fEvent32 = EventFlowSystemActor.EnvMonth()
+    if fEvent32 == 1:
+        run Jan
+    elif fEvent32 == 2:
+        run February
+    elif fEvent32 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_03', false)
+    elif fEvent32 == 4:
+        run April
+    elif fEvent32 == 5:
+        run May
+    elif fEvent32 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_06', false)
+    elif fEvent32 == 7:
+        run July
+    elif fEvent32 == 8:
+        run August
+    elif fEvent32 == 9:
+        run September
+    elif fEvent32 == 10:
+        run October
+    elif fEvent32 == 11:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_11', false)
+    return
+
+flow May:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_05_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_05_02', false)
+    return
+
+flow August:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_08_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_08_02', false)
+    return
+
+flow April:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_04_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_04_02', false)
+    return
+
+flow September:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_09_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_09_02', false)
+    return
+
+flow July:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_07_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_07_02', false)
+    return
+
+flow Jan:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_01_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_01_02', false)
+    return
+
+flow RcoNoNews_Normal:
+    run Event21
+    return
+
+flow SzaNoNews_Normal:
+    if event_flags_system['cPlayer:TownNewsHeard1st']:
+        fEvent117 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent117 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:701', false)
+            if EventFlowSystemActor.PercentChoice(5):
+                if EventFlowSystemActor.LandFruit() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:703_01', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:703_02', false)
+            elif EventFlowSystemActor.PercentChoice(95):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:702', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:831', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:899', false)
+            run sub_Event113
+        elif fEvent117 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:820', false)
+            fEvent112 = EventFlowSystemActor.EnvDayOfWeek()
+            if fEvent112 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:821', false)
+            elif fEvent112 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:822', false)
+            elif fEvent112 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:823', false)
+            elif fEvent112 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:824', false)
+            elif fEvent112 == 4:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:825', false)
+            elif fEvent112 == 5:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:826', false)
+            elif fEvent112 == 6:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:827', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:828', false)
+            run sub_Event113
+        elif fEvent117 == 2:
+            run sub_grp!Event111
+    else:
+        run sub_grp!Event111
+    return
+
+flow October:
+    if EventFlowSystemActor.EnvHourCompare(22, -1, true, false) == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_10_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_10_02', false)
+    return
+
+flow February:
+    if EventFlowSystemActor.EnvHourCompare(21, -1, true, false) == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_02_01', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:804_02_02', false)
+    return
+
+flow sub_Event100:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
+
+flow sub_Event7:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
+
+flow sub_Event113:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
+
+flow sub_grp!Event111:
+    fEvent111 = EventFlowSystemActor.EnvDayOfWeek()
+    if fEvent111 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:805', false)
+    elif fEvent111 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:806', false)
+    elif fEvent111 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:807', false)
+    elif fEvent111 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:808', false)
+    elif fEvent111 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:809', false)
+    elif fEvent111 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:810', false)
+    elif fEvent111 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:811', false)
+

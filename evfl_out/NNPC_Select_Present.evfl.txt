@@ -1,0 +1,160 @@
+flow Root:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:003', true)
+    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cGiftToNpc', true)
+    if EventFlowSystemActor.UIResultMenuDecide():
+        MainNpc.SetPriceCalcItem(0)
+        EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+        MainNpc.SetDeliveryItem(4, false)
+        MainNpc.NpcDelivery('Keep', 0)
+        if EventFlowSystemActor.UISelectedItemIsWrapping('cItemSelect'):
+            subflow_results[0] = 0
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:004', true)
+            MainNpc.NpcDelivery('Keep', 6)
+            MainNpc.SetItemName(0, 14, 0)
+        else:
+            subflow_results[0] = 1
+        run ItemAdd_Chk
+        if EventFlowSystemActor.KindBitParamItemSelectInclude('食べる', 'cItemSelect'):
+            run NNPC_Select_Creature::Food
+            run sub_Event48
+        elif EventFlowSystemActor.KindBitParamItemSelectInclude('植える', 'cItemSelect'):
+            run NNPC_Select_Creature::Plant
+            run sub_Event48
+        elif any ('CraftMaterial', 'CraftRemake', 'Ore', 'ShellDrift', 'Honeycomb', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+            run NNPC_Select_Tool::DIY
+            run Select_Finish_Disappear
+        elif any ('Flower', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+            run NNPC_Select_Creature::Flower
+            run Select_Finish
+            event_flags_system['cLifeSupportDaily:EDSendFlower'] = true
+        else:
+            fEvent9 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'PitFallSeed', 'PartyPopper', 'Medicine', 'FishBait')
+            if fEvent9 == 1:
+                run NNPC_Select_Etc::Etc_Plural
+                run sub_Event62
+            elif fEvent9 == 2:
+                run NNPC_Select_Tool::Nouse_Plural
+                run sub_Event62
+            elif fEvent9 in (3, 4):
+                run NNPC_Select_Etc::Etc_Plural
+                run sub_Event62
+            elif fEvent9 == 0:
+                fEvent50 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'LoveCrystal', 'BlowBubble', 'EasterEgg', 'FierworkHand')
+                if fEvent50 == 1:
+                    run NNPC_Select_Etc::Love
+                    run sub_Event62
+                elif fEvent50 == 2:
+                    run NNPC_Select_Tool::Nouse_Plural
+                    run sub_Event62
+                elif fEvent50 == 3:
+                    run NNPC_Select_Etc::Etc_Plural
+                    run sub_Event62
+                elif fEvent50 == 4:
+                    run NNPC_Select_Tool::MobileFireWorks
+                    run Select_Finish
+                elif fEvent50 == 0:
+                    MainNpc.SetDeliveryItemApplySave()
+                    fEvent65 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Fish', 'Insect', 'DiveFish')
+                    if fEvent65 == 1:
+                        run NNPC_Select_Creature::Fish
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
+                    elif fEvent65 == 2:
+                        run NNPC_Select_Creature::Insect
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
+                    elif fEvent65 == 3:
+                        run NNPC_Select_Creature::DiveFish
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
+                    elif fEvent65 == 0:
+                        if any ('Ftr', 'DoorDeco', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Furniture::Furniture
+                            run sub_Event46
+                        elif any ('Sculpture', 'SculptureFake', 'Picture', 'PictureFake', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Furniture::Art
+                            MainNpc.SetItemToNpcStockList(0, 1)
+                            run sub_Event46
+                        elif any ('Fossil', 'FossilUnknown', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Furniture::Fossil
+                            run Select_Finish_Disappear
+                        elif any ('Net', 'Watering', 'FishingRod', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Tool::Useful
+                            run Select_Finish
+                        elif any ('Axe', 'Slingshot', 'ChangeStick', 'Timer', 'Shovel', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Tool::Nouse
+                            run Select_Finish_Disappear
+                        elif any ('Umbrella', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            run NNPC_Select_Tool::Umbrella
+                            run sub_Event14
+                        elif (not any ('Tops', 'OnePiece', 'Cap', 'Accessory', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (not any ('Helmet', 'Bottoms', 'Socks', 'Shoes', 'Bag', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')):
+                            fEvent12 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Money', 'Trash', 'TurnipExpired', 'Music')
+                            if fEvent12 == 1:
+                                run NNPC_Select_Etc::Money
+                            elif fEvent12 in (2, 3):
+                                run NNPC_Select_Etc::Garbage
+                            elif fEvent12 == 4:
+                                run NNPC_Select_Etc::Music
+                                run Select_Finish
+                            elif fEvent12 == 0:
+                                run NNPC_Select_Etc::Etc
+                                run Select_Finish_Disappear
+                        else:
+                            run NNPC_Select_Equipment::Root
+                            run sub_Event14
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:005', true)
+    return
+
+flow Select_Finish:
+    if subflow_results[0] == 0:
+        MainNpc.NpcAddFriendship(1)
+    else:
+        EventFlowSystemActor.SetCalcPriceBySolo()
+    if EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1000):
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            run NNPC_Select_Sell_Gift::Root
+        else:
+            run NNPC_Select_Sell_Gift::Root_OverFlow
+entrypoint Event20:
+    event_flags_npc['cNpcMemory:IsReceiptWrappingItem'] = true
+    return
+
+flow Select_Finish_Disappear:
+    if subflow_results[0] == 0:
+        MainNpc.NpcAddFriendship(1)
+    else:
+        EventFlowSystemActor.SetCalcPriceBySolo()
+    if not EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1000):
+        run Event20
+    elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        run NNPC_Select_Sell_Gift::Root_Disappear
+        run Event20
+    else:
+        run NNPC_Select_Sell_Gift::Root_OverFlow
+        run Event20
+    return
+
+flow ItemAdd_Chk:
+    if (EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Flower', '', '') in (1, 2, 3)) or (any ('Ftr', 'DoorDeco', 'Music', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Net', 'Watering', 'FishingRod', 'FierworkHand', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Tops', 'OnePiece', 'Cap', 'Accessory', 'Umbrella', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or ((any ('Helmet', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (MainNpc.NpcIsAbleEquipSelectItem())):
+        run sub_Event78
+    run sub_tm!ItemAdd_Chk
+
+flow sub_tm!ItemAdd_Chk:
+    return
+
+flow sub_Event48:
+    run Select_Finish_Disappear
+
+flow sub_Event62:
+    run Select_Finish_Disappear
+
+flow sub_Event46:
+    run Select_Finish
+
+flow sub_Event14:
+    run Select_Finish
+
+flow sub_Event78:
+    MainNpc.SetItemToNpcStockList(0, 1)
+

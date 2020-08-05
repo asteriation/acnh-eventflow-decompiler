@@ -1,0 +1,217 @@
+flow Root:
+    event_flags_system['cPlayer:AmountHeardPublicAnnouncement'] += 1
+    event_flags_system['cPlayer:TownNewsReserve'] = false
+    event_flags_system['cLandTemp:ReserveAfterHookPublicAnouncement'] = true
+    run Demo_PublicAnnouncement_Process::Root
+    if not event_flags_system['cLand:BuiltTownOffice']:
+        run PAnnounceRco
+    elif event_flags_system['cLand:BuiltTownOfficeToday']:
+        run PAnnounceRco
+    else:
+        run PAnnounceSza
+    return
+
+flow Root_Init:
+    if (event_flags_system['cLand:BuiltTownOffice']) and (event_flags_system['cLand:BuiltTownOfficeToday']):
+        MainNpc.NpcAITalkSubCastEntry(1, 'sza')
+    if (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (event_flags_system['cLand:TkkFirstLiveEnable']) and (EventFlowSystemActor.EventBranch(false, 0) == 0):
+        event_flags_system['cLand:TkkFirstLiveReserved'] = true
+        event_flags_system['cLand:TkkFirstLiveSubPlayer'] = true
+        MainNpc.CancelTodayVisitorNpc()
+    run sub_tm!Root_Init
+
+flow PAnnounceSza:
+    event_flags_system['cLand:PAnnounceCeremony1st'] = true
+    subflow_results[0] = 1
+    run Demo_PublicAnnouncement_21_CmnEvChk::Root
+    EventFlowSystemActor.SoundDuckingOn(21)
+    EventFlowSystemActor.CameraSetDemoParam('Npc:sza', 'CutSza', '', false, false, false, 0)
+    run SzaPrepareAction
+    if event_flags_system['cLandTemp:ReserveMemErrorReenter']:
+        run MemoryShortageSza
+        EventFlowSystemActor.MessageSuspend()
+        event_flags_system['cLand:PAnnounceToday'] = true
+        if event_flags_system['cLand:TkkFirstLiveReserved']:
+            EventFlowSystemActor.WaitFrame(10)
+            EventFlowSystemActor.BGMPropertyControl(51)
+            EventFlowSystemActor.SoundDuckingOff(21)
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+        else:
+            run SzaPostAction
+            EventFlowSystemActor.BGMPropertyControl(51)
+            EventFlowSystemActor.SoundDuckingOff(21)
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+    else:
+        fEvent93 = EventFlowSystemActor.EventCheck('Countdown')
+        if fEvent93 in (0, 2, 3):
+            if event_flags_system['cPlayer:TownNewsHeard1st']:
+                run Demo_PublicAnnouncement_00_Cmn::Root
+                EventFlowSystemActor.MessageSuspend()
+                event_flags_system['cLand:PAnnounceToday'] = true
+                if event_flags_system['cLand:TkkFirstLiveReserved']:
+                    EventFlowSystemActor.WaitFrame(10)
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+                else:
+                    run SzaPostAction
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+            else:
+                run Demo_PublicAnnouncement_13_Sza_Once::TownNews_Heard1stTime
+                event_flags_system['cPlayer:TownNewsHeard1st'] = true
+                EventFlowSystemActor.MessageSuspend()
+                event_flags_system['cLand:PAnnounceToday'] = true
+                if event_flags_system['cLand:TkkFirstLiveReserved']:
+                    EventFlowSystemActor.WaitFrame(10)
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+                else:
+                    run SzaPostAction
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+        elif fEvent93 == 1:
+            if EventFlowSystemActor.EnvHourCompare(23, 55, false, false) == 0:
+                if event_flags_system['cPlayer:TownNewsHeard1st']:
+                    run Demo_PublicAnnouncement_00_Cmn::Root
+                    EventFlowSystemActor.MessageSuspend()
+                    event_flags_system['cLand:PAnnounceToday'] = true
+                    if event_flags_system['cLand:TkkFirstLiveReserved']:
+                        EventFlowSystemActor.WaitFrame(10)
+                        EventFlowSystemActor.BGMPropertyControl(51)
+                        EventFlowSystemActor.SoundDuckingOff(21)
+                        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+                    else:
+                        run SzaPostAction
+                        EventFlowSystemActor.BGMPropertyControl(51)
+                        EventFlowSystemActor.SoundDuckingOff(21)
+                        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+                else:
+                    run Demo_PublicAnnouncement_13_Sza_Once::TownNews_Heard1stTime
+                    event_flags_system['cPlayer:TownNewsHeard1st'] = true
+                    EventFlowSystemActor.MessageSuspend()
+                    event_flags_system['cLand:PAnnounceToday'] = true
+                    if event_flags_system['cLand:TkkFirstLiveReserved']:
+                        EventFlowSystemActor.WaitFrame(10)
+                        EventFlowSystemActor.BGMPropertyControl(51)
+                        EventFlowSystemActor.SoundDuckingOff(21)
+                        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+                    else:
+                        run SzaPostAction
+                        EventFlowSystemActor.BGMPropertyControl(51)
+                        EventFlowSystemActor.SoundDuckingOff(21)
+                        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+            else:
+                run Demo_PublicAnnouncement_30_CmnNewsGreet::NewYearEveHurry
+                EventFlowSystemActor.MessageSuspend()
+                event_flags_system['cLand:PAnnounceToday'] = true
+                if event_flags_system['cLand:TkkFirstLiveReserved']:
+                    EventFlowSystemActor.WaitFrame(10)
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldFirstLive', 'cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5)
+                else:
+                    run SzaPostAction
+                    EventFlowSystemActor.BGMPropertyControl(51)
+                    EventFlowSystemActor.SoundDuckingOff(21)
+                    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+    return
+
+flow PAnnounceRco:
+    run Demo_PublicAnnouncement_21_CmnEvChk::Root
+    EventFlowSystemActor.BGMPropertyControl(77)
+    run OutdoorDemoStart
+    EventFlowSystemActor.SoundDuckingOn(21)
+    EventFlowSystemActor.SoundDuckingOn(38)
+    if event_flags_system['cLandTemp:ReserveMemErrorReenter']:
+        run MemoryShortageRco
+    elif event_flags_system['cPlayer:TownNewsHeard1st']:
+        run Demo_PublicAnnouncement_00_Cmn::Root
+    else:
+        event_flags_system['cPlayer:TownNewsHeard1st'] = true
+        if event_flags_system['cLand:VillageDaysCount'] == 1:
+            run Demo_PublicAnnouncement_03_Rco_Once::TownNews_OnThe2ndDay
+        else:
+            run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Heard1stTime
+    EventFlowSystemActor.MessageSuspend()
+    event_flags_system['cLand:PAnnounceToday'] = true
+    EventFlowSystemActor.BGMPropertyControl(51)
+    EventFlowSystemActor.SoundDuckingOff(38)
+    EventFlowSystemActor.SoundDuckingOff(21)
+    if EventFlowSystemActor.SystemCheckNowStage('cTitle'):
+        EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+    else:
+        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+    return
+
+flow SzaPrepareAction:
+    fEvent89 = EventFlowSystemActor.EventCheck('Countdown')
+    if fEvent89 in (0, 1, 2):
+        run Sza_NormalPreAction
+    elif fEvent89 == 3:
+        if (event_flags_system['cPlayer:SzaPAAccidentCounter'] < 7) and (EventFlowSystemActor.RandomChoice7(7) != 0):
+entrypoint Event56:
+            EventFlowSystemActor.UIDemoClock(60)
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.BGMPropertyControl(53)
+            EventFlowSystemActor.WaitFrame(35)
+            event_flags_system['cPlayer:SzaPAAccidentCounter'] += 1
+        else:
+            MainNpc.RequestSimple('SzaNewsPrepare', false)
+            EventFlowSystemActor.WaitFaderSleep()
+            EventFlowSystemActor.UIDemoClock(60)
+            EventFlowSystemActor.BGMPropertyControl(53)
+            EventFlowSystemActor.WaitFrame(60)
+            MainNpc.RequestSimple('SzaNewsNotice', true)
+            event_flags_system['cPlayer:SzaPAAccidentCounter'] = 0
+        MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+    return
+
+flow SzaPostAction:
+    fEvent101 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent101 == 0:
+        MainNpc.RequestSimple('SzaNewsSmile', false)
+    elif fEvent101 == 2:
+        MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+    elif fEvent101 == 1:
+        pass
+    EventFlowSystemActor.WaitFrame(20)
+    return
+
+flow OutdoorDemoStart:
+    EventFlowSystemActor.SetupActorPosition(10)
+    if EventFlowSystemActor.SystemCheckNowStage('cTitle'):
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:PublicAnnouncement', 'GrowupDemoTalkBefore', '', true, false, false, 0)
+        EventFlowSystemActor.FadeIn(false)
+        EventFlowSystemActor.WaitFrame(30)
+    else:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:PublicAnnouncement', 'GrowupDemoTalkBefore', '', true, false, false, 0)
+        EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.UIDemoClock(60)
+    EventFlowSystemActor.BGMPropertyControl(52)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:PublicAnnouncement', 'GrowupDemoTalk', 'GrowupDemoTalk', true, false, false, 0)
+    EventFlowSystemActor.WaitFrame(180)
+    return
+
+flow MemoryShortageRco:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:000_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:000_02', true)
+    event_flags_system['cLandTemp:ReserveMemErrorReenter'] = false
+    return
+
+flow MemoryShortageSza:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:000_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:000_02', true)
+    event_flags_system['cLandTemp:ReserveMemErrorReenter'] = false
+    return
+
+flow Sza_NormalPreAction:
+    run Event56
+    return
+
+flow sub_tm!Root_Init:
+    return
+

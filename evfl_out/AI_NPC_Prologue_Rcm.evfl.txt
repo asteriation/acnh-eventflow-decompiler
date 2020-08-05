@@ -1,0 +1,28 @@
+flow Init:
+    if (event_flags_system['cLandTemp:IsFirstPrologue']) and (event_flags_system['cLand:SetPrologueBonfire']):
+        MainNpc.NpcRegistAIBlackBoard('PrologueStep', 2)
+    else:
+        MainNpc.NpcRegistAIBlackBoard('PrologueStep', 0)
+        MainNpc.NpcAISetting(4, false)
+    MainNpc.NpcRegistAIBlackBoard('IsMove', 0)
+    MainNpc.NpcRegistAIBlackBoard('HasTent', 0)
+    MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcRegistAIBlackBoard('PreCampfire', 0)
+    MainNpc.NpcRegistAIBlackBoard('Visible', 1)
+    MainNpc.NpcDisableServiceMotion()
+    MainNpc.ServiceMotionControl(false)
+    return
+
+flow Root:
+    if not MainNpc.NpcBlackBoard('Visible', 1):
+        MainNpc.NpcChangeAIState('cInvisible', '', '', '', false, true)
+    elif MainNpc.NpcBlackBoard('PrologueStep', 1):
+        run AI_NPC_Prologue_Rct::Root_2ndStep
+    else:
+        MainNpc.NpcAddBlackBoard('PrologueStep', 1)
+        MainNpc.NpcAITalkCastSetting('Prologue_Rcm')
+        run AI_NPC_Common::Speak
+    return
+

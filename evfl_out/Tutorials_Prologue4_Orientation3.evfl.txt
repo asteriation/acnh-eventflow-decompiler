@@ -1,0 +1,50 @@
+flow Root:
+    MainNpc.SetNpcName(0, 14)
+    MainNpc.SetNpcName(1, 13)
+    run GoEventPlaza
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:001', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:002', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:003', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:004', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:005', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:006', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:007', true)
+    event_flags_system['cPlayer:PrologueAfterBuiltTentTalk'] = true
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+    EventFlowSystemActor.SetupActorPosition(4)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('PreCampfire', 1, 'rct', 0)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('PreCampfire', 1, 'rcm', 0)
+    EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('IsForceLife', 1, '-Looks:HA', 0)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('IsForceLife', 1, '-Looks:AN', 0)
+    EventFlowSystemActor.FadeIn(true)
+    return
+
+flow GoEventPlaza:
+    EventFlowSystemActor.BGMPropertyControl(78)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
+    EventFlowSystemActor.SetupActorPosition(2)
+    EventFlowSystemActor.RequestRecreateFtr()
+    EventFlowSystemActor.EnvSetDemoTime(0, 17, 30)
+    EventFlowSystemActor.WaitFrame(60)
+    EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaPrologue', '', false, false, false, 0)
+    Npc_3.TurnNeck(0)
+    Npc_4.TurnNeck(0)
+    EventFlowSystemActor.FadeIn(true)
+    return
+
+flow Root2:
+    event_flags_system['cPlayer:PlayerMainUImenuEnable'] = true
+    event_flags_system['cLand:ValidateVillageSave'] = true
+    event_flags_system['cLand:TodayStartTown1P'] = true
+    EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainUI', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+    Npc_4.ChangeNpcPlace('cTalkNpcHouse')
+    Npc_5.ChangeNpcPlace('cTalkNpcHouse')
+    EventFlowSystemActor.SystemReenterStage(1, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow Root_Init:
+    MainNpc.NpcAITalkCastSetting('Prologue_Rco')
+    return
+

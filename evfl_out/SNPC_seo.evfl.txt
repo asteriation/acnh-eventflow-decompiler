@@ -1,0 +1,58 @@
+flow Root:
+    if MainNpc.SeoAppearSide() == 0:
+        EventFlowSystemActor.CameraSetDemoParam('', 'SeoTalkLeft', 'cDefault', true, false, false, 0)
+    else:
+        EventFlowSystemActor.CameraSetDemoParam('', 'SeoTalkRight', 'cDefault', true, false, false, 0)
+    event_flags_system['cPlayer:SeoFirstmeetingFlag'] = true
+    if event_flags_system['cPlayer:SeoRejectFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:003', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:002', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:004', false)
+        MainNpc.SeoReaction('cDive')
+        EventFlowSystemActor.WaitFrame(20)
+        EventFlowSystemActor.DeleteTargetItem(2839, 1, false)
+        MainNpc.DecideEventReward('cSeoReward')
+        MainNpc.SetEventRewardToPlayerBaggage('cFree')
+        MainNpc.SeoReaction('cSurface')
+        if event_flags_system['cPlayer:SeoFirstFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:006', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:007', false)
+            event_flags_system['cPlayer:SeoFirstFlag'] = true
+        event_flags_system['cPlayer:SeoExchangeItemToday'] = true
+        event_flags_system['cLifeSupportAchievement:GiveScallopsToSeo'] += 1
+        MainNpc.NpcSetAIBlackBoard('GiveScallop', 1)
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:008', false)
+        MainNpc.NpcVoiceEchoOn()
+        MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkSNpc/seo/SP_seo_word', '', '', '')
+        MainNpc.NpcVoiceEchoOff()
+        fEvent15 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent15 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:020', false)
+        elif fEvent15 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:021', false)
+        elif fEvent15 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:022', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:009', true)
+        if MainNpc.SeoCanReturnSwim():
+            MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
+            MainNpc.SeoMoveCameraOut()
+        else:
+            MainNpc.SeoReaction('cDive')
+        MainNpc.MessageSuspend()
+        MainNpc.SeoWarpBuoyOut()
+        MainNpc.NpcChangeHeadCtrlMode('cNormal', true)
+        run SeoEnd
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:005', false)
+        event_flags_system['cPlayer:SeoRejectFlag'] = true
+        MainNpc.SeoReaction('cDive')
+        run SeoEnd
+    return
+
+flow SeoEnd:
+    EventFlowSystemActor.BGMPropertyControl(8)
+    return
+

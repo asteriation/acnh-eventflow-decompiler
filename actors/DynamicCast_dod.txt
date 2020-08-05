@@ -1,0 +1,11 @@
+Actor DynamicCast_dod
+actions:
+- DynamicCast_dod.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- DynamicCast_dod.TurnBody(TurnTarget: int, TurnAngle: float)
+- DynamicCast_dod.NpcStartAS(ASType: str, IsWaitEnd: bool, IsContinueEmot: any)
+- DynamicCast_dod.TurnNeck(TurnTarget: int)
+- DynamicCast_dod.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- DynamicCast_dod.NpcWaitTurn()
+- DynamicCast_dod.NpcWaitTalkPrepare()
+queries:
+

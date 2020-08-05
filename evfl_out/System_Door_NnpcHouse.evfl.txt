@@ -1,0 +1,117 @@
+flow Sys_Door_Sleep:
+    if GeneralObject.HouseIsTent():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_Tent', false)
+    else:
+        fEvent1 = GeneralObject.HouseOwnerLooks()
+        if fEvent1 == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_BO', false)
+        elif fEvent1 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_HA', false)
+        elif fEvent1 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_KO', false)
+        elif fEvent1 == 3:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_ZK', false)
+        elif fEvent1 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_FU', false)
+        elif fEvent1 == 5:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_GE', false)
+        elif fEvent1 == 6:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_OT', false)
+        elif fEvent1 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_AN', false)
+    return
+
+flow Sys_Door_Out:
+    if GeneralObject.HouseIsTent():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_Tent', false)
+    else:
+        fEvent48 = GeneralObject.HouseOwnerLooks()
+        if fEvent48 == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_BO', false)
+        elif fEvent48 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_HA', false)
+        elif fEvent48 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_KO', false)
+        elif fEvent48 == 3:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_ZK', false)
+        elif fEvent48 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_FU', false)
+        elif fEvent48 == 5:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_GE', false)
+        elif fEvent48 == 6:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_OT', false)
+        elif fEvent48 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_AN', false)
+    return
+
+flow Sys_Door_Move:
+    fEvent33 = GeneralObject.HouseOwnerLooks()
+    if fEvent33 == 0:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_BO', false)
+    elif fEvent33 == 1:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_HA', false)
+    elif fEvent33 == 2:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_KO', false)
+    elif fEvent33 == 3:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_ZK', false)
+    elif fEvent33 == 4:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_FU', false)
+    elif fEvent33 == 5:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_GE', false)
+    elif fEvent33 == 6:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_OT', false)
+    elif fEvent33 == 7:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_AN', false)
+    return
+
+flow Sys_Door_Sick:
+    if GeneralObject.HouseIsTent():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_Tent', false)
+    else:
+        fEvent36 = GeneralObject.HouseOwnerLooks()
+        if fEvent36 == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_BO', false)
+        elif fEvent36 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_HA', false)
+        elif fEvent36 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_KO', false)
+        elif fEvent36 == 3:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_ZK', false)
+        elif fEvent36 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_FU', false)
+        elif fEvent36 == 5:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_GE', false)
+        elif fEvent36 == 6:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_OT', false)
+        elif fEvent36 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_AN', false)
+    return
+
+flow Root:
+    if event_flags_system['cLand:ValidateVillageSave']:
+        GeneralObject.SetTagFromSystem(0, 'cNpcHouseDoor', 'cDegit', '', 0)
+        fEvent41 = GeneralObject.CheckLockReason()
+        if fEvent41 == 0:
+            run Sys_Door_Sleep
+            run sub_Event29
+        elif fEvent41 == 1:
+            run Sys_Door_Out
+            run sub_Event29
+        elif fEvent41 == 2:
+            run Sys_Door_Move
+            run sub_Event29
+        elif fEvent41 == 3:
+            run Sys_Door_Sick
+            run sub_Event29
+        elif fEvent41 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:VisitN', false)
+            run sub_Event29
+        elif fEvent41 == 5:
+            EventFlowSystemActor.SetCheckResultStructureDoor(0)
+    else:
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    return
+
+flow sub_Event29:
+    EventFlowSystemActor.SetCheckResultStructureDoor(1)
+

@@ -1,0 +1,7 @@
+flow Root:
+    EventFlowSystemActor.WaitFrame(30)
+    Player.PlayerClearFoodPowerup()
+    EventFlowSystemActor.WaitFrame(33)
+    Player.OpenMessageWindow('TalkFtr/FTR_Toilet:001', false)
+    return
+

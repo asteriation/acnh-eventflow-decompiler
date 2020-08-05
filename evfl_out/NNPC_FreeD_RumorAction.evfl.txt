@@ -1,0 +1,75 @@
+flow RumorOP_Action_Visitor:
+    MainNpc.DecideRumorPlayer(1)
+    MainNpc.SetPlayerName(3)
+    if MainNpc.IsFriendRumorPlayer():
+        if MainNpc.CanSelectRumorMessage(1):
+            fEvent31 = MainNpc.IsRumorActionDaysAgo()
+            if fEvent31 in (0, 1):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:020', false)
+                run sub_Event1
+            elif fEvent31 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:021', false)
+                run sub_Event1
+            elif fEvent31 == 3:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:022', false)
+                run sub_Event9
+        elif MainNpc.IsRumorActionDaysAgo() in (0, 1):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:023', false)
+            run sub_Event9
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:024', false)
+            run sub_Event9
+    elif MainNpc.IsRumorActionDaysAgo() in (0, 1):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:025', false)
+        run sub_Event9
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:026', false)
+        run sub_Event9
+    return
+
+flow RumorP_Action_CurrentPlayer:
+    MainNpc.NpcOpenRumorMessage()
+    return
+
+flow RumorOP_Action_Villager:
+    MainNpc.DecideRumorPlayer(0)
+    MainNpc.SetPlayerName(3)
+    if not MainNpc.NpcHasAcquaintanceshipRumorPlayer():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:000', false)
+        run sub_Event10
+    elif MainNpc.CanSelectRumorMessage(0):
+        fEvent5 = MainNpc.IsRumorActionDaysAgo()
+        if fEvent5 in (0, 1):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:001', false)
+            run sub_Event20
+        elif fEvent5 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:002', false)
+            run sub_Event20
+        elif fEvent5 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:003', false)
+            run sub_Event10
+    else:
+        fEvent6 = MainNpc.IsRumorActionDaysAgo()
+        if fEvent6 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:004', false)
+            run sub_Event10
+        elif fEvent6 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:005', false)
+            run sub_Event10
+        elif fEvent6 in (2, 3):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:006', false)
+            run sub_Event10
+    return
+
+flow sub_Event9:
+    MainNpc.SetRumorDSkipInfo()
+
+flow sub_Event1:
+    MainNpc.NpcOpenRumorMessage()
+
+flow sub_Event20:
+    MainNpc.NpcOpenRumorMessage()
+
+flow sub_Event10:
+    MainNpc.SetRumorDSkipInfo()
+

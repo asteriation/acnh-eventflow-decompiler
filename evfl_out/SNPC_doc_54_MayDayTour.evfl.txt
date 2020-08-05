@@ -1,0 +1,152 @@
+flow Root:
+    if event_flags_system['cPlayer:UseNavigationMayDayTour']:
+        EventFlowSystemActor.BGMPropertyControl(58)
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:050', false)
+        event_flags_system['cPlayer:UseNavigationMayDayTour'] = false
+    elif not event_flags_system['cPlayerTemp:DocMayDayTourFirstTalkDone']:
+        event_flags_system['cPlayerTemp:DocMayDayTourFirstTalkDone'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:041', false)
+        EventFlowSystemActor.PlayerBaggageOperationForEvent('cReserve')
+        EventFlowSystemActor.PlayerBaggageOperationForEvent('cRemove')
+    elif event_flags_system['cPlayer:ClearMayDayTour']:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:049', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            run DocCmnCancel_MayDay
+        elif EventFlowSystemActor.HasTargetItem(12472, 1):
+            if EventFlowSystemActor.HasTargetItem(9964, 1):
+                MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:053', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:055', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run sub_Event77
+                    else:
+                        run sub_Event56
+                else:
+                    run sub_Event56
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:052', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:055', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run sub_Event77
+                    else:
+                        run sub_Event56
+                else:
+                    run sub_Event56
+        elif EventFlowSystemActor.HasTargetItem(9964, 1):
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:054', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:043', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run sub_Event77
+                else:
+                    run sub_Event56
+            else:
+                run sub_Event56
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:003', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:043', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run sub_Event77
+                else:
+                    run sub_Event56
+            else:
+                run sub_Event56
+    elif EventFlowSystemActor.HasTargetItem(12472, 1):
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:047', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:048', false)
+        event_flags_system['cPlayer:ClearMayDayTour'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:042', false)
+        fEvent4 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent4 == 0:
+            run DocHint_MayDay
+        elif fEvent4 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:044', false)
+        elif fEvent4 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:051', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:043', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event63:
+                    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:004', true)
+                    EventFlowSystemActor.BGMPropertyControl(76)
+                    EventFlowSystemActor.SoundTriggerEmit('Airplane_Takeoff_Short', -1)
+                    event_flags_system['cLandTemp:DocReturnFromIsland'] = true
+                    if EventFlowSystemActor.HasTargetItem(12472, 1):
+                        EventFlowSystemActor.SelectRewardItemDirect(12472, 1, 'cVillageRemakePattern', 0)
+                        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 20)
+                    if EventFlowSystemActor.HasTargetItem(9964, 1):
+                        if not EventFlowSystemActor.HasTargetItem(9964, 2):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 1, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 3):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 2, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 4):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 3, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 5):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 4, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 6):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 5, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 7):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 6, 'cVillageRemakePattern', 0)
+                        elif not EventFlowSystemActor.HasTargetItem(9964, 8):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 7, 'cVillageRemakePattern', 0)
+                        elif EventFlowSystemActor.HasTargetItem(9964, 9):
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 9, 'cVillageRemakePattern', 0)
+                        else:
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 8, 'cVillageRemakePattern', 0)
+                        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 21)
+                    EventFlowSystemActor.PlayerBaggageOperationForEvent('cRestore')
+                    EventFlowSystemActor.SystemRequestChangeStage('cFromOutlierToHomeland', 'cCircle', 'cDALWithLoadWait', 'cBlack', 1.0, 1.0)
+                else:
+                    run sub_Event64
+            else:
+                run sub_Event64
+        elif fEvent4 == 3:
+            run sub_Event6
+    return
+
+flow DocCmnCancel_MayDay:
+    run sub_Event6
+    return
+
+flow DocCmnReturn_MayDay:
+    run Event63
+    return
+
+flow DocHint_MayDay:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:045', false)
+    if event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_3', false)
+        run sub_Event9
+    elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_1', false)
+        run sub_Event9
+    elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_0', false)
+        run sub_Event9
+    elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] >= 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_2', false)
+        event_flags_system['cPlayerTemp:DocHintMayDayTour'] += -4
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_4', false)
+        run sub_Event9
+    return
+
+flow sub_Event6:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:008', false)
+    return
+
+flow sub_Event77:
+    run DocCmnReturn_MayDay
+
+flow sub_Event56:
+    run DocCmnCancel_MayDay
+
+flow sub_Event64:
+    run DocCmnCancel_MayDay
+
+flow sub_Event9:
+    event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
+

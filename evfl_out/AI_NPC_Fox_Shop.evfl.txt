@@ -1,0 +1,44 @@
+flow Root:
+    MainNpc.NpcChangeAIState('cFox', 'SNPC_fox', 'Root_Talk', '', false, true)
+    return
+
+flow Init:
+    MainNpc.SetSightRange(64, 0)
+    MainNpc.NpcRegistAIBlackBoard('CheckItemIndex', -1)
+    MainNpc.NpcRegistAIBlackBoard('ItemPrice', 0)
+    MainNpc.NpcRegistAIBlackBoard('EnterMessage', 0)
+    MainNpc.NpcRegistAIBlackBoard('LeaveMessage', 0)
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetRequestSpeakFunc('cItemCheck', true)
+    MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
+    if EventFlowSystemActor.NetIsConnected():
+        MainNpc.NpcAISetRequestSpeakFunc('cEnterBalloon', true)
+        MainNpc.NpcAISetRequestSpeakFunc('cLeaveBalloon', true)
+        MainNpc.NpcAISetting(8, true)
+        MainNpc.NpcAISetPosByRail(1, 0, 270.0, true)
+    else:
+        MainNpc.NpcAISetRequestSpeakFunc('cEnterFox', false)
+        MainNpc.NpcAISetRequestSpeakFunc('cLeaveFox', false)
+        MainNpc.NpcAISetting(8, false)
+    return
+
+flow Check_fox:
+    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
+        MainNpc.NpcAISetting(9, false)
+        MainNpc.NpcAISetting(5, false)
+        MainNpc.SetNpcSpeakFlow('Root_ItemCheck', 'SNPC_fox')
+    return
+
+flow Leave_fox:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Enter_fox:
+    MainNpc.NpcAISetting(13, true)
+    MainNpc.NpcAISetting(18, true)
+    run AI_NPC_Common::Speak
+    event_flags_system['cLandTemp:FoxEnterBalloon'] = true
+    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
+    return
+

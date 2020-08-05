@@ -1,0 +1,247 @@
+flow First_Chk:
+    if event_flags_npc['cNpcMemory:TalkCountToday'] >= 1:
+        run Fireworks_Chk
+entrypoint Event8:
+        if MainNpc.CheckNpcActivity('cThoughtWalk'):
+            fEvent55 = MainNpc.EnvWeatherNNpcTalkCustom()
+            if fEvent55 == 0:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 1:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 2:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 3:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardRainWeather', 'cRainWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 4:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 5:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardSnowWeather', 'cSnowWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            elif fEvent55 == 6:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cBlossomShower', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            fEvent1 = MainNpc.EnvWeatherNNpcTalkCustom()
+            if fEvent1 == 0:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 1:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 2:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 3:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardRainWeather', 'cRainWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 4:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 5:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardSnowWeather', 'cSnowWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            elif fEvent1 == 6:
+                MainNpc.NpcSelectFreeTalk('cWildCard', 'cBlossomShower', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow ClothesP_Chk:
+    if (not event_flags_system['cPlayerTemp:TalkClothesPNow']) and (not event_flags_system['cPlayerTemp:TalkPresentNow']) and (not Player.PlayerIsUseCoordinate()) and (not event_flags_system['cPlayer:EquipLicenseHelmet']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesP')):
+        MainNpc.SetClothesXItemsTag(1)
+        MainNpc.NpcOpenFreeMessage('cFreeAClothesP')
+        event_flags_system['cPlayerTemp:TalkClothesPNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!ClothesP_Chk
+
+flow ClothesN1_Chk:
+    if (EventFlowSystemActor.EnvWeather() in (0, 1, 2, 7)) and (not event_flag_npc['cNpcMemory:BanClothesN1Today']) and (not event_flag_npc['cNpcMemory:BanClothesN1Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_A')):
+        MainNpc.SetClothesXItemsTag(0)
+        MainNpc.NpcOpenFreeMessage('cFreeAClothesN')
+        event_flags_npc['cNpcMemory:BanClothesN1Today'] = true
+        event_flags_npc['cNpcMemory:BanClothesN2Now'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!ClothesN1_Chk
+
+flow ClothesN2_Chk:
+    if (EventFlowSystemActor.EnvWeather() in (0, 1, 2, 7)) and (not event_flag_npc['cNpcMemory:BanClothesN2Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_B')):
+        MainNpc.SetClothesXItemsTag(0)
+        MainNpc.NpcOpenFreeMessage('cFreeAClothesN')
+        event_flags_npc['cNpcMemory:BanClothesN2Now'] = true
+        event_flags_npc['cNpcMemory:BanClothesN1Now'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!ClothesN2_Chk
+
+flow Want_Chk:
+    if (not event_flag_npc['cNpcMemory:TalkWantToday']) and (MainNpc.NpcHasFreeMessage('cFreeAWant')):
+        MainNpc.SetPriceCalcItem(1)
+        MainNpc.SetItemName(0, 12, 0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:001', false)
+        fEvent110 = MainNpc.CheckNpcFavorLevel()
+        if fEvent110 in (0, 1):
+            if EventFlowSystemActor.PercentChoice(70):
+entrypoint Event116:
+                MainNpc.NpcDecideSelectSellBuyPrice('cSpecialHigh')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:002', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:003', false)
+                    EventFlowSystemActor.UIMoneyAppear()
+                    MainNpc.SetDeliveryItem(12, true)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:005', false)
+                    MainNpc.NpcAddFriendship(1)
+                    event_flags_npc['cNpcMemory:TalkWantToday'] = true
+                    MainNpc.SetItemToNpcStockList(3, 0)
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:004', false)
+                    event_flags_npc['cNpcMemory:TalkWantToday'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+entrypoint Event117:
+                MainNpc.NpcDecideSelectSellBuyPrice('cSuperHigh')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:102', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:103', false)
+                    EventFlowSystemActor.UIMoneyAppear()
+                    MainNpc.SetDeliveryItem(12, true)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:105', false)
+                    MainNpc.NpcAddFriendship(1)
+                    event_flags_npc['cNpcMemory:TalkWantToday'] = true
+                    MainNpc.SetItemToNpcStockList(3, 0)
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Want:104', false)
+                    event_flags_npc['cNpcMemory:TalkWantToday'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+        elif fEvent110 in (2, 3):
+            if EventFlowSystemActor.PercentChoice(80):
+                MainNpc.NpcDecideSelectSellBuyPrice('cSpecialHigh')
+                run Want_High
+            else:
+                MainNpc.NpcDecideSelectSellBuyPrice('cSuperHigh')
+                run Want_VeryHigh
+        elif fEvent110 in (4, 5):
+            if EventFlowSystemActor.PercentChoice(90):
+                MainNpc.NpcDecideSelectSellBuyPrice('cSpecialHigh')
+                run Want_High
+            else:
+                MainNpc.NpcDecideSelectSellBuyPrice('cSuperHigh')
+                run Want_VeryHigh
+    return
+
+flow Week_Chk:
+    if not event_flag_npc['cNpcMemory:TalkWeekNow']:
+entrypoint Event75:
+        fEvent75 = EventFlowSystemActor.EnvDayOfWeek()
+        if fEvent75 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:007', false)
+        elif fEvent75 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:001', false)
+        elif fEvent75 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:002', false)
+        elif fEvent75 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:003', false)
+        elif fEvent75 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:004', false)
+        elif fEvent75 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:005', false)
+        elif fEvent75 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:006', false)
+        event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow FieldQuestions_Chk:
+    if event_flag_npc['cNpcMemory:TalkQuestionsNow']:
+        run NNPC_Free_Field::ReSelection
+    else:
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeA_Questions', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkQuestionsNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Always_Chk:
+    if not event_flag_npc['cNpcMemory:TalkAlwaysNow']:
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeA_Always', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkAlwaysNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow AlwaysAB_Chk:
+    if not event_flag_npc['cNpcMemory:TalkAlwaysABNow']:
+        if MainNpc.CheckNpcTalkType():
+            MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeA_AlwaysA', '', '', '', true)
+        else:
+            MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeA_AlwaysB', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkAlwaysABNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Want_High:
+    run Event116
+    return
+
+flow Want_VeryHigh:
+    run Event117
+    return
+
+flow ReSelection_Week:
+    run Event75
+    return
+
+flow HouseQuestions_Chk:
+    if event_flag_npc['cNpcMemory:TalkQuestionsNow']:
+        run NNPC_Free_House::ReSelection
+    else:
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeA_Questions', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkQuestionsNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow TentFirst_Chk:
+    if (MainNpc.IsNnpcTent()) and (event_flags_npc['cNpcMemory:TalkCountToday'] >= 1):
+        fEvent21 = MainNpc.CheckNpcLook()
+        if fEvent21 == 3:
+            if EventFlowSystemActor.EnvHourCompare(9, 30, true, true) in (0, 1):
+                if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:001', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:002', false)
+                EventFlowSystemActor.ExitFlowchart()
+        elif fEvent21 == 5:
+            if EventFlowSystemActor.EnvHourCompare(6, 30, true, true) in (0, 1):
+                if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:001', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:002', false)
+                EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow ToFreeA_First:
+    run Event8
+    return
+
+flow Fireworks_Chk:
+    fEvent35 = EventFlowSystemActor.EventCheck('Fireworks')
+    if fEvent35 in (0, 1, 2):
+        if EventFlowSystemActor.EnvHourCompare(18, 59, true, true) == 0:
+            run ToFreeA_First
+        elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) not in (0, 1):
+            run sub_Event44
+        elif EventFlowSystemActor.SystemCheckNowStage('cField'):
+            run NNPC_Free_Field::Fireworks_1.4
+        else:
+            run NNPC_Free_FieldV::FireworksV_1.4
+    elif fEvent35 == 3:
+        run sub_Event44
+    return
+
+flow sub_tm!ClothesP_Chk:
+    return
+
+flow sub_tm!ClothesN1_Chk:
+    return
+
+flow sub_tm!ClothesN2_Chk:
+    return
+
+flow sub_Event44:
+    run ToFreeA_First
+

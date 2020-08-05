@@ -1,0 +1,16 @@
+flow Root:
+    Player.PlayerWorkbenchThinking()
+    EventFlowSystemActor.UICharactermakingCreate()
+    EventFlowSystemActor.SetTagFromSystem(0, 'cStartFtrName', 'cDegit', '', 0)
+    Player.OpenMessageWindow('TalkFtr/FTR_DressingTable:001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.UICharactermakingHandling('cRemake')
+        if EventFlowSystemActor.UIResultMenuDecide():
+            EventFlowSystemActor.SaveSetFromUIResult('cCharaMakeResult')
+            Player.PlayerChangeStateDemoTalk()
+        else:
+            Player.PlayerChangeStateDemoTalk()
+    else:
+        Player.PlayerChangeStateDemoTalk()
+    return
+

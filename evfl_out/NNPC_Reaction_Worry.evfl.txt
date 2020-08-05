@@ -1,0 +1,29 @@
+flow Root:
+    if MainNpc.NpcFeelSource() in (0, 2):
+        run NNPC_Talk_Sequence::Root
+    else:
+        run SharingCheck
+    return
+
+flow SharingCheck:
+    if MainNpc.IsFeelSourcePlayer():
+        run Worry_Message
+    else:
+        MainNpc.CharacterEmoticonAction('Shocked', '', 0, true, false)
+        MainNpc.SetNpcFeel('cNormal', 120)
+        EventFlowSystemActor.WaitFrame(30)
+    return
+
+flow Worry_Message:
+    MainNpc.NpcSetReactionType('cWorry')
+    fEvent3 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent3 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:001', false)
+    elif fEvent3 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:002', false)
+    elif fEvent3 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:003', false)
+    event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+    EventFlowSystemActor.ExitFlowchart()
+    return
+

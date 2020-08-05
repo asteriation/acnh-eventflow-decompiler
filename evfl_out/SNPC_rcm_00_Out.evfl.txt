@@ -1,0 +1,14 @@
+flow Root:
+    MainNpc.SetTwinsTag()
+    SubNpc.TurnBody(10, 0.0)
+    event_flags_system['cPlayer:RcmForcedTalk2TodayFlag'] = true
+    event_flags_system['cLandTemp:RcmExitBalloon'] = true
+    event_flags_system['cLandTemp:RctExitBalloon'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:200', true)
+    EventFlowSystemActor.NextGoTo('Entrance', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow Root_Init:
+    run SNPC_rcm::EntrySubCast
+    return
+

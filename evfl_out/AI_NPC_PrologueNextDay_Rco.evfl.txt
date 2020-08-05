@@ -1,0 +1,26 @@
+flow Init:
+    MainNpc.NpcRegistAIBlackBoard('isSpeak', 1)
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        MainNpc.NpcRegistAIBlackBoard('isArrive', 0)
+    else:
+        MainNpc.NpcRegistAIBlackBoard('SpeakTypeBed', 1)
+        MainNpc.NpcAISetting(12, false)
+        MainNpc.NpcAISetPosByNextInfo('Entrance', 0, 2)
+    return
+
+flow Root:
+    if MainNpc.NpcBlackBoard('isSpeak', 1):
+        MainNpc.NpcSetAIBlackBoard('isSpeak', 0)
+        MainNpc.NpcAISetting(7, false)
+        if EventFlowSystemActor.SystemCheckNowStage('cField'):
+            run AI_NPC_Common::ContinueSpeak
+        else:
+            MainNpc.NpcAISetting(2, false)
+            MainNpc.NpcAISetting(3, false)
+            MainNpc.NpcAISetting(4, false)
+            MainNpc.NpcAISetting(5, false)
+            run AI_NPC_Common::Speak
+    else:
+        MainNpc.NpcChangeAIState('cInvisible', '', '', '', false, true)
+    return
+

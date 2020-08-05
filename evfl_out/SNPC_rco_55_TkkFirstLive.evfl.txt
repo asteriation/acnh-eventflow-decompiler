@@ -1,0 +1,44 @@
+flow InvitePlayerHouse:
+    event_flags_system['cPlayer:StandByRcoVisitMyHomeAfterTkkFirstLive'] = false
+    event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:001', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:002', false)
+    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        if event_flags_system['cLand:TkkFirstLiveReserved']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003', true)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_00', true)
+        MainNpc.SetDeliveryItemAtRandom(4318, true, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Default', 1)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_01', false)
+    elif event_flags_system['cLand:TkkFirstLiveReserved']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_02', false)
+        EventFlowSystemActor.SelectRewardItemDirect(4318, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_00', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_02', false)
+        EventFlowSystemActor.SelectRewardItemDirect(4318, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:004', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:005', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:006', true)
+    MainNpc.SmartPhone(0)
+    run Demo_Common_PhoneCall::SendingDataWithP
+    event_flags_system['cPlayer:MainmenuConstructLicense'] = true
+    EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cConstructLicense')
+    EventFlowSystemActor.WaitFrame(5)
+    run Demo_Common_PhoneCall::PuttingMobileAwayWithP
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:007', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:008', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:009', true)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+    EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
+    MainNpc.NpcAISetting(12, false)
+    EventFlowSystemActor.SetHideObjectVisible()
+    EventFlowSystemActor.FadeIn(true)
+    EventFlowSystemActor.ReservePlayerMutterDemo('Finish_1stKkLive', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+    return
+

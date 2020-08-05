@@ -1,0 +1,11 @@
+flow Root:
+    if event_flags_system['cLand:ValidateVillageSave']:
+        EventFlowSystemActor.SetCheckResultStructureDoor(0)
+    elif event_flags_system['cPlayer:PlayerPocketUIEnable']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:101', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:100', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    return
+

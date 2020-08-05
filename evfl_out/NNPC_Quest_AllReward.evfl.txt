@@ -1,0 +1,106 @@
+flow Root:
+    if event_flag_npc['cNpcMemory:ApproachQuestOrdered']:
+        run Good
+    else:
+        fEvent0 = MainNpc.NpcHaveQuestType('')
+        if fEvent0 == 1:
+            if (MainNpc.NpcCheckCatchQuestType() in (0, 2)) and (not EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 8000)):
+                run Normal
+            else:
+                run Good
+        elif fEvent0 == 2:
+            if quest_flags['cLostUseHint']:
+                run Normal
+            else:
+                run Good
+        elif fEvent0 == 4:
+            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                run Normal
+            else:
+                run Good
+        elif fEvent0 == 5:
+            if MainNpc.SystemVisitQuestKind('cNpc'):
+entrypoint Event36:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    run Level1
+                else:
+                    run Gift
+            else:
+                run Lvel3
+        elif fEvent0 == 6:
+            if MainNpc.SystemVisitQuestKind('cPlayer'):
+                run VisitNow
+            else:
+                run Lvel3
+        elif fEvent0 == 7:
+            if event_flags_system['cPlayerTemp:SickQuestGossip']:
+                run Good
+            else:
+                run Normal
+    return
+
+flow Good:
+    fEvent41 = MainNpc.CheckNpcFavorLevel()
+    if fEvent41 in (0, 1):
+        run Lvel3
+    elif fEvent41 in (4, 5):
+        run Lvel2
+    elif fEvent41 in (2, 3):
+        if EventFlowSystemActor.PercentChoice(50):
+            run Lvel3
+        else:
+            run Lvel2
+    return
+
+flow Normal:
+    fEvent42 = MainNpc.CheckNpcFavorLevel()
+    if fEvent42 in (0, 1):
+        run Lvel2
+    elif fEvent42 in (4, 5):
+        run Level1
+    elif fEvent42 in (2, 3):
+        if EventFlowSystemActor.PercentChoice(50):
+            run Lvel2
+        else:
+            run Level1
+    return
+
+flow Gift:
+    MainNpc.NpcDecideVisitPresent(3, 0)
+    MainNpc.NpcAddFriendship(1)
+    MainNpc.SetDeliveryItem(9, true)
+    MainNpc.SetItemName(0, 9, 4)
+    return
+
+flow VisitNow:
+    run Event36
+    return
+
+flow Music:
+    MainNpc.NpcDecideVisitPresent(3, 1)
+    MainNpc.NpcAddFriendship(3)
+    MainNpc.SetDeliveryItem(9, true)
+    MainNpc.SetItemName(0, 9, 0)
+    return
+
+flow Lvel3:
+    MainNpc.NpcDecideGeneralQuestReward(0, 0)
+    MainNpc.NpcAddFriendship(3)
+entrypoint Event38:
+    MainNpc.SetDeliveryItem(1, true)
+    MainNpc.SetItemName(0, 1, 4)
+    MainNpc.RegistToReleaseItemList(4)
+    return
+
+flow Lvel2:
+    MainNpc.NpcDecideGeneralQuestReward(1, 0)
+    MainNpc.NpcAddFriendship(2)
+    run Event38
+    return
+
+flow Level1:
+    MainNpc.NpcDecideGeneralQuestReward(2, 0)
+    MainNpc.NpcAddFriendship(1)
+    run Event38
+    return
+

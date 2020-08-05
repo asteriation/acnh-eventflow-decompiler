@@ -1,0 +1,111 @@
+flow Root:
+    if EventFlowSystemActor.NetIsConnected():
+        if not EventFlowSystemActor.IsMyVillage():
+            run NetClose
+        elif EventFlowSystemActor.NetHasVisitor():
+            run NetClose
+        else:
+            run sub_grp!Event24
+    else:
+        run sub_grp!Event24
+    return
+
+flow LocalClose:
+    if EventFlowSystemActor.NetIsInviteFriend():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:001', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif EventFlowSystemActor.NetCanRequestLeave():
+entrypoint Event11:
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:006', false)
+            EventFlowSystemActor.NetDemoLock(2)
+            EventFlowSystemActor.MessageUnlockNext()
+            if EventFlowSystemActor.CheckErrorType(2):
+                EventFlowSystemActor.MessageLockNext(2)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:008', false)
+                EventFlowSystemActor.NetForceQuitSession()
+                EventFlowSystemActor.MessageUnlockNext()
+                EventFlowSystemActor.MessageSuspend()
+                if not EventFlowSystemActor.MessageUseBCancel():
+                    EventFlowSystemActor.NetBreakUpSessionVillage('cBreakUpSession', false)
+            else:
+                EventFlowSystemActor.MessageSuspend()
+                EventFlowSystemActor.NetBreakUpSessionVillage('cBreakUpSession', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:007', false)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:004', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif EventFlowSystemActor.NetCanRequestLeave():
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:005', false)
+            EventFlowSystemActor.NetDemoLock(1)
+            EventFlowSystemActor.MessageUnlockNext()
+            if EventFlowSystemActor.CheckErrorType(2):
+                EventFlowSystemActor.MessageLockNext(2)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:007', false)
+                EventFlowSystemActor.NetForceQuitSession()
+                EventFlowSystemActor.MessageUnlockNext()
+                EventFlowSystemActor.MessageSuspend()
+                if not EventFlowSystemActor.MessageUseBCancel():
+                    EventFlowSystemActor.NetLeaveSessionVillage('cLeaveSession', false)
+            else:
+                EventFlowSystemActor.MessageSuspend()
+                EventFlowSystemActor.NetLeaveSessionVillage('cLeaveSession', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:007', false)
+    return
+
+flow RetryLock:
+    run Event11
+    return
+
+flow NetClose:
+    if EventFlowSystemActor.NetMode() in (0, 1):
+        run LocalClose
+    else:
+        run System_InetClose::InetClose
+    return
+
+flow DreamClose:
+    EventFlowSystemActor.NetCaptureScreenshot()
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:025', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.UIIllegalReportHandling(8)
+        if EventFlowSystemActor.UIIllegalReportResult():
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:026', true)
+            EventFlowSystemActor.MiniGameSilentCancel()
+            EventFlowSystemActor.StopMeasurePlayTime('cDreaming')
+            EventFlowSystemActor.FadeOut('', '', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.NetExitDream(true)
+            EventFlowSystemActor.SystemRequestChangeStage('cDreamDemo', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
+    return
+
+flow sub_grp!Event24:
+    if not event_flags_system['cPlayer:ValidatePlayerSaveFlag']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:013', false)
+    elif EventFlowSystemActor.NetIsDreaming():
+        run DreamClose
+    elif (EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01')) or (event_flags_system['cLandTemp:JuneBrideCeremonyDemoAfterNow']) or (EventFlowSystemActor.IsPlayerBirthdayRoom()):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:019', false)
+    elif EventFlowSystemActor.IsSharePlay(1):
+        run System_SharePlay_Entry::ExitSharePlay
+    elif (not EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland')) and (not EventFlowSystemActor.SystemCheckNowStage('cPhotoStudioIsland')):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:011', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            if EventFlowSystemActor.NetIsInviteFriend():
+                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', true)
+            EventFlowSystemActor.ReserveSystemFlowDemo('Root', 'System_SaveGameClose')
+            EventFlowSystemActor.SystemRequestChangeStage('cSaveGameClose', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:020', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            if EventFlowSystemActor.NetIsInviteFriend():
+                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', true)
+            EventFlowSystemActor.ReserveSystemFlowDemo('Root', 'System_SaveGameClose')
+            EventFlowSystemActor.SystemRequestChangeStage('cSaveGameClose', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+

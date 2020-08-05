@@ -1,0 +1,4 @@
+flow Get_Emoticon:
+    Player.PlayerOpenEmoticonGetMessage()
+    return
+

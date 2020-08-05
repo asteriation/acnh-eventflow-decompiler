@@ -1,0 +1,9 @@
+flow Root:
+    if EventFlowSystemActor.IsGamePlayTime():
+        EventFlowSystemActor.TimeLock('cLock')
+        EventFlowSystemActor.OverWriteFadeSetting('cNormalFader', 'cNormalFader', 'cBlack', 0.05000000074505806, 1.0)
+        EventFlowSystemActor.SystemRequestChangeStage('cDeparture', 'cNormalFader', 'cNormalFader', 'cBlack', 1.0, 1.0)
+    else:
+        run System_DateTimeNg::NoSave
+    return
+

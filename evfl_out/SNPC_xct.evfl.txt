@@ -1,0 +1,61 @@
+flow Root:
+    if event_flags_system['cPlayer:XctGerReward']:
+        fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+        if fEvent8 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_00', false)
+        elif fEvent8 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_01', false)
+        elif fEvent8 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_02', false)
+        elif fEvent8 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_03', false)
+        elif fEvent8 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_04', false)
+    elif event_flags_system['cPlayerTemp:XctTalkMayDayTourNow']:
+        MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:013', false)
+        MainNpc.SetDeliveryItemAtRandom(12472, true, 'cVillageRemakePattern', 0)
+        if EventFlowSystemActor.ShoppingCapacity(65534, 'cNpcTrade'):
+            MainNpc.NpcDelivery('Default', 1)
+            event_flags_system['cPlayer:XctGerReward'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:014', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:012', false)
+    else:
+        run Xct_First
+        event_flags_system['cPlayerTemp:XctTalkMayDayTourNow'] = true
+        MainNpc.SetDeliveryItemAtRandom(12472, true, 'cVillageRemakePattern', 0)
+        if EventFlowSystemActor.ShoppingCapacity(65534, 'cNpcTrade'):
+            MainNpc.NpcDelivery('Default', 1)
+            event_flags_system['cPlayer:XctGerReward'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:014', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:012', false)
+    return
+
+flow Xct_First:
+    MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:002', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:004', false)
+            run sub_grp-end!Event18
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:009', false)
+            run sub_grp-end!Event18
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:003', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:005', false)
+            run sub_grp-end!Event18
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:010', false)
+            run sub_grp-end!Event18
+grp-end!Event18::
+    MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:007', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:008', false)
+    event_flags_system['cPlayer:XctFirstTalk'] = true
+    return
+
+flow sub_grp-end!Event18:
+    goto grp-end!Event18
+

@@ -1,0 +1,61 @@
+flow TimeOver:
+    MainNpc.SetNpcName(0, 8)
+    fEvent228 = MainNpc.DeliveryQuestType()
+    if fEvent228 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:501', false)
+    elif fEvent228 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:502', false)
+    elif fEvent228 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:503', false)
+    elif fEvent228 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:504', false)
+    elif fEvent228 == 4:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:505', false)
+    if MainNpc.HasDeliveryItem():
+        MainNpc.SetDeliveryItem(10, true)
+        MainNpc.NpcDelivery('Default', 0)
+        fEvent236 = MainNpc.DeliveryQuestType()
+        if fEvent236 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:506', false)
+        elif fEvent236 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:507', false)
+        elif fEvent236 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:508', false)
+        elif fEvent236 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:509', false)
+        elif fEvent236 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:510', false)
+        MainNpc.NpcAddFriendship(-1)
+        MainNpc.NpcQuestControl('cFinish')
+    elif MainNpc.HasOpenedDeliveryItem():
+        MainNpc.SetDeliveryItem(11, true)
+        MainNpc.NpcDelivery('Default', 0)
+        fEvent244 = MainNpc.DeliveryQuestType()
+        if fEvent244 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:511', false)
+        elif fEvent244 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:512', false)
+        elif fEvent244 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:513', false)
+        elif fEvent244 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:514', false)
+        elif fEvent244 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:515', false)
+        MainNpc.NpcAddFriendship(-2)
+        MainNpc.NpcQuestControl('cFinish')
+    else:
+        fEvent250 = MainNpc.DeliveryQuestType()
+        if fEvent250 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:516', false)
+        elif fEvent250 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:517', false)
+        elif fEvent250 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:518', false)
+        elif fEvent250 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:519', false)
+        elif fEvent250 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:520', false)
+        MainNpc.NpcAddFriendship(-3)
+        MainNpc.NpcQuestControl('cFinish')
+    return
+

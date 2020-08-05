@@ -1,0 +1,23 @@
+flow Root:
+    if EventFlowSystemActor.IsSharePlay(0):
+        if EventFlowSystemActor.MainPlayerIsBirthday(false):
+            if EventFlowSystemActor.CanScheduleNowPlayerBirthdayParty():
+                if (not EventFlowSystemActor.IsHoldPlayerBirthdayThisYear()) and (not event_flags_system['cPlayer:BirthdayPToldlPartySharePlay']):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_BirthdayP:001', false)
+                    event_flags_system['cPlayer:BirthdayPToldlPartySharePlay'] = true
+                    run NNPC_Talk_Situation::Facility_Chk
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    run sub_grp!Event12
+        else:
+            run sub_grp!Event12
+    return
+
+flow sub_grp!Event12:
+    if EventFlowSystemActor.IsExistBirthdayPlayerInSub():
+        MainNpc.SetPlayerName(4)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_BirthdayP:002', false)
+        EventFlowSystemActor.SetBirthdayPToldlPartySharePlayFlag()
+        run NNPC_Talk_Situation::Facility_Chk
+        EventFlowSystemActor.ExitFlowchart()
+

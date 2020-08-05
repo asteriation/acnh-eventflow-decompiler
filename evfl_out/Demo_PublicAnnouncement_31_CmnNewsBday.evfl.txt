@@ -1,0 +1,74 @@
+flow Root:
+    if subflow_results[0] == 0:
+        fEvent0 = subflow_results[3]
+        if fEvent0 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:011_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_01', false)
+            run sub_Event25
+        elif fEvent0 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:011_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_01', false)
+            run sub_Event25
+        elif fEvent0 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:011_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_01', false)
+            run sub_Event25
+        elif fEvent0 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_02_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_02', false)
+            run sub_Event25
+        elif fEvent0 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_02_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_02', false)
+            run sub_Event25
+        elif fEvent0 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_02_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_02', false)
+            run sub_Event25
+        elif fEvent0 == 7:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_01_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:012_02_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:013_02', false)
+            run sub_Event25
+    else:
+        fEvent11 = subflow_results[3]
+        if fEvent11 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:011_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_01', false)
+            run sub_Event25
+        elif fEvent11 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:011_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_01', false)
+            run sub_Event25
+        elif fEvent11 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:011_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_01', false)
+            run sub_Event25
+        elif fEvent11 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_02_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_02', false)
+            run sub_Event25
+        elif fEvent11 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_02_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_02', false)
+            run sub_Event25
+        elif fEvent11 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_01_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_02_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_02', false)
+            run sub_Event25
+        elif fEvent11 == 7:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_01_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:012_02_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:013_02', false)
+            run sub_Event25
+    return
+
+flow sub_Event25:
+    subflow_results[15] = 1
+

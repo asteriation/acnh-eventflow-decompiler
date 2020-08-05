@@ -1,0 +1,8 @@
+flow React_Shopping:
+    MainNpc.SetItemColorName(0, 23)
+    MainNpc.SetItemName(0, 23, 0)
+    MainNpc.NpcOpenFacilityMessage()
+    event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+    EventFlowSystemActor.ExitFlowchart()
+    return
+

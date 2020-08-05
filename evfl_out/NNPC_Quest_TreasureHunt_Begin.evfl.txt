@@ -1,0 +1,242 @@
+flow Begin:
+    fEvent5 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent5 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:001', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event14:
+            if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+                fEvent71 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                if fEvent71 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:004', true)
+                elif fEvent71 == 1:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:005', true)
+                elif fEvent71 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:006', true)
+entrypoint Event12:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+                if MainNpc.CheckNpcTool() in (0, 1, 2, 3, 4):
+                    MainNpc.NpcChangeHandTool(true, 'cNone', 65534)
+                MainNpc.NpcTreasureQuestSetting()
+                EventFlowSystemActor.WaitFrame(60)
+                EventFlowSystemActor.FadeIn(true)
+                if not MainNpc.NpcTreasureBurySuccess():
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:200', false)
+                    MainNpc.NpcQuestControl('cFinish')
+                elif event_flags_system['cPlayer:HasPlayedTreasureHunt']:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:013', true)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        if EventFlowSystemActor.IsSharePlay(0):
+                            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:011_01', true)
+                                EventFlowSystemActor.BGMPropertyControl(11)
+                                MainNpc.NpcQuestControl('cStart')
+                                event_flags_npc['cNpcMemory:OrderQuest'] = true
+                                event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                                EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                                EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                                EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                                if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                    EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                                else:
+                                    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                                MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                                EventFlowSystemActor.WaitFrame(60)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:012_01', true)
+                                EventFlowSystemActor.BGMPropertyControl(11)
+                                MainNpc.NpcQuestControl('cStart')
+                                event_flags_npc['cNpcMemory:OrderQuest'] = true
+                                event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                                EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                                EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                                EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                                if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                    EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                                else:
+                                    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                                MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                                EventFlowSystemActor.WaitFrame(60)
+                        elif MainNpc.NpcTreasureQuestDifficulty() == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:011', true)
+                            EventFlowSystemActor.BGMPropertyControl(11)
+                            MainNpc.NpcQuestControl('cStart')
+                            event_flags_npc['cNpcMemory:OrderQuest'] = true
+                            event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                            EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                            EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                            else:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                            MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                            EventFlowSystemActor.WaitFrame(60)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:012', true)
+                            EventFlowSystemActor.BGMPropertyControl(11)
+                            MainNpc.NpcQuestControl('cStart')
+                            event_flags_npc['cNpcMemory:OrderQuest'] = true
+                            event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                            EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                            EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                            else:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                            MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                            EventFlowSystemActor.WaitFrame(60)
+                    elif EventFlowSystemActor.IsSharePlay(0):
+                        if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:014_01', true)
+                            EventFlowSystemActor.BGMPropertyControl(11)
+                            MainNpc.NpcQuestControl('cStart')
+                            event_flags_npc['cNpcMemory:OrderQuest'] = true
+                            event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                            EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                            EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                            else:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                            MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                            EventFlowSystemActor.WaitFrame(60)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:015_01', true)
+                            EventFlowSystemActor.BGMPropertyControl(11)
+                            MainNpc.NpcQuestControl('cStart')
+                            event_flags_npc['cNpcMemory:OrderQuest'] = true
+                            event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                            EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                            EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                            if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                            else:
+                                EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                            MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                            EventFlowSystemActor.WaitFrame(60)
+                    elif MainNpc.NpcTreasureQuestDifficulty() == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:014', true)
+                        EventFlowSystemActor.BGMPropertyControl(11)
+                        MainNpc.NpcQuestControl('cStart')
+                        event_flags_npc['cNpcMemory:OrderQuest'] = true
+                        event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                        EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                        EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                        EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                        if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                            EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                        else:
+                            EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                        MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                        EventFlowSystemActor.WaitFrame(60)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:015', true)
+                        EventFlowSystemActor.BGMPropertyControl(11)
+                        MainNpc.NpcQuestControl('cStart')
+                        event_flags_npc['cNpcMemory:OrderQuest'] = true
+                        event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                        EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                        EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                        EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                        if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                            EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                        else:
+                            EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                        MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                        EventFlowSystemActor.WaitFrame(60)
+                elif EventFlowSystemActor.IsSharePlay(0):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:011_01', true)
+                    EventFlowSystemActor.BGMPropertyControl(11)
+                    MainNpc.NpcQuestControl('cStart')
+                    event_flags_npc['cNpcMemory:OrderQuest'] = true
+                    event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                    EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                    EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                    EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                    if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                        EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                    else:
+                        EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                    MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                    EventFlowSystemActor.WaitFrame(60)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:011', true)
+                    EventFlowSystemActor.BGMPropertyControl(11)
+                    MainNpc.NpcQuestControl('cStart')
+                    event_flags_npc['cNpcMemory:OrderQuest'] = true
+                    event_flags_system['cPlayer:TreasurePlayerWin'] = false
+                    EventFlowSystemActor.CameraSetDemoParam('', 'cNormal', 'cDefault', false, false, false, 0)
+                    EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                    EventFlowSystemActor.SetSharePlaySubToolCondition(false)
+                    if MainNpc.NpcTreasureQuestDifficulty() == 0:
+                        EventFlowSystemActor.UIMiniGameTimerAppear(360, 'cNone')
+                    else:
+                        EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cNone')
+                    MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
+                    EventFlowSystemActor.WaitFrame(60)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:007', false)
+                MainNpc.NpcQuestControl('cFinish')
+        else:
+            run TreasureNoPlay
+    elif fEvent5 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:002', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run TreasurePlay
+        else:
+            run TreasureNoPlay
+    elif fEvent5 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:003', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run TreasurePlay
+        else:
+            run TreasureNoPlay
+    return
+
+flow Begin_Ap:
+    if MainNpc.CheckNpcApproachType():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:101', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:105', false)
+            MainNpc.NpcQuestControl('cFinish')
+        elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:104', true)
+            run SetPlaza
+            event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:103', true)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:102', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:108', false)
+            MainNpc.NpcQuestControl('cFinish')
+        elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:107', true)
+            run SetPlaza
+            event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:106', true)
+    return
+
+flow SetPlaza:
+    run Event12
+    return
+
+flow TreasurePlay:
+    run Event14
+    return
+
+flow TreasureNoPlay:
+    fEvent13 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent13 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:008', false)
+    elif fEvent13 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:009', false)
+    elif fEvent13 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:010', false)
+    MainNpc.NpcQuestControl('cFinish')
+    return
+

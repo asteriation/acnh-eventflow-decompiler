@@ -1,0 +1,12 @@
+flow LostProperty:
+    EventFlowSystemActor.UIMessageWindowForPocket()
+    return
+
+flow Treasure:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Player:104', false)
+    return
+
+flow UnclearLostProperty:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Player:105', false)
+    return
+

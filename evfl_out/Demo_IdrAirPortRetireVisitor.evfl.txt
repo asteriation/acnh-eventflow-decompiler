@@ -1,0 +1,32 @@
+flow Root:
+    if EventFlowSystemActor.NetIsDemoPlayer():
+        EventFlowSystemActor.BGMPropertyControl(84)
+    else:
+        EventFlowSystemActor.BGMPropertyControl(85)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0', '', false, false, false, 0)
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.TurnNeck(1)
+    if EventFlowSystemActor.NetIsDemoPlayer():
+        SubNpc.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:810', true)
+        SubNpc.TurnNeck(11)
+        SubNpc.NpcRailMove(0, -1, -1, 0, false, false)
+        MainNpc.TurnNeck(11)
+        SubNpc.NpcRailMove(1, -1, -1, 0, false, false)
+        EventFlowSystemActor.BGMPropertyControl(76)
+        EventFlowSystemActor.SoundTriggerEmit('Airplane_Takeoff', -1)
+        EventFlowSystemActor.NetDemoNextStep('cLeaveVisitor')
+    else:
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(11)
+                SubNpc.NpcRailMove(0, -1, -1, 0, false, false)
+                SubNpc.NpcRailMove(1, -1, -1, 0, false, false)
+            branch2:
+                EventFlowSystemActor.SetTagFromSystem(0, 'cNetDemoPlayerName', 'cDegit', '', 0)
+                EventFlowSystemActor.SetTagFromSystem(0, 'cNetDemoPlayerLandName', 'cDegit', '', 0)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:021', true)
+        EventFlowSystemActor.NetDemoNextStep('cSeeOffVisitor')
+    return
+

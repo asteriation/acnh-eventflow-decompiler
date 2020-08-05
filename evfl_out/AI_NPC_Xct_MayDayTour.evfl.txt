@@ -1,0 +1,16 @@
+flow Root:
+    if MainNpc.NpcCheckStateSelectTiming('cInit'):
+        if event_flags_system['cPlayerTemp:XctTalkMayDayTourNow']:
+            MainNpc.NpcChangeAIStateCstm('SNPC_xct', 'Root', 5, '')
+        else:
+            MainNpc.NpcAISetStandupBeforeTalk()
+            MainNpc.NpcChangeAIState('cSitOnGround', 'SNPC_xct', 'Root', '', false, true)
+    elif MainNpc.NpcIsSitting() == 0:
+        MainNpc.NpcChangeAIState('cSitOnGround', 'SNPC_xct', 'Root', '', false, true)
+    else:
+        MainNpc.NpcChangeAIStateCstm('SNPC_xct', 'Root', 5, '')
+    return
+
+flow Init:
+    return
+

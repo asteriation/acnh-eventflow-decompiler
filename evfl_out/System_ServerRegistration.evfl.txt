@@ -1,0 +1,81 @@
+flow UserRegist:
+    subflow_results[0] = 0
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:001', false)
+    run UserResistCore
+    if entry_variables['WithLogin']:
+        EventFlowSystemActor.NetLoginNEX('cLoginNEX', false)
+    EventFlowSystemActor.MessageSuspend()
+    if (not EventFlowSystemActor.NetIsDreaming()) and (entry_variables['WithSave']):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+        EventFlowSystemActor.SaveSimpleSave('cAll')
+        EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.MessageUnlockNext()
+    return
+
+flow UserResistCore:
+    if EventFlowSystemActor.NetMode() not in (0, 2):
+        EventFlowSystemActor.NetShutdown('cNetShutdown', false)
+    EventFlowSystemActor.NetConnectInit('cConnectInet', true)
+    if EventFlowSystemActor.CheckErrorType(2):
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.MessageUnlockNext()
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0810', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            subflow_results[0] = 1
+            if entry_variables['Terminate']:
+                EventFlowSystemActor.ExitFlowchart()
+        else:
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:001', false)
+            run UserResistCore
+    elif entry_variables['Terminate']:
+        EventFlowSystemActor.NetCheckNSA('cCheckNSA', false)
+        EventFlowSystemActor.NetGetPOPID(false)
+        EventFlowSystemActor.NetUpdateFriendList('cBestFriend')
+        run UploadProfileCore
+    else:
+        EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
+        if EventFlowSystemActor.CheckErrorType(2):
+            subflow_results[0] = 1
+        else:
+            EventFlowSystemActor.NetGetPOPID(true)
+            if EventFlowSystemActor.CheckErrorType(2):
+                subflow_results[0] = 1
+            else:
+                EventFlowSystemActor.NetUpdateFriendList('cBestFriend')
+                if EventFlowSystemActor.CheckErrorType(2):
+                    subflow_results[0] = 1
+                else:
+                    run UploadProfileCore
+    return
+
+flow UploadProfileCore:
+    EventFlowSystemActor.NetCheckProfileBan('IgnoreError')
+    if EventFlowSystemActor.CheckErrorType(2):
+        subflow_results[0] = 1
+        if entry_variables['Terminate']:
+            EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:UploadPlayerProfileIllegal']:
+        if event_flags_system['cPlayer:ImprovePlayerProfile']:
+            event_flags_system['cPlayer:UploadPlayerProfileIllegal'] = false
+            event_flags_system['cPlayer:ImprovePlayerProfile'] = false
+            EventFlowSystemActor.UploadProfile('IgnoreError')
+            if EventFlowSystemActor.CheckErrorType(2):
+                subflow_results[0] = 1
+                if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
+                if entry_variables['Terminate']:
+                    EventFlowSystemActor.ExitFlowchart()
+    else:
+        EventFlowSystemActor.UploadProfile('IgnoreError')
+        if EventFlowSystemActor.CheckErrorType(2):
+            subflow_results[0] = 1
+            if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
+                EventFlowSystemActor.MessageSuspend()
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
+            if entry_variables['Terminate']:
+                EventFlowSystemActor.ExitFlowchart()
+    return
+

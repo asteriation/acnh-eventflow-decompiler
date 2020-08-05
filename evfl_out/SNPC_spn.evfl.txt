@@ -1,0 +1,7 @@
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        run SNPC_spn_01_MainField::Root
+    else:
+        run SNPC_spn_02_Commune::Root
+    return
+

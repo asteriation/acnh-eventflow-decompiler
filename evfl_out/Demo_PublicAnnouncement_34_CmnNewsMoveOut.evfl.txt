@@ -1,0 +1,15 @@
+flow Root:
+    if subflow_results[10] == 1:
+        MainNpc.SetNpcName(0, 9)
+        if subflow_results[14] != 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:200', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:200', false)
+        if subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:201', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:201', false)
+        subflow_results[14] = 1
+    return
+

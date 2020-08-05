@@ -1,0 +1,4 @@
+flow Root:
+    MainNpc.NpcChangeAIState('cPartyGuestWait', '', '', '', false, false)
+    return
+

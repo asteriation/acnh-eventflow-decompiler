@@ -1,0 +1,214 @@
+flow Root:
+    MainNpc.SetNpcName(0, 14)
+    MainNpc.SetNpcName(1, 13)
+    if event_flags_system['cPlayer:PrologueAfterBuiltTentTalk']:
+        if not event_flags_system['cPlayer:PrologueForCampfire1']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:011', false)
+            EventFlowSystemActor.BGMPropertyControl(79)
+            event_flags_system['cPlayer:PrologueForCampfire1'] = true
+            event_flags_system['cPlayer:PlayerPickupEnable'] = true
+            event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 4
+        elif event_flags_system['cPlayer:PrologueForCampfire2']:
+            if not event_flags_system['cPlayer:PrologueStartedCampfire']:
+                run TownFruitTypeChk
+                if event_flags_system['cPlayer:HaveTownFruit4CampFire']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:031', true)
+                    MainNpc.NpcDelivery('Keep', 0)
+                    EventFlowSystemActor.WaitFrame(30)
+                    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
+                    EventFlowSystemActor.BGMPropertyControl(78)
+                    EventFlowSystemActor.EnvSetDemoTime(0, 20, 0)
+                    event_flags_system['cLand:SetPrologueBonfire'] = true
+                    event_flags_system['cPlayer:PrologueStartedCampfire'] = true
+                    EventFlowSystemActor.SystemReenterStage(3, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:021', false)
+            elif event_flags_system['cPlayer:AllowPcTentEntering']:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:061', false)
+            elif EventFlowSystemActor.ShoppingCapacity(4081, 'cItemName'):
+                if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3):
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051_01', false)
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:052', false)
+                    MainNpc.SetDeliveryItemAtRandom(4081, true, 'cVillageRemakePattern', 0)
+                    MainNpc.NpcDelivery('Default', 1)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:053', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:054', false)
+                    event_flags_system['cPlayer:AllowPcTentEntering'] = true
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:057', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:058', false)
+            elif EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3):
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_02', false)
+                run sub_Event100
+            else:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
+                run sub_Event100
+        elif EventFlowSystemActor.HasTargetItem(2500, 11):
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:013_01', false)
+            MainNpc.SetDeliveryItemAtRandom(2500, false, 'cVillageRemakePattern', 0)
+            MainNpc.NpcDelivery('Keep', 0)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:014', false)
+            EventFlowSystemActor.DeleteTargetItem(2500, 10, false)
+            MainNpc.NpcDelivery('Default', 3)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:015', false)
+            event_flags_system['cPlayer:PrologueForCampfire2'] = true
+            event_flags_system['cLand:ConfirmedFruit'] = true
+            run TownFruitTypeChk
+            if event_flags_system['cPlayer:HaveTownFruit4CampFire']:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:017', true)
+                MainNpc.NpcDelivery('Keep', 0)
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
+                EventFlowSystemActor.BGMPropertyControl(78)
+                EventFlowSystemActor.EnvSetDemoTime(0, 20, 0)
+                event_flags_system['cLand:SetPrologueBonfire'] = true
+                event_flags_system['cPlayer:PrologueStartedCampfire'] = true
+                EventFlowSystemActor.SystemReenterStage(3, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+            else:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:016', false)
+        elif EventFlowSystemActor.HasTargetItem(2500, 10):
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:013', false)
+            MainNpc.SetDeliveryItemAtRandom(2500, false, 'cVillageRemakePattern', 0)
+            MainNpc.NpcDelivery('Keep', 0)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:014', false)
+            EventFlowSystemActor.DeleteTargetItem(2500, 10, false)
+            MainNpc.NpcDelivery('Default', 3)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:015', false)
+            event_flags_system['cPlayer:PrologueForCampfire2'] = true
+            event_flags_system['cLand:ConfirmedFruit'] = true
+            run TownFruitTypeChk
+            if event_flags_system['cPlayer:HaveTownFruit4CampFire']:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:017', true)
+                MainNpc.NpcDelivery('Keep', 0)
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
+                EventFlowSystemActor.BGMPropertyControl(78)
+                EventFlowSystemActor.EnvSetDemoTime(0, 20, 0)
+                event_flags_system['cLand:SetPrologueBonfire'] = true
+                event_flags_system['cPlayer:PrologueStartedCampfire'] = true
+                EventFlowSystemActor.SystemReenterStage(3, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+            else:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:016', false)
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:012', false)
+    elif not event_flags_system['cPlayer:PlayerPocketUIEnable']:
+        run sub_Event3
+    elif event_flags_system['cLand:Prologue4BuiltPlayer']:
+entrypoint Event9:
+        run ChkNpcTentStatus
+        if event_flags_system['cPlayer:Prologue4AfterBuiltPcTent']:
+            fEvent1 = subflow_results[0]
+            if fEvent1 == 0:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
+            elif fEvent1 in (1, 2):
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:019', false)
+            elif fEvent1 == 3:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:016', false)
+            elif fEvent1 == 4:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
+            elif fEvent1 == 5:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:018', false)
+            elif fEvent1 == 6:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
+            elif fEvent1 == 7:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:017', false)
+        else:
+            event_flags_system['cPlayer:Prologue4AfterBuiltPcTent'] = true
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:011', false)
+            fEvent12 = subflow_results[0]
+            if fEvent12 == 0:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
+            elif fEvent12 in (1, 2, 3):
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
+            elif fEvent12 == 4:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
+            elif fEvent12 in (5, 7):
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
+            elif fEvent12 == 6:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
+    else:
+        run sub_Event5
+    return
+
+flow Prologue4_AfterBuiltTent:
+    MainNpc.SetNpcName(0, 14)
+    MainNpc.SetNpcName(1, 13)
+    run Event9
+    return
+
+flow TownFruitTypeChk:
+    fEvent29 = EventFlowSystemActor.LandFruit()
+    if fEvent29 == 0:
+        if EventFlowSystemActor.HasTargetItem(2287, 6):
+            EventFlowSystemActor.DeleteTargetItem(2287, 6, false)
+            MainNpc.SetDeliveryItemAtRandom(2287, false, 'cVillageRemakePattern', 0)
+            run sub_Event35
+    elif fEvent29 == 1:
+        if EventFlowSystemActor.HasTargetItem(2214, 6):
+            EventFlowSystemActor.DeleteTargetItem(2214, 6, false)
+            MainNpc.SetDeliveryItemAtRandom(2214, false, 'cVillageRemakePattern', 0)
+            run sub_Event35
+    elif fEvent29 == 2:
+        if EventFlowSystemActor.HasTargetItem(2285, 6):
+            EventFlowSystemActor.DeleteTargetItem(2285, 6, false)
+            MainNpc.SetDeliveryItemAtRandom(2285, false, 'cVillageRemakePattern', 0)
+            run sub_Event35
+    elif fEvent29 == 3:
+        if EventFlowSystemActor.HasTargetItem(2286, 6):
+            EventFlowSystemActor.DeleteTargetItem(2286, 6, false)
+            MainNpc.SetDeliveryItemAtRandom(2286, false, 'cVillageRemakePattern', 0)
+            run sub_Event35
+    elif fEvent29 == 4:
+        if EventFlowSystemActor.HasTargetItem(2213, 6):
+            EventFlowSystemActor.DeleteTargetItem(2213, 6, false)
+            MainNpc.SetDeliveryItemAtRandom(2213, false, 'cVillageRemakePattern', 0)
+            run sub_Event35
+    return
+
+flow ChkNpcTentStatus:
+    if event_flags_system['cLand:Prologue4BuiltNpcAN']:
+        if event_flags_system['cPlayer:Prologue4HaGetTent']:
+            subflow_results[0] = 7
+        else:
+            subflow_results[0] = 6
+    elif event_flags_system['cLand:Prologue4BuiltNpcHA']:
+        if event_flags_system['cPlayer:Prologue4AnGetTent']:
+            subflow_results[0] = 5
+        else:
+            subflow_results[0] = 4
+    elif event_flags_system['cPlayer:Prologue4AnGetTent']:
+        if event_flags_system['cPlayer:Prologue4HaGetTent']:
+            subflow_results[0] = 3
+        else:
+            subflow_results[0] = 2
+    elif event_flags_system['cPlayer:Prologue4HaGetTent']:
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 0
+    return
+
+flow NormalTalk_BeforeTentSet:
+    run sub_Event5
+    return
+
+flow NormalTalk_BeforeTentGet:
+    run sub_Event3
+    return
+
+flow sub_Event3:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:001', false)
+    return
+
+flow sub_Event5:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:002', false)
+    return
+
+flow sub_Event100:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
+
+flow sub_Event35:
+    event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
+

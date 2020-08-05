@@ -1,0 +1,42 @@
+flow TalkFirst:
+    event_flags_system['cPlayer:SzaTaled1stTime'] = true
+    event_flags_system['cPlayer:SzaTalkAtOfficeToday'] = true
+    if event_flags_system['cPlayer:OfficeSzaIntroduction']:
+        if event_flags_system['cPlayerTemp:RcoOfficeFirstTalkNow']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:001_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:001_02', false)
+    elif event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:022', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_01', false)
+        if event_flags_system['cPlayer:FirstPlayAfterPlayerMake']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_03', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:002', false)
+    if not EventFlowSystemActor.NetHasVisitor():
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:002_02', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:003', false)
+            run SNPC_sza_00_Common::szaNormalSeq
+        else:
+            run SNPC_sza_00_Common::Sza_Cmn_Cancel
+    return
+
+flow Sza_EvaluationExplanation:
+    if event_flags_system['cPlayer:SzaTalkAtOfficeToday']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_01_02', false)
+    else:
+        event_flags_system['cPlayer:SzaTalkAtOfficeToday'] = true
+        subflow_results[15] = 1
+        run SNPC_sza_00_Common::Sza_Common_Greet
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_01_01', false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_02', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_02_01', false)
+        event_flags_system['cPlayer:IslandEvaluationUnlockMyself'] = true
+    event_flags_system['cPlayer:SzaHeardAboutIslandEvaluation'] = true
+    return
+

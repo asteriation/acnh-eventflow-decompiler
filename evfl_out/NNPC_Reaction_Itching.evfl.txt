@@ -1,0 +1,14 @@
+flow Root:
+    if (MainNpc.NpcIsFleaHolder()) and (not event_flag_npc['cNpcMemory:TalkItchingToday']):
+        fEvent3 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent3 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Itching:001', false)
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Itching:002', false)
+        elif fEvent3 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Itching:003', false)
+        event_flags_npc['cNpcMemory:TalkItchingToday'] = true
+        event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+

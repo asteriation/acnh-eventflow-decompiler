@@ -1,0 +1,8 @@
+flow SmaphoCatalogOpenErrorOutsideArea:
+    MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:311', false)
+    return
+
+flow SmaphoCatalogOpenErrorSaveDisable:
+    MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:333', false)
+    return
+

@@ -1,0 +1,153 @@
+flow Talk:
+    if EventFlowSystemActor.IsMyVillage():
+        fEvent32 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent32 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:200', false)
+        elif fEvent32 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:201', false)
+        elif fEvent32 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:202', false)
+    else:
+entrypoint Event24:
+        fEvent24 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent24 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:100', false)
+        elif fEvent24 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:101', false)
+        elif fEvent24 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Talk:102', false)
+    return
+
+flow Root:
+    if not EventFlowSystemActor.IsMyVillage():
+        run ForVisitor
+    elif event_flags_system['cPlayer:TreasurePlayerWin']:
+        run End_Win
+    elif EventFlowSystemActor.NpcQuestIsLimitOver('cTreasure'):
+        run End_Lose
+    else:
+        run Talk
+    return
+
+flow End_Win:
+    if event_flag_npc['cNpcTemp:TreasureHuntGiveCancel']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:012', false)
+    else:
+        fEvent39 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent39 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:001', true)
+        elif fEvent39 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:002', true)
+        elif fEvent39 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:003', true)
+    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cQuest', false)
+    if MainNpc.IsSelectNpcRequestedItem():
+        MainNpc.SetDeliveryItem(4, false)
+        MainNpc.NpcDelivery('Keep', 0)
+        fEvent44 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent44 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:004', false)
+        elif fEvent44 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:005', false)
+        elif fEvent44 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:006', false)
+        run NNPC_Quest_AllReward::Root
+        MainNpc.NpcDelivery('"Default"', 6)
+        fEvent101 = MainNpc.NpcQuestReward()
+        if fEvent101 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:007', false)
+        elif fEvent101 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:008', false)
+        elif fEvent101 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:009', false)
+        MainNpc.SetDeliveryItemApplySave()
+        MainNpc.NpcDelivery('"Default"', 10)
+        fEvent55 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent55 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:100', true)
+        elif fEvent55 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:101', true)
+        elif fEvent55 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:102', true)
+        MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
+        run Treasure_Finish
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:010', false)
+        run sub_Event77
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:011', false)
+        run sub_Event77
+    return
+
+flow End_Lose:
+    if EventFlowSystemActor.HasTargetItem(2545, 1):
+        if MainNpc.NpcIsTreasureHuntLimitOver2():
+            MainNpc.NpcAddFriendship(1)
+        run End_Lose_HasTreasure
+    elif MainNpc.NpcIsTreasureHuntLimitOver2():
+        fEvent14 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent14 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:300', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+        elif fEvent14 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:301', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+        elif fEvent14 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:302', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+    else:
+        MainNpc.NpcAddFriendship(-1)
+        fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent57 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:200', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+        elif fEvent57 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:201', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+        elif fEvent57 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:202', true)
+            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+            run Treasure_Finish
+    return
+
+flow Treasure_Finish:
+    MainNpc.NpcQuestControl('cFinish')
+    MainNpc.NpcTreasureToDust()
+    event_flags_system['cLifeSupportDaily:AchieveQuest'] = true
+    event_flags_system['cLifeSupportAchievement:AchieveVillagersQuest'] += 1
+    event_flags_system['cPlayer:HasPlayedTreasureHunt'] = true
+    EventFlowSystemActor.SetSharePlayChangeCondition(false)
+    EventFlowSystemActor.SetSharePlaySubToolCondition(true)
+    event_flags_npc['cNpcMemory:OrderQuest'] = true
+    event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = false
+    return
+
+flow End_Lose_HasTreasure:
+    MainNpc.SetDeliveryItem(0, true)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:401', false)
+    MainNpc.NpcDelivery('Default', 0)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:402', false)
+    run Treasure_Finish
+    return
+
+flow ForVisitor:
+    run Event24
+    return
+
+flow End:
+    if not EventFlowSystemActor.IsMyVillage():
+        run ForVisitor
+    elif event_flags_system['cPlayer:TreasurePlayerWin']:
+        run End_Win
+    else:
+        run End_Lose
+    return
+
+flow sub_Event77:
+    event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
+

@@ -1,0 +1,8 @@
+flow Root:
+    run AI_NPC_Common::VisitSpeak
+    return
+
+flow Init:
+    run AI_NPC_Common::VisitSpeakInit
+    return
+

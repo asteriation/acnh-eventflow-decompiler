@@ -1,0 +1,8 @@
+flow Root:
+    if event_flags_system['cLand:FoxMovedToMarket']:
+        EventFlowSystemActor.SetCheckResultStructureDoor(0)
+    else:
+        Player.OpenMessageWindow('TalkSys/SYS_Door:113', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    return
+

@@ -1,0 +1,268 @@
+flow Root:
+    EventFlowSystemActor.CameraSetDemoParam('Npc:tkk', 'PreTkkLive', 'PreTkkLive', false, false, false, 0)
+    subflow_results[1] = 0
+    MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_ToContext', 'cTkkSelectFeelType_None')
+    EventFlowSystemActor.SetTagFromSystem(0, 'cTkkLiveRequest', 'cDegit', '', 0)
+    run Tkk_Live_JudgeMiss
+    run Tkk_LiveBefore_Msg
+    run Tkk_LiveDemo
+    if subflow_results[0] == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:003', false)
+    MainNpc.TkkFreeAction('cTkkActionType_ToIdle')
+    run Tkk_LiveAfter_Flag
+    run Tkk_LiveAfter_JudgeGet
+    run Tkk_LiveAfter_LastWord
+    run Tkk_Live_FlowEnd
+    return
+
+flow Tkk_LiveDemo:
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.SoundDuckingOn(39)
+    EventFlowSystemActor.SoundDuckingOn(40)
+    EventFlowSystemActor.WaitFrame(90)
+    run Tkk_LiveDemoEnter
+    MainNpc.TkkLive()
+    run Tkk_LiveDemoExit
+    return
+
+flow Root_Init:
+    MainNpc.NpcAISetting(3, false)
+    MainNpc.NpcAISetting(4, false)
+    return
+
+flow Tkk_LiveDemoEnter:
+    if subflow_results[1] == 0:
+        MainNpc.TkkLiveSyncPlayerAction()
+        fork:
+            branch0:
+            branch1:
+                Player.PlayerChairStandup()
+                Player.PlayerToolPutaway()
+                EventFlowSystemActor.WaitFrame(20)
+                Player.PlayerTotakekeTurnToStarter()
+            branch2:
+                EventFlowSystemActor.TkkLiveNpcStandUp()
+        EventFlowSystemActor.WaitFrame(15)
+        EventFlowSystemActor.SoundDuckingOn(17)
+        EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612, false)
+        EventFlowSystemActor.SoundDuckingOff(39)
+        EventFlowSystemActor.SoundDuckingOff(40)
+        MainNpc.TkkLiveEnter()
+        EventFlowSystemActor.BGMPropertyControl(77)
+        EventFlowSystemActor.FadeIn(true)
+        Player.PlayerTotakekeLiveGetRhythm()
+        EventFlowSystemActor.TotakekeLiveNpcRhythm()
+    else:
+        Player.PlayerToolPutaway()
+        EventFlowSystemActor.SoundDuckingOn(17)
+        EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612, false)
+        EventFlowSystemActor.SoundDuckingOff(39)
+        EventFlowSystemActor.SoundDuckingOff(40)
+        MainNpc.TkkLiveEnter()
+        EventFlowSystemActor.BGMPropertyControl(77)
+        EventFlowSystemActor.FadeIn(true)
+        Player.PlayerTotakekeLiveGetRhythm()
+        EventFlowSystemActor.TotakekeLiveNpcRhythm()
+    return
+
+flow Tkk_LiveDemoExit:
+    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612, true)
+    MainNpc.TkkLiveExit()
+    EventFlowSystemActor.SoundDuckingOff(17)
+    if MainNpc.TkkLiveType() in (0, 1):
+        EventFlowSystemActor.BGMPropertyControl(88)
+    EventFlowSystemActor.FadeIn(true)
+    return
+
+flow Tkk_LiveAfter_Flag:
+    if subflow_results[1] != 0:
+        event_flags_system['cPlayer:TkkFirstLiveJoined'] = true
+        event_flags_system['cPlayer:TkkTalkToday'] = true
+        event_flags_system['cPlayer:TkkLiveToday'] = true
+        EventFlowSystemActor.ReserveTownNews()
+        event_flags_system['cPlayer:TotakekeLiveCount'] += 1
+        event_flags_system['cLifeSupportAchievement:GotoTotakekeShow'] += 1
+        event_flags_system['cPlayer:StandByRcoVisitMyHomeAfterTkkFirstLive'] = true
+    elif not EventFlowSystemActor.IsMyVillage():
+        event_flags_system['cPlayerVisit:TkkVisitorLive'] = true
+    elif not event_flags_system['cPlayer:TkkLiveToday']:
+        event_flags_system['cPlayer:TkkLiveToday'] = true
+        event_flags_system['cPlayer:TotakekeLiveCount'] += 1
+        event_flags_system['cLifeSupportAchievement:GotoTotakekeShow'] += 1
+    return
+
+flow Tkk_LiveBefore_Msg:
+    EventFlowSystemActor.SetTkkLiveRequestPlayerName()
+    fEvent2 = MainNpc.TkkLiveType()
+    if fEvent2 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:011', false)
+    elif fEvent2 == 0:
+        fEvent0 = MainNpc.TkkQeruestMethodType()
+        if fEvent0 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
+        elif fEvent0 == 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:002', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
+        elif fEvent0 == 1:
+            fEvent3 = MainNpc.TkkRequestFeeling()
+            if fEvent3 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:004', false)
+            elif fEvent3 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:005', false)
+            elif fEvent3 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:006', false)
+            elif fEvent3 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:007', false)
+            elif fEvent3 == 4:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:008', false)
+    elif fEvent2 == 1:
+        fEvent134 = MainNpc.CompareDayBirthdayLive()
+        if fEvent134 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:012', false)
+        elif fEvent134 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:013', false)
+        elif fEvent134 == 1:
+            pass
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:009', false)
+    return
+
+flow Tkk_Live_JudgeMiss:
+    if (MainNpc.TkkLiveType() == 0) and (MainNpc.TkkQeruestMethodType() == 0) and (any ('TkkMiss', '', '', '', '', '', '', '') in EventFlowSystemActor.FromItemSelect('cPresetItem')):
+        subflow_results[0] = 0
+    else:
+        run sub_Event29
+    return
+
+flow Tkk_LiveAfter_JudgeGet:
+    if (not event_flags_system['cPlayer:TkkGetMusicToday']) and (EventFlowSystemActor.IsMyVillage()) and (subflow_results[0] == 1):
+        MainNpc.DecideEventReward('cTotakeke')
+        if EventFlowSystemActor.IsSharePlay(0):
+            if not event_flags_system['cLandTemp:Tkk_MusicFlag']:
+                run Tkk_LiveAfter_MusicGet_Multi
+                run sub_Event32
+        elif MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
+            run Tkk_LiveAfter_MusicGet_Multi
+            run sub_Event32
+        else:
+            run Tkk_LiveAfter_MusicGet_Single
+            run sub_Event32
+    run sub_tm!Tkk_LiveAfter_JudgeGet
+
+flow Tkk_LiveAfter_MusicGet_Single:
+    MainNpc.SetDeliveryItem(1, false)
+    if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+        fEvent11 = MainNpc.TkkLiveType()
+        if fEvent11 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:017', false)
+        elif fEvent11 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:021', false)
+        elif fEvent11 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:026', false)
+        MainNpc.SetEventRewardToPlayerBaggage('cFree')
+    else:
+        fEvent34 = MainNpc.TkkLiveType()
+        if fEvent34 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:018', false)
+            run Tkk_Live_FlowEnd
+        elif fEvent34 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:022', false)
+            EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+        elif fEvent34 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:025', false)
+            EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+    return
+
+flow Tkk_LiveAfter_LastWord:
+    fEvent61 = MainNpc.TkkLiveType()
+    if fEvent61 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:029', false)
+    elif fEvent61 == 0:
+        if not MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:016', false)
+        elif not EventFlowSystemActor.IsSharePlay(0):
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:015', false)
+    elif fEvent61 == 1:
+        if EventFlowSystemActor.DisplayedNewBirthDayMessage():
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:024', false)
+            EventFlowSystemActor.SendBirthDayMessage()
+            run Tkk_BdayLive_EndMC
+        else:
+            run sub_Event53
+    return
+
+flow Tkk_LiveAfter_MusicGet_Multi:
+    fEvent46 = MainNpc.TkkLiveType()
+    if fEvent46 == 1:
+        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:020', false)
+    elif fEvent46 == 2:
+        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:025', false)
+    elif fEvent46 == 0:
+        if EventFlowSystemActor.IsSharePlay(0):
+            EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', true, 4)
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:019', false)
+            event_flags_system['cLandTemp:Tkk_MusicFlag'] = true
+        else:
+            EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:027', false)
+    return
+
+flow Tkk_Live_FlowEnd:
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.TkkLiveNpcSitDown()
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Tkk_LandFirstLive:
+    EventFlowSystemActor.CameraSetDemoParam('Npc:tkk', 'PreTkkLive', 'PreTkkLive', false, false, false, 0)
+    subflow_results[1] = 1
+    MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_First')
+    run Tkk_1stLIveMC
+    run Tkk_LiveDemo
+    MainNpc.TkkFreeAction('cTkkActionType_ToIdle')
+    run Tkk_LiveAfter_Flag
+    fork:
+        branch0:
+        branch1:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:011', true)
+            EventFlowSystemActor.WaitFrame(90)
+            EventFlowSystemActor.SoundDuckingOn(35)
+            EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612, false)
+        branch2:
+            EventFlowSystemActor.WaitFrame(100)
+            Player.CharacterEmoticonAction('Clapping', '', 0, false, true)
+            EventFlowSystemActor.TkkFirstLiveEmoticcon('Clapping', 120)
+            EventFlowSystemActor.WaitFrame(20)
+            Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow Tkk_1stLIveMC:
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:001', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:002', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:003', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:004', true)
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_1stLive:005', true)
+    return
+
+flow Tkk_BdayLive_EndMC:
+    run sub_Event53
+    return
+
+flow sub_Event53:
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:023', false)
+    return
+
+flow sub_tm!Tkk_LiveAfter_JudgeGet:
+    return
+
+flow sub_Event29:
+    subflow_results[0] = 1
+
+flow sub_Event32:
+    event_flags_system['cPlayer:TkkGetMusicToday'] = true
+

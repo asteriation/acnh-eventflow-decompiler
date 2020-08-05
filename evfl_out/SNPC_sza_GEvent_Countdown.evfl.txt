@@ -1,0 +1,229 @@
+flow Root:
+    if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+        if event_flags_system['cPlayer:SzaTalkAfterCountdown']:
+            if event_flags_system['cPlayer:SzaGotNewYearHat']:
+entrypoint Event86:
+                if EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0:
+                    fEvent104 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                    if fEvent104 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:052', true)
+                    elif fEvent104 == 1:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:053', true)
+                    elif fEvent104 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:054', true)
+                    elif fEvent104 == 3:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:055', true)
+                    elif fEvent104 == 4:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:056', true)
+                else:
+                    fEvent107 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                    if fEvent107 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:057', true)
+                    elif fEvent107 == 1:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:058', true)
+                    elif fEvent107 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:059', true)
+                    elif fEvent107 == 3:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:060', true)
+                    elif fEvent107 == 4:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:061', true)
+            elif EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:043', false)
+                run Sza_Get_StickLight
+            else:
+                run Sza_Chat_After_Newyear
+        elif EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:SzaTalkAfterCountdown'] = true
+            if (not event_flags_system['cPlayer:SzaTaled1stTime']) and (not event_flags_system['cPlayer:OfficeSzaIntroduction']) and (not event_flags_system['cPlayer:SzaTalkFirstNotOffice']):
+                event_flags_system['cPlayer:SzaTalkFirstNotOffice'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:064', false)
+            else:
+                run sub_Event131
+            if (not event_flags_system['cPlayer:SzaGotNewYearHat']) and (EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName')):
+                if event_flags_system['cPlayer:SzaTalkBeforeCountdown']:
+                    run sub_Event134
+                else:
+                    run sub_Event85
+        else:
+            event_flags_system['cPlayerVisit:SzaVisitorTalkAfterCountdown'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:063', false)
+            if (not event_flags_system['cPlayer:SzaGotNewYearHat']) and (EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName')):
+                if event_flags_system['cPlayerVisit:SzaVisitorTalkBeforeCountdown']:
+                    run sub_Event134
+                else:
+                    run sub_Event85
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:044', false)
+                run Sza_Get_StickLight
+    elif EventFlowSystemActor.EnvHourCompare(23, 59, true, true) != 0:
+        fEvent14 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent14 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:030', false)
+        elif fEvent14 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:031', false)
+        elif fEvent14 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:032', false)
+    elif EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:SzaTalkBeforeCountdown']:
+entrypoint Event25:
+            if event_flags_system['cPlayer:SzaGotNewYearHat']:
+entrypoint Event26:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+entrypoint Event30:
+                    fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+                    if fEvent30 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
+                    elif fEvent30 == 1:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:027', true)
+                    elif fEvent30 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:028', true)
+                    elif fEvent30 == 3:
+                        if Player.PlayerIsUseCoordinate():
+                            run Event30
+                        elif event_flags_system['cPlayer:EquipLicenseHelmet']:
+                            run Event30
+                        elif (not EventFlowSystemActor.PlayerIsEquipItem('cAny', true, false, 4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191)) and (not EventFlowSystemActor.PlayerIsEquipItem('cAny', true, false, 5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952)):
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_01', true)
+                        else:
+                            run sub_Event32
+                else:
+                    fEvent31 = EventFlowSystemActor.EnvTimeZone()
+                    if fEvent31 in (4, 5):
+                        if EventFlowSystemActor.EnvHourCompare(23, -1, true, true) == 0:
+entrypoint Event30:
+                            fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+                            if fEvent30 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
+                            elif fEvent30 == 1:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:027', true)
+                            elif fEvent30 == 2:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:028', true)
+                            elif fEvent30 == 3:
+                                if Player.PlayerIsUseCoordinate():
+                                    run Event30
+                                elif event_flags_system['cPlayer:EquipLicenseHelmet']:
+                                    run Event30
+                                elif (not EventFlowSystemActor.PlayerIsEquipItem('cAny', true, false, 4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191)) and (not EventFlowSystemActor.PlayerIsEquipItem('cAny', true, false, 5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952)):
+                                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_01', true)
+                                else:
+                                    run sub_Event32
+                        elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) == 0:
+                            fEvent51 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                            if fEvent51 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:021', true)
+                            elif fEvent51 == 1:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:022', true)
+                            elif fEvent51 == 2:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:023', true)
+                        elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:024', true)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:025', true)
+                    elif fEvent31 in (0, 1, 2):
+                        fEvent39 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                        if fEvent39 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:016', true)
+                        elif fEvent39 == 1:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:017', true)
+                        elif fEvent39 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:018', true)
+                    elif fEvent31 == 3:
+                        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:019', true)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:020', true)
+            elif EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:012', false)
+                run Sza_Get_StickLight
+            elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:013', true)
+            else:
+                run Sza_Chat_Before_Newyear
+        else:
+            event_flags_system['cPlayer:SzaTalkBeforeCountdown'] = true
+            if (not event_flags_system['cPlayer:SzaTaled1stTime']) and (not event_flags_system['cPlayer:OfficeSzaIntroduction']) and (not event_flags_system['cPlayer:SzaTalkFirstNotOffice']):
+                event_flags_system['cPlayer:SzaTalkFirstNotOffice'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:064', false)
+                run sub_grp!Event5
+            else:
+                if EventFlowSystemActor.EnvHourCompare(12, -1, true, true) == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:001', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:003', false)
+                    run sub_grp!Event5
+                elif EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:002', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:003', false)
+                    run sub_grp!Event5
+                elif EventFlowSystemActor.EnvHourCompare(23, -1, true, true) == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:004', false)
+                    run sub_grp!Event5
+                elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:005', false)
+                    run sub_grp!Event5
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:006', false)
+                    run sub_grp!Event5
+    elif event_flags_system['cPlayerVisit:SzaVisitorTalkBeforeCountdown']:
+        run Sza_Talk_Before_Newyear
+    else:
+        event_flags_system['cPlayerVisit:SzaVisitorTalkBeforeCountdown'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:034', false)
+        if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:035', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:036', false)
+            if EventFlowSystemActor.EnvHourCompare(23, -1, true, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:037', false)
+            elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:038', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:039', false)
+        if not event_flags_system['cPlayer:SzaGotNewYearHat']:
+            run sub_grp!Event5
+    return
+
+flow Sza_Talk_Before_Newyear:
+    run Event25
+    return
+
+flow Sza_Chat_Before_Newyear:
+    run Event26
+    return
+
+flow Sza_Get_StickLight:
+    run Event70
+    return
+
+flow Sza_Chat_After_Newyear:
+    run Event86
+    return
+
+flow sub_Event131:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:040', false)
+
+flow sub_Event85:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:042', false)
+
+flow sub_Event134:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:041', false)
+
+flow sub_grp!Event5:
+    if EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:007', false)
+entrypoint Event70:
+        MainNpc.MessageSuspend()
+        MainNpc.SetDeliveryItemAtRandom(5741, true, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Keep', 1)
+        if not EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:011', false)
+        elif EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:045', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:046', false)
+        event_flags_system['cPlayer:SzaGotNewYearHat'] = true
+        MainNpc.NpcDelivery('Default', 2)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:008', true)
+
+flow sub_Event32:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_00', true)
+

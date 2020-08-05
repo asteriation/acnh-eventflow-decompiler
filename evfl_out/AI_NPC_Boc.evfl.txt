@@ -1,0 +1,12 @@
+flow Root:
+    if (MainNpc.NpcCheckStateSelectTiming('cInit')) and (EventFlowSystemActor.EnvHourCompare(12, -1, true, true) != 0):
+        MainNpc.NpcChangeInvisibleState('cInvisible', 'Root', 'SNPC_boc', '', false, true, 0)
+    else:
+        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_boc', '', false, true, false, 0, 1, 0, 0)
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    return
+

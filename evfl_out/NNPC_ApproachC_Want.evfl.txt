@@ -1,0 +1,146 @@
+flow Root:
+    MainNpc.SetApproachTalkItem(3)
+    MainNpc.SetItemName(0, 6, 0)
+    MainNpc.SetDeliveryItem(6, true)
+    if MainNpc.CheckNpcApproachType():
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:002', false)
+        if MainNpc.CheckNpcFavorLevel() in (0, 1):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:100', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                EventFlowSystemActor.UIMoneyAppear()
+                MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType3')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:101', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:102', false)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:104', false)
+                    run sub_Event119
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:103', false)
+            elif EventFlowSystemActor.PercentChoice(25):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:105', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:107', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        EventFlowSystemActor.UIMoneyAppear()
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:109', false)
+                        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                            MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType2')
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:110', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:111', false)
+                                MainNpc.NpcDelivery('"Default"', 7)
+                                EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                                EventFlowSystemActor.UIMoneyDisappear()
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:113', false)
+                                run sub_Event119
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:112', false)
+                        else:
+                            MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType4')
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:114', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:115', false)
+                                MainNpc.NpcDelivery('"Default"', 7)
+                                EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                                EventFlowSystemActor.UIMoneyDisappear()
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:117', false)
+                                run sub_Event119
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:116', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:118', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:108', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:106', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:200', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                EventFlowSystemActor.UIMoneyAppear()
+                MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType1')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:201', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:203', false)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:205', false)
+                    run sub_Event119
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:204', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:202', false)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:003', false)
+        run sub_grp!Event49
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:004', false)
+        run sub_grp!Event49
+    return
+
+flow sub_Event119:
+    MainNpc.SetItemToNpcStockList(1, 0)
+
+flow sub_grp!Event49:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.UIMoneyAppear()
+        if MainNpc.CheckNpcFavorLevel() in (0, 1):
+            if EventFlowSystemActor.PercentChoice(75):
+                MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType2')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:300', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:301', false)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:303', false)
+                    MainNpc.SetItemToNpcStockList(1, 0)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:302', false)
+            else:
+                MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType3')
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:304', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:305', false)
+                    MainNpc.NpcDelivery('"Default"', 7)
+                    EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                    EventFlowSystemActor.UIMoneyDisappear()
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:307', false)
+                    MainNpc.SetItemToNpcStockList(1, 0)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:306', false)
+        elif EventFlowSystemActor.PercentChoice(75):
+            MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType2')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:400', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:401', false)
+                MainNpc.NpcDelivery('"Default"', 7)
+                EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                EventFlowSystemActor.UIMoneyDisappear()
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:403', false)
+                MainNpc.SetItemToNpcStockList(1, 0)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:402', false)
+        else:
+            MainNpc.NpcSetExchangeMoney('ItemPrice', 'Reverse', 'cBuy', 'cType1')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:404', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:405', false)
+                MainNpc.NpcDelivery('"Default"', 7)
+                EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+                EventFlowSystemActor.UIMoneyDisappear()
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:407', false)
+                MainNpc.SetItemToNpcStockList(1, 0)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:406', false)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:005', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:006', false)
+

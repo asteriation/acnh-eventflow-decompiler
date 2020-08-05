@@ -1,0 +1,16 @@
+flow Root:
+    if not event_flags_system['cLand:PynVisitToday']:
+        MainNpc.NpcChangeAIState('cPynWait', 'SNPC_pyn', 'Root', '', false, false)
+    elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+        MainNpc.NpcChangeAIState('cPynDance', 'SNPC_pyn', 'Root', '', false, false)
+    else:
+        MainNpc.NpcChangeAIState('cPynWander', 'SNPC_pyn', 'Root', '', false, false)
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    if not event_flags_system['cLand:PynVisitToday']:
+        MainNpc.NpcAISetting(8, true)
+    return
+

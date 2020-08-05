@@ -1,0 +1,78 @@
+flow StartRestoring:
+    EventFlowSystemActor.UIBootBGChangeDialog()
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9015', false)
+    else:
+        EventFlowSystemActor.WaitFrame(30)
+        EventFlowSystemActor.SaveStartRestoreSeq()
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow RestoringAgain:
+    if EventFlowSystemActor.RestoreFlagCheck():
+        EventFlowSystemActor.UIBootBGChangeDialog()
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9012', false)
+        EventFlowSystemActor.NetForceSetUser()
+        run EndRestoring
+        EventFlowSystemActor.NetForceResetUser()
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9013', false)
+    return
+
+flow UserRegist:
+    subflow_results[0] = 0
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:001', false)
+    run UserResistCore
+    if entry_variables['WithLogin']:
+        EventFlowSystemActor.NetLoginNEX('cLoginNEX', false)
+    EventFlowSystemActor.MessageSuspend()
+    return
+
+flow UserResistCore:
+    if EventFlowSystemActor.NetMode() not in (0, 2):
+        EventFlowSystemActor.NetShutdown('cNetShutdown', false)
+    EventFlowSystemActor.NetConnectInit('cConnectInet', true)
+    if EventFlowSystemActor.CheckErrorType(2):
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.MessageUnlockNext()
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0810', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            subflow_results[0] = 1
+            if entry_variables['Terminate']:
+                EventFlowSystemActor.ExitFlowchart()
+        else:
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:001', false)
+            run UserResistCore
+    elif entry_variables['Terminate']:
+        EventFlowSystemActor.NetCheckNSA('cCheckNSA', false)
+    else:
+        EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
+        if EventFlowSystemActor.CheckErrorType(2):
+            subflow_results[0] = 1
+    return
+
+flow EndRestoring:
+    if EventFlowSystemActor.NetHasPOPID(false):
+        run UserRegist
+        EventFlowSystemActor.NetReissuePassword()
+        if EventFlowSystemActor.CheckErrorType(2):
+            event_flags_system['cLand:NeedUpdatePassword'] = true
+    elif EventFlowSystemActor.NetHasPOLID():
+        event_flags_system['cLand:NeedUpdatePassword'] = true
+    EventFlowSystemActor.SaveUpdateDeviceID()
+    EventFlowSystemActor.SaveReserveBackupRestoreFlagOff()
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9016', false)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.SaveSimpleSave('cAll')
+            if (EventFlowSystemActor.PlayAccountIsPlayerVillager()) and (not EventFlowSystemActor.SaveCompareBackupAgentNSAID()):
+                EventFlowSystemActor.SaveEnableBackupSetting()
+        branch2:
+            EventFlowSystemActor.WaitFrame(60)
+    EventFlowSystemActor.MessageUnlockNext()
+    return
+

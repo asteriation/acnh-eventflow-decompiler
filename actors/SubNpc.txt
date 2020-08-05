@@ -1,0 +1,19 @@
+Actor SubNpc
+actions:
+- SubNpc.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- SubNpc.TurnBody(TurnTarget: int, TurnAngle: float)
+- SubNpc.TurnNeck(TurnTarget: int)
+- SubNpc.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- SubNpc.SetDeliveryItem(ApplyToSave: bool, SetItemTarget: bool)
+- SubNpc.SetEventRewardToPlayerBaggage(SetType: str)
+- SubNpc.SetItemName(ItemTarget: int, ID: int, TagType: int)
+- SubNpc.NpcRailMove(RailID: int, PointA: int, PointB: int, MoveType: int, IsReverse: bool, IsWarp: bool)
+- SubNpc.NpcMoveDirection(Distance: float, Angle: float, IsUseFollower: bool, MoveType: int)
+- SubNpc.NpcSetVisibleAction(Visible: bool)
+- SubNpc.NpcChangeNameStatus(NameStatus: int)
+- SubNpc.LookAtPos(LookAtType: int, PosX: float, PosY: float, PosZ: float)
+queries:
+- SubNpc.EventFlagNpcBool(AccessKey: str) -> bool
+- SubNpc.NpcCheckPastDays(AccessKey: str, Border: int) -> bool
+- SubNpc.NpcIsFleaHolder() -> bool
+

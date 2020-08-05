@@ -1,0 +1,198 @@
+flow Report:
+    MainNpc.SetNpcName(0, 8)
+    fEvent136 = MainNpc.DeliveryQuestType()
+    if fEvent136 == 0:
+        run ReportA
+    elif fEvent136 == 1:
+        run ReportB
+    elif fEvent136 == 2:
+        run ReportC
+    elif fEvent136 == 3:
+        run ReportD
+    elif fEvent136 == 4:
+        run ReportE
+    MainNpc.NpcAddFriendship(3)
+    return
+
+flow FinishSet:
+    run Event27
+    return
+
+flow ReportA:
+    if quest_flags['cDeliveryQuizPlay']:
+        MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:002', true, true)
+entrypoint Event27:
+        MainNpc.NpcQuestControl('cFinish')
+        event_flags_system['cLifeSupportDaily:AchieveQuest'] = true
+        event_flags_system['cLifeSupportAchievement:AchieveVillagersQuest'] += 1
+        event_flags_npc['cNpcMemory:OrderQuest'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:001', false)
+        if quest_flags['cDeliveryItemOpen']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:004', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:005', true, true)
+            elif quest_flags['cDeliveryWiseUp']:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:006', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:007', true, true)
+            run FinishSet
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:003', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                fEvent146 = MainNpc.DeliveryQuestReceiveNpcLook()
+                if fEvent146 == 0:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:008', true, true)
+                elif fEvent146 == 1:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:009', true, true)
+                elif fEvent146 == 2:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:010', true, true)
+                elif fEvent146 == 3:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:011', true, true)
+                elif fEvent146 == 4:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:012', true, true)
+                elif fEvent146 == 5:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:013', true, true)
+                elif fEvent146 == 6:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:014', true, true)
+                elif fEvent146 == 7:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:015', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:005', true, true)
+            run FinishSet
+    return
+
+flow ReportB:
+    if quest_flags['cDeliveryQuizPlay']:
+        MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:102', false, false)
+        run FinishSet
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:101', false)
+        if quest_flags['cDeliveryItemOpen']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:104', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:105', true, true)
+            elif quest_flags['cDeliveryWiseUp']:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:106', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:107', true, true)
+            run FinishSet
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:103', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:105', true, true)
+            elif quest_flags['cDeliverySameBought']:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:108', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:109', true, true)
+            run FinishSet
+    return
+
+flow ReportC:
+    if quest_flags['cDeliveryQuizPlay']:
+        MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:202', false, false)
+        run FinishSet
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:201', false)
+        if quest_flags['cDeliveryItemOpen']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:204', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:205', true, true)
+            elif quest_flags['cDeliveryWiseUp']:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:206', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:207', true, true)
+            run FinishSet
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:203', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:205', true, true)
+            elif quest_flags['cDeliveryGetFree']:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:208', true, true)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:209', true, true)
+            run FinishSet
+    return
+
+flow ReportD:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:301', false)
+    if quest_flags['cDeliveryItemOpen']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:303', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:304', true, true)
+        elif quest_flags['cDeliveryWiseUp']:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:305', true, true)
+        else:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:306', true, true)
+        run FinishSet
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:302', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:304', true, true)
+            run sub_Event52
+        elif MainNpc.DeliveryQuestItemKind() == 0:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                fEvent205 = MainNpc.DeliveryQuestReceiveNpcLook()
+                if fEvent205 == 0:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:312', true, true)
+                    run sub_Event52
+                elif fEvent205 == 1:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:313', true, true)
+                    run sub_Event52
+                elif fEvent205 == 2:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:314', true, true)
+                    run sub_Event52
+                elif fEvent205 == 3:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:315', true, true)
+                    run sub_Event52
+                elif fEvent205 == 4:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:316', true, true)
+                    run sub_Event52
+                elif fEvent205 == 5:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:317', true, true)
+                    run sub_Event52
+                elif fEvent205 == 6:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:318', true, true)
+                    run sub_Event52
+                elif fEvent205 == 7:
+                    MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:319', true, true)
+                    run sub_Event52
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:308', true, true)
+                run sub_Event52
+        elif quest_flags['cDeliveryClothChangeKeep']:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:307', true, true)
+            run sub_Event51
+        elif quest_flags['cDeliveryClothChangeAtLeast']:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:310', true, true)
+            run sub_Event51
+        else:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:309', true, true)
+            run sub_Event51
+    return
+
+flow ReportE:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:401', false)
+    if quest_flags['cDeliveryItemOpen']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:403', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:404', true, true)
+        elif quest_flags['cDeliveryWiseUp']:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:405', true, true)
+        else:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:406', true, true)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:402', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:407', true, true)
+        else:
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:404', true, true)
+    run FinishSet
+    return
+
+flow sub_Event51:
+    run FinishSet
+
+flow sub_Event52:
+    run FinishSet
+

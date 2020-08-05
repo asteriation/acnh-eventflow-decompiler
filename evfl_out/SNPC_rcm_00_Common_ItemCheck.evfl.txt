@@ -1,0 +1,15 @@
+flow Root:
+    MainNpc.ShopCheckItemSet('CheckItemIndex', 'cMamekichi')
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemPrice')
+    MainNpc.TurnNeck(13)
+    Player.TurnNeck(13)
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:101', false)
+    if MainNpc.RcmBuySelectType() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:103', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:102', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:103', false)
+    run SNPC_rcm_00_Common::Rcm_Common_BuyCheck
+    return
+

@@ -1,0 +1,66 @@
+Actor Player
+actions:
+- Player.PlayerStickLightNewYear()
+- Player.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- Player.PlayerWorkbenchThinking()
+- Player.PlayerChangeStateDemoTalk()
+- Player.PlayerClearFoodPowerup()
+- Player.TurnNeck(TurnTarget: int)
+- Player.TurnBody(TurnTarget: int, TurnAngle: float)
+- Player.PlayerStartAnimeBedWaitWithHandsClasped()
+- Player.PlayerOutfitFieldMakeToolKit(FieldMakeToolKit: str)
+- Player.SmartPhone(ActionType: int)
+- Player.PlayerChangeDemoState(ChangeDemoState: str)
+- Player.SmartPhoneSE(XLinkKey: str, ActionType: int)
+- Player.PlayerOpenFishGetMessage()
+- Player.PlayerPlayPutawayWaitAnimation()
+- Player.PlayerPlayWaitAnimation()
+- Player.PlayerPutawayFish()
+- Player.PlayerOpenDiveFishGetMessage()
+- Player.PlayerPlayCompleteAnimation()
+- Player.PlayerOpenInsectGetMessage()
+- Player.PlayerOpenShellFishGetMessage()
+- Player.PlayerWaitAsFinish()
+- Player.PlayerOpenEmoticonGetMessage()
+- Player.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- Player.PlayerDemoTurn(Direction4: str)
+- Player.PlayerMoveToTarget(TargetX: any, TargetZ: any, MiddleTargetX: float, MiddleTargetZ: float, StateAfterWait: str, UseStateAfterWait: bool, PosIsOffset: bool)
+- Player.PlayerRequestSimple(AsCommand: str, WaitFinish: bool)
+- Player.PlayerWaitTurn()
+- Player.PlayerStartAnimeBedWaitOpenEyes()
+- Player.PlayerDemoMove(Direction: str, Distance: int)
+- Player.PlayerWorkbenchPutaway(IsRemake: bool)
+- Player.PlayerDemoTurnToStarter()
+- Player.PlayerWorkbenchMaking(IsRemake: bool)
+- Player.PlayerWorkbenchGetDemo(IsSkipGetDemoCameraPop: bool, IsSkipFanfareSE: bool, IsRemake: bool)
+- Player.PlayerPurchaseBoxThinking()
+- Player.PlayerWarp(WarpType: str)
+- Player.PlayerLanding()
+- Player.PlayerStartAnimeBedWait()
+- Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
+- Player.PlayerCandleBlow()
+- Player.PlayerPinataWait()
+- Player.EquipPinataStick()
+- Player.PutawayPinataStick()
+- Player.SetDemoTalkTurnRate(Rate: float)
+- Player.PlayerBirthdayTurnBodyToTable()
+- Player.PlayerBirthdayForbidStartUI(ForbidUIType: int)
+- Player.PlayerTotakekeLiveGetRhythm()
+- Player.PlayerTotakekeTurnToStarter()
+- Player.PlayerChairStandup()
+- Player.PlayerToolPutaway()
+- Player.PlayerPulloutSmoothie()
+- Player.PlayerPutawaySmoothie()
+queries:
+- Player.PlayerIsUseCoordinate() -> bool
+- Player.PlayerOutfitMarinesuit() -> bool
+- Player.PlayerBedWaitCanopy() -> bool
+- Player.PlayerCheckWaitType(PlayerWaitType: str) -> bool
+- Player.PlayerOutfitFieldMakeToolKit() -> int4
+- Player.PlayerCheckAI(PlayerEventFlowAI: str) -> bool
+- Player.PlayerHasExchaneableItem(CheckKindBury: bool, CheckKindPut: bool, CheckKindFishAndDiveFish: bool, CheckKindInsect: bool) -> bool
+- Player.PlayerGetDemoCheckItem(CheckItem: str) -> bool
+- Player.PlayerGetDemoCollectStatus(PlayerGetDemoCollectStatus: str) -> bool
+- Player.PlayerIsForbidMainChange() -> bool
+- Player.HasNoAcquaintance() -> bool
+

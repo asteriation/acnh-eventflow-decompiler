@@ -1,0 +1,131 @@
+flow Root:
+    run EasterGetRecipe
+    run FireworksGetItem
+    return
+
+flow EasterGetRecipe:
+    if event_flag_npc['cNpcMemory:EasterCannotGetNnpcRecipeFlag']:
+        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+            event_flags_npc['cNpcMemory:StandingUpFlag'] = true
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:100', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif event_flags_system['cPlayer:EasterNnpcRecipeCount'] >= 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:002', false)
+            MainNpc.NpcSetRewardRecipe(12447, false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                event_flags_npc['cNpcMemory:EasterCannotGetNnpcRecipeFlag'] = false
+                event_flags_system['cPlayer:EasterCannotGetNnpcRecipeFlag'] = false
+                MainNpc.SetDeliveryItem(1, true)
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:010', false)
+                event_flags_system['cPlayer:EasterNnpcRecipeCount'] += 1
+                event_flags_npc['cNpcMemory:EasterGetRecipeFlag'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:011', false)
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:001', false)
+            MainNpc.NpcSetRewardRecipe(12445, false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                event_flags_npc['cNpcMemory:EasterCannotGetNnpcRecipeFlag'] = false
+                event_flags_system['cPlayer:EasterCannotGetNnpcRecipeFlag'] = false
+                MainNpc.SetDeliveryItem(1, true)
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:010', false)
+                event_flags_system['cPlayer:EasterNnpcRecipeCount'] += 1
+                event_flags_npc['cNpcMemory:EasterGetRecipeFlag'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:011', false)
+            EventFlowSystemActor.ExitFlowchart()
+    elif not ((not event_flags_system['cPlayer:PynExplainNnpcRecipeFlag']) or (event_flags_system['cPlayer:EasterCannotGetNnpcRecipeFlag']) or (event_flag_npc['cNpcMemory:EasterGetRecipeFlag']) or (event_flags_system['cPlayer:EasterNnpcRecipeCount'] >= 2)):
+        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+            event_flags_npc['cNpcMemory:StandingUpFlag'] = true
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:101', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif event_flags_system['cPlayer:EasterNnpcRecipeCount'] >= 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:021', false)
+            run NNPC_ApproachE_Easter::GetEasterRecipe2
+            MainNpc.SetEasterApproachVillagerIndex(0)
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Easter:020', false)
+            run NNPC_ApproachE_Easter::GetEasterRecipe1
+            MainNpc.SetEasterApproachVillagerIndex(0)
+            EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!EasterGetRecipe
+
+flow FireworksGetItem:
+    if MainNpc.IsFirewoksApproachNpc():
+        if event_flag_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag']:
+            if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+                event_flags_npc['cNpcMemory:StandingUpFlag'] = true
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:100', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:001', false)
+                if EventFlowSystemActor.PercentChoice(50):
+                    run FireworksSet_Red
+                    if EventFlowSystemActor.ShoppingCapacity(5743, 'cNpcTrade'):
+                        MainNpc.NpcDelivery('Default', 1)
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:010', false)
+                        event_flags_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag'] = false
+                        event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
+                        event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
+                    else:
+                        run FireworksSet_Blue
+                        if EventFlowSystemActor.ShoppingCapacity(12974, 'cNpcTrade'):
+                            MainNpc.NpcDelivery('Default', 1)
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:010', false)
+                            event_flags_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag'] = false
+                            event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
+                            event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
+                        else:
+                            run sub_Event50
+                else:
+                    run FireworksSet_Blue
+                    if EventFlowSystemActor.ShoppingCapacity(12974, 'cNpcTrade'):
+                        MainNpc.NpcDelivery('Default', 1)
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:010', false)
+                        event_flags_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag'] = false
+                        event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
+                        event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
+                    else:
+                        run FireworksSet_Red
+                        if EventFlowSystemActor.ShoppingCapacity(5743, 'cNpcTrade'):
+                            MainNpc.NpcDelivery('Default', 1)
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:010', false)
+                            event_flags_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag'] = false
+                            event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
+                            event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
+                        else:
+                            run sub_Event50
+                EventFlowSystemActor.ExitFlowchart()
+        elif not ((EventFlowSystemActor.EventCheck('Fireworks') != 1) or (event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag']) or (event_flag_npc['cNpcMemory:FireworksGetItemFlag'])):
+            if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+                event_flags_npc['cNpcMemory:StandingUpFlag'] = true
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:101', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:020', false)
+                run NNPC_ApproachE_Fireworks::GetFireworksItem
+                event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
+                EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!FireworksGetItem
+
+flow FireworksSet_Red:
+    MainNpc.SetDeliveryItemAtRandom(5743, true, 'cVillageRemakePattern', 0)
+    return
+
+flow FireworksSet_Blue:
+    MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
+    return
+
+flow sub_tm!EasterGetRecipe:
+    return
+
+flow sub_tm!FireworksGetItem:
+    return
+
+flow sub_Event50:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
+

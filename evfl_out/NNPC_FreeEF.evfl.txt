@@ -1,0 +1,122 @@
+flow FreeF_Chk:
+    run ChineseZodiac
+    run FreeF_Main
+    if not event_flags_system['cPlayer:TalkFreeMultiDayEventTodayFlag']:
+        run MultiDayEvent_Easter
+        run MultiDayEvent_EarthDay
+    return
+
+flow Event_Chk:
+    if not event_flag_npc['cNpcMemory:TalkFreeEventNow']:
+        if MainNpc.NpcHasFreeMessage('cFreeEEvent'):
+            if event_flags_system['cLand:AnyGlobalEventFinished']:
+                MainNpc.NpcOpenFreeMessage('cFreeEEvent')
+                event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                MainNpc.NpcOpenFreeMessage('cFreeEEventFirst')
+                event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
+                EventFlowSystemActor.ExitFlowchart()
+        elif MainNpc.NpcHasFreeMessage('cFreeEEventTerm'):
+            MainNpc.NpcOpenFreeMessage('cFreeEEventTerm')
+            event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow HHA_Chk:
+    if (not event_flag_npc['cNpcMemory:TalkHHAToday']) and (not MainNpc.IsNnpcTent()) and (MainNpc.NpcHasFreeMessage('cFreeEHHA')):
+        MainNpc.NpcOpenFreeMessage('cFreeEHHA')
+        event_flags_npc['cNpcMemory:TalkHHAToday'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!HHA_Chk
+
+flow Snpc_Chk:
+    if (not event_flags_system['cPlayer:TalkSnpcTodayAnyone']) and ((not event_flags_system['cLand:IsNpcIncreased']) or (MainNpc.NpcLivingDays(3))):
+        run sub_grp!Event2
+    return
+
+flow ChineseZodiac:
+    if (not event_flag_npc['cNpcMemory:TalkFreeZodiacNow']) and ((event_flag_npc['cNpcMemory:TalkFreeFNow']) or (EventFlowSystemActor.PercentChoice(50))):
+        run sub_grp!Event9
+    run sub_tm!ChineseZodiac
+
+flow MultiDayEvent_Easter:
+    if EventFlowSystemActor.GlobalEventNow('Easter', 'cReadyOnly', false):
+entrypoint Event42:
+        fEvent42 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent42 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_Easter:101', false)
+        elif fEvent42 == 0:
+            if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_Easter:100', false)
+            else:
+                run Event42
+        elif fEvent42 == 2:
+            if EventFlowSystemActor.EnvHourOverGrowUp():
+                run Event42
+            else:
+                EventFlowSystemActor.SetTagFromSystem(0, 'cEasterMonthDay', 'cHour', '', 0)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_Easter:102', false)
+        event_flags_system['cPlayer:TalkFreeMultiDayEventTodayFlag'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow FreeF_Main:
+    if (not event_flag_npc['cNpcMemory:TalkFreeFNow']) and (MainNpc.NpcHasFreeMessage('cFreeFEvent')):
+        MainNpc.NpcOpenFreeMessage('cFreeFEvent')
+        event_flags_npc['cNpcMemory:TalkFreeFNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow MultiDayEvent_EarthDay:
+    if EventFlowSystemActor.TermEventNow('EarthDay', false):
+        if event_flags_system['cPlayer:ReijiTalkBeforeFlag']:
+            fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+            if fEvent57 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:001', false)
+            elif fEvent57 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:002', false)
+            elif fEvent57 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:003', false)
+            elif fEvent57 == 3:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:004', false)
+            elif fEvent57 == 4:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:005', false)
+            event_flags_system['cPlayer:TalkFreeMultiDayEventTodayFlag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            fEvent67 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent67 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:003', false)
+            elif fEvent67 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:004', false)
+            elif fEvent67 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeF_EarthDay:005', false)
+            event_flags_system['cPlayer:TalkFreeMultiDayEventTodayFlag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow sub_tm!HHA_Chk:
+    return
+
+flow sub_tm!ChineseZodiac:
+    return
+
+flow sub_grp!Event2:
+    if (MainNpc.NpcHasFreeMessage('cFreeESnpc')) and (EventFlowSystemActor.SystemCheckNowStage('cField')):
+        MainNpc.NpcOpenFreeMessage('cFreeESnpc')
+        event_flags_system['cPlayer:TalkSnpcTodayAnyone'] = true
+        EventFlowSystemActor.ExitFlowchart()
+
+flow sub_grp!Event9:
+    if MainNpc.NpcHasFreeMessage('cFreeFEto'):
+        if EventFlowSystemActor.CurrentRegionLanguage('cCurrentMachine') == 0:
+            if (EventFlowSystemActor.EnvSameDate('cNewYear', 'cGrowUpTime')) and (EventFlowSystemActor.CurrentRegionLanguage('cCurrentVillage') == 0):
+                MainNpc.NpcOpenFreeMessage('cFreeFEto')
+                event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
+                EventFlowSystemActor.ExitFlowchart()
+        elif (EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cGrowUpTime')) and (EventFlowSystemActor.CurrentRegionLanguage('cCurrentVillage') in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)):
+            MainNpc.NpcOpenFreeMessage('cFreeFEto')
+            event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+

@@ -1,0 +1,256 @@
+flow Root:
+    MainNpc.NpcAIDefaultSetting(1)
+    MainNpc.SetIsStartNeedActivity('cOff')
+    if MainNpc.NpcBlackBoard('SickQuest', 1):
+        if MainNpc.NpcIsQuestClient('cSick', false, false):
+            MainNpc.NpcChangeAIState('cSickWander', 'NNPC_Quest_Sick_End', 'End', '', true, true)
+        else:
+            MainNpc.NpcChangeAIState('cBlockWander', 'NNPC_Quest_Sick_Begin', 'Cured', '', true, true)
+    elif not MainNpc.IsInTheActOfDIY():
+        run Birthday
+        run Surprise
+        run Normal
+    elif (not MainNpc.InDIYArea()) and (MainNpc.CheckNowNpcFeel() == 0):
+        MainNpc.NpcChangeAIState('cReturnDIYPos', 'NNPC_Talk_Sequence', '', '', true, false)
+    else:
+        run sub_Event6
+    return
+
+flow SurpriseGoHome:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow SurpriseCall:
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(4, false)
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Init:
+    run BBRegist
+    if MainNpc.IsSurpriseVisitNpc():
+        if event_flag_npc['cNpcTemp:SurpriseVisitEntered']:
+            MainNpc.NpcSetAIBlackBoard('SurpriseVisit', 1)
+            MainNpc.NpcSetAIBlackBoard('SurpriseMove', 1)
+        else:
+            MainNpc.NpcSetAIBlackBoard('SurpriseHide', 1)
+    elif MainNpc.NpcIsQuestClient('cSick', false, true):
+        MainNpc.NpcSetAIBlackBoard('SickQuest', 1)
+    elif MainNpc.IsInTheActOfDIY():
+        MainNpc.NpcSetAIBlackBoard('InitDIY', 1)
+    return
+
+flow Surprise:
+    if MainNpc.NpcBlackBoard('SurpriseHide', 1):
+        MainNpc.SetIsStartNeedActivity('cOff')
+        MainNpc.NpcChangeAIState('cSurpriseHide', 'NNPC_Spot_VisitP', 'Begin', '', false, false)
+        run sub_Event16
+    elif MainNpc.NpcBlackBoard('SurpriseVisit', 1):
+        MainNpc.SetIsStartNeedActivity('cOff')
+        if MainNpc.NpcBlackBoard('SurpriseMove', 1):
+            MainNpc.NpcSetAIBlackBoard('SurpriseMove', 0)
+            MainNpc.SetSurpriseMoveSetting()
+            if event_flag_npc['cNpcTemp:AtHomeAI']:
+                MainNpc.SetNpcTalkFlowName('NNPC_Spot_VisitP', 'Talk')
+                MainNpc.SetIsStartNeedActivity('cOnKeepTalkFlow')
+                run sub_Event16
+            else:
+                MainNpc.NpcChangeAIState('cSurpriseWander', 'NNPC_Spot_VisitP', 'Talk', '', false, false)
+                run sub_Event16
+        elif (MainNpc.NpcCheckStateSelectTiming('cTalkEnd')) and (event_flag_npc['cNpcTemp:TalkEndWait']):
+            MainNpc.NpcChangeWaitState('cWait', 'Talk', 'NNPC_Spot_VisitP', '', false, false, 30, true, '')
+            event_flags_npc['cNpcTemp:TalkEndWait'] = false
+            run sub_Event16
+        else:
+            if event_flag_npc['cNpcTemp:AtHomeAI']:
+                MainNpc.SetNpcTalkFlowName('NNPC_Spot_VisitP', 'Talk')
+                MainNpc.SetIsStartNeedActivity('cOnKeepTalkFlow')
+                run sub_Event16
+            else:
+                MainNpc.NpcChangeAIState('cSurpriseWander', 'NNPC_Spot_VisitP', 'Talk', '', false, false)
+                run sub_Event16
+    return
+
+flow Birthday:
+    if event_flag_npc['cNpcTemp:PlayerBirthdayPinata2']:
+        run AI_NPC_Common::ContinueSpeak
+        EventFlowSystemActor.ExitFlowchart()
+    elif event_flag_npc['cNpcTemp:PlayerBirthdayCupcake3']:
+        MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+        run AI_NPC_Common::ContinueSpeak
+        EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cLandTemp:PlayerBirthdayPinataEnd']:
+        MainNpc.NpcAISetting(8, false)
+        fEvent77 = MainNpc.NpcBirthdayCast()
+        if fEvent77 == 1:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayP_H', '', '', false, false)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent77 == 2:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayP_G', '', '', false, false)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent77 == 3:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent77 == 4:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_G', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+    else:
+        MainNpc.NpcAISetting(8, false)
+        fEvent26 = MainNpc.NpcBirthdayCast()
+        if fEvent26 == 1:
+            MainNpc.NpcAISetting(8, true)
+            MainNpc.NpcChangeAIState('cPlayerBDHost', 'NNPC_GEvent_BirthdayP_H', '', '', false, false)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 2:
+            MainNpc.NpcAISetting(8, true)
+            MainNpc.NpcChangeAIState('cPlayerBDGuest', 'NNPC_GEvent_BirthdayP_G', '', '', false, false)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 3:
+            MainNpc.NpcChangeAIState('cNpcBDHost', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 4:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_G', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow PlayerBirthdayWelcome:
+    MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(4, false)
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow PlayerBirthdayStop:
+    MainNpc.NpcChangeAIState('cContinueSpeak', '', '', '', false, false)
+    MainNpc.SetNpcSpeakFlow('Root_3_Stop', 'NNPC_GEvent_BirthdayP_H')
+    return
+
+flow PlayerBirthdayBye:
+    MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow NpcBirthdayWelcome:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow NpcBirthdayBye:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow TouchedFurniture:
+    if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+        if EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
+            MainNpc.SelectFreeCFurnitureFurniture(2)
+            run sub_grp!Event108
+        elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+            MainNpc.SelectFreeCFurnitureFurniture(3)
+            run sub_grp!Event108
+        else:
+            run Normal
+    return
+
+flow BBRegist:
+    MainNpc.NpcRegistAIBlackBoard('SickQuest', 0)
+    MainNpc.NpcRegistAIBlackBoard('SurpriseHide', 0)
+    MainNpc.NpcRegistAIBlackBoard('SurpriseVisit', 0)
+    MainNpc.NpcRegistAIBlackBoard('SurpriseMove', 0)
+    MainNpc.NpcRegistAIBlackBoard('InitDIY', 0)
+    return
+
+flow PlayerBirthdayPinata:
+    MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    MainNpc.NpcAISetting(4, false)
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow PlayerBirthdayCandleBlow:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(4, false)
+    MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    MainNpc.NpcChangeAIState('cContinueSpeak', '', '', '', false, false)
+    MainNpc.SetNpcSpeakFlow('Root_4_Main', 'NNPC_GEvent_BirthdayP_H')
+    return
+
+flow Normal:
+    if event_flag_npc['cNpcTemp:WearNewYearHat']:
+        event_flags_npc['cNpcTemp:WearNewYearHat'] = false
+        MainNpc.NpcChangeAIState('cWearNewYearHat', '', '', '', false, false)
+    else:
+        run Countdown
+        run OtherNpcHouse
+        if MainNpc.NpcCheckStateSelectTiming('cInit'):
+            if MainNpc.ToCatnap():
+                MainNpc.NpcAISetting(2, false)
+                MainNpc.NpcAISetting(3, false)
+                MainNpc.NpcAISetting(14, true)
+                MainNpc.NpcChangeAIState('cStandSleep', 'NNPC_Reaction_Napping', '', '', false, false)
+            else:
+                MainNpc.NpcChangeHeadCtrlMode('cNormal', true)
+                MainNpc.SetIsStartNeedActivity('cOn')
+        elif MainNpc.ToCatnapAgain():
+            MainNpc.NpcAISetting(2, false)
+            MainNpc.NpcAISetting(3, false)
+            MainNpc.NpcAISetting(14, true)
+            MainNpc.NpcChangeAIState('cStandSleep', 'NNPC_Reaction_Napping', '', '', false, false)
+        else:
+            MainNpc.NpcChangeHeadCtrlMode('cNormal', true)
+            MainNpc.SetIsStartNeedActivity('cOn')
+    return
+
+flow ExitStrc:
+    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
+    return
+
+flow PlayerBirthdayStop2:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow PlayerBirthdayPresent:
+    MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Countdown:
+    fEvent111 = MainNpc.DevideCountDownState()
+    if fEvent111 in (1, 2, 3, 4, 5):
+        MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent111 in (6, 7):
+        MainNpc.SetNpcFeel('cHappy', -1)
+        MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent111 == 8:
+        MainNpc.SetNpcFeel('cNormal', -1)
+        MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow OtherNpcHouse:
+    if (EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (MainNpc.IsTargetNpcHouse()) and (MainNpc.IsVisitOtherNpc()):
+        MainNpc.NpcChangeAIState('cVisitFollower', '', '', '', true, true)
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!OtherNpcHouse
+
+flow sub_tm!OtherNpcHouse:
+    return
+
+flow sub_Event6:
+    MainNpc.NpcChangeAIState('cDIY', 'NNPC_Talk_Sequence', '', '', true, false)
+
+flow sub_Event16:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_grp!Event108:
+    if (not event_flag_npc['cNpcTemp:ForceFurnitureNow']) and (MainNpc.NpcHasFreeMessage('cFreeCFurniture')):
+        run AI_NPC_Common::ContinueSpeak
+

@@ -1,0 +1,70 @@
+flow Bed_Wakeup:
+    run SNPC_tap_02_InDreaming::Wakeup
+    return
+
+flow Bed_MyHome:
+    if Player.PlayerBedWaitCanopy():
+        EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomOutLow', 'cDefault', false, true, false, 0)
+    else:
+        EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomOut', 'cDefault', false, true, false, 0)
+    Player.OpenMessageWindow('TalkObj/OBJ_Bed:001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+        run Bed_CancelDream
+    elif EventFlowSystemActor.IsSharePlay(0):
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:006', false)
+        run Bed_CancelDream
+    elif (event_flags_system['cLandTemp:NpcVisitPlayerHouse']) or (EventFlowSystemActor.NetHasVisitor()):
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:003', false)
+        run Bed_CancelDream
+    elif EventFlowSystemActor.IsVillageGateOpened():
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:002', false)
+        run Bed_CancelDream
+    elif EventFlowSystemActor.NetIsConnected():
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:004', false)
+        run Bed_CancelDream
+    elif event_flags_system['cPlayer:EquipLicenseHelmet']:
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:005', false)
+        run Bed_CancelDream
+    elif Player.PlayerIsUseCoordinate():
+        MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:007', false)
+        run Bed_CancelDream
+    elif event_flags_system['cPlayer:TapDreamFirstTalk']:
+        event_flags_system['cLandTemp:TapIndoorPos'] = true
+        EventFlowSystemActor.MiniGameSilentCancel()
+        EventFlowSystemActor.RevokeTreasureQuest()
+        EventFlowSystemActor.SoundDuckingOn(43)
+        Player.PlayerClearFoodPowerup()
+        EventFlowSystemActor.MessageSuspend()
+        Player.PlayerStartAnimeBedWaitWithHandsClasped()
+        EventFlowSystemActor.WaitFrame(40)
+        EventFlowSystemActor.CameraReserveFirstStateCommand('Demo:InIdrDreamZoomOut')
+        if Player.PlayerBedWaitCanopy():
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomInLow', 'ToDreamZoomInOut', false, true, false, 0)
+        else:
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomIn', 'ToDreamZoomInOut', false, true, false, 0)
+        EventFlowSystemActor.SoundTriggerEmit('WipeToIdrDream', -1)
+        EventFlowSystemActor.NextLPFadeTime(3.5)
+        EventFlowSystemActor.SystemRequestChangeStage('cDreamHouse', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
+    else:
+        event_flags_system['cLandTemp:TapIndoorPos'] = false
+        EventFlowSystemActor.MiniGameSilentCancel()
+        EventFlowSystemActor.RevokeTreasureQuest()
+        EventFlowSystemActor.SoundDuckingOn(43)
+        Player.PlayerClearFoodPowerup()
+        EventFlowSystemActor.MessageSuspend()
+        Player.PlayerStartAnimeBedWaitWithHandsClasped()
+        EventFlowSystemActor.WaitFrame(40)
+        EventFlowSystemActor.CameraReserveFirstStateCommand('Demo:InIdrDreamZoomOut')
+        if Player.PlayerBedWaitCanopy():
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomInLow', 'ToDreamZoomInOut', false, true, false, 0)
+        else:
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomIn', 'ToDreamZoomInOut', false, true, false, 0)
+        EventFlowSystemActor.SoundTriggerEmit('WipeToIdrDream', -1)
+        EventFlowSystemActor.NextLPFadeTime(3.5)
+        EventFlowSystemActor.SystemRequestChangeStage('cDreamHouse', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
+    return
+
+flow Bed_CancelDream:
+    EventFlowSystemActor.StoreNormalCamera(false)
+    return
+

@@ -1,0 +1,294 @@
+flow Root:
+    if (event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not MainNpc.IsSamePhrase()):
+        MainNpc.NpcCopyPhrase()
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:201', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:202', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:203', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:204', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:205', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+    else:
+        run sub_grp!Event0
+    return
+
+flow sub_grp!Event0:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnBody(10, 0.0)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:001', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnBody(10, 0.0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(10)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:002', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:003', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnBody(0, 0.0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:004', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:005', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fEvent16 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent16 == 0:
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnBody(0, 0.0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:006', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnBody(1, 0.0)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:007', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:008', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:009', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:010', false)
+        elif fEvent16 == 1:
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnBody(0, 0.0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:016', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnBody(1, 0.0)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:017', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:018', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:019', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:020', false)
+        elif fEvent16 == 2:
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnBody(0, 0.0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:026', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnBody(1, 0.0)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:027', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:028', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:029', false)
+                branch2:
+                    Player.TurnNeck(0)
+                branch3:
+                    SubNpc.TurnNeck(0)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnNeck(0)
+                    SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:030', false)
+    else:
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:101', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:102', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:103', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:104', false)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:105', false)
+            branch2:
+                Player.TurnNeck(0)
+            branch3:
+                SubNpc.TurnNeck(0)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.TurnNeck(1)
+            branch2:
+                Player.TurnNeck(1)
+            branch3:
+                SubNpc.TurnNeck(0)
+                SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_AN:106', false)
+

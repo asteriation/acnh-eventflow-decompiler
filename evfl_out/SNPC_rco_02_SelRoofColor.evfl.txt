@@ -1,0 +1,92 @@
+flow Root:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:203', false)
+    fEvent1 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent1 == 0:
+        run RoofCol_A
+    elif fEvent1 == 1:
+        run RoofCol_B
+    elif fEvent1 == 2:
+        run RoofCol_C
+    elif fEvent1 == 3:
+        run RoofCol_D
+    elif fEvent1 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:204', false)
+        fEvent15 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent15 == 0:
+            run RoofCol_E
+        elif fEvent15 == 1:
+            run RoofCol_F
+        elif fEvent15 == 2:
+            run RoofCol_G
+        elif fEvent15 == 3:
+            run RoofCol_H
+        elif fEvent15 == 4:
+            run SelRoofColor_Loop
+    return
+
+flow RoofCol_A:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_01', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Red')
+    return
+
+flow RoofCol_B:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_02', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Pink')
+    return
+
+flow RoofCol_C:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_03', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Yellow')
+    return
+
+flow RoofCol_D:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_04', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Black')
+    return
+
+flow RoofCol_E:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_05', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Blue')
+    return
+
+flow RoofCol_F:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_06', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('LightBlue')
+    return
+
+flow RoofCol_G:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_07', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Green')
+    return
+
+flow RoofCol_H:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_08', false)
+    EventFlowSystemActor.PlayerHouseSetRoofColor('Purple')
+    return
+
+flow SelRoofColor_Loop:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:205', false)
+    fEvent21 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent21 == 0:
+        run RoofCol_A
+    elif fEvent21 == 1:
+        run RoofCol_B
+    elif fEvent21 == 2:
+        run RoofCol_C
+    elif fEvent21 == 3:
+        run RoofCol_D
+    elif fEvent21 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:206', false)
+        fEvent27 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent27 == 0:
+            run RoofCol_E
+        elif fEvent27 == 1:
+            run RoofCol_F
+        elif fEvent27 == 2:
+            run RoofCol_G
+        elif fEvent27 == 3:
+            run RoofCol_H
+        elif fEvent27 == 4:
+            run SelRoofColor_Loop
+    return
+

@@ -1,0 +1,60 @@
+flow Root_Common:
+    if not MainNpc.NpcBlackBoard('PrologueStep', 1):
+        MainNpc.NpcAddBlackBoard('PrologueStep', 1)
+        MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', true, true, 0, true, '')
+    elif MainNpc.NpcBlackBoard('PrologueStep', 2):
+entrypoint Event10:
+        if (not MainNpc.NpcBlackBoard('HasTent', 1)) and (not MainNpc.NpcBlackBoard('IsForceLife', 1)) and (MainNpc.NpcBlackBoard('IsMove', 1)):
+            MainNpc.NpcAISetting(8, false)
+            if (MainNpc.CheckCurrentNpcAIState('cGoToDestination') == 0) and (MainNpc.NpcAIIsArriveDestination() == 0):
+                MainNpc.NpcSetAIBlackBoard('IsMove', 0)
+                MainNpc.NpcAISetting(8, true)
+                run sub_Event1
+            else:
+                MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'TalkEventFlowName', '', false, true, 1, 'OffsetX', 'OffsetZ')
+        else:
+            MainNpc.NpcAISetting(8, true)
+            MainNpc.NpcAISetting(6, false)
+            if MainNpc.NpcBlackBoard('BuildingSiteIndex', 0):
+                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 180.0, 'Thinking')
+            elif MainNpc.NpcBlackBoard('IsForceLife', 1):
+                MainNpc.SetNpcTalkFlowName('TalkEventFlowName', '')
+                if entry_variables['Type'] != 0:
+                    if event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                        MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 1, 'State:cWait')
+                    elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+                        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 180.0, '')
+                    else:
+                        MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', false, true, 0, true, 'NpcSpArrange')
+                elif not event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                    MainNpc.NpcAISetting(8, false)
+                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 0, '')
+                elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, -45.0, '')
+                else:
+                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 3, 'Angle:315')
+            else:
+                run sub_Event1
+    else:
+        MainNpc.NpcAISetting(6, false)
+        if not MainNpc.NpcBlackBoard('IsMove', 1):
+            MainNpc.NpcSetAIBlackBoard('IsMove', 1)
+            MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', true, true, 'WaitFrame', true, '')
+        elif event_flags_system['cPlayer:PrologueDone1stTalkAtPlaza']:
+            MainNpc.NpcAddBlackBoard('PrologueStep', 1)
+            run PrologueStep2
+        elif MainNpc.NpcAIIsArriveDestination() == 0:
+            MainNpc.NpcAddBlackBoard('ArrivePlaza', 1)
+            MainNpc.NpcAISetting(8, true)
+            MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 180.0, '')
+        else:
+            MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'TalkEventFlowName', '', false, true, 1, 'OffsetX', 'OffsetZ')
+    return
+
+flow PrologueStep2:
+    run Event10
+    return
+
+flow sub_Event1:
+    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
+

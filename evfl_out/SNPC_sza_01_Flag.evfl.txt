@@ -1,0 +1,17 @@
+flow Root:
+    if event_flags_system['cPlayer:ShizueCmnExplanationTownflag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:011', true)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:010', true)
+        event_flags_system['cPlayer:ShizueCmnExplanationTownflag'] = true
+    EventFlowSystemActor.UIMyDesignSelectHandling(0, 1, 0, 0, 0)
+    if EventFlowSystemActor.UIResultMenuDecide():
+        EventFlowSystemActor.SaveSetFromUIResult('cFlag')
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:012', false)
+        EventFlowSystemActor.NpcPlayerActivity('cActivityType_ChangeFlag')
+        MainNpc.SzaAchievementChangeSymbol('cFlag')
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:006', false)
+    run SNPC_sza_00_Common::Sza_CmnSel_Again
+    return
+

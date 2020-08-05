@@ -1,0 +1,7 @@
+flow Root:
+    if EventFlowSystemActor.TermEventNow('EarthDay', false):
+        run SNPC_rco_61_Event_EarthDay::Root
+    if EventFlowSystemActor.TermEventNow('MayDay', false):
+        run SNPC_rco_62_Event_MayDay::Root
+    return
+

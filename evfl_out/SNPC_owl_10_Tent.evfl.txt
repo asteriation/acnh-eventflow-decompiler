@@ -1,0 +1,104 @@
+flow Root:
+    if event_flags_system['cPlayer:OwlFinished1stTalk']:
+entrypoint Event0:
+        if (not event_flags_system['cPlayer:OwlGotDiyRecipe']) and (event_flags_system['cPlayer:MainmenuRecipe']):
+            run Owl_GetRecipe_AfterGreeting
+        else:
+            if event_flags_system['cPlayer:OwlShowFossilMyself']:
+                run OwlDailyGreeting
+                if not EventFlowSystemActor.MuseumDonationNumCheck(20):
+entrypoint Event17:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:103', false)
+                    fEvent27 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent27 == 0:
+                        run SNPC_owl_01_Museum_Donation::Root
+                    elif fEvent27 == 1:
+                        run SNPC_owl_02_Museum_Judgment::Root
+                    elif fEvent27 == 2:
+                        run SNPC_owl_00_Common::End
+                elif event_flags_system['cPlayer:FutaReadyForMuseum']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:192', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run SNPC_owl_02_Museum_Judgment::Root
+                    else:
+                        run SNPC_owl_00_Common::End
+                else:
+entrypoint Event76:
+                    event_flags_system['cPlayer:FutaReadyForMuseum'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:199_01', false)
+            elif event_flags_system['cLand:OwlFoundFossil']:
+                event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:051', false)
+                if not EventFlowSystemActor.MuseumDonationNumCheck(20):
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:052_01', false)
+                elif event_flags_system['cPlayer:FutaReadyForMuseum']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:052_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:052_03', false)
+                    event_flags_system['cPlayer:FutaReadyForMuseum'] = true
+            else:
+                run OwlDailyGreeting
+                if not EventFlowSystemActor.MuseumDonationNumCheck(20):
+entrypoint Event10:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:102', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run SNPC_owl_01_Museum_Donation::Root
+                    else:
+                        run SNPC_owl_00_Common::End
+                elif not event_flags_system['cPlayer:FutaReadyForMuseum']:
+                    run OwlReadyForBuiltMuseum
+                elif EventFlowSystemActor.HasKindItem('cFilter', '', 'Fossils'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:194', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:195', false)
+                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'Fossils', 'cItemFilter', false)
+                        if EventFlowSystemActor.UIResultMenuDecide():
+                            MainNpc.SetDeliveryItem(4, false)
+                            EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                            MainNpc.NpcDelivery('Keep', 0)
+                            if any ('FossilUnknown', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
+                            else:
+                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:196', false)
+                    else:
+                        run SNPC_owl_00_Common::End
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:193', false)
+    else:
+        run SNPC_owl_12_Tent_FirstTimeTalk::Root
+    return
+
+flow OwlTentCommon:
+    run Event0
+    return
+
+flow OwlDailyGreeting:
+    if event_flags_system['cPlayer:FutaTalkedInMuseumToday']:
+        run SNPC_owl_22_Museum_RenualQuest::BeforeRenualQuest
+    else:
+        event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
+        run SNPC_owl_00_Common::Greet
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:101', false)
+    return
+
+flow OwlReadyForBuiltMuseum:
+    run Event76
+    return
+
+flow Owl_GetRecipe_AfterGreeting:
+    event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:031', false)
+    run SNPC_owl_12_Tent_FirstTimeTalk::ALL_Cmn_SendRecipe
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:014', false)
+    return
+
+flow Sel_NoFoundFossil:
+    run Event10
+    return
+
+flow OwlTentDefaultChoice:
+    run Event17
+    return
+

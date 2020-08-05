@@ -1,0 +1,19 @@
+Actor Npc_1
+actions:
+- Npc_1.NpcRequestAction(ActionIdx: int)
+- Npc_1.TurnNeck(TurnTarget: int)
+- Npc_1.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- Npc_1.TurnBody(TurnTarget: int, TurnAngle: float)
+- Npc_1.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- Npc_1.NpcRailMove(RailID: int, PointA: int, PointB: int, MoveType: int, IsReverse: bool, IsWarp: bool)
+- Npc_1.NpcWaitTurn()
+- Npc_1.UseCracker()
+- Npc_1.EquipCracker()
+- Npc_1.SetNpcFeel(Feel: str, Second: int)
+- Npc_1.EventFlagNpcOn(AccessKey: str)
+- Npc_1.NpcPinataCheer()
+- Npc_1.RequestSimple(AsCommand: str, WaitFinish: bool)
+- Npc_1.NpcChangeHandTool(IsImmediately: bool, SpecificToolKindString: str, HandToolItemID: int)
+- Npc_1.SetDefaultWaitAs(NpcWaitAsType: str)
+queries:
+

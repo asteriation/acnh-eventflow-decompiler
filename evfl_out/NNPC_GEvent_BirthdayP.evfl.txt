@@ -1,0 +1,136 @@
+flow Root:
+    if (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) or ((event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst'))):
+        if (not event_flag_npc['cNpcMemory:BirthdayPAttendance']) and ((not EventFlowSystemActor.IsSharePlay(0)) or (EventFlowSystemActor.IsHoldPlayerBirthdayThisYear())):
+            run sub_grp!Event0
+    run sub_tm!Root
+
+flow Root_NextDay:
+    if (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and (not event_flag_npc['cNpcMemory:BirthdayPAttendance']) and (not event_flag_npc['cNpcMemory:BirhdayPTalkFlag']):
+        event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
+        if (EventFlowSystemActor.IsHoldPlayerBirthdayThisYear()) and (EventFlowSystemActor.HasKindItem('cKind', 'BdayCupcake', '')):
+            fEvent41 = EventFlowSystemActor.RandomChoice3(3)
+            if fEvent41 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:021', false)
+            elif fEvent41 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:022', false)
+            elif fEvent41 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:023', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run Give_Capcake
+            else:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:007', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:008', true)
+                EventFlowSystemActor.ExitFlowchart()
+        else:
+            fEvent52 = EventFlowSystemActor.RandomChoice3(3)
+            if fEvent52 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:025', false)
+            elif fEvent52 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:026', false)
+            elif fEvent52 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:027', false)
+            if EventFlowSystemActor.IsHoldPlayerBirthdayThisYear():
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:007', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:008', true)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                run Talk_End
+    run sub_tm!Root_NextDay
+
+flow Talk_End:
+    fEvent8 = EventFlowSystemActor.RandomChoice3(3)
+    if fEvent8 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:004', true)
+    elif fEvent8 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:005', true)
+    elif fEvent8 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:006', true)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Give_Capcake:
+    run Event16
+    return
+
+flow sub_tm!Root:
+    return
+
+flow sub_tm!Root_NextDay:
+    return
+
+flow sub_grp!Event0:
+    if not event_flag_npc['cNpcMemory:BirhdayPTalkFlag']:
+        event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
+        if (EventFlowSystemActor.IsHoldPlayerBirthdayThisYear()) and (EventFlowSystemActor.HasKindItem('cKind', 'BdayCupcake', '')):
+            fEvent1 = EventFlowSystemActor.RandomChoice3(3)
+            if fEvent1 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:001', false)
+            elif fEvent1 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:002', false)
+            elif fEvent1 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:003', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event16:
+                EventFlowSystemActor.UIItemSelectWindowHandling(2779, '', 'cItemSelect', '', 'cItemName', false)
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    MainNpc.SetDeliveryItem(4, false)
+                    MainNpc.NpcDelivery('Keep', 0)
+                    if event_flag_npc['cNpcMemory:BirthdayPAttendance']:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:018', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:009', false)
+                    MainNpc.NpcDelivery('Default', 3)
+                    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
+                    event_flags_npc['cNpcMemory:BirhdayPCupcakeFlag'] = true
+                    MainNpc.DecideEventReward('cCupcakeReward')
+                    if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+                        if EventFlowSystemActor.RandomChoice2(2) == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:010', false)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:011', false)
+                        MainNpc.SetDeliveryItem(1, true)
+                        MainNpc.WrapDeliveryItem()
+                        MainNpc.NpcDelivery('"Default"', 1)
+                        MainNpc.SetBirthdayPresentFlag()
+                        MainNpc.RegistToReleaseItemList(5)
+                        run Talk_End
+                    elif EventFlowSystemActor.RandomChoice2(2) == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:012', false)
+                        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 7, 9, 'cNone', 'cReward', 'cFastTomorrow')
+                        MainNpc.SetBirthdayPresentFlag()
+                        run Talk_End
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:013', false)
+                        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 7, 9, 'cNone', 'cReward', 'cFastTomorrow')
+                        MainNpc.SetBirthdayPresentFlag()
+                        run Talk_End
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:014', true)
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:007', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:008', true)
+                EventFlowSystemActor.ExitFlowchart()
+        else:
+            fEvent34 = EventFlowSystemActor.RandomChoice3(3)
+            if fEvent34 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:015', false)
+            elif fEvent34 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:016', false)
+            elif fEvent34 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:017', false)
+            if EventFlowSystemActor.IsHoldPlayerBirthdayThisYear():
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:007', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:008', true)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                run Talk_End
+

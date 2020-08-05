@@ -1,0 +1,94 @@
+flow Root:
+    if EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayer:PynTalkPreVisitDayFlag']:
+            event_flags_system['cPlayer:PynTalkBeforeFlag'] = true
+            event_flags_system['cPlayer:PynTalkPreVisitDayFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:010', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:011', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:012', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:013', false)
+            MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:014', false)
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:015', false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:016', false)
+                MainNpc.NpcSetRewardRecipe(12414, false)
+                MainNpc.SetDeliveryItem(1, true)
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:017', false)
+                event_flags_system['cPlayer:PynGetPreVisitRecipeFlag'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:018', false)
+                event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
+        elif event_flags_system['cPlayer:PynCannotGetItemFlag']:
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:019', false)
+                MainNpc.NpcSetRewardRecipe(12414, false)
+                MainNpc.SetDeliveryItem(1, true)
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:017', false)
+                event_flags_system['cPlayer:PynCannotGetItemFlag'] = false
+                event_flags_system['cPlayer:PynGetPreVisitRecipeFlag'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:020', false)
+        elif event_flags_system['cPlayer:PynExplainEasterDateFlag']:
+entrypoint Event30:
+            fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+            if fEvent30 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:022', false)
+            elif fEvent30 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:023', false)
+            elif fEvent30 == 2:
+                MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_01', false)
+                MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_02', false)
+            elif fEvent30 == 3:
+                if EventFlowSystemActor.EnvHourOverGrowUp():
+                    run Event30
+                else:
+                    event_flags_system['cPlayer:PynExplainEasterDateFlag'] = true
+                    EventFlowSystemActor.SetTagFromSystem(0, 'cEasterMonthDay', 'cHour', '', 0)
+                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:021', false)
+        else:
+            if EventFlowSystemActor.EnvHourOverGrowUp():
+                run Event30
+            else:
+                event_flags_system['cPlayer:PynExplainEasterDateFlag'] = true
+                EventFlowSystemActor.SetTagFromSystem(0, 'cEasterMonthDay', 'cHour', '', 0)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:021', false)
+    elif event_flags_system['cPlayerVisit:DC_PynTalkFlag']:
+entrypoint Event59:
+        fEvent59 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+        if fEvent59 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:022', false)
+        elif fEvent59 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:031', false)
+        elif fEvent59 == 2:
+            MainNpc.TurnBody(10, 0.0)
+            MainNpc.NpcWaitTurn()
+            EventFlowSystemActor.WaitFrame(1)
+            MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_01', false)
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_02', false)
+        elif fEvent59 == 3:
+            if EventFlowSystemActor.EnvHourOverGrowUp():
+                run Event59
+            else:
+                EventFlowSystemActor.SetTagFromSystem(0, 'cEasterMonthDay', 'cHour', '', 0)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:030', false)
+    else:
+        event_flags_system['cPlayerVisit:DC_PynTalkFlag'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:025', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:026', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:027', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:013', false)
+        MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:014', false)
+        MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:015', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:028', false)
+    return
+

@@ -1,0 +1,182 @@
+flow Flow_Invite:
+    if event_flags_system['cLand:AmiiboCampSiteCall']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:002', true)
+        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+        EventFlowSystemActor.WaitFrame(60)
+        EventFlowSystemActor.FadeIn(true)
+        if EventFlowSystemActor.NpcHouseNum('cSold') < 10:
+            run CheckOffice_Move
+        else:
+            run CheckOffice
+    else:
+        if EventFlowSystemActor.PercentChoice(10):
+            if event_flags_system['cPlayerTemp:CampInviteRejected']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:003', true)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+                EventFlowSystemActor.WaitFrame(60)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.NpcHouseNum('cSold') < 10:
+                    run CheckOffice_Move
+                else:
+                    run CheckOffice
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:002', true)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+                EventFlowSystemActor.WaitFrame(60)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.NpcHouseNum('cSold') < 10:
+                    run CheckOffice_Move
+                else:
+                    run CheckOffice
+        elif (not MainNpc.CanInduceNpc()) and (not EventFlowSystemActor.NpcHouseNum('cSold') < 10):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:101', false)
+            event_flags_system['cPlayerTemp:CampInviteRejected'] = true
+        else:
+            if EventFlowSystemActor.PercentChoice(50):
+                run Talk_InviteGame
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:101', false)
+                event_flags_system['cPlayerTemp:CampInviteRejected'] = true
+    return
+
+flow Talk_InviteGame:
+    if event_flags_system['cPlayerTemp:CampInviteRejected']:
+        fEvent53 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent53 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:207_01', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:208_01', false)
+        elif fEvent53 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:207_02', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:208_02', false)
+        elif fEvent53 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:207_03', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:208_03', false)
+    else:
+        fEvent10 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent10 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:201_01', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:202_01', false)
+        elif fEvent10 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:201_02', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:202_02', false)
+        elif fEvent10 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:201_03', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                event_flags_system['cPlayerTemp:CampInviteInProgress'] = true
+                run NNPC_Spot_Camp_Game::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:202_03', false)
+    return
+
+flow CheckOffice:
+    if EventFlowSystemActor.NpcHouseNum('cSale') < 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:406', false)
+        MainNpc.NpcFixedInducement()
+        MainNpc.MoveIntoLandForSale()
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:405', false)
+        event_flags_system['cPlayer:Camp_InduceFailSellPlaceNothing'] = true
+        event_flags_system['cPlayer:Camp_InduceFailFlag'] = true
+    return
+
+flow Flow_ReInvite:
+    if event_flags_system['cPlayer:Camp_InduceFailSellPlaceNothing']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:424', false)
+        if MainNpc.IsInduceFailedReasonFixUp():
+            event_flags_system['cPlayer:Camp_InduceFailFlag'] = false
+            event_flags_system['cPlayer:Camp_InduceFailSellPlaceNothing'] = false
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:410', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.MessageSuspend()
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+                EventFlowSystemActor.WaitFrame(60)
+                EventFlowSystemActor.FadeIn(true)
+                run CheckOffice
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:411', false)
+    return
+
+flow CheckOffice_Move:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:302', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:303', false)
+    elif event_flags_system['cLand:AmiiboCampSiteCall']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:304', false)
+entrypoint Event62:
+        EventFlowSystemActor.UIMsgCardAdrHandling('cIslandersMoving')
+        if EventFlowSystemActor.UIResultMenuDecide():
+            EventFlowSystemActor.SetTagFromUIResult(0, 'cSelectNpcName')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:305', false)
+            fEvent63 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent63 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:306', true)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+                EventFlowSystemActor.WaitFrame(60)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.IsAbandonedHouseNpc('cUISelect'):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:309', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:309_01', false)
+                if event_flags_system['cLand:AmiiboCampSiteCall']:
+                    EventFlowSystemActor.UISelectNpcMoveOut('cUISelect')
+                else:
+                    EventFlowSystemActor.UISelectNpcMoveOut('cRandomSelect')
+                MainNpc.NpcFixedInducement()
+            elif fEvent63 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:307', false)
+                run NPC_Select
+            elif fEvent63 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:308', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:310', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:311', false)
+                run NPC_Select
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:312', false)
+    else:
+        EventFlowSystemActor.SelectMoveOutNpcRandom()
+        MainNpc.SetNpcName(0, 17)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:313', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:306', true)
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(60)
+            EventFlowSystemActor.FadeIn(true)
+            if EventFlowSystemActor.IsAbandonedHouseNpc('cUISelect'):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:309', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:309_01', false)
+            if event_flags_system['cLand:AmiiboCampSiteCall']:
+                EventFlowSystemActor.UISelectNpcMoveOut('cUISelect')
+            else:
+                EventFlowSystemActor.UISelectNpcMoveOut('cRandomSelect')
+            MainNpc.NpcFixedInducement()
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:314', false)
+    return
+
+flow NPC_Select:
+    run Event62
+    return
+

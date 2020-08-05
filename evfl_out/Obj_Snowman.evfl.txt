@@ -1,0 +1,452 @@
+flow Root_Talk:
+    run Snowman_Chk
+    run Snowman_Chat
+    return
+
+flow Root:
+    EventFlowSystemActor.WaitFrame(20)
+    if event_flags_system['cPlayer:SnowmanBuildFlag']:
+        run Snowman_Built
+    else:
+        event_flags_system['cPlayer:SnowmanBuildFlag'] = true
+        event_flags_system['cPlayer:SnowmanFirstBuildTodayFlag'] = true
+        run Snowman_FirstBuild
+    return
+
+flow Snowman_Chat:
+    if EventFlowSystemActor.IsMyVillage():
+        run Snowman_Chat_HostP
+    else:
+        run Snowman_Chat_GuestP
+    return
+
+flow Snowman_Chk:
+    if EventFlowSystemActor.IsMyVillage():
+        if SnowMan.SnowManGrade() == 0:
+            fEvent16 = SnowMan.SnowManAge()
+            if fEvent16 == 0:
+                if not event_flags_system['cPlayer:SnowmanGotDay1Flag']:
+                    if SnowMan.IsMadeSnowManPlayer():
+                        if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:030', false)
+                            EventFlowSystemActor.SetItemToPocket(3540, 1)
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:032', false)
+                            if event_flags_system['cPlayer:MainmenuRecipe']:
+                                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:020', false)
+                            else:
+                                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:113', false)
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                            event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                            EventFlowSystemActor.ExitFlowchart()
+                    elif EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'Snowman'):
+                        if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:034', false)
+                            EventFlowSystemActor.SetItemToPocket(3540, 1)
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:032', false)
+                            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:020', false)
+                            event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                            EventFlowSystemActor.ExitFlowchart()
+                    elif event_flags_system['cPlayer:MainmenuRecipe']:
+                        EventFlowSystemActor.DecideOpenCraftRecipe('cRewardSnowman')
+                        EventFlowSystemActor.OpenSelectedSequenceCraftRecipe()
+                        EventFlowSystemActor.SetTagFromSystem(0, 'cRewardSnowMan', 'cDegit', '', 0)
+                        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:033', false)
+                        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:012', false)
+                        event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+            elif fEvent16 == 1:
+                if (not event_flags_system['cPlayer:SnowmanGotDay2Flag']) and (SnowMan.IsMadeSnowManPlayer()) and (EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName')):
+                    EventFlowSystemActor.SetItemToPocket(3540, 1)
+                    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:040', false)
+                    event_flags_system['cPlayer:SnowmanGotDay2Flag'] = true
+                    run sub_Event98
+            elif fEvent16 == 2:
+                if (not event_flags_system['cPlayer:SnowmanGotDay3Flag']) and (SnowMan.IsMadeSnowManPlayer()) and (EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName')):
+                    EventFlowSystemActor.SetItemToPocket(3540, 1)
+                    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:041', false)
+                    event_flags_system['cPlayer:SnowmanGotDay3Flag'] = true
+                    run sub_Event98
+            elif fEvent16 == 3:
+                if (not event_flags_system['cPlayer:SnowmanGotDay4Flag']) and (SnowMan.IsMadeSnowManPlayer()) and (EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName')):
+                    EventFlowSystemActor.SetItemToPocket(3540, 1)
+                    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:042', false)
+                    event_flags_system['cPlayer:SnowmanGotDay4Flag'] = true
+                    run sub_Event98
+        elif (event_flags_system['cPlayer:SnowmanFirstBuildTodayFlag']) and (not event_flags_system['cPlayer:SnowmanGotDay1Flag']) and (EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName')):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:030', false)
+            EventFlowSystemActor.SetItemToPocket(3540, 1)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:032', false)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:015', false)
+            event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Snowman_Chk
+
+flow Snowman_Chat_Always:
+    fEvent36 = SnowMan.SnowManAge()
+    if fEvent36 == 0:
+        fEvent49 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent49 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:056', false)
+        elif fEvent49 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:057', false)
+        elif fEvent49 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:058', false)
+    elif fEvent36 == 1:
+        fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent37 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:059', false)
+        elif fEvent37 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:060', false)
+        elif fEvent37 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:061', false)
+    elif fEvent36 == 2:
+        fEvent44 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent44 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:062', false)
+        elif fEvent44 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:063', false)
+        elif fEvent44 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:064', false)
+    elif fEvent36 == 3:
+        fEvent48 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent48 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:065', false)
+        elif fEvent48 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:066', false)
+        elif fEvent48 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:067', false)
+    return
+
+flow Snowman_Chat_Grade:
+    fEvent53 = SnowMan.SnowManGrade()
+    if fEvent53 == 0:
+        fEvent70 = SnowMan.SnowManAge()
+        if fEvent70 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:068', false)
+        elif fEvent70 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:069', false)
+        elif fEvent70 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:070', false)
+        elif fEvent70 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:071', false)
+    elif fEvent53 == 1:
+        fEvent57 = SnowMan.SnowManAge()
+        if fEvent57 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:072', false)
+        elif fEvent57 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:073', false)
+        elif fEvent57 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:074', false)
+        elif fEvent57 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:075', false)
+    elif fEvent53 == 2:
+        fEvent62 = SnowMan.SnowManAge()
+        if fEvent62 == 0:
+            fEvent121 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+            if fEvent121 == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:076', false)
+            elif fEvent121 == 2:
+                run sub_grp!Event73
+            elif fEvent121 == 1:
+                run sub_grp!Event122
+        elif fEvent62 == 1:
+            fEvent123 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+            if fEvent123 == 2:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:077', false)
+            elif fEvent123 == 1:
+                run sub_grp!Event73
+            elif fEvent123 == 0:
+                run sub_grp!Event122
+        elif fEvent62 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:078', false)
+        elif fEvent62 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:079', false)
+    elif fEvent53 == 3:
+        fEvent67 = SnowMan.SnowManAge()
+        if fEvent67 == 0:
+            fEvent131 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+            if fEvent131 == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:084', false)
+            elif fEvent131 == 1:
+                run sub_grp!Event130
+            elif fEvent131 == 2:
+                run sub_grp!Event175
+        elif fEvent67 == 1:
+            fEvent133 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+            if fEvent133 == 2:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:085', false)
+            elif fEvent133 == 0:
+                run sub_grp!Event130
+            elif fEvent133 == 1:
+                run sub_grp!Event175
+        elif fEvent67 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:086', false)
+        elif fEvent67 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:087', false)
+    return
+
+flow Snowman_Built:
+    fEvent0 = SnowMan.SnowManGrade()
+    if fEvent0 == 0:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:001', false)
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:010', false)
+        event_flags_system['cLifeSupportAchievement:MakePerfectSnowball'] += 1
+        if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'Snowman'):
+            if EventFlowSystemActor.IsMadeCraftUnlockRecipe('Snowman', 'cAND'):
+                SnowMan.DecideEventReward('cSnowmanReward')
+                fEvent7 = EventFlowSystemActor.RandomChoice5(5)
+                if fEvent7 == 0:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
+                elif fEvent7 == 1:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+                elif fEvent7 == 2:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+                elif fEvent7 == 3:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
+                elif fEvent7 == 4:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 5)
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:016', false)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                EventFlowSystemActor.ExitFlowchart()
+            elif EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:017', false)
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:020', false)
+                EventFlowSystemActor.SetItemToPocket(3540, 1)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:018', false)
+                EventFlowSystemActor.ExitFlowchart()
+        elif event_flags_system['cPlayer:MainmenuRecipe']:
+            EventFlowSystemActor.DecideOpenCraftRecipe('cRewardSnowman')
+            EventFlowSystemActor.OpenSelectedSequenceCraftRecipe()
+            EventFlowSystemActor.SetTagFromSystem(0, 'cRewardSnowMan', 'cDegit', '', 0)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:011', false)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:013', false)
+            if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:020', false)
+                EventFlowSystemActor.SetItemToPocket(3540, 1)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
+                EventFlowSystemActor.ExitFlowchart()
+        elif (EventFlowSystemActor.PlayerHouseLevel() != 0) and (event_flags_system['cPlayer:SnowmanDIYMailFlag']):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:108', false)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:109', false)
+            if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:020', false)
+                EventFlowSystemActor.SetItemToPocket(3540, 1)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
+                EventFlowSystemActor.ExitFlowchart()
+        else:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:111', false)
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:112', false)
+            if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:113', false)
+                EventFlowSystemActor.SetItemToPocket(3540, 1)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
+                EventFlowSystemActor.ExitFlowchart()
+    elif fEvent0 == 1:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:002', false)
+        run sub_Event151
+    elif fEvent0 == 2:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:003', false)
+        run sub_Event151
+    elif fEvent0 == 3:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:004', false)
+        run sub_Event151
+    return
+
+flow Snowman_FirstBuild:
+    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:100', false)
+    if event_flags_system['cPlayer:MainmenuRecipe']:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'Snowman'):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:017', false)
+            if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:015', false)
+                EventFlowSystemActor.SetItemToPocket(3540, 1)
+                event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+            else:
+                run sub_Event163
+        else:
+            EventFlowSystemActor.DecideOpenCraftRecipe('cRewardSnowman')
+            EventFlowSystemActor.OpenSelectedSequenceCraftRecipe()
+            EventFlowSystemActor.SetTagFromSystem(0, 'cRewardSnowMan', 'cDegit', '', 0)
+            if SnowMan.SnowManGrade() == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:011', false)
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:013', false)
+                if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:015', false)
+                    EventFlowSystemActor.SetItemToPocket(3540, 1)
+                    event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                else:
+                    run sub_Event163
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:101', false)
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:013', false)
+                if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+                    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:015', false)
+                    EventFlowSystemActor.SetItemToPocket(3540, 1)
+                    event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+                else:
+                    run sub_Event163
+    elif EventFlowSystemActor.PlayerHouseLevel() == 0:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:110', false)
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:112', false)
+        if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:113', false)
+            EventFlowSystemActor.SetItemToPocket(3540, 1)
+            event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+        else:
+            run sub_Event163
+    else:
+        EventFlowSystemActor.DecideEventRewardDIYRecipe('Snowman')
+        EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 6)
+        event_flags_system['cPlayer:SnowmanDIYMailFlag'] = true
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:107', false)
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:013', false)
+        if EventFlowSystemActor.ShoppingCapacity(3540, 'cItemName'):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:015', false)
+            EventFlowSystemActor.SetItemToPocket(3540, 1)
+            event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
+        else:
+            run sub_Event163
+    fEvent152 = SnowMan.SnowManGrade()
+    if fEvent152 == 0:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:103', false)
+        event_flags_system['cLifeSupportAchievement:MakePerfectSnowball'] += 1
+    elif fEvent152 == 1:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:104', false)
+    elif fEvent152 == 2:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:105', false)
+    elif fEvent152 == 3:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:106', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Snowman_Chat_HostP:
+    if SnowMan.SnowManIsSnowMeltSeason():
+        fEvent35 = SnowMan.SnowManAge()
+        if fEvent35 in (0, 1):
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:050', false)
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:051', false)
+        elif fEvent35 == 2:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:052', false)
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:053', false)
+        elif fEvent35 == 3:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:054', false)
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:055', false)
+    elif SnowMan.SnowManGrade() in (0, 1):
+        run sub_grp!Event26
+    else:
+        fEvent142 = SnowMan.SnowManAge()
+        if fEvent142 == 1:
+            if EventFlowSystemActor.PercentChoice(55):
+                run sub_Event138
+            else:
+                run Snowman_Chat_Grade
+        elif fEvent142 == 0:
+            if event_flags_system['cPlayer:SnowmanFirstBuildTodayFlag']:
+                run sub_Event138
+            else:
+                if EventFlowSystemActor.PercentChoice(55):
+                    run sub_Event138
+                else:
+                    run Snowman_Chat_Grade
+        elif fEvent142 in (2, 3):
+            run sub_grp!Event26
+    return
+
+flow Snowman_Chat_GuestP:
+    if SnowMan.SnowManIsSnowMeltSeason():
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:201', false)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:211', false)
+        run sub_grp!Event220
+    else:
+        run sub_grp!Event220
+    return
+
+flow sub_tm!Snowman_Chk:
+    return
+
+flow sub_Event98:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_grp!Event130:
+    if SnowMan.SnowManIsHeadSmallerThanBody():
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:088', false)
+    else:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:089', false)
+
+flow sub_grp!Event175:
+    if SnowMan.SnowManIsHeadSmallerThanBody():
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:090', false)
+    else:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:091', false)
+
+flow sub_grp!Event73:
+    if SnowMan.SnowManIsHeadSmallerThanBody():
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:082', false)
+    else:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:083', false)
+
+flow sub_grp!Event122:
+    if SnowMan.SnowManIsHeadSmallerThanBody():
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:080', false)
+    else:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:081', false)
+
+flow sub_Event151:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_Event163:
+    SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
+
+flow sub_grp!Event26:
+    if EventFlowSystemActor.PercentChoice(70):
+        run Snowman_Chat_Always
+    else:
+        run Snowman_Chat_Grade
+
+flow sub_Event138:
+    run Snowman_Chat_Always
+
+flow sub_grp!Event220:
+    if EventFlowSystemActor.PercentChoice(70):
+        fEvent215 = SnowMan.SnowManGrade()
+        if fEvent215 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:202', false)
+        elif fEvent215 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:203', false)
+        elif fEvent215 in (2, 3):
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:204', false)
+    else:
+        fEvent216 = SnowMan.SnowManAge()
+        if fEvent216 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:205', false)
+        elif fEvent216 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:206', false)
+        elif fEvent216 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:207', false)
+        elif fEvent216 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:208', false)
+

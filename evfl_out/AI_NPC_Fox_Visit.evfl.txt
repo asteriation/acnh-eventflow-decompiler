@@ -1,0 +1,11 @@
+flow Root:
+    if event_flags_system['cLand:FoxMovedToMarket']:
+        MainNpc.NpcChangeInvisibleState('cInvisible', 'Root_Visit', 'SNPC_fox', '', true, true, 0)
+    else:
+        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root_Visit', 'SNPC_fox', '', false, true, false, 0, 1, 0, 0)
+    return
+
+flow Init:
+    MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
+    return
+

@@ -1,0 +1,778 @@
+flow Root:
+    run Tag_daily_SET_HOUR
+    run Tag_daily_Num
+    if EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayer:BeyDaily_TalkFirst']:
+            event_flags_system['cPlayer:BeyDaily_TalkFirst'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:000', false)
+            event_flags_system['cPlayer:BeyDaily_TalkFirstDay'] = true
+            run sub_grp!Event192
+        elif not event_flags_system['cPlayer:BeyDaily_TalkFirstDay']:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:001', false)
+            event_flags_system['cPlayer:BeyDaily_TalkFirstDay'] = true
+            run sub_grp!Event192
+        elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            fEvent7 = EventFlowSystemActor.EnvWeather()
+            if fEvent7 in (0, 1, 2, 7):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
+                if event_flags_system['cPlayer:BeyDaily_QuestClear']:
+                    if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:103', false)
+                        fEvent212 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent212 == 1:
+                            run Obj_Entry
+                        elif fEvent212 == 2:
+                            run Talk_Always
+                        elif fEvent212 == 0:
+                            run sub_grp!Event51
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:100', false)
+                        fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent9 == 1:
+                            run Obj_Entry
+                        elif fEvent9 == 2:
+                            run Talk_Always
+                        elif fEvent9 == 0:
+                            run sub_grp!Event51
+                elif event_flags_system['cPlayer:BeyDaily_QuestStart']:
+                    if MainNpc.BeyDailyFishSize() in (0, 1, 2):
+                        if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
+                            event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                            run TalkFirst_ClearQ
+                        else:
+                            run sub_grp!Event204
+                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
+                        event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                        run TalkFirst_ClearQ
+                    else:
+                        run sub_grp!Event204
+                elif not event_flags_system['cPlayer:BeyDaily_ReqObj']:
+                    run sub_grp!Event192
+                elif event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:024', false)
+                    fEvent203 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent203 == 0:
+                        run Quest_Entry
+                    elif fEvent203 == 1:
+                        run Obj_Entry
+                    elif fEvent203 == 2:
+                        run Talk_Always
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:021', false)
+                    fEvent148 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent148 == 0:
+                        run Quest_Entry
+                    elif fEvent148 == 1:
+                        run Obj_Entry
+                    elif fEvent148 == 2:
+                        run Talk_Always
+            elif fEvent7 in (3, 4):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:022', false)
+                if event_flags_system['cPlayer:BeyDaily_QuestClear']:
+                    if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:103', false)
+                        fEvent212 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent212 == 1:
+                            run Obj_Entry
+                        elif fEvent212 == 2:
+                            run Talk_Always
+                        elif fEvent212 == 0:
+                            run sub_grp!Event51
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:100', false)
+                        fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent9 == 1:
+                            run Obj_Entry
+                        elif fEvent9 == 2:
+                            run Talk_Always
+                        elif fEvent9 == 0:
+                            run sub_grp!Event51
+                elif event_flags_system['cPlayer:BeyDaily_QuestStart']:
+                    if MainNpc.BeyDailyFishSize() in (0, 1, 2):
+                        if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
+                            event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                            run TalkFirst_ClearQ
+                        else:
+                            run sub_grp!Event204
+                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
+                        event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                        run TalkFirst_ClearQ
+                    else:
+                        run sub_grp!Event204
+                elif not event_flags_system['cPlayer:BeyDaily_ReqObj']:
+                    run sub_grp!Event192
+                elif event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:024', false)
+                    fEvent203 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent203 == 0:
+                        run Quest_Entry
+                    elif fEvent203 == 1:
+                        run Obj_Entry
+                    elif fEvent203 == 2:
+                        run Talk_Always
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:021', false)
+                    fEvent148 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent148 == 0:
+                        run Quest_Entry
+                    elif fEvent148 == 1:
+                        run Obj_Entry
+                    elif fEvent148 == 2:
+                        run Talk_Always
+            elif fEvent7 in (5, 6):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:023', false)
+                if event_flags_system['cPlayer:BeyDaily_QuestClear']:
+                    if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:103', false)
+                        fEvent212 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent212 == 1:
+                            run Obj_Entry
+                        elif fEvent212 == 2:
+                            run Talk_Always
+                        elif fEvent212 == 0:
+                            run sub_grp!Event51
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:100', false)
+                        fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
+                        if fEvent9 == 1:
+                            run Obj_Entry
+                        elif fEvent9 == 2:
+                            run Talk_Always
+                        elif fEvent9 == 0:
+                            run sub_grp!Event51
+                elif event_flags_system['cPlayer:BeyDaily_QuestStart']:
+                    if MainNpc.BeyDailyFishSize() in (0, 1, 2):
+                        if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
+                            event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                            run TalkFirst_ClearQ
+                        else:
+                            run sub_grp!Event204
+                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
+                        event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                        run TalkFirst_ClearQ
+                    else:
+                        run sub_grp!Event204
+                elif not event_flags_system['cPlayer:BeyDaily_ReqObj']:
+                    run sub_grp!Event192
+                elif event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:024', false)
+                    fEvent203 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent203 == 0:
+                        run Quest_Entry
+                    elif fEvent203 == 1:
+                        run Obj_Entry
+                    elif fEvent203 == 2:
+                        run Talk_Always
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:021', false)
+                    fEvent148 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent148 == 0:
+                        run Quest_Entry
+                    elif fEvent148 == 1:
+                        run Obj_Entry
+                    elif fEvent148 == 2:
+                        run Talk_Always
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
+            if event_flags_system['cPlayer:BeyDaily_QuestClear']:
+                if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:103', false)
+                    fEvent212 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent212 == 1:
+                        run Obj_Entry
+                    elif fEvent212 == 2:
+                        run Talk_Always
+                    elif fEvent212 == 0:
+                        run sub_grp!Event51
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:100', false)
+                    fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent9 == 1:
+                        run Obj_Entry
+                    elif fEvent9 == 2:
+                        run Talk_Always
+                    elif fEvent9 == 0:
+                        run sub_grp!Event51
+            elif event_flags_system['cPlayer:BeyDaily_QuestStart']:
+                if MainNpc.BeyDailyFishSize() in (0, 1, 2):
+                    if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
+                        event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                        run TalkFirst_ClearQ
+                    else:
+                        run sub_grp!Event204
+                elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
+                    event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
+                    run TalkFirst_ClearQ
+                else:
+                    run sub_grp!Event204
+            elif not event_flags_system['cPlayer:BeyDaily_ReqObj']:
+                run sub_grp!Event192
+            elif event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:024', false)
+                fEvent203 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent203 == 0:
+                    run Quest_Entry
+                elif fEvent203 == 1:
+                    run Obj_Entry
+                elif fEvent203 == 2:
+                    run Talk_Always
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:021', false)
+                fEvent148 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent148 == 0:
+                    run Quest_Entry
+                elif fEvent148 == 1:
+                    run Obj_Entry
+                elif fEvent148 == 2:
+                    run Talk_Always
+    elif event_flags_system['cPlayerVisit:DC_BeyDaily_TalkFirst']:
+        fEvent110 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent110 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:253', false)
+        elif fEvent110 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:252', false)
+        elif fEvent110 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:251', false)
+    else:
+        event_flags_system['cPlayerVisit:DC_BeyDaily_TalkFirst'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:250', false)
+    return
+
+flow Tag_daily_SET_HOUR:
+    EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cHour', '', 5)
+    return
+
+flow Tag_daily_Num:
+    EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', '', 3)
+    EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+    EventFlowSystemActor.SetTagFromSystem(3, 'cFlow', 'cDegit', '', 3)
+    EventFlowSystemActor.SetTagFromSystem(4, 'cFlow', 'cDegit', '', 5)
+    return
+
+flow SelllFish_daily:
+    EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cFishSell', false)
+    if EventFlowSystemActor.UIResultMenuDecide():
+        MainNpc.SetDeliveryItem(4, false)
+        MainNpc.NpcDelivery('Keep', 0)
+        MainNpc.ShopSellCalc('SellTotal', false, 1.5, true)
+        EventFlowSystemActor.SetTagFromSystem(2, 'cFlow', 'cMoney', '""', 'SellTotal')
+        if EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
+            EventFlowSystemActor.UIMoneyAppear()
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:151', true)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.NpcDelivery('Default', 7)
+                MainNpc.ShopSellDone(1.5, false)
+                EventFlowSystemActor.UIMoneyDisappear()
+                if (EventFlowSystemActor.BeyWeekEndEvent() in (0, 1)) and (not event_flags_system['cPlayer:BeyDaily_AnnounceEvent']):
+                    event_flags_system['cPlayer:BeyDaily_AnnounceEvent'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:154', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:152', true)
+            else:
+                run SellFish_Cancel_Talk
+                MainNpc.NpcDelivery('Default', 10)
+                run SellFish_Cancel
+        elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 1):
+            EventFlowSystemActor.SetTagFromUIResult(1, 'cItemName')
+            EventFlowSystemActor.UIMoneyAppear()
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:150', true)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.NpcDelivery('Default', 7)
+                MainNpc.ShopSellDone(1.5, false)
+                EventFlowSystemActor.UIMoneyDisappear()
+                if (EventFlowSystemActor.BeyWeekEndEvent() in (0, 1)) and (not event_flags_system['cPlayer:BeyDaily_AnnounceEvent']):
+                    event_flags_system['cPlayer:BeyDaily_AnnounceEvent'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:154', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:152', true)
+            else:
+                run SellFish_Cancel_Talk
+                MainNpc.NpcDelivery('Default', 10)
+                run SellFish_Cancel
+        else:
+            run SellFish_Cancel_Talk
+            MainNpc.NpcDelivery('Default', 10)
+            run SellFish_Cancel
+    else:
+        run SellFish_Cancel_Talk
+        run SellFish_Cancel
+    return
+
+flow SellFish_Cancel:
+    run Event40
+    return
+
+flow Talk_Always:
+    if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3, 4):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:008', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:009', false)
+    return
+
+flow Quest_Start:
+    run Event89
+    return
+
+flow Quest_Entry:
+    if event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+        run Quest_Start
+    else:
+        event_flags_system['cPlayer:BeyDaily_ExolainQ_First'] = true
+entrypoint Event80:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:015', false)
+        fEvent21 = MainNpc.BeyDailyFishSize()
+        if fEvent21 == 0:
+            MainNpc.SetItemName(0, 29, 3)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:016', false)
+        elif fEvent21 in (1, 2):
+            MainNpc.SetItemName(0, 29, 3)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:017', false)
+        elif fEvent21 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:018', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:019', false)
+        fEvent95 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent95 == 1:
+            run ExplainQ_BeforeQ
+        elif fEvent95 == 2:
+            run Talk_Always
+        elif fEvent95 == 0:
+entrypoint Event89:
+            event_flags_system['cPlayer:BeyDaily_QuestStart'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:010', false)
+            fEvent15 = MainNpc.BeyDailyFishSize()
+            if fEvent15 == 0:
+                MainNpc.SetItemName(0, 29, 3)
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:011', false)
+                run sub_Event87
+            elif fEvent15 in (1, 2):
+                MainNpc.SetItemName(0, 29, 3)
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:012', false)
+                run sub_Event87
+            elif fEvent15 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:013', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+    return
+
+flow TalkFirst_ClearQ:
+    fEvent3 = MainNpc.BeyDailyFishSize()
+    if fEvent3 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:050', false)
+    elif fEvent3 in (1, 2):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:051', false)
+    elif fEvent3 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:052', false)
+    MainNpc.SmartPhone(0)
+    MainNpc.SmartPhone(4)
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:053', false)
+    MainNpc.SmartPhone(5)
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:060', false)
+    MainNpc.NpcStartAS('BeyTakePictures', false, False)
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:061', false)
+    MainNpc.SmartPhone(1)
+    if EventFlowSystemActor.HasKindItem('cKind', 'Fish', ''):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:054', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:056', false)
+            run SelllFish_daily
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:055', false)
+entrypoint Event40:
+            if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3, 4):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:057', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:058', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:059', false)
+    return
+
+flow Obj_Entry:
+    if event_flags_system['cPlayer:BeyDaily_ReqObj']:
+        MainNpc.NpcDecideOrderBeforeItem('cBeyFish')
+        MainNpc.SetItemName(3, 28, 0)
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:202', false)
+    elif event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:210', false)
+        run sub_grp!Event131
+    else:
+        event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:200', false)
+entrypoint Event81:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:201', false)
+        fEvent127 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent127 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:208', false)
+            run Explain_ReqOBJ
+        elif fEvent127 == 2:
+            run sub_Event140
+        elif fEvent127 == 0:
+            run sub_grp!Event131
+    return
+
+flow Explain_ReqOBJ:
+    run Event81
+    return
+
+flow ExplainQ_BeforeQ:
+    run Event80
+    return
+
+flow SellFish_Cancel_Talk:
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:153', false)
+    return
+
+flow Bey_ObjEntryCount:
+    if not event_flags_system['cPlayer:BeyDaily_ObjEntry1']:
+        event_flags_system['cPlayer:BeyDaily_ObjEntry1'] = true
+    elif not event_flags_system['cPlayer:BeyDaily_ObjEntry2']:
+        event_flags_system['cPlayer:BeyDaily_ObjEntry2'] = true
+    elif not event_flags_system['cPlayer:BeyDaily_ObjEntry3']:
+        event_flags_system['cPlayer:BeyDaily_ObjEntry3'] = true
+    return
+
+flow BeyDaily_TalkAfter_ObjEntry:
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:206', false)
+    return
+
+flow sub_grp!Event204:
+    if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:028', false)
+        fEvent208 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent208 == 0:
+            MainNpc.SmartPhone(0)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
+            MainNpc.SmartPhone(5)
+            EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+            if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                fEvent165 = MainNpc.BeyDailyFishSize()
+                if fEvent165 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                fEvent164 = MainNpc.BeyDailyFishSize()
+                if fEvent164 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            else:
+                fEvent163 = MainNpc.BeyDailyFishSize()
+                if fEvent163 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+        elif fEvent208 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
+            MainNpc.SetItemName(0, 29, 3)
+            fEvent145 = MainNpc.BeyDailyFishSize()
+            if fEvent145 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:032', false)
+            elif fEvent145 in (1, 2):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:033', false)
+            elif fEvent145 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:034', false)
+            MainNpc.SmartPhone(0)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:035', false)
+            MainNpc.SmartPhone(5)
+            EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+            if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                fEvent165 = MainNpc.BeyDailyFishSize()
+                if fEvent165 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                fEvent164 = MainNpc.BeyDailyFishSize()
+                if fEvent164 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            else:
+                fEvent163 = MainNpc.BeyDailyFishSize()
+                if fEvent163 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+        elif fEvent208 == 2:
+            run Obj_Entry
+        elif fEvent208 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:030', false)
+        fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent63 == 0:
+            MainNpc.SmartPhone(0)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
+            MainNpc.SmartPhone(5)
+            EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+            if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                fEvent165 = MainNpc.BeyDailyFishSize()
+                if fEvent165 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                fEvent164 = MainNpc.BeyDailyFishSize()
+                if fEvent164 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            else:
+                fEvent163 = MainNpc.BeyDailyFishSize()
+                if fEvent163 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+        elif fEvent63 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
+            MainNpc.SetItemName(0, 29, 3)
+            fEvent145 = MainNpc.BeyDailyFishSize()
+            if fEvent145 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:032', false)
+            elif fEvent145 in (1, 2):
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:033', false)
+            elif fEvent145 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:034', false)
+            MainNpc.SmartPhone(0)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:035', false)
+            MainNpc.SmartPhone(5)
+            EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+            if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                fEvent165 = MainNpc.BeyDailyFishSize()
+                if fEvent165 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent165 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                fEvent164 = MainNpc.BeyDailyFishSize()
+                if fEvent164 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent164 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+            else:
+                fEvent163 = MainNpc.BeyDailyFishSize()
+                if fEvent163 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent163 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+        elif fEvent63 == 2:
+            run Obj_Entry
+        elif fEvent63 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
+
+flow sub_grp!Event192:
+    if event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']:
+        if event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:005', false)
+            fEvent200 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent200 == 0:
+                run Quest_Entry
+            elif fEvent200 == 1:
+                run Obj_Entry
+            elif fEvent200 == 2:
+                run Talk_Always
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:004', false)
+            fEvent198 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent198 == 0:
+                run Quest_Entry
+            elif fEvent198 == 1:
+                run Obj_Entry
+            elif fEvent198 == 2:
+                run Talk_Always
+    elif event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:003', false)
+        fEvent194 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent194 == 0:
+            run Quest_Entry
+        elif fEvent194 == 1:
+            run Obj_Entry
+        elif fEvent194 == 2:
+            run Talk_Always
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:002', false)
+        fEvent84 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent84 == 0:
+            run Quest_Entry
+        elif fEvent84 == 1:
+            run Obj_Entry
+        elif fEvent84 == 2:
+            run Talk_Always
+
+flow sub_grp!Event51:
+    if EventFlowSystemActor.HasKindItem('cKind', 'Fish', ''):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:102', true)
+        run SelllFish_daily
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:101', true)
+
+flow sub_Event87:
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:014', false)
+
+flow sub_Event140:
+    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
+
+flow sub_grp!Event131:
+    if MainNpc.BeyHaveThreeOrMoreSameFish():
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:204', false)
+        EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cFishToyExchange', false)
+        if EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 1):
+            EventFlowSystemActor.SetTagFromUIResult(2, 'cItemName')
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:205', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.MessageSuspend()
+                event_flags_system['cPlayer:BeyDaily_ReqObj'] = true
+                run Bey_ObjEntryCount
+                MainNpc.BeySetFishToy()
+                EventFlowSystemActor.SystemMailSend('cBey', 'MAIL_SNpc_bey_daily', 'cFastTomorrow', 'cReward', 'cBeyFish', false, 1)
+                MainNpc.SetOrderBeforeItem('cBeyFish')
+                EventFlowSystemActor.DeleteSelectUIItem(3)
+                MainNpc.SetDeliveryItem(4, false)
+                MainNpc.NpcDelivery('Keep', 14)
+                MainNpc.SmartPhone(0)
+                MainNpc.NpcStartAS('BeyTakePictures', false, False)
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:209', false)
+                MainNpc.SmartPhone(1)
+                MainNpc.NpcDelivery('Default', 19)
+                if event_flags_system['cPlayer:BeyDaily_TalkAlways1']:
+                    if event_flags_system['cPlayer:BeyDaily_TalkAlways2']:
+                        if (not event_flags_system['cPlayer:BeyDaily_TalkAlways3']) and (event_flags_system['cPlayer:ChyDaily_ObjEntry3']):
+                            event_flags_system['cPlayer:BeyDaily_TalkAlways3'] = true
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:213', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:213_01', false)
+                        else:
+                            run BeyDaily_TalkAfter_ObjEntry
+                    elif event_flags_system['cPlayer:ChyDaily_ObjEntry2']:
+                        event_flags_system['cPlayer:BeyDaily_TalkAlways2'] = true
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:212', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:212_01', false)
+                    else:
+                        run BeyDaily_TalkAfter_ObjEntry
+                elif event_flags_system['cPlayer:ChyDaily_ObjEntry1']:
+                    event_flags_system['cPlayer:BeyDaily_TalkAlways1'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:211', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:211_01', false)
+                else:
+                    run BeyDaily_TalkAfter_ObjEntry
+            else:
+                run sub_Event140
+        else:
+            run sub_Event140
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:203', false)
+

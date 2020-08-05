@@ -1,0 +1,16 @@
+flow Root:
+    MainNpc.OpenMessageWindow('TalkFtr/FTR_CampBed:001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.TurnOffForceMaxVolumeForAudioMusic()
+        EventFlowSystemActor.TurnOffTempAudioMusic()
+        EventFlowSystemActor.TurnOffEventPlazaDuckingJudge()
+        MainNpc.OpenMessageWindow('TalkFtr/FTR_CampBed:002', true)
+        EventFlowSystemActor.WaitFrame(10)
+        EventFlowSystemActor.SoundDuckingOn(28)
+        EventFlowSystemActor.SoundTriggerEmit('IntoDream', -1)
+        EventFlowSystemActor.CameraSetDemoParam('Keep', 'ToDreamTkk', 'ToDreamTkk', false, true, true, 0)
+        EventFlowSystemActor.WaitFrame(20)
+        EventFlowSystemActor.SystemRequestChangeStage('cDreamTkk', 'cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.05000000074505806)
+        EventFlowSystemActor.SoundDuckingOff(28)
+    return
+

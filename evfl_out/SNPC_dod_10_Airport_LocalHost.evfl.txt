@@ -1,0 +1,122 @@
+flow EntryPoint_LocalHost:
+    if EventFlowSystemActor.NetMode() in (0, 1):
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:111', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.MessageSuspend()
+            run SNPC_dod_AirPort::EntryPoint_PreProcedure
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.NetUpdateFriendList('cFriendOnly')
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+            EventFlowSystemActor.SaveSimpleSave('cAll')
+            EventFlowSystemActor.NetInitLocal('cInitLocal', false)
+            EventFlowSystemActor.MessageSuspend()
+            run SNPC_dod_AirPort::EntryPoint_PostProcedure
+            EventFlowSystemActor.MessageUnlockNext()
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:113', true)
+            fEvent11 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent11 == 0:
+                EventFlowSystemActor.NetCreateSessionVillage('cOpenLocal')
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:116_02', false)
+                    run SNPC_dod_AirPort::LandMakingRemove_Host
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenVillageGate(false)
+                    run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:116_01', false)
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenVillageGate(false)
+                    run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+            elif fEvent11 == 1:
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:114', true)
+                EventFlowSystemActor.UISoftwareKeyboardHandling('cPasswordLocal', true)
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    subflow_results[0] = 1
+                    EventFlowSystemActor.NetCreateSessionVillage('cLocalKey')
+                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:115_02', false)
+                        run SNPC_dod_AirPort::LandMakingRemove_Host
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
+                        EventFlowSystemActor.MessageSuspend()
+                        EventFlowSystemActor.OpenVillageGate(false)
+                        run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:115_01', false)
+                        EventFlowSystemActor.MessageSuspend()
+                        EventFlowSystemActor.OpenVillageGate(false)
+                        run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                else:
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+            elif fEvent11 == 2:
+                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+        else:
+            run SNPC_dod_AirPort::EntryPoint_Cancel
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:112', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.MessageSuspend()
+            run SNPC_dod_AirPort::EntryPoint_PreProcedure
+            EventFlowSystemActor.MessageLockNext(1)
+            EventFlowSystemActor.NetUpdateFriendList('cFriendOnly')
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+            EventFlowSystemActor.SaveSimpleSave('cAll')
+            EventFlowSystemActor.MessageSuspend()
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:002', false)
+            EventFlowSystemActor.NetShutdown('cNetShutdown', false)
+            EventFlowSystemActor.NetInitLocal('cInitLocal', false)
+            EventFlowSystemActor.MessageSuspend()
+            run SNPC_dod_AirPort::EntryPoint_PostProcedure
+            EventFlowSystemActor.MessageUnlockNext()
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:113', true)
+            fEvent11 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent11 == 0:
+                EventFlowSystemActor.NetCreateSessionVillage('cOpenLocal')
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:116_02', false)
+                    run SNPC_dod_AirPort::LandMakingRemove_Host
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenVillageGate(false)
+                    run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:116_01', false)
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenVillageGate(false)
+                    run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+            elif fEvent11 == 1:
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:114', true)
+                EventFlowSystemActor.UISoftwareKeyboardHandling('cPasswordLocal', true)
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    subflow_results[0] = 1
+                    EventFlowSystemActor.NetCreateSessionVillage('cLocalKey')
+                    EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:115_02', false)
+                        run SNPC_dod_AirPort::LandMakingRemove_Host
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
+                        EventFlowSystemActor.MessageSuspend()
+                        EventFlowSystemActor.OpenVillageGate(false)
+                        run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:115_01', false)
+                        EventFlowSystemActor.MessageSuspend()
+                        EventFlowSystemActor.OpenVillageGate(false)
+                        run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+                else:
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+            elif fEvent11 == 2:
+                EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+        else:
+            run SNPC_dod_AirPort::EntryPoint_Cancel
+    return
+

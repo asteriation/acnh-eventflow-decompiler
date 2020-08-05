@@ -1,0 +1,46 @@
+flow WakeUp_House_Reason:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:011', false)
+entrypoint Event20:
+    event_flags_npc['cNpcTemp:IsReCatnap'] = true
+entrypoint Event1:
+    event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow WakeUp_House_Normal:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:010', false)
+    run Event20
+    return
+
+flow Daytime_Field:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:012', false)
+    run Event20
+    return
+
+flow Daytime_House:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:013', false)
+    run Event20
+    return
+
+flow Midnight_Field:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:015', false)
+    run Event1
+    return
+
+flow Bedtime_House:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:001', false)
+    MainNpc.TurnNeck(10)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Napping:014', false)
+    run Event20
+    return
+

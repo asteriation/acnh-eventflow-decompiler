@@ -1,0 +1,13 @@
+Actor Ftr
+actions:
+- Ftr.FtrOpenMessageBromideMotto()
+- Ftr.FtrSetTagBromideInfo()
+- Ftr.FtrChangeSwitch(IsOn: bool)
+- Ftr.OpenMessageStampRackSpotName()
+- Ftr.OpenMessageStampRackSpotExplain()
+- Ftr.FtrTrashBoxRingSE()
+queries:
+- Ftr.IsTargetFtr(ItemUniqueId: int) -> bool
+- Ftr.IsMyPost() -> bool
+- Ftr.IsOnStarterFtrSwitch() -> bool
+

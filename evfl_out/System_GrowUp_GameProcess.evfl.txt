@@ -1,0 +1,106 @@
+flow Root:
+    run FirstCamperCheck
+    run ChkwithIslandEvaluation
+    run BuildMoveEndChk
+    run EasterFlagChk
+    return
+
+flow FirstCamperCheck:
+    if event_flags_system['cLand:CampSiteBuilt']:
+        if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
+            event_flags_system['cLand:CampFirstCamperVisit'] = false
+            event_flags_system['cLand:TanuportAmiiboCampUnlock'] = true
+        else:
+            event_flags_system['cLand:RcoMeetFirstVisitorRequest'] = true
+            event_flags_system['cLand:CampFirstCamperVisit'] = true
+    return
+
+flow FirstDay:
+    if not event_flags_system['cLand:ValidateVillageSave']:
+        run ImmQOutdoorPattern
+    return
+
+flow ImmQOutdoorPattern:
+    if EventFlowSystemActor.RandomChoice2(2) != 0:
+        event_flags_system['cLand:ImmQ_A_OutdoorPattern'] = true
+    if EventFlowSystemActor.RandomChoice2(2) != 0:
+        event_flags_system['cLand:ImmQ_B_OutdoorPattern'] = true
+    if EventFlowSystemActor.RandomChoice2(2) == 1:
+        event_flags_system['cLand:ImmQ_C_OutdoorPattern'] = true
+    return
+
+flow ChkLilyCounter:
+    if subflow_results[0] in (0, 1, 2, 3):
+        event_flags_system['cLand:FlwLilyGrowCounter'] = 0
+    elif event_flags_system['cLand:TkkFirstLive']:
+        event_flags_system['cLand:FlwLilyGrowCounter'] += 1
+    return
+
+flow BuildMoveEndChk:
+    if event_flags_system['cLand:RcoMoveReservedAnyone'] == 2:
+        event_flags_system['cLand:RcoMoveReservedKind'] = 0
+        event_flags_system['cLand:RcoMoveReservedAnyone'] = 0
+        EventFlowSystemActor.StructureMoveSaveIndex(2)
+    return
+
+flow MushroomProbabilityCounter:
+    fEvent21 = subflow_results[0]
+    if fEvent21 in (0, 1, 2):
+        event_flags_system['cLand:MushroomProbability'] = 0
+    elif fEvent21 == 3:
+        event_flags_system['cLand:MushroomProbability'] = 1
+    elif fEvent21 == 4:
+        event_flags_system['cLand:MushroomProbability'] = 2
+    return
+
+flow ChkwithIslandEvaluation:
+    run System_IslandEvaluationCheck::IslandEvaluationChk
+    run ChkLilyCounter
+    run MushroomProbabilityCounter
+    run NNpcContractCounter
+    return
+
+flow NNpcContractCounter:
+    if EventFlowSystemActor.NpcHouseNum('cConstructed') < 8:
+        event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+    elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
+        fEvent18 = subflow_results[3]
+        if fEvent18 == 0:
+            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+        elif fEvent18 == 1:
+            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 1
+            if subflow_results[2] == 0:
+                run sub_Event42
+        elif fEvent18 in (2, 3, 4):
+            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 3
+            fEvent19 = subflow_results[2]
+            if fEvent19 == 1:
+                event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 1
+            elif fEvent19 == 0:
+                run sub_Event42
+    else:
+        event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+    return
+
+flow Root_RewindDay:
+    run FirstCamperCheck_Rewind
+    run EasterFlagChk
+    return
+
+flow FirstCamperCheck_Rewind:
+    if (event_flags_system['cLand:CampSiteBuilt']) and (event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']):
+        event_flags_system['cLand:CampFirstCamperVisit'] = false
+        event_flags_system['cLand:TanuportAmiiboCampUnlock'] = true
+    return
+
+flow EasterFlagChk:
+    if EventFlowSystemActor.GlobalEventStart('Easter'):
+        EventFlowSystemActor.EventFlagOffAllLiver('cPlayer:PynTalkPreVisitDayFlag')
+        EventFlowSystemActor.EventFlagOffAllLiver('cPlayer:PynInventRecipeFlag')
+        EventFlowSystemActor.EventFlagResetAllLiver('cPlayer:EasterNnpcRecipeCount')
+        EventFlowSystemActor.EventFlagOffAllLiver('cPlayer:PAnnouncePreEaster')
+    return
+
+flow sub_Event42:
+    event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+

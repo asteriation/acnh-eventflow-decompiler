@@ -1,0 +1,10 @@
+flow Root:
+    event_flags_system['cPlayerTemp:SzaTalkInsideOffice'] = true
+    if not EventFlowSystemActor.IsMyVillage():
+        run SNPC_sza_00_Common::Root_ForVisitor
+    elif event_flags_system['cPlayer:SzaTaled1stTime']:
+        run SNPC_sza_00_Common::Root
+    else:
+        run SNPC_sza_01_Office_1_Entries::TalkFirst
+    return
+

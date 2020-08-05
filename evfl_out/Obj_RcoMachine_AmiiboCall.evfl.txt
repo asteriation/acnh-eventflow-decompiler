@@ -1,0 +1,44 @@
+flow Root:
+    fEvent26 = MainNpc.CheckNpcCharacterSize()
+    if fEvent26 == 0:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Small', '', false, false, false, 0)
+    elif fEvent26 == 1:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Normal', '', false, false, false, 0)
+    elif fEvent26 == 2:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Large', '', false, false, false, 0)
+    elif fEvent26 == 3:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'ExtraLarge', '', false, false, false, 0)
+    EventFlowSystemActor.SystemFaderRelease()
+    EventFlowSystemActor.WaitFrame(30)
+    if EventFlowSystemActor.CheckAmiiboNPC('cSNPC'):
+        MainNpc.SetReplaceSNPCMsgLabel()
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_Amiibo:001', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_Amiibo:002', false)
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.CameraReserveFirstStateCommand('Talk:AmiiboCall')
+        EventFlowSystemActor.SoundTriggerEmit('ReturnFromAmiiboPhone', -1)
+        EventFlowSystemActor.ReturnStage('', 'cNormalFader', 'cNormalFader', 'cWhite', 0.20000000298023224, 0.5)
+    elif EventFlowSystemActor.IsAmiiboNpcLiving():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:301', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:302', false)
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.CameraReserveFirstStateCommand('Talk:AmiiboCall')
+        EventFlowSystemActor.SoundTriggerEmit('ReturnFromAmiiboPhone', -1)
+        EventFlowSystemActor.ReturnStage('', 'cNormalFader', 'cNormalFader', 'cWhite', 0.20000000298023224, 0.5)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:401', false)
+        if EventFlowSystemActor.AmiiboNpcIsIncludedCamperList():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:102', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:202', false)
+        event_flags_system['cLand:AmiiboCampSiteCall'] = true
+        EventFlowSystemActor.MessageSuspend()
+        MainNpc.CharacterEmoticonAction('Smiling', '', 0, false, false)
+        EventFlowSystemActor.WaitFrame(60)
+        event_flags_system['cPlayer:CampInvite'] = true
+        EventFlowSystemActor.SetAmiiboCamperNPC()
+        EventFlowSystemActor.SoundTriggerEmit('ReturnFromAmiiboPhone', -1)
+        EventFlowSystemActor.CameraReserveFirstStateCommand('Talk:AmiiboCall')
+        EventFlowSystemActor.ReturnStage('', 'cNormalFader', 'cNormalFader', 'cWhite', 0.20000000298023224, 0.5)
+    return
+

@@ -1,0 +1,444 @@
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cPhotoStudioIsland'):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:000', false)
+    elif event_flags_system['cPlayer:Mobile1stBoot_SOS']:
+        EventFlowSystemActor.UISonkatsuPointAppear()
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:001', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event89:
+            EventFlowSystemActor.WaitFrame(10)
+            Player.SmartPhone(2)
+            run ChangeOperatorChk
+            if event_flags_system['cPlayer:AppUrgentEscapeTodayShiftMob']:
+                EventFlowSystemActor.SwapSpeaker('cOperatorRacket', true)
+            else:
+                EventFlowSystemActor.SwapSpeaker('cOperatorReset', true)
+            EventFlowSystemActor.BGMPropertyControl(26)
+            EventFlowSystemActor.SoundDuckingOn(38)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011', false)
+            if EventFlowSystemActor.NetIsDreaming():
+                run AvailableOnConnect
+            elif not EventFlowSystemActor.NetIsConnected():
+entrypoint Event61:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011_01', false)
+                if (not EventFlowSystemActor.SystemCheckNowStage('cField')) and (not EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland')):
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:013', false)
+                    run AppUrgentEscapeEnd
+                else:
+                    run SequenceStart
+            elif (EventFlowSystemActor.IsMyVillage()) and (not EventFlowSystemActor.NetHasVisitor()):
+                run AvailableOnConnect
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011_02', false)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012', false)
+                if EventFlowSystemActor.NetIsInviteFriend():
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012_01', false)
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012_02', false)
+entrypoint Event7:
+                EventFlowSystemActor.UISonkatsuPointDisappear()
+                if event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow']:
+                    EventFlowSystemActor.LifeSupportPointCountDown(100, false)
+                    event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow'] = false
+entrypoint Event6:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:010', false)
+                EventFlowSystemActor.WaitFrame(10)
+                event_flags_system['cPlayer:AppUrgentEscapeCallToday'] = true
+                EventFlowSystemActor.SwapSpeaker('cNone', true)
+                EventFlowSystemActor.BGMPropertyControl(58)
+                EventFlowSystemActor.SoundDuckingOff(38)
+        else:
+            EventFlowSystemActor.UISonkatsuPointDisappear()
+    else:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5091', false)
+        event_flags_system['cPlayer:Mobile1stBoot_SOS'] = true
+        EventFlowSystemActor.UISonkatsuPointAppear()
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:001', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event89:
+            EventFlowSystemActor.WaitFrame(10)
+            Player.SmartPhone(2)
+            run ChangeOperatorChk
+            if event_flags_system['cPlayer:AppUrgentEscapeTodayShiftMob']:
+                EventFlowSystemActor.SwapSpeaker('cOperatorRacket', true)
+            else:
+                EventFlowSystemActor.SwapSpeaker('cOperatorReset', true)
+            EventFlowSystemActor.BGMPropertyControl(26)
+            EventFlowSystemActor.SoundDuckingOn(38)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011', false)
+            if EventFlowSystemActor.NetIsDreaming():
+                run AvailableOnConnect
+            elif not EventFlowSystemActor.NetIsConnected():
+entrypoint Event61:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011_01', false)
+                if (not EventFlowSystemActor.SystemCheckNowStage('cField')) and (not EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland')):
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:013', false)
+                    run AppUrgentEscapeEnd
+                else:
+                    run SequenceStart
+            elif (EventFlowSystemActor.IsMyVillage()) and (not EventFlowSystemActor.NetHasVisitor()):
+                run AvailableOnConnect
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:011_02', false)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012', false)
+                if EventFlowSystemActor.NetIsInviteFriend():
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012_01', false)
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:012_02', false)
+entrypoint Event7:
+                EventFlowSystemActor.UISonkatsuPointDisappear()
+                if event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow']:
+                    EventFlowSystemActor.LifeSupportPointCountDown(100, false)
+                    event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow'] = false
+entrypoint Event6:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:010', false)
+                EventFlowSystemActor.WaitFrame(10)
+                event_flags_system['cPlayer:AppUrgentEscapeCallToday'] = true
+                EventFlowSystemActor.SwapSpeaker('cNone', true)
+                EventFlowSystemActor.BGMPropertyControl(58)
+                EventFlowSystemActor.SoundDuckingOff(38)
+        else:
+            EventFlowSystemActor.UISonkatsuPointDisappear()
+    return
+
+flow PlayerWarpTo:
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:051', false)
+    EventFlowSystemActor.BGMPropertyControl(28)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:052', true)
+    EventFlowSystemActor.SoundTriggerEmit('レンジャー！', -1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:053', true)
+    if EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01'):
+        EventFlowSystemActor.PlayerBaggageOperationForEvent('cRemove')
+        if event_flags_system['cPlayer:XctGerReward']:
+            EventFlowSystemActor.SetItemToPocket(12472, 1)
+        event_flags_system['cPlayer:UseNavigationMayDayTour'] = true
+        if not event_flags_system['cPlayer:AppUrgentEscapeUseToday']:
+            event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] += 1
+            event_flags_system['cPlayer:AppUrgentEscapeUseToday'] = true
+        event_flags_system['cPlayer:AppUrgentEscapeCallToday'] = true
+        EventFlowSystemActor.SystemRequestChangeStage('cMysteryTourIsland', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    else:
+        Player.PlayerChangeDemoState('cSharePlaySubHideUntilDemoEnd')
+        Player.PlayerWarp('WarpType')
+        EventFlowSystemActor.WaitFrame(30)
+        fork:
+            branch0:
+            branch1:
+                EventFlowSystemActor.FadeIn(true)
+                EventFlowSystemActor.WaitFrame(30)
+            branch2:
+                Player.PlayerLanding()
+        EventFlowSystemActor.BGMPropertyControl(27)
+        EventFlowSystemActor.SoundDuckingOff(38)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:061', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:062', false)
+        if EventFlowSystemActor.NetIsDreaming():
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:065', false)
+        elif event_flags_system['cPlayer:AppUrgentEscapeNoPayment']:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:064', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:063', false)
+        if not event_flags_system['cPlayer:AppUrgentEscapeUseToday']:
+            event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] += 1
+            event_flags_system['cPlayer:AppUrgentEscapeUseToday'] = true
+        run AppUrgentEscapeEndB
+    return
+
+flow SequenceStart:
+    if not event_flags_system['cPlayer:EmergencyEscapeExplain']:
+        event_flags_system['cPlayer:EmergencyEscapeExplain'] = true
+        if EventFlowSystemActor.NetIsDreaming():
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:021_04', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:021_01', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:022', false)
+        if EventFlowSystemActor.NetIsDreaming():
+            run InDreamSeq
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:023_01', false)
+            run sub_grp!Event81
+    elif event_flags_system['cPlayer:AppUrgentEscapeUseToday']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:021_03', false)
+        run sub_grp!Event220
+    elif EventFlowSystemActor.NetIsDreaming():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:021_05', false)
+        run ChkRacketIntro
+        run sub_grp!Event220
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:021_02', false)
+        run ChkRacketIntro
+        run sub_grp!Event220
+    return
+
+flow GotoEscapeSelect:
+    if EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01'):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:049', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp2:050_06', true)
+            run PlayerWarpTo
+        else:
+            run sub_Event177
+    elif EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland'):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:048', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp2:050_06', true)
+            run PlayerWarpTo
+        else:
+            run sub_Event177
+    elif EventFlowSystemActor.IsSharePlay(0):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:043', true)
+        run PlayerWarpTo
+    else:
+        run ChkEscapeTo
+        fEvent158 = subflow_results[0]
+        if fEvent158 == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:045', false)
+            fEvent165 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent165 == 0:
+                run EscapeToPlaza
+            elif fEvent165 == 1:
+                run EscapeToAirport
+            elif fEvent165 == 2:
+                run EscapeSelCansel
+        elif fEvent158 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_02', false)
+            run sub_grp!Event1
+        elif fEvent158 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_01', false)
+            run sub_grp!Event1
+        elif fEvent158 == 3:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:046', false)
+            fEvent32 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent32 == 0:
+                run EscapeToPlaza
+            elif fEvent32 == 1:
+                run EscapeToMarket
+            elif fEvent32 == 2:
+                run EscapeToAirport
+            elif fEvent32 == 3:
+                run EscapeSelCansel
+        elif fEvent158 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:047', false)
+            run sub_grp!Event38
+        elif fEvent158 == 5:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_03', false)
+            run sub_grp!Event38
+    return
+
+flow ReEntry:
+    run Event89
+    return
+
+flow AppUrgentEscapeEnd:
+    run Event7
+    return
+
+flow AppUrgentEscapeEndB:
+    run Event6
+    return
+
+flow EscapeSelCansel:
+    run Event18
+    return
+
+flow EscapeToMyhome:
+    if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_01', true)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_02', true)
+    run PlayerWarpTo
+    return
+
+flow EscapeToPlaza:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_03', true)
+    run PlayerWarpTo
+    return
+
+flow ChkRacketIntro:
+    if (not EventFlowSystemActor.IsSpeakerResetOrRacket()) and (not event_flags_system['cPlayer:AppUrgentEscapeCallToday']):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp2:2001', false)
+    return
+
+flow ChangeOperatorChk:
+    if (not event_flags_system['cPlayer:AppUrgentEscapeCallToday']) and (event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 5):
+        if event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 6:
+            if event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 7:
+                if event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 8:
+                    if event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 9:
+                        if event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] >= 10:
+                            if EventFlowSystemActor.PercentChoice(70):
+                                run ProcessOperatorChange
+                        elif EventFlowSystemActor.PercentChoice(50):
+                            run ProcessOperatorChange
+                    elif EventFlowSystemActor.PercentChoice(30):
+                        run ProcessOperatorChange
+                elif EventFlowSystemActor.PercentChoice(20):
+                    run ProcessOperatorChange
+            elif EventFlowSystemActor.PercentChoice(10):
+                run ProcessOperatorChange
+        elif EventFlowSystemActor.PercentChoice(5):
+            run ProcessOperatorChange
+    return
+
+flow ProcessOperatorChange:
+    event_flags_system['cPlayer:AppUrgentEscapeTodayShiftMob'] = true
+    event_flags_system['cPlayer:AppUrgentEscapeMobCounter'] = 0
+    return
+
+flow ChkEscapeTo:
+    fEvent146 = EventFlowSystemActor.ShopLevel()
+    if fEvent146 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if event_flags_system['cLand:MarketConstruction2']:
+            run sub_grp!Event150
+        else:
+            fEvent151 = EventFlowSystemActor.PlayerHouseLevel()
+            if fEvent151 == 0:
+                subflow_results[0] = 3
+            elif fEvent151 == 1:
+                subflow_results[0] = 4
+            elif fEvent151 in (2, 3, 4, 5, 6, 7, 8):
+                subflow_results[0] = 5
+    elif fEvent146 == InResServiceTent:
+        run sub_grp!Event150
+    return
+
+flow EscapeToAirport:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_07', true)
+    run PlayerWarpTo
+    return
+
+flow EscapeToMarket:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_04', true)
+    run PlayerWarpTo
+    return
+
+flow AvailableOnConnect:
+    run Event61
+    return
+
+flow InDreamSeq:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:049_02', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:049_03', true)
+        event_flags_system['cPlayer:AppUrgentEscapeNoPayment'] = false
+        EventFlowSystemActor.UISonkatsuPointDisappear()
+        run PlayerWarpTo
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:031_01', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:032_01', false)
+        run AppUrgentEscapeEnd
+    return
+
+flow sub_grp!Event81:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        if not EventFlowSystemActor.HasLifeSupportPoint('Now', 100):
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:042_01', false)
+            if event_flags_system['cPlayer:AppUrgentEscapeNoPayment']:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:042_03', false)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:042_02', false)
+            if EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01'):
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:049_01', true)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:042_04', true)
+            event_flags_system['cPlayer:AppUrgentEscapeNoPayment'] = true
+            EventFlowSystemActor.UISonkatsuPointDisappear()
+            if EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland'):
+                run PlayerWarpTo
+            elif EventFlowSystemActor.IsSharePlay(0):
+                run PlayerWarpTo
+            else:
+                fEvent91 = EventFlowSystemActor.RandomChoice4(4)
+                if fEvent91 == 0:
+                    run PlayerWarpTo
+                elif fEvent91 == 3:
+                    run PlayerWarpTo
+                elif fEvent91 == 1:
+                    if EventFlowSystemActor.PlayerHouseLevel() == 0:
+                        run PlayerWarpTo
+                    else:
+                        run PlayerWarpTo
+                elif fEvent91 == 2:
+                    fEvent189 = EventFlowSystemActor.ShopLevel()
+                    if fEvent189 == InResServiceTent:
+                        run PlayerWarpTo
+                    elif fEvent189 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                        if event_flags_system['cLand:MarketConstruction2']:
+                            run PlayerWarpTo
+                        else:
+                            run PlayerWarpTo
+        elif event_flags_system['cPlayer:AppUrgentEscapeNoPayment']:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:041_02', false)
+            EventFlowSystemActor.LifeSupportPointCountDown(-100, false)
+            event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow'] = true
+            event_flags_system['cPlayer:AppUrgentEscapeNoPayment'] = false
+            run GotoEscapeSelect
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:041_01', false)
+            EventFlowSystemActor.LifeSupportPointCountDown(-100, false)
+            event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow'] = true
+            event_flags_system['cPlayer:AppUrgentEscapeNoPayment'] = false
+            run GotoEscapeSelect
+    elif event_flags_system['cPlayer:AppUrgentEscapeNoPayment']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:031_02', false)
+        if (not EventFlowSystemActor.HasLifeSupportPoint('Now', 100)) and (not event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow']):
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:032_02', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:032_01', false)
+        run AppUrgentEscapeEnd
+    else:
+entrypoint Event18:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:031_01', false)
+        if (not EventFlowSystemActor.HasLifeSupportPoint('Now', 100)) and (not event_flags_system['cPlayerTemp:AppUrgentEscapePaidMileNow']):
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:032_02', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:032_01', false)
+        run AppUrgentEscapeEnd
+
+flow sub_grp!Event220:
+    if EventFlowSystemActor.NetIsDreaming():
+        run InDreamSeq
+    elif event_flags_system['cPlayer:AppUrgentEscapeNoPayment']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:023_03', false)
+        run sub_grp!Event81
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:023_02', false)
+        run sub_grp!Event81
+
+flow sub_grp!Event38:
+    fEvent38 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent38 == 0:
+        run EscapeToMyhome
+    elif fEvent38 == 1:
+        run EscapeToPlaza
+    elif fEvent38 == 2:
+        run EscapeToMarket
+    elif fEvent38 == 3:
+        run EscapeToAirport
+    elif fEvent38 == 4:
+        run EscapeSelCansel
+
+flow sub_grp!Event1:
+    fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()
+    if fEvent1 == 0:
+        run EscapeToMyhome
+    elif fEvent1 == 1:
+        run EscapeToPlaza
+    elif fEvent1 == 2:
+        run EscapeToAirport
+    elif fEvent1 == 3:
+        run EscapeSelCansel
+
+flow sub_Event177:
+    run EscapeSelCansel
+
+flow sub_grp!Event150:
+    fEvent150 = EventFlowSystemActor.PlayerHouseLevel()
+    if fEvent150 == 0:
+        subflow_results[0] = 0
+    elif fEvent150 == 1:
+        subflow_results[0] = 1
+    elif fEvent150 in (2, 3, 4, 5, 6, 7, 8):
+        subflow_results[0] = 2
+

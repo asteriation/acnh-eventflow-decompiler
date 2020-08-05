@@ -1,0 +1,107 @@
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        fEvent13 = EventFlowSystemActor.EventCheck('FishingConvention')
+        if fEvent13 == 0:
+            run NNPC_BeforeEV
+        elif fEvent13 == 1:
+            run NNPC_OpenEV
+        elif fEvent13 == 2:
+            if EventFlowSystemActor.EnvHourCompare(19, -1, true, true) in (0, 1):
+                run NNPC_AfterEV
+    return
+
+flow NNPC_BeforeEV:
+    fEvent0 = EventFlowSystemActor.RandomChoice3(3)
+    if fEvent0 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:001', true)
+    elif fEvent0 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:002', true)
+    elif fEvent0 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:003', true)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow NNPC_OpenEV:
+    if event_flag_npc['cNpcMemory:GEventTalkProgressFlag']:
+        fEvent15 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+        if fEvent15 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:010', true)
+        elif fEvent15 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:011', true)
+        elif fEvent15 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:012', true)
+        elif fEvent15 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:013', true)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        event_flags_npc['cNpcMemory:GEventTalkProgressFlag'] = true
+        fEvent11 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+        if fEvent11 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:004', true)
+        elif fEvent11 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:005', true)
+        elif fEvent11 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:006', true)
+        elif fEvent11 == 3:
+            run Month_1.3
+        elif fEvent11 == 4:
+            run Month_1.4
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow NNPC_AfterEV:
+    if not event_flag_npc['cNpcMemory:GEventTalkAfterFlag']:
+        event_flags_npc['cNpcMemory:GEventTalkAfterFlag'] = true
+        fEvent7 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent7 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:008', true)
+        elif fEvent7 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:009', true)
+        elif fEvent7 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:007', true)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Month_1.3:
+    fEvent33 = EventFlowSystemActor.EnvMonth()
+    if fEvent33 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:104', false)
+    elif fEvent33 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:105', false)
+    elif fEvent33 == 6:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:106', false)
+    elif fEvent33 == 9:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:107', false)
+    return
+
+flow Month_1.4:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        run Northern_1.4
+    else:
+        run Southern_1.4
+    return
+
+flow Northern_1.4:
+    fEvent34 = EventFlowSystemActor.EnvMonth()
+    if fEvent34 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:201', false)
+    elif fEvent34 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:202', false)
+    elif fEvent34 == 6:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:203', false)
+    elif fEvent34 == 9:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:204', false)
+    return
+
+flow Southern_1.4:
+    fEvent45 = EventFlowSystemActor.EnvMonth()
+    if fEvent45 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:205', false)
+    elif fEvent45 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:206', false)
+    elif fEvent45 == 6:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:207', false)
+    elif fEvent45 == 9:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:208', false)
+    return
+

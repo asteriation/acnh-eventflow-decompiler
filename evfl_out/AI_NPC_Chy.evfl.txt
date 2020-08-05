@@ -1,0 +1,16 @@
+flow Root:
+    if (MainNpc.NpcCheckStateSelectTiming('cInit')) and (not EventFlowSystemActor.EventNpcSet('InsectConvention')):
+        MainNpc.NpcChangeAIState('cInvisible', 'SNPC_chy_event', 'Root', '', false, true)
+    else:
+        if event_flags_system['cLandTemp:CatchInsectFesQuestStart']:
+            MainNpc.NpcChangeAIState('cFes', 'SNPC_chy_event', 'Root', '', false, true)
+        else:
+            MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_chy_event', '', false, true, 30, 2, 0, 0, true, false, '', '')
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(8, true)
+    return
+

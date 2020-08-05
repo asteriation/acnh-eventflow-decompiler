@@ -1,0 +1,47 @@
+flow Root:
+    run SNPC_rcm::Check_ShopEnable
+    MainNpc.SetTwinsTag()
+    event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = true
+    MainNpc.NpcAISetting(9, true)
+    MainNpc.NpcAISetting(5, true)
+    Player.TurnBody(13, 0.0)
+    Player.PlayerWaitTurn()
+    if EventFlowSystemActor.IsMyVillage():
+        run SNPC_rcm_03_RenualOpen::Chk_RenualOpen_Talk
+        fEvent18 = subflow_results[1]
+        if fEvent18 == 0:
+            run ChkChestNormal
+        elif fEvent18 == 1:
+            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
+            event_flags_system['cPlayer:RcmTalkAboutCupboard'] = true
+            run sub_Event23
+        elif fEvent18 == 2:
+            run SNPC_rcm_00_In::Rcm_Market1_First
+            run sub_Event23
+        elif fEvent18 == 3:
+            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
+            event_flags_system['cPlayer:RcmTalkAboutCupboard'] = true
+            run sub_Event23
+        elif fEvent18 == 4:
+            run SNPC_rcm_00_In::Rcm_Market2_First
+            run sub_Event23
+        elif fEvent18 == 5:
+            run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
+            run sub_Event23
+    else:
+entrypoint Event0:
+        run SNPC_rcm_00_Common::Rcm_OpenShoppingUI
+        run SNPC_rcm::Rcm_SeqClose
+    return
+
+flow ChkChestNormal:
+    run Event0
+    return
+
+flow Root_Init:
+    run SNPC_rcm::EntrySubCast
+    return
+
+flow sub_Event23:
+    run SNPC_rcm::Rcm_SeqClose
+

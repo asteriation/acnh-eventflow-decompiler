@@ -1,0 +1,430 @@
+Actor MainNpc
+actions:
+- MainNpc.NpcChangeTurnDefaultState(StateName: str, SubEntryName: str, TalkEntryPointName: str, TalkEventFlowName: str, IsChangePreState: bool, IsChangeSameState: bool, ArgFlag0: bool, ArgInt0: int, ArgFloat0: any, ArgStr1: str)
+- MainNpc.NpcSetTalkDistance(Distance: float)
+- MainNpc.NpcAISetting(SettingType: int, Flag: bool)
+- MainNpc.NpcChangeAIState(StateName: str, TalkEventFlowName: str, TalkEntryPointName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool)
+- MainNpc.NpcDisableServiceMotion()
+- MainNpc.NpcChangeConversationPretenseState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int, ArgStr0: str)
+- MainNpc.NpcRegistAIBlackBoard(Key: str, Value: int)
+- MainNpc.NpcSetAIBlackBoard(Key: str, Value: int)
+- MainNpc.NpcAISetRequestSpeakFunc(SpeakType: str, IsPlayingWithOther: bool)
+- MainNpc.NpcChangeSpNpcTurnState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int, ArgInt1: int, ArgInt2: int, ArgInt3: int, ArgFlag0: bool, ArgFlag1: bool, ArgStr0: str, ArgStr1: str)
+- MainNpc.NpcChangeBlockWanderState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgFlag0: bool, ArgInt0: int, ArgInt1: int, ArgInt2: int, ArgInt3: int)
+- MainNpc.SetSpecialPos(SetPosType: str)
+- MainNpc.NpcChangeInvisibleState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int)
+- MainNpc.SetNpcSpeakFlow(EntryName: str, FlowName: str)
+- MainNpc.NpcAIDefaultSetting(ClearPreset: int)
+- MainNpc.SetIsStartNeedActivity(UpdateRequest: str)
+- MainNpc.NpcChangeWaitState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: any, ArgFlag0: bool, ArgStr0: str)
+- MainNpc.EventFlagNpcOff(AccessKey: str)
+- MainNpc.NpcChangeSpVisitorTurnState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int, ArgInt1: int, ArgInt2: int, ArgInt3: int, ArgFlag0: bool, ArgFlag1: bool, ArgStr0: str, ArgStr1: str)
+- MainNpc.NpcChangeHeadCtrlMode(HeadCtrlMode: str, IsUseTiredLookAt: bool)
+- MainNpc.SetSightRange(Distance: int, Angle: int)
+- MainNpc.NpcAISetPosByRail(RailID: int, PointIdx: int, SetAngle: float, IsSetAngle: bool)
+- MainNpc.SetDefaultWaitAs(NpcWaitAsType: str)
+- MainNpc.GulFreeAction(GulActionType: str)
+- MainNpc.NpcAISetExitStrc(Reaction: str, TriggerType: str, Frame: int)
+- MainNpc.SelectFreeCFurnitureFurniture(SelectType: int)
+- MainNpc.NpcAITalkCastSetting(SetupKey: str)
+- MainNpc.SetNpcFeel(Feel: str, Second: int)
+- MainNpc.SetNpcTalkFlowName(EventFlowName: str, EntryPointName: str)
+- MainNpc.SetSurpriseMoveSetting()
+- MainNpc.NpcSetHitTimer(Timer: int)
+- MainNpc.NpcClearHitParam()
+- MainNpc.NpcBalloonRequest(AppearType: str, MessageID: str, XLinkAction: str, DispFrame: int)
+- MainNpc.NpcChangeGoToDestinationState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int, ArgInt1: any, ArgInt2: any)
+- MainNpc.NpcChangeChangeHandToolState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, HandToolItem: int)
+- MainNpc.EventFlagNpcOn(AccessKey: str)
+- MainNpc.NpcChangeOwlWaitState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgStr0: str, ArgFlag0: bool, ArgInt0: int)
+- MainNpc.NpcChangeOwlPostTalkState(StateName: str, TalkEntryPointName: str, TalkEventFlowName: str, SubEntryName: str, IsChangeSameState: bool, IsChangePreState: bool, ArgInt0: int)
+- MainNpc.NpcAddBlackBoard(Key: str, AddValue: int)
+- MainNpc.NpcChangeAIStateCstm(TalkEventFlowName: str, TalkEntryPointName: str, CstmType: int, ExtendParam: str)
+- MainNpc.NpcAISetPosByNextInfo(NextGoTo: str, OffsetX: int, OffsetZ: int)
+- MainNpc.ServiceMotionControl(CanServiceMotion: bool)
+- MainNpc.NpcAISetCheckRobFunc(TalkEventFlowName: str, TalkEntryPointName: str, AIEntryPointName: str, CheckRobType: str, IsUnregist: bool, RobContinue: bool)
+- MainNpc.SystemSetInviteQuestEnterTime()
+- MainNpc.SystemSetInviteQuestNpcEnterFlag()
+- MainNpc.NpcAISetPos(SetAngle: float, SetPosX: float, SetPosZ: float, IsUseCreateOffset: bool)
+- MainNpc.NpcReservrForErase()
+- MainNpc.NpcAISetLookIKParamKey(ParamKey: str)
+- MainNpc.StopLiveMusicShufflePlay()
+- MainNpc.NpcAISetStandupBeforeTalk()
+- MainNpc.SetDeliveryItemAtRandom(ItemUniqueID: int, ApplyToSave: bool, ItemRemakeDecideType: str, RemakePatternIndex: int)
+- MainNpc.NpcDelivery(Option: str, Command: int)
+- MainNpc.ShopBuyDone(UseTailorTicket: bool, Set5: bool)
+- MainNpc.SetDeliveryItem(SetItemTarget: int, ApplyToSave: bool)
+- MainNpc.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- MainNpc.SetNpcName(ID: int, NpcNameType: int)
+- MainNpc.NpcAITalkSubCastEntry(CastID: int, FindLabel: str)
+- MainNpc.RequestSimple(AsCommand: str, WaitFinish: bool)
+- MainNpc.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- MainNpc.CancelTodayVisitorNpc()
+- MainNpc.NpcCopyPhrase()
+- MainNpc.TurnBody(TurnTarget: int, TurnAngle: float)
+- MainNpc.TurnNeck(TurnTarget: int)
+- MainNpc.EmoticonTalkMessage()
+- MainNpc.NpcSelectMessage(StartType0: str, StartType1: str, StartType2: str, StartType3: str, MessageID0: str, MessageID1: str, MessageID2: str, MessageID3: str)
+- MainNpc.SetApproachTalkItem(SetType: int)
+- MainNpc.SetItemName(ID: int, ItemTarget: int, TagType: int)
+- MainNpc.RegistToReleaseItemList(Route: int)
+- MainNpc.NpcSetExchangeMoney(EntryVariableKeyInt_ItemPrice: str, EntryVariableKeyBool_Reverse: str, AddType: str, PriceType: str)
+- MainNpc.SetItemToNpcStockList(NpcStockTarget: int, GetRoute: int)
+- MainNpc.SetNpcMoveoutStopInfo(MoveOutStatus: int)
+- MainNpc.SetPlayerName(PlayerNameType: int)
+- MainNpc.NpcSetRewardRecipe(ItemUniqueId: int, DIYNpcItem: bool)
+- MainNpc.SetEasterApproachVillagerIndex(ApproachType: int)
+- MainNpc.NpcDecideRewardByCondition(Price: int, ItemGroup: int, GreatorEqual: bool, NotCollect: bool)
+- MainNpc.SetIslandReputationApproachVillagerIndex(ApproachType: int)
+- MainNpc.NpcMailSend(FileIndex: str, Present: str, LabelIndex: int, Route: str, TagType: str)
+- MainNpc.WrapDeliveryItem()
+- MainNpc.NpcSelectFreeTalk(StartType0: str, StartType1: str, StartType2: str, StartType3: str, MessageID0: str, MessageID1: str, MessageID2: str, MessageID3: str, IsCheckAttr: bool)
+- MainNpc.NpcOpenFreeMessage(OpenMessageType: str)
+- MainNpc.SetClothesXItemsTag(MessageType: int)
+- MainNpc.NpcDecideSelectSellBuyPrice(BuyPriceType: str)
+- MainNpc.NpcAddFriendship(AddValue: int)
+- MainNpc.SetPriceCalcItem(ItemType: int)
+- MainNpc.EventFlagNpcSet(AccessKey: str, SetNum: int)
+- MainNpc.SelectFreeBFurnitureFurniture()
+- MainNpc.SetHandleNameTag(ID: int)
+- MainNpc.DecideHandleNameMemory(SearchTarget: int)
+- MainNpc.NpcOpenRumorMessage()
+- MainNpc.DecideRumorPlayer(SelectPlayerType: int)
+- MainNpc.SetRumorDSkipInfo()
+- MainNpc.EventFlagNpcAdd(AccessKey: str, AddNum: int)
+- MainNpc.DecideFreeIType()
+- MainNpc.DecideFreeIReward()
+- MainNpc.NpcDecideGeneralQuestReward(RewardTypeSub: int, RewardType: int)
+- MainNpc.NpcMailSendRandom(FileIndex: str, LabelIndexBegin: int, LabelIndexEnd: int, TagType: str, Present: str, Route: str)
+- MainNpc.NpcPlayReport(NpcPlayReportKind: str, Num0: int)
+- MainNpc.SetDeliveryItemApplySave()
+- MainNpc.SetBirthdayPresentFlag()
+- MainNpc.DecideEventReward(RewardType: str)
+- MainNpc.NpcWearNewYearHat()
+- MainNpc.NpcDecideVisitPresent(RewardType: int, RewardTypeSub: int)
+- MainNpc.QuestStartOpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool, IsEnd: bool)
+- MainNpc.NpcQuestControl(Next: str)
+- MainNpc.NpcDecideCatchRequestItem()
+- MainNpc.SetDeliveryQuestInfo()
+- MainNpc.NpcSetShowFlag()
+- MainNpc.SetDeliveryClothToChange(ClothType: int)
+- MainNpc.NpcQuestFlagOn(QuestFlag: str)
+- MainNpc.SetDeliveryClothInfo(ClothType: int)
+- MainNpc.NpcQuestFlagOff(QuestFlag: str)
+- MainNpc.UpdateNpcUsuallyTops(Target: str)
+- MainNpc.SetDeliveryQuizChoice()
+- MainNpc.NpcDecideDeliveryQuestReward(RewardTypeSub: int, RewardType: int)
+- MainNpc.SetDeliveryCategoryTag()
+- MainNpc.NpcSetQuestRewardToPlayerBaggage(SetType: str)
+- MainNpc.NpcTreasureQuestSetting()
+- MainNpc.NpcChangeHandTool(IsImmediately: bool, SpecificToolKindString: str, HandToolItemID: int)
+- MainNpc.NpcTreasureToDust()
+- MainNpc.NpcSetReactionType(ReactionType: str)
+- MainNpc.NpcSetLastLandWord()
+- MainNpc.NpcPastDaysFromLastTalkDateToTag()
+- MainNpc.NpcSetFeelSource(FeelSource: int)
+- MainNpc.NpcSetFeelSourceActorName()
+- MainNpc.NpcFixedInducement()
+- MainNpc.ClearInduceFailRelationFlag()
+- MainNpc.NpcSetMoveLandWord()
+- MainNpc.MessageSuspend()
+- MainNpc.NpcOpenFacilityMessage()
+- MainNpc.SetItemColorName(ID: int, TargetItem: int)
+- MainNpc.SetMoneyApplySave()
+- MainNpc.NpcDecideRewardFloorWall(RewardType: int, RewardTypeSub: int)
+- MainNpc.RequestNpcSubHandToolAction(SubHandToolAction: str)
+- MainNpc.SetInvitePlayerName()
+- MainNpc.MoveIntoLandForSale()
+- MainNpc.SaveCampNpcQuestFtr()
+- MainNpc.NpcSetTalkManualChoice()
+- MainNpc.SetSettlerQuestInduceNpc()
+- MainNpc.SetReplaceSNPCMsgLabel()
+- MainNpc.ShopSellCalc(EntryVariableKeyInt_SellTotal: str, IsBox: bool, Rate: float, ExpensivePurchase: bool)
+- MainNpc.BeySetFishToy()
+- MainNpc.SetOrderBeforeItem(ItemType: str)
+- MainNpc.NpcDecideOrderBeforeItem(ItemType: str)
+- MainNpc.SmartPhone(ActionType: int)
+- MainNpc.NpcStartAS(ASType: str, IsWaitEnd: bool, IsContinueEmot: any)
+- MainNpc.ShopSellDone(Rate: float, IsBox: bool)
+- MainNpc.InsectFishBoxSellCalc(EntryVariableKeyInt_SellTotal: str, Rate: float)
+- MainNpc.InsectFishBoxSellDone(Rate: float)
+- MainNpc.ChmFreeAction(ChmActionType: str)
+- MainNpc.SetEventRewardToPlayerBaggage(SetType: str)
+- MainNpc.BoaFirstTagSet(Param0: int)
+- MainNpc.BoaSecondTagSet(Param0: int, Param1: int)
+- MainNpc.BoaBuyDone()
+- MainNpc.ChySetInsectToy()
+- MainNpc.CmlTagSet(Param0: int, Param1: int, Param2: int)
+- MainNpc.CmlSelectWallFloor(CmlItemKind: str)
+- MainNpc.CmlBuyDone(Size: int)
+- MainNpc.NpcWaitTurn()
+- MainNpc.NpcRequestAction(ActionIdx: int)
+- MainNpc.FoxItemCheck()
+- MainNpc.FoxSetBuyItem()
+- MainNpc.FoxSoldOutTagVisible()
+- MainNpc.ShopCheckItemSet(BlackBoardKey: str, ShopType: str)
+- MainNpc.NpcChangeNameStatus(NameStatus: int)
+- MainNpc.HgcSetOutfit()
+- MainNpc.HgcThemeMessage()
+- MainNpc.HghFreeAction(HghActionType: str)
+- MainNpc.CameraForWallHangingMyDesign()
+- MainNpc.TalkCamera(IsInterpolate: bool, Option: int)
+- MainNpc.HghRevertToTailorDefault()
+- MainNpc.HghSetTagMannequinItem()
+- MainNpc.HghSetMannequinSelectItem(Select: int)
+- MainNpc.OwlOpenItemMessage()
+- MainNpc.OwlDinosaurTagSet()
+- MainNpc.OwlDonationDone(EntryVariableKeyBool_MultiComplete: str, EntryVariableKeyInt_CompleteRoomType: str)
+- MainNpc.OwlFossilAppraise()
+- MainNpc.DecideEventRewardDIYRecipe(UnlockType: str)
+- MainNpc.SetKabuka()
+- MainNpc.SetTwinsTag()
+- MainNpc.ResetNpcSchedule()
+- MainNpc.SetCeremonyChoice()
+- MainNpc.SetBridgeSlopeKitToPlayerBaggage(ItemType: int)
+- MainNpc.NpcRailMove(RailID: int, PointA: int, PointB: int, MoveType: int, IsReverse: bool, IsWarp: bool)
+- MainNpc.NpcMoveToPlayer()
+- MainNpc.RcoStandUpChair()
+- MainNpc.SmartPhoneSE(XLinkKey: str, ActionType: int)
+- MainNpc.CountdownRctManualChoice()
+- MainNpc.RctSetNewYearHat(SelectIndex: int)
+- MainNpc.SeoReaction(ReactionType: str)
+- MainNpc.SeoMoveCameraOut()
+- MainNpc.SeoWarpBuoyOut()
+- MainNpc.NpcVoiceEchoOn()
+- MainNpc.NpcVoiceEchoOff()
+- MainNpc.SzaAchievementChangeSymbol(ChangeSymbolType: str)
+- MainNpc.SzaUgcReset(ResetNpcUgcType: str)
+- MainNpc.SzaPlayMelody()
+- MainNpc.TkkRequestSongSet(SelectSongMethod: str, SelectFeelType: str)
+- MainNpc.TkkFreeAction(TkkActionType: str)
+- MainNpc.NpcSetPlayerProfileComment()
+- MainNpc.NpcRumorDecidePlayer(RumorPlayerSelectType: str)
+- MainNpc.NpcRumorDecideTopic(TopicSelectType: str)
+- MainNpc.NpcRumorOpenMessage(MessageBaseLabel: str, RumorMessageType: str)
+- MainNpc.NpcRumorTagSet()
+- MainNpc.NpcRumorResetLastDenyTime()
+- MainNpc.NpcRumorSaveAnswer()
+- MainNpc.NpcGstChange(CurrentType: int)
+- MainNpc.GstDecideReward(NotCollect: bool, ItemGroup: any, PriceBottom: int, PriceTop: int)
+- MainNpc.PynSetExchangeItem(ItemUniqueId: int)
+- MainNpc.PynAddExchangeItem()
+- MainNpc.PynDeleteTargetExchangeEgg()
+- MainNpc.PynSetEggExchangeRate(ExchangeNum: int)
+- MainNpc.PynCalcExchangeEggNum()
+- MainNpc.NpcMoveDirection(Distance: float, Angle: float, IsUseFollower: bool, MoveType: int)
+- MainNpc.NpcSaveNickname(From: str)
+- MainNpc.NpcSetNicknameToTag(From: str)
+- MainNpc.SloTagSet(EntryVariableKeyInt_EachWeedPrice: str, EntryVariableKeyInt_TotalWeedPrice: str, EntryVariableKeyInt_WeedNum: str, Param0: int, Param1: int, Param2: int)
+- MainNpc.NpcEnter(NextInfoKey: str, Distance: int)
+- MainNpc.LookAtPos(LookAtType: int, PosX: float, PosY: float, PosZ: float)
+- MainNpc.Pinata(ActionType: int)
+- MainNpc.ChangeNpcPlace(NpcPlace: str)
+- MainNpc.UseCracker()
+- MainNpc.EquipCracker()
+- MainNpc.WarpPlayerBirthdayHouse(EntryVariableKeyFloat_TargetX: str, EntryVariableKeyFloat_TargetZ: str, EntryVariableKeyFloat_MiddleTargetX: str, EntryVariableKeyFloat_MiddleTargetZ: str)
+- MainNpc.NpcEnterDoor(HoldOpen: bool)
+- MainNpc.NpcPinataCheer()
+- MainNpc.SetNumCupCake(NumCupCake: int)
+- MainNpc.CloseUmbrella()
+- MainNpc.PlayerBirthdayWarpNpcForCandleBlow()
+- MainNpc.TkkLive()
+- MainNpc.TkkLiveEnter()
+- MainNpc.TkkLiveExit()
+- MainNpc.TkkLiveSyncPlayerAction()
+queries:
+- MainNpc.EventRewardItem(ItemUniqueID: int) -> bool
+- MainNpc.NpcCheckStateSelectTiming(AISelectorTiming: str) -> bool
+- MainNpc.NpcBlackBoard(Key: str, Border: int) -> bool
+- MainNpc.IsNpcPlayer() -> bool
+- MainNpc.FacilityNpcState() -> int3
+- MainNpc.EventFlagNpcBool(AccessKey: str) -> bool
+- MainNpc.IsTargetNpcHouse() -> bool
+- MainNpc.CanMoveUnit(IsExpandArea: bool) -> bool
+- MainNpc.NpcIsInvisible() -> bool
+- MainNpc.IsSurpriseVisitNpc() -> bool
+- MainNpc.NpcIsQuestClient(QuestType: str, CheckPlayer: bool, IncludeFinish: bool) -> bool
+- MainNpc.NpcBirthdayCast() -> int5
+- MainNpc.NpcHasFreeMessage(QueryMessageType: str) -> bool
+- MainNpc.IsInTheActOfDIY() -> bool
+- MainNpc.ToCatnap() -> bool
+- MainNpc.DevideCountDownState() -> int9
+- MainNpc.IsVisitOtherNpc() -> bool
+- MainNpc.InDIYArea() -> bool
+- MainNpc.CheckNowNpcFeel() -> int5
+- MainNpc.ToCatnapAgain() -> bool
+- MainNpc.NpcHitNum(Border: int) -> bool
+- MainNpc.NpcIsFleaHolder() -> bool
+- MainNpc.NpcIsHitByNet() -> bool
+- MainNpc.CheckCurrentNpcAIState(StateName: str) -> bool
+- MainNpc.NpcMoveOutState() -> int5
+- MainNpc.CheckNpcAIFlag(AIFlag: str) -> bool
+- MainNpc.IsWarningInsect() -> int3
+- MainNpc.IsApproachAllowed() -> bool
+- MainNpc.NpcCanStartApproach() -> bool
+- MainNpc.EventFlagNpcInt(AccessKey: str, FlagCheckType: int, Border: int) -> bool
+- MainNpc.LookToSky() -> bool
+- MainNpc.CheckNpcTool() -> int6
+- MainNpc.IsInEventPlazaArea(CountdownBoard: bool) -> bool
+- MainNpc.NpcIsEquipedHandTool(ToolType: int) -> bool
+- MainNpc.CountdownTalkPrevState() -> int4
+- MainNpc.EmoticonCanGet() -> bool
+- MainNpc.NpcAIIsArriveDestination() -> int2
+- MainNpc.NpcIsSitting() -> int6
+- MainNpc.NpcNowPosture() -> int4
+- MainNpc.DevideFireWorksEventState() -> int6
+- MainNpc.FireworksTalkPrevState() -> int4
+- MainNpc.PlayerFind() -> bool
+- MainNpc.NpcIsTreasureHuntLimitOver2() -> bool
+- MainNpc.NpcIsTreasureFind() -> bool
+- MainNpc.IsQuestLimitOver() -> bool
+- MainNpc.SystemIsVisitQuestPlayerEntered() -> bool
+- MainNpc.SystemVisitQuestKind(VisitType: str) -> bool
+- MainNpc.SystemIsInviteQuestNpcEntered() -> bool
+- MainNpc.HghFreeQuery2(HghQueryType: str) -> bool
+- MainNpc.NpcIsCreateAngle() -> bool
+- MainNpc.TkkFreeQuery2(TkkQueryType: str) -> bool
+- MainNpc.IsExistMoveNpc(MoveOut: bool) -> bool
+- MainNpc.EnvPublicAnnouncement(EnvAnnounceQueryType: str) -> bool
+- MainNpc.IsSamePhrase() -> bool
+- MainNpc.NpcCanStartQuest() -> bool
+- MainNpc.NpcHaveQuestType(IncludeFinish: str) -> int8
+- MainNpc.CheckNpcFavorLevel() -> int6
+- MainNpc.NpcCheckPastDays(AccessKey: str, Border: int) -> bool
+- MainNpc.HasNpcWantedItem() -> bool
+- MainNpc.NpcCanStartApBNickname() -> int3
+- MainNpc.CheckNpcApproachType() -> bool
+- MainNpc.NpcCheckSameWordFromSwkbd(CheckType: str) -> bool
+- MainNpc.IsMovingConsultationPlayerNotLiving() -> bool
+- MainNpc.CheckNpcLook() -> int
+- MainNpc.IsFirewoksApproachNpc() -> bool
+- MainNpc.EnvWeatherNNpcTalkCustom() -> int7
+- MainNpc.CheckNpcActivity(Activity: str) -> bool
+- MainNpc.CheckNpcTalkType() -> bool
+- MainNpc.IsNnpcTent() -> bool
+- MainNpc.NpcIsExistOtherNpc() -> bool
+- MainNpc.HasPlayerActivitySinceMoveIn(CheckPlayerType: int) -> bool
+- MainNpc.CanSelectRumorMessage(RumorType: int) -> bool
+- MainNpc.NpcLivingDays(CheckDays: int) -> bool
+- MainNpc.HasHandleNameMemory() -> bool
+- MainNpc.HandleNameTalkDayInterval(Days: int, CheckTarget: int) -> bool
+- MainNpc.NpcBirthType(BirthType: str) -> bool
+- MainNpc.NpcHasAcquaintanceshipRumorPlayer() -> bool
+- MainNpc.IsFriendRumorPlayer() -> bool
+- MainNpc.IsRumorActionDaysAgo() -> int4
+- MainNpc.NpcIsRewardDecided() -> bool
+- MainNpc.IsSameBirthdayNpc() -> bool
+- MainNpc.TodayIsNpcBirthday() -> bool
+- MainNpc.NpcIsEquipItem(EquipRequireType: str, ItemUniqueID1: int, ItemUniqueID2: int, ItemUniqueID3: int, ItemUniqueID4: int, ItemUniqueID5: int, ItemUniqueID6: int, ItemUniqueID7: int, ItemUniqueID8: int) -> bool
+- MainNpc.NpcCheckCatchQuestType() -> int4
+- MainNpc.NpcTreasureQuestDifficulty() -> int2
+- MainNpc.NpcIsQuestFlagOn(QuestFlag: str) -> bool
+- MainNpc.NpcCatchQuestFishNormalType() -> int2
+- MainNpc.NpcCatchQuestInsectNormalType() -> int7
+- MainNpc.IsSelectNpcRequestedItem() -> bool
+- MainNpc.NpcQuestReward() -> int3
+- MainNpc.NpcCatchQuestInsectType() -> int8
+- MainNpc.NpcCatchQuestFishAppearType() -> int5
+- MainNpc.DeliveryQuestType() -> int5
+- MainNpc.DeliveryItemIsFavor() -> bool
+- MainNpc.CheckClientNpcLook() -> int8
+- MainNpc.DeliveryOriginalIsReadyMade() -> bool
+- MainNpc.DeliveryIsSameClothAsNowWear() -> bool
+- MainNpc.IsBeforeClothFromPlayer() -> bool
+- MainNpc.IsDeliveryQuizRightAnswer() -> bool
+- MainNpc.NpcRewardType() -> int6
+- MainNpc.DeliveryQuestItemKind() -> int2
+- MainNpc.DeliveryQuestReceiveNpcLook() -> int8
+- MainNpc.HasDeliveryItem() -> bool
+- MainNpc.HasOpenedDeliveryItem() -> bool
+- MainNpc.NpcLostQuestType() -> int4
+- MainNpc.HasNpcRequestedItem() -> bool
+- MainNpc.NpcSickCuredBeforeYesterday() -> bool
+- MainNpc.NpcTreasureBurySuccess() -> bool
+- MainNpc.IsNpcDIYRecipeCollected() -> bool
+- MainNpc.IsEarlyLateReactionSituation() -> bool
+- MainNpc.NpcInducementType() -> int5
+- MainNpc.NpcIsInducementPlayer() -> bool
+- MainNpc.InducePlayerExist() -> bool
+- MainNpc.NpcIsMovingRoom() -> int3
+- MainNpc.SkyVariation() -> int6
+- MainNpc.NpcPastYMFromLastTalkDate() -> bool
+- MainNpc.NpcFeelSource() -> int3
+- MainNpc.IsFeelSourcePlayer() -> bool
+- MainNpc.IsDisableWorry() -> bool
+- MainNpc.IsInduceFailedReasonFixUp() -> bool
+- MainNpc.NpcInviteCheck(Type: int) -> bool
+- MainNpc.NpcCanStartReactQuestTalk() -> int4
+- MainNpc.NpcActivityType() -> int2
+- MainNpc.IsDeliveryQuestReceiver() -> bool
+- MainNpc.IsWatchItemDonated() -> bool
+- MainNpc.IsWatchItemDiveFish() -> bool
+- MainNpc.OwlIsDonation(DonationCheckItemType: str) -> bool
+- MainNpc.NpcIsAbleEquipSelectItem() -> bool
+- MainNpc.IsNpcPlayerRelativeItem() -> int5
+- MainNpc.IsFavoriteMusic(JudgeTarget: str) -> bool
+- MainNpc.NpcRace(Race: str) -> bool
+- MainNpc.CheckNpcMoveIn(MoveInCheckType: str) -> bool
+- MainNpc.CheckCamperNpcMovePoint() -> int4
+- MainNpc.HasCamperQuestItem() -> bool
+- MainNpc.IsSameNpcLiving() -> bool
+- MainNpc.CheckCamperNpcHandheldItem() -> int6
+- MainNpc.CanInduceNpc() -> bool
+- MainNpc.IsSettlerQuestInducedNpc() -> bool
+- MainNpc.ContinuousNpcTalkCount(TalkCount: int) -> bool
+- MainNpc.CheckNpcCharacterSize() -> int4
+- MainNpc.BeyHaveThreeOrMoreSameFish() -> bool
+- MainNpc.BeyDailyFishSize() -> int4
+- MainNpc.ChmFreeQuery2(ChmQueryType: str) -> bool
+- MainNpc.BoaCanSetKabu() -> int3
+- MainNpc.ChyHaveThreeOrMoreSameInsect() -> bool
+- MainNpc.ChyIfSpecialInsect() -> bool
+- MainNpc.ChyCheckSpecialInsect() -> int6
+- MainNpc.FoxIsSoldOut() -> bool
+- MainNpc.FoxCheckItemBuyPlayer() -> bool
+- MainNpc.FoxCheckItemBuyVillager() -> bool
+- MainNpc.FoxItemCheck() -> bool
+- MainNpc.ShopHasBellCount(Rate: float) -> bool
+- MainNpc.FoxBuyGalleryForThisIsland() -> bool
+- MainNpc.FoxBuySelectType() -> int2
+- MainNpc.GulFreeQuery2(GulQueryType: str) -> bool
+- MainNpc.HgcFashionCheckResult() -> int4
+- MainNpc.HgcFreeQuery2(HgcQueryType: str) -> bool
+- MainNpc.HgcPlayerDefaultOutfit() -> bool
+- MainNpc.HgcIsChangeOutfit() -> bool
+- MainNpc.HghMydesignOwner() -> int3
+- MainNpc.HghCoodinateItemNum() -> int6
+- MainNpc.CheckMannequinCamera() -> int2
+- MainNpc.OwlDonationItemType() -> int7
+- MainNpc.OwlDonationFossilIsParts() -> bool
+- MainNpc.OwlDonationFossilComplete() -> bool
+- MainNpc.OwlMuseumMultiComplete() -> bool
+- MainNpc.OwlMuseumCompleteRoomType() -> int7
+- MainNpc.OwlDonationFakeRate() -> int3
+- MainNpc.OwlDonationSameItem() -> bool
+- MainNpc.AppraiseFossilDonationRate() -> int3
+- MainNpc.NpcIsTalkedFromBehind() -> bool
+- MainNpc.RcmBuySelectType() -> int2
+- MainNpc.NpcLabel(NpcLabel: str) -> bool
+- MainNpc.SeoAppearSide() -> int2
+- MainNpc.SeoCanReturnSwim() -> bool
+- MainNpc.NpcHasPlayerProfileComment() -> bool
+- MainNpc.NpcRumorIsAnsweredTargetTopic() -> bool
+- MainNpc.NpcCheckMoveInBeforePlayer() -> bool
+- MainNpc.NpcRumorIsSelectedAllDeny() -> bool
+- MainNpc.NpcRumorCheckAllDenyProgressDays(ProgressDays: int) -> bool
+- MainNpc.NpcRumorIsAskedOwn() -> bool
+- MainNpc.NpcRumorIsEqualNpcChoice(RumorFavoriteChoiceTarget: any) -> int4
+- MainNpc.NpcRumorIsEqualPreviousChoice() -> bool
+- MainNpc.NpcRumorIsExistAnswerTopic() -> bool
+- MainNpc.PynCheckCraftItemNum(SetNum: int) -> bool
+- MainNpc.PynHaveExchangeItemEnough() -> bool
+- MainNpc.PynIsEnableToExchangeEgg() -> bool
+- MainNpc.NpcGreetTypeNegative() -> bool
+- MainNpc.SloNoneWeatherBush() -> bool
+- MainNpc.PinataResult() -> int3
+- MainNpc.TkkLiveType() -> int3
+- MainNpc.TkkQeruestMethodType() -> int3
+- MainNpc.TkkRequestFeeling() -> int5
+- MainNpc.CompareDayBirthdayLive() -> int3
+

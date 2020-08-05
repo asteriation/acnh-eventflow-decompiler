@@ -1,0 +1,17 @@
+flow Root:
+    EventFlowSystemActor.CameraSetDemoParam('Keep', 'cBirdView', '', false, false, false, 0)
+    event_flags_system['cPlayerTemp:PrologueArrivalTalked'] = true
+    event_flags_system['cPlayer:FirstPlayAfterPlayerMake'] = true
+    if event_flags_system['cLand:ValidateVillageSave']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue2_Arrival:003', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue2_Arrival:004', true)
+        EventFlowSystemActor.WaitFrame(20)
+        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+        EventFlowSystemActor.SetupActorPosition(3)
+        EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaPrologue', '', false, false, false, 0)
+        EventFlowSystemActor.SetNpcAIBlackBoardByLabel('isSpeak', 1, 'rco', 1)
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue2_Arrival:001', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue2_Arrival:002', true)
+    return
+

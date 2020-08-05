@@ -1,0 +1,30 @@
+flow Root:
+    if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+        fEvent11 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent11 == 4:
+            run NNPC_GEvent_Easter::Root
+        elif fEvent11 == 5:
+            run NNPC_GEvent_Fireworks::Root
+    else:
+        run Birthday_Judge
+        fEvent9 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent9 == 1:
+            run NNPC_GEvent_CatchFishFes::Root
+        elif fEvent9 == 2:
+            run NNPC_GEvent_CatchInsectFes::Root
+        elif fEvent9 == 3:
+            run NNPC_GEvent_Countdown::Root
+        elif fEvent9 == 4:
+            run NNPC_GEvent_Easter::Root
+        elif fEvent9 == 5:
+            run NNPC_GEvent_Fireworks::Root
+    return
+
+flow Birthday_Judge:
+    if (EventFlowSystemActor.MainPlayerIsBirthday(false)) and (EventFlowSystemActor.EnvHourCompare(0, -1, true, false) == 0):
+        run NNPC_GEvent_BirthdayP::Root
+    else:
+        if (EventFlowSystemActor.IsTheDayAfterTalkPlayerBithday()) and (EventFlowSystemActor.EnvHourCompare(0, -1, true, false) == 0):
+            run NNPC_GEvent_BirthdayP::Root_NextDay
+    return
+

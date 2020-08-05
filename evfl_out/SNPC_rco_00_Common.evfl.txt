@@ -1,0 +1,189 @@
+flow Root:
+    run Chk_RcoSel_DIY
+    if event_flags_system['cPlayer:RcoPaid1stCharge']:
+        fEvent149 = EventFlowSystemActor.OfficeLevel()
+        if fEvent149 in (ResServiceTent0, ResServiceTent1):
+            if subflow_results[15] == 0:
+                fEvent35 = subflow_results[0]
+                if fEvent35 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:201', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_WsMh
+                elif fEvent35 == 1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:202', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_DoMh
+                elif fEvent35 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:203', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentSel_3B
+                elif fEvent35 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:204', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentSel_5B_DoWsMh
+            else:
+                fEvent42 = subflow_results[0]
+                if fEvent42 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:205', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentCel_5B_WsCeMh
+                elif fEvent42 == 1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:206', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentCel_5B_DoCeMh
+                elif fEvent42 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:207', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentCel_4B_CeMh
+                elif fEvent42 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:208', false)
+                    run SNPC_rco_01_Tent_Selecor::RcoTentCel_6B_DoWsCeMh
+        elif fEvent149 == ResServiceBuilding:
+            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                if subflow_results[15] == 0:
+                    fEvent4 = subflow_results[0]
+                    if fEvent4 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:501', false)
+                        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_HintWs
+                    elif fEvent4 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:502', false)
+                        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B
+                else:
+                    fEvent20 = subflow_results[0]
+                    if fEvent20 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:503', false)
+                        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_6B_HintWsCe
+                    elif fEvent20 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:504', false)
+                        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_Ce
+            elif subflow_results[15] == 0:
+                fEvent54 = subflow_results[0]
+                if fEvent54 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:511', false)
+                    run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_HintWs
+                elif fEvent54 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:512', false)
+                    run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_3B_2P
+            else:
+                fEvent62 = subflow_results[0]
+                if fEvent62 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:513', false)
+                    run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_2P_HintWsCe
+                elif fEvent62 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:514', false)
+                    run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_Ce
+    elif subflow_results[15] == 0:
+        fEvent127 = subflow_results[0]
+        if fEvent127 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:101', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_WsMh
+        elif fEvent127 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:102', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_DoMh
+        elif fEvent127 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:103', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentSel_3B
+        elif fEvent127 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:104', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentSel_5B_DoWsMh
+    else:
+        fEvent185 = subflow_results[0]
+        if fEvent185 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:105', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentCel_5B_WsCeMh
+        elif fEvent185 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:106', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentCel_5B_DoCeMh
+        elif fEvent185 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:107', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentCel_4B_CeMh
+        elif fEvent185 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:108', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentCel_6B_DoWsCeMh
+    return
+
+flow Chk_RcoSel_DIY:
+    if event_flags_system['cPlayer:MainmenuRecipe']:
+        fEvent24 = EventFlowSystemActor.MuseumLevel()
+        if fEvent24 == BlathersNotMovedIn:
+            if event_flags_system['cPlayer:EnableDiyRemake']:
+                run Rco_SelChk_FinishRemakeWs
+            elif not event_flags_system['cPlayer:RcoEnableRemakeTrial']:
+entrypoint Event93:
+                if EventFlowSystemActor.MuseumDonationNumCheck(5):
+                    subflow_results[0] = 2
+                elif (not EventFlowSystemActor.HasKindItem('cKind', 'Insect', '')) and (not EventFlowSystemActor.HasKindItem('cKind', 'Fish', '')):
+                    subflow_results[0] = 2
+                else:
+                    run sub_grp!Event50
+            elif EventFlowSystemActor.MuseumDonationNumCheck(5):
+                subflow_results[0] = 0
+            elif (not EventFlowSystemActor.HasKindItem('cKind', 'Insect', '')) and (not EventFlowSystemActor.HasKindItem('cKind', 'Fish', '')):
+                subflow_results[0] = 0
+            else:
+                run sub_grp!Event52
+        elif fEvent24 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
+            if event_flags_system['cPlayer:EnableDiyRemake']:
+                subflow_results[0] = 2
+            elif event_flags_system['cPlayer:RcoEnableRemakeTrial']:
+                subflow_results[0] = 0
+            else:
+                subflow_results[0] = 2
+    else:
+        subflow_results[0] = 0
+    return
+
+flow Rco_Office_CmnSelAgain:
+    run Chk_RcoSel_DIY
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        if subflow_results[15] == 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:601', false)
+                run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_HintWs
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:602', false)
+                run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B
+        elif subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:603', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_6B_HintWsCe
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:604', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_Ce
+    elif event_flags_system['cPlayer:RcoPaid1stCharge']:
+        if subflow_results[15] == 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:601_01', false)
+                run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_HintWs
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:602_01', false)
+                run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_3B_2P
+        elif subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:603_01', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_2P_HintWsCe
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:604_01', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_Ce
+    elif subflow_results[15] == 0:
+        if subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:601_02', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_HintWs
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:602_02', false)
+            run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_3B_2P
+    elif subflow_results[0] == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:603_02', false)
+        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_5B_2P_HintWsCe
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:604_02', false)
+        run SNPC_rco_01_Office_Selecor::Rco_OfficeSel_4B_2P_Ce
+    return
+
+flow Rco_SelChk_FinishRemakeWs:
+    run Event93
+    return
+
+flow sub_grp!Event50:
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 2
+
+flow sub_grp!Event52:
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        subflow_results[0] = 3
+    else:
+        subflow_results[0] = 0
+

@@ -1,0 +1,169 @@
+flow Root:
+    run CheckTool
+    if event_flags_system['cPlayerTemp:CampInviteInProgress']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:203_01', true)
+        MainNpc.NpcChangeHandTool(false, 'cPutAway', 65534)
+        MainNpc.CharacterEmoticonAction('NpcShuffle', '', 0, true, false)
+        EventFlowSystemActor.WaitFrame(30)
+        if EventFlowSystemActor.RandomChoice2(2) == 0:
+            run Game01_Begin
+        else:
+            run Game02_Begin
+    else:
+        event_flags_system['cPlayerTemp:CampGameHitRare'] = false
+        if (not event_flags_system['cPlayer:CampGameGetRare']) and (EventFlowSystemActor.PercentChoice(50)):
+            event_flags_system['cPlayerTemp:CampGameHitRare'] = true
+            EventFlowSystemActor.SelectRewardItemCampGame('cVeryGood')
+        else:
+            EventFlowSystemActor.SelectRewardItemCampGame('cNormal')
+        MainNpc.SetItemName(0, 1, 0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:001', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:003', false)
+        elif EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:002', false)
+            event_flags_system['cPlayerTemp:CampGameStartFailed'] = false
+            MainNpc.NpcChangeHandTool(false, 'cPutAway', 65534)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:100', false)
+                    run Game01_Begin
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:200', false)
+                    run Game02_Begin
+            elif EventFlowSystemActor.RandomChoice2(2) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:004', false)
+                run Game01_Begin
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:004', false)
+                run Game02_Begin
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:008', false)
+            event_flags_system['cPlayerTemp:CampGameStartFailed'] = true
+    return
+
+flow Game01_Begin:
+    EventFlowSystemActor.SystemDecideFaceCard('cSelectType')
+    MainNpc.CharacterEmoticonAction('NpcHoldout', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.UIMiniGameHighAndLowHandling('cFaceCardStart')
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:101', false)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:005', false)
+    EventFlowSystemActor.UIMiniGameHighAndLowHandling('cFaceCardOpen')
+    if EventFlowSystemActor.SystemIsCorrectFaceCard():
+        EventFlowSystemActor.SoundTriggerEmit('Success_Level3', -1)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:102_01', false)
+entrypoint Event103:
+        if event_flags_system['cPlayerTemp:CampInviteInProgress']:
+            EventFlowSystemActor.UIMiniGameHighAndLowHandling('cGameEnd')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:206', true)
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(60)
+            EventFlowSystemActor.FadeIn(true)
+            if EventFlowSystemActor.NpcHouseNum('cSold') < 10:
+                run NNPC_Spot_Camp_Invite::CheckOffice_Move
+            else:
+                run NNPC_Spot_Camp_Invite::CheckOffice
+            event_flags_system['cPlayerTemp:CampInviteInProgress'] = false
+            run SetTool
+        else:
+            MainNpc.SetDeliveryItem(1, true)
+            event_flags_system['cPlayer:CampGameClear'] += 1
+            if event_flags_system['cPlayerTemp:CampGameHitRare']:
+                event_flags_system['cPlayer:CampGameGetRare'] = true
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:006_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:006_01', false)
+            EventFlowSystemActor.UIMiniGameHighAndLowHandling('cGameEnd')
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:007_01', false)
+            run SetTool
+    else:
+        EventFlowSystemActor.SoundTriggerEmit('Fail', -1)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:102_02', false)
+entrypoint Event104:
+        if event_flags_system['cPlayerTemp:CampInviteInProgress']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:204', false)
+            EventFlowSystemActor.UIMiniGameHighAndLowHandling('cGameEnd')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:205', false)
+            event_flags_system['cPlayerTemp:CampInviteInProgress'] = false
+            event_flags_system['cPlayerTemp:CampInviteRejected'] = true
+            run SetTool
+        else:
+            event_flags_system['cPlayer:CampGameClear'] += 1
+            EventFlowSystemActor.UIMiniGameHighAndLowHandling('cGameEnd')
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:006_03', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:007_03', false)
+            run SetTool
+    return
+
+flow Game02_Begin:
+    EventFlowSystemActor.SystemDecideFaceCard('cSelectColor')
+    MainNpc.CharacterEmoticonAction('NpcHoldout', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.UIMiniGameHighAndLowHandling('cFaceCardStart')
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:201', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:005', false)
+        EventFlowSystemActor.UIMiniGameHighAndLowHandling('cFaceCardOpen')
+        if EventFlowSystemActor.SystemIsCorrectFaceCard():
+            EventFlowSystemActor.SoundTriggerEmit('Success_Level3', -1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:202_01', false)
+            run Game_SucessEnd
+        else:
+            EventFlowSystemActor.SoundTriggerEmit('Fail', -1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:202_02', false)
+            run Game_FailEnd
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:005', false)
+        EventFlowSystemActor.UIMiniGameHighAndLowHandling('cFaceCardOpen')
+        if EventFlowSystemActor.SystemIsCorrectFaceCard():
+            EventFlowSystemActor.SoundTriggerEmit('Success_Level3', -1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:202_03', false)
+            run Game_SucessEnd
+        else:
+            EventFlowSystemActor.SoundTriggerEmit('Fail', -1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Game:202_04', false)
+            run Game_FailEnd
+    return
+
+flow Game_SucessEnd:
+    run Event103
+    return
+
+flow Game_FailEnd:
+    run Event104
+    return
+
+flow CheckTool:
+    fEvent28 = MainNpc.CheckCamperNpcHandheldItem()
+    if fEvent28 == 0:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 1
+    elif fEvent28 == 1:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 2
+    elif fEvent28 == 2:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 3
+    elif fEvent28 == 3:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 4
+    elif fEvent28 == 4:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 5
+    elif fEvent28 == 5:
+        event_flags_system['cPlayerTemp:CampSetTool'] = 6
+    return
+
+flow SetTool:
+    MainNpc.MessageSuspend()
+    if event_flags_system['cPlayerTemp:CampSetTool'] == 1:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 7756)
+    elif event_flags_system['cPlayerTemp:CampSetTool'] == 2:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 7397)
+    elif event_flags_system['cPlayerTemp:CampSetTool'] == 3:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 7398)
+    elif event_flags_system['cPlayerTemp:CampSetTool'] == 4:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 7399)
+    elif event_flags_system['cPlayerTemp:CampSetTool'] == 5:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 7669)
+    elif event_flags_system['cPlayerTemp:CampSetTool'] == 6:
+        MainNpc.NpcChangeHandTool(false, 'cNone', 4388)
+    return
+

@@ -1,0 +1,4 @@
+flow Root:
+    EventFlowSystemActor.UIBoardHandling()
+    return
+

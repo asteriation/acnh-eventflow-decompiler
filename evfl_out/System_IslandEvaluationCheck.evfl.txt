@@ -1,0 +1,172 @@
+flow ChkNaturalRank:
+    if EventFlowSystemActor.VillageScoreNatural < 200.0:
+        subflow_results[2] = 0
+    elif EventFlowSystemActor.VillageScoreNatural < 270.0:
+        subflow_results[2] = 1
+    elif EventFlowSystemActor.VillageScoreNatural < 350.0:
+        subflow_results[2] = 2
+    elif EventFlowSystemActor.VillageScoreNatural >= 450.0:
+        subflow_results[2] = 4
+    else:
+        subflow_results[2] = 3
+    return
+
+flow ChkLifeRank:
+    if EventFlowSystemActor.VillageScoreLife < 80.0:
+        subflow_results[3] = 0
+    elif EventFlowSystemActor.VillageScoreLife < 160.0:
+        subflow_results[3] = 1
+    elif EventFlowSystemActor.VillageScoreLife < 400.0:
+        subflow_results[3] = 2
+    elif EventFlowSystemActor.VillageScoreLife >= 665.0:
+        subflow_results[3] = 4
+    else:
+        subflow_results[3] = 3
+    return
+
+flow ChkMinusPoint:
+    if EventFlowSystemActor.VillageScoreVeryMessy(180, 1):
+        subflow_results[4] = 1
+    elif EventFlowSystemActor.VillageScoreTreeNum >= 220:
+        subflow_results[4] = 2
+    elif EventFlowSystemActor.VillageScorePutUnitIconNum >= 15:
+        subflow_results[4] = 3
+    else:
+        subflow_results[4] = 0
+    return
+
+flow IslandEvaluationChk:
+    run ChkNaturalRank
+    run ChkLifeRank
+    run ChkMinusPoint
+    if EventFlowSystemActor.NpcHouseNum('cConstructed') < 8:
+entrypoint Event47:
+        subflow_results[1] = 1
+        subflow_results[5] = 0
+        fEvent38 = subflow_results[3]
+        if fEvent38 == 0:
+            subflow_results[0] = 1
+        elif fEvent38 == 1:
+            subflow_results[0] = 1
+            if subflow_results[2] == 0:
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+        elif fEvent38 == 2:
+            subflow_results[0] = 2
+            if subflow_results[2] in (0, 1):
+                subflow_results[0] = 1
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+        elif fEvent38 == 3:
+            subflow_results[0] = 3
+            fEvent42 = subflow_results[2]
+            if fEvent42 in (0, 1):
+                subflow_results[0] = 1
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+            elif fEvent42 == 2:
+                subflow_results[0] = 2
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+        elif fEvent38 == 4:
+            subflow_results[0] = 4
+            fEvent43 = subflow_results[2]
+            if fEvent43 in (0, 1):
+                subflow_results[0] = 1
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+            elif fEvent43 == 2:
+                subflow_results[0] = 2
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+            elif fEvent43 == 3:
+                subflow_results[0] = 3
+                subflow_results[1] = 2
+                subflow_results[5] = 1
+            elif fEvent43 == 4:
+                subflow_results[1] = 3
+                if subflow_results[4] in (1, 2, 3):
+                    subflow_results[0] = 3
+    else:
+        run NotEnoughNNpc
+    return
+
+flow NotEnoughNNpc:
+    subflow_results[1] = 0
+    subflow_results[0] = 0
+    if (EventFlowSystemActor.NpcHouseNum('cConstructed') < 7) and (subflow_results[2] in (2, 3, 4)) and (subflow_results[3] in (2, 3, 4)):
+        subflow_results[0] = 1
+    run sub_tm!NotEnoughNNpc
+
+flow ChkNaturalImprovement:
+    if EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= 5:
+        event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday'] = true
+    EventFlowSystemActor.VillageScoreNaturalReflectLandSave()
+    return
+
+flow ChkLifeImprovement:
+    if EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= 10:
+        event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday'] = true
+    EventFlowSystemActor.VillageScoreLifeReflectLandSave()
+    return
+
+flow ChkEvaluationImprovement:
+    run ChkLifeImprovement
+    run ChkNaturalImprovement
+    return
+
+flow ChkEvaluationImprovement_First:
+    run ChkLifeImprovement
+    run ChkNaturalImprovement
+    event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday'] = false
+    event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday'] = false
+    return
+
+flow Compare_BeforeEvaluation:
+    fEvent64 = subflow_results[0]
+    if fEvent64 == 4:
+        subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 5:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 5
+    elif fEvent64 == 0:
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] > 1:
+            subflow_results[6] = 2
+        else:
+            subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 1:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 1
+    elif fEvent64 == 1:
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] > 2:
+            subflow_results[6] = 2
+        else:
+            subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 2:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 2
+    elif fEvent64 == 2:
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] > 3:
+            subflow_results[6] = 2
+        else:
+            subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 3:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 3
+    elif fEvent64 == 3:
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] > 4:
+            subflow_results[6] = 2
+        else:
+            subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 4:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 4
+    return
+
+flow ChkStarRating:
+    run Event47
+    return
+
+flow sub_tm!NotEnoughNNpc:
+    return
+

@@ -1,0 +1,79 @@
+flow Root:
+    if MainNpc.NpcCheckStateSelectTiming('cInit'):
+        if event_flags_system['cLand:JohnnySitUpFlag']:
+            if MainNpc.CanMoveUnit(true):
+                run SetStateWakeup
+                run sub_Event40
+            else:
+                MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+                event_flags_system['cLand:JohnnyInvisible'] = true
+        elif MainNpc.CanMoveUnit(false):
+            run SetStateSleep
+            run sub_Event40
+        else:
+            MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+            event_flags_system['cLand:JohnnyInvisible'] = true
+    elif event_flags_system['cLand:JohnnyInvisible']:
+        MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+        event_flags_system['cLand:JohnnyInvisible'] = true
+    elif event_flags_system['cLand:JohnnySitUpFlag']:
+        run SetStateWakeup
+    else:
+        run SetStateSleep
+    return
+
+flow Init:
+    run InitCommon
+    if event_flags_system['cLand:JohnnySitUpFlag']:
+        run InitWakeup
+    else:
+        run InitSleep
+    return
+
+flow Hit:
+    MainNpc.NpcChangeAIState('cHit', 'SNPC_gul', 'Root', '', false, false)
+    return
+
+flow InitCommon:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.SetSpecialPos('cSetPosType_SavePos')
+    return
+
+flow InitWakeup:
+    MainNpc.SetDefaultWaitAs('cDefault')
+    MainNpc.NpcAISetting(2, true)
+    MainNpc.NpcAISetting(3, true)
+    MainNpc.NpcAISetting(8, false)
+    return
+
+flow InitSleep:
+    MainNpc.GulFreeAction('cGulActionType_SetAngle')
+    MainNpc.SetDefaultWaitAs('cGulSleeping')
+    MainNpc.NpcAISetting(2, false)
+    MainNpc.NpcAISetting(3, false)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcAISetting(14, true)
+    return
+
+flow SetStateWakeup:
+    MainNpc.SetDefaultWaitAs('cDefault')
+    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'EntryName', 'FlowName', '', true, true, false, 0, 4, 9, 9)
+    MainNpc.NpcAISetting(2, true)
+    MainNpc.NpcAISetting(3, true)
+    MainNpc.NpcAISetting(8, false)
+    MainNpc.NpcAISetting(14, false)
+    return
+
+flow SetStateSleep:
+    MainNpc.SetDefaultWaitAs('cGulSleeping')
+    MainNpc.NpcChangeWaitState('cWait', 'EntryName', 'FlowName', '', true, true, 0, true, '')
+    MainNpc.NpcAISetting(2, false)
+    MainNpc.NpcAISetting(3, false)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcAISetting(14, true)
+    return
+
+flow sub_Event40:
+    event_flags_system['cLand:JohnnyInvisible'] = false
+

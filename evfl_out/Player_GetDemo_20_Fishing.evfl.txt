@@ -1,0 +1,75 @@
+flow Fishing_Get_Trash:
+    if EventFlowSystemActor.NetIsDreaming():
+        EventFlowSystemActor.SetTagFromSystem(0, 'cChachFish', 'cDegit', '', 0)
+        Player.OpenMessageWindow('TalkSys/SYS_Get_Fish:021', false)
+    else:
+        Player.PlayerOpenFishGetMessage()
+    if not Player.PlayerCheckAI('cGetDemo_FishFullItem'):
+        subflow_results[1] = 1
+        run SetTrashType
+        run Chk_TrashDiyRecipe
+    elif Player.PlayerHasExchaneableItem(false, true, true, true):
+        run SetTrashType
+        Player.OpenMessageWindow('TalkSys/SYS_Player:005', true)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            Player.PlayerPlayPutawayWaitAnimation()
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByHarvest', '', 'cFishGetFull', false)
+            if EventFlowSystemActor.UIResultMenuDecide():
+                run Chk_TrashDiyRecipe
+    else:
+        Player.OpenMessageWindow('TalkSys/SYS_Player:016', true)
+    return
+
+flow Fishing_Get_2ndLoach:
+    Player.OpenMessageWindow('TalkSys/SYS_Get_Fish:011', false)
+    event_flags_system['cPlayer:Got2ndLoach'] = true
+    return
+
+flow SetTrashType:
+    if Player.PlayerGetDemoCheckItem('cTrash_Boots'):
+        subflow_results[0] = 1
+    elif Player.PlayerGetDemoCheckItem('cTrash_Tire'):
+        subflow_results[0] = 2
+    elif Player.PlayerGetDemoCheckItem('cTrash_Can'):
+        subflow_results[0] = 3
+    return
+
+flow Chk_TrashDiyRecipe:
+    if (not EventFlowSystemActor.NetIsDreaming()) and (event_flags_system['cPlayer:MainmenuRecipe']) and (subflow_results[0] in (1, 2, 3)):
+        event_flags_system['cPlayer:CountGotTrash'] += 1
+        if (not EventFlowSystemActor.PlayerHasCraftRecipe(1823, '')) and (event_flags_system['cPlayer:CountGotTrash'] >= 15):
+            EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_TrashBag', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+        else:
+            fEvent37 = subflow_results[0]
+            if fEvent37 == 2:
+                event_flags_system['cPlayer:CountGotTrash_Tire'] += 1
+                if EventFlowSystemActor.PlayerHasCraftRecipe(2329, ''):
+                    if (not EventFlowSystemActor.PlayerHasCraftRecipe(1189, '')) and (event_flags_system['cPlayer:CountGotTrash_Tire'] >= 3):
+                        EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Tire2', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+                elif event_flags_system['cPlayer:CountGotTrash_Tire'] >= 1:
+                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Tire1', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+            elif fEvent37 == 3:
+                event_flags_system['cPlayer:CountGotTrash_Can'] += 1
+                if EventFlowSystemActor.PlayerHasCraftRecipe(132, ''):
+                    if (not EventFlowSystemActor.PlayerHasCraftRecipe(7045, '')) and (event_flags_system['cPlayer:CountGotTrash_Can'] >= 3):
+                        EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can2', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+                elif event_flags_system['cPlayer:CountGotTrash_Can'] >= 1:
+                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can1', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+            elif fEvent37 == 1:
+                if not EventFlowSystemActor.PlayerHasCraftRecipe(12326, ''):
+                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Boot', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+    run sub_tm!Chk_TrashDiyRecipe
+
+flow Cmn_PcActionStop:
+    if subflow_results[1] != 0:
+        EventFlowSystemActor.MessageSuspend()
+        Player.PlayerPutawayFish()
+        EventFlowSystemActor.WaitFrame(20)
+    EventFlowSystemActor.WaitFrame(5)
+    Player.PlayerPlayWaitAnimation()
+    EventFlowSystemActor.WaitFrame(15)
+    return
+
+flow sub_tm!Chk_TrashDiyRecipe:
+    return
+

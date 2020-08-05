@@ -1,0 +1,95 @@
+flow Root:
+    if (event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not MainNpc.IsSamePhrase()):
+        fork:
+            branch0:
+            branch1:
+                Player.TurnBody(0, 0.0)
+            branch2:
+                MainNpc.TurnBody(1, 0.0)
+            branch3:
+                SubNpc.TurnBody(0, 0.0)
+        MainNpc.NpcCopyPhrase()
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:201', false)
+        MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:202', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:203', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:204', false)
+        Player.TurnNeck(0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:205', false)
+    else:
+        run sub_grp!Event70
+    return
+
+flow sub_grp!Event70:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+        fork:
+            branch0:
+            branch1:
+                Player.TurnBody(0, 0.0)
+            branch2:
+                MainNpc.TurnBody(10, 0.0)
+            branch3:
+                SubNpc.TurnBody(10, 0.0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:001', false)
+        SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:002', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:003', false)
+        fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent0 == 0:
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:004', false)
+            fork:
+                branch0:
+                branch1:
+                    MainNpc.TurnNeck(1)
+                branch2:
+                    Player.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:005', false)
+        elif fEvent0 == 1:
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:006', false)
+            Player.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:007', false)
+        elif fEvent0 in (2, 3):
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:008', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:009', false)
+    else:
+        fork:
+            branch0:
+            branch1:
+                Player.TurnBody(0, 0.0)
+            branch2:
+                MainNpc.TurnBody(10, 0.0)
+            branch3:
+                SubNpc.TurnBody(10, 0.0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:101', false)
+        Player.TurnNeck(1)
+        SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:102', false)
+        fork:
+            branch0:
+            branch1:
+                Player.TurnNeck(0)
+            branch2:
+                MainNpc.TurnBody(10, 0.0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:103', false)
+        fEvent41 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent41 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:104', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:105', false)
+        elif fEvent41 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:106', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:107', false)
+        elif fEvent41 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:108', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:109', false)
+        elif fEvent41 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:110', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:111', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:112', false)
+        elif fEvent41 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:113', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_FU:114', false)
+

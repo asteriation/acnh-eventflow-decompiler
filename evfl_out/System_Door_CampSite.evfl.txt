@@ -1,0 +1,8 @@
+flow Root:
+    if EventFlowSystemActor.NetIsDreaming():
+        Player.OpenMessageWindow('TalkSys/SYS_Door:115', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    else:
+        EventFlowSystemActor.SetCheckResultStructureDoor(0)
+    return
+

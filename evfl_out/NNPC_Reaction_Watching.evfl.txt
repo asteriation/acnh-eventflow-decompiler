@@ -1,0 +1,20 @@
+flow React_Watcing:
+    MainNpc.NpcOpenFacilityMessage()
+    if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.IsWatchItemDonated()) and (event_flag_npc['cNpcMemory:HasAcquaintanceship']):
+        MainNpc.TurnNeck(10)
+        if EventFlowSystemActor.SystemCheckNowStage('cMuseumFish'):
+            if MainNpc.IsWatchItemDiveFish():
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Watching_DFish:101', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Watching_Fish:101', false)
+        elif EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Watching_Insect:101', false)
+        elif EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Watching_Fossil:101', false)
+        elif EventFlowSystemActor.SystemCheckNowStage('cMuseumArt'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Watching_Art:101', false)
+    event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+    event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] += 1
+    EventFlowSystemActor.ExitFlowchart()
+    return
+

@@ -1,0 +1,12 @@
+flow Root:
+    if MainNpc.NpcBlackBoard('Speak', 1):
+        run AI_NPC_Common::ContinueSpeak
+    else:
+        MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcRegistAIBlackBoard('Speak', 0)
+    return
+

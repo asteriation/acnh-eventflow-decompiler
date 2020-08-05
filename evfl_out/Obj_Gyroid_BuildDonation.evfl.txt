@@ -1,0 +1,52 @@
+flow Root:
+    EventFlowSystemActor.PublicWorksSetName(0)
+    EventFlowSystemActor.PublicWorksSetBell(0, 'cGoal')
+    EventFlowSystemActor.PublicWorksSetBell(1, 'cBalance')
+    EventFlowSystemActor.PublicWorksSetBell(2, 'cTotalDonate')
+    fEvent1 = EventFlowSystemActor.EnvTimeZone()
+    if fEvent1 in (0, 1):
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001', false)
+    elif fEvent1 in (2, 3):
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_01', false)
+    elif fEvent1 == 4:
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_02', false)
+    elif fEvent1 == 5:
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_03', false)
+    if event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 4:
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:008', false)
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 3:
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:009', false)
+        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:010', false)
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 2:
+        if EventFlowSystemActor.NetIsDreaming():
+            HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:011', false)
+        else:
+            EventFlowSystemActor.UIMoneyAppear()
+            HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:002', false)
+            HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:003', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                EventFlowSystemActor.UITenKeyHandling('cRaiseMoney')
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    EventFlowSystemActor.PublicWorksSetBell(3, 'cLastDonate')
+                    HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:006', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        EventFlowSystemActor.PublicWorksUpdate()
+                        if EventFlowSystemActor.DonationDone():
+                            HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:007', false)
+                            event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 3
+                            EventFlowSystemActor.ReservePlayerMutterDemo('FinishDonationBuildBridgeSlope', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+                            EventFlowSystemActor.UIMoneyDisappear()
+                        else:
+                            HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:006_01', false)
+                            EventFlowSystemActor.UIMoneyDisappear()
+                    else:
+                        HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:004', false)
+                        EventFlowSystemActor.UIMoneyDisappear()
+                else:
+                    HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:005', false)
+                    EventFlowSystemActor.UIMoneyDisappear()
+            else:
+                HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:004', false)
+                EventFlowSystemActor.UIMoneyDisappear()
+    return
+

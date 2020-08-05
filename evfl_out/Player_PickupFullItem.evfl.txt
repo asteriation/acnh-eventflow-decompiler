@@ -1,0 +1,28 @@
+flow PickupFtr_FullItem:
+    run sub_Event1
+    return
+
+flow PickupFlower_FullItem:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:011', false)
+    return
+
+flow PickupVegetable_FullItem:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:012', false)
+    return
+
+flow PickupBell_FullItem:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:014', false)
+    return
+
+flow PickupFence_FullItem:
+    run sub_Event1
+    return
+
+flow ScoopDigPlant_ItemFull:
+    run sub_Event1
+    return
+
+flow sub_Event1:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:013', false)
+    return
+

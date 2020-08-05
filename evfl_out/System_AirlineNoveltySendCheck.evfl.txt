@@ -1,0 +1,130 @@
+flow Root:
+    run CountUp
+    run CountReset
+    run SendChkRoot
+    return
+
+flow CountUp:
+    if event_flags_system['cPlayer:DodPresentCounterToday'] == 3:
+        event_flags_system['cPlayer:DodPresentCounter'] += 3
+    elif event_flags_system['cPlayer:DodPresentCounterToday'] == 2:
+        event_flags_system['cPlayer:DodPresentCounter'] += 2
+        run sub_grp!Event6
+    elif event_flags_system['cPlayer:DodPresentCounterToday'] == 1:
+        event_flags_system['cPlayer:DodPresentCounter'] += 1
+        run sub_grp!Event6
+    elif event_flags_system['cPlayer:DodPresentCounterToday'] == 0:
+        run sub_grp!Event6
+    return
+
+flow CountReset:
+    event_flags_system['cPlayer:DodPresentCounterToday'] = 0
+    event_flags_system['cPlayer:DodSingleFlightToday'] = false
+    return
+
+flow NoveltySendChk0:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 5:
+        EventFlowSystemActor.SelectRewardItemDirect(12125, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 1)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk1:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 15:
+        EventFlowSystemActor.SelectRewardItemDirect(12128, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 2)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk2:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 30:
+        EventFlowSystemActor.SelectRewardItemDirect(12130, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 3)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk3:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 50:
+        EventFlowSystemActor.SelectRewardItemDirect(12139, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 4)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk4:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 75:
+        EventFlowSystemActor.SelectRewardItemDirect(12129, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 5)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk5:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 100:
+        EventFlowSystemActor.SelectRewardItemDirect(12126, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 6)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk6:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 130:
+        EventFlowSystemActor.SelectRewardItemDirect(12132, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 7)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk7:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 160:
+        EventFlowSystemActor.SelectRewardItemDirect(9560, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 8)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk8:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 200:
+        EventFlowSystemActor.SelectRewardItemDirect(12131, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 9)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk9:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 250:
+        EventFlowSystemActor.SelectRewardItemDirect(12127, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 10)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow SendChkRoot:
+    if event_flags_system['cPlayer:DodPresentSendCounter'] == 10:
+        run NoveltySendChk10
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 9:
+        run NoveltySendChk9
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 8:
+        run NoveltySendChk8
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 7:
+        run NoveltySendChk7
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 6:
+        run NoveltySendChk6
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 5:
+        run NoveltySendChk5
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 4:
+        run NoveltySendChk4
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 3:
+        run NoveltySendChk3
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 2:
+        run NoveltySendChk2
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 1:
+        run NoveltySendChk1
+    elif event_flags_system['cPlayer:DodPresentSendCounter'] == 0:
+        run NoveltySendChk0
+    return
+
+flow NoveltySendChk10:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 300:
+        EventFlowSystemActor.SelectRewardItemDirect(12140, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 11)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow sub_grp!Event6:
+    if event_flags_system['cPlayer:DodSingleFlightToday']:
+        event_flags_system['cPlayer:DodPresentCounter'] += 1
+

@@ -1,0 +1,8 @@
+flow Root:
+    MainNpc.EmoticonTalkMessage()
+    event_flags_system['cPlayer:EnableEmoticonUI'] = true
+    event_flags_system['cPlayer:GetEmoticonTodayFlag'] = true
+    event_flags_system['cPlayer:NnpcApproachNoEmoticonCount'] = 0
+    EventFlowSystemActor.ReservePlayerMutterDemo('Get_Emoticon', 'cNowDemoEnd', 'Player_GetDemo_Emoticons', true)
+    return
+

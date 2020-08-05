@@ -1,0 +1,117 @@
+flow Root:
+    run Countdown_JustBefore
+    fEvent25 = EventFlowSystemActor.EventBranch(false, 0)
+    if fEvent25 == 0:
+        run PrepareDemo
+        run Cmn_AnnounceEnd
+    elif fEvent25 == 1:
+        run PrepareDemo
+        if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
+            fEvent11 = EventFlowSystemActor.EnvSeason()
+            if fEvent11 == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart', true)
+            elif fEvent11 == 1:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_01', true)
+            elif fEvent11 == 2:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_03', true)
+            elif fEvent11 == 3:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_05', true)
+        else:
+            fEvent37 = EventFlowSystemActor.EnvSeason()
+            if fEvent37 == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_00', true)
+            elif fEvent37 == 1:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_02', true)
+            elif fEvent37 == 2:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_04', true)
+            elif fEvent37 == 3:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_06', true)
+entrypoint Event21:
+        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+        EventFlowSystemActor.StoreNormalCamera(true)
+        EventFlowSystemActor.RequestRecreateFtr()
+        EventFlowSystemActor.WaitFrame(30)
+        EventFlowSystemActor.FadeIn(true)
+        if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+            EventFlowSystemActor.RequestStartPeriodicalFireworks()
+        EventFlowSystemActor.BGMPropertyControl(106)
+    elif fEvent25 == 2:
+        run PrepareDemo
+        if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart', true)
+            run sub_Event3
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart_00', true)
+            run sub_Event3
+    elif fEvent25 == 3:
+        run PrepareDemo
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:CountdownStart', true)
+        run sub_Event3
+    elif fEvent25 == 4:
+        run PrepareDemo
+        run Cmn_AnnounceEnd
+    elif fEvent25 == 5:
+        if event_flags_system['cLand:BuiltTownOffice']:
+            run PrepareDemo
+            if EventFlowSystemActor.EnvHourCompare(19, 1, true, true) == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_01', true)
+                run sub_Event3
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_02', true)
+                run sub_Event3
+        else:
+            run PrepareDemoRco
+            if EventFlowSystemActor.EnvHourCompare(19, 1, true, true) == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart', true)
+                run sub_Event3
+            else:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_00', true)
+                run sub_Event3
+    return
+
+flow Countdown_JustBefore:
+    if (EventFlowSystemActor.EnvSameDate('cEndOfTheYear', 'cNowTime')) and (EventFlowSystemActor.EnvHourCompare(23, 57, true, true) == 2):
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow NewYear:
+    EventFlowSystemActor.SoundDuckingOn(38)
+    EventFlowSystemActor.BGMPropertyControl(61)
+    Player.PlayerStickLightNewYear()
+    EventFlowSystemActor.SetCountDownCamera('cLookUp')
+    EventFlowSystemActor.WaitFrame(270)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:CountdownDemo', true)
+    EventFlowSystemActor.BGMPropertyControl(60)
+    EventFlowSystemActor.SoundDuckingOff(38)
+    EventFlowSystemActor.SetCountDownCamera('cUndo')
+    return
+
+flow Cmn_AnnounceEnd:
+    run Event21
+    return
+
+flow PrepareDemo:
+    EventFlowSystemActor.SwapSpeaker('cSza', true)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+    EventFlowSystemActor.CameraSetDemoParam('Place:EventPlaza', 'EventNoticeStart', '', true, false, false, 0)
+    EventFlowSystemActor.FadeIn(true)
+    EventFlowSystemActor.CameraSetDemoParam('Place:EventPlaza', 'EventNotice', 'EventNotice', true, false, false, 0)
+    EventFlowSystemActor.UIDemoClock(60)
+    EventFlowSystemActor.BGMPropertyControl(107)
+    EventFlowSystemActor.WaitFrame(45)
+    return
+
+flow PrepareDemoRco:
+    EventFlowSystemActor.SwapSpeaker('cRco', true)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+    EventFlowSystemActor.CameraSetDemoParam('Place:EventPlaza', 'EventNoticeStart', '', true, false, false, 0)
+    EventFlowSystemActor.FadeIn(true)
+    EventFlowSystemActor.CameraSetDemoParam('Place:EventPlaza', 'EventNotice', 'EventNotice', true, false, false, 0)
+    EventFlowSystemActor.UIDemoClock(60)
+    EventFlowSystemActor.BGMPropertyControl(107)
+    EventFlowSystemActor.WaitFrame(45)
+    return
+
+flow sub_Event3:
+    run Cmn_AnnounceEnd
+

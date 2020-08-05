@@ -1,0 +1,71 @@
+flow Root:
+    MainNpc.NpcChangeAIState('cHgh', 'SNPC_hgh', 'Root', '', false, true)
+    return
+
+flow Init:
+    MainNpc.SetSightRange(64, 0)
+    MainNpc.NpcRegistAIBlackBoard('CheckItemIndex', -1)
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetRequestSpeakFunc('cItemCheck', true)
+    MainNpc.NpcRegistAIBlackBoard('MyDesignRail', 2)
+    MainNpc.NpcRegistAIBlackBoard('CheckMyDesign', 0)
+    MainNpc.NpcRegistAIBlackBoard('FittingRoomRail', 3)
+    MainNpc.NpcRegistAIBlackBoard('MannequinRail', 4)
+    MainNpc.NpcRegistAIBlackBoard('CheckMannequin', 0)
+    MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
+    if EventFlowSystemActor.NetIsConnected():
+        MainNpc.NpcAISetRequestSpeakFunc('cEnterBalloon', true)
+        MainNpc.NpcAISetRequestSpeakFunc('cLeaveBalloon', true)
+        MainNpc.NpcAISetting(8, true)
+    else:
+        MainNpc.NpcAISetRequestSpeakFunc('cLeaveHgh', false)
+        MainNpc.NpcAISetRequestSpeakFunc('cEnterHgh', false)
+        MainNpc.NpcAISetting(8, false)
+    return
+
+flow Check_hgh:
+    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
+        MainNpc.NpcAISetting(9, false)
+        MainNpc.NpcAISetting(5, false)
+        MainNpc.SetNpcSpeakFlow('Check', 'SNPC_hgh')
+    return
+
+flow Leave_hgh:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Enter_hgh:
+    MainNpc.NpcAISetting(13, true)
+    MainNpc.NpcAISetting(18, true)
+    run AI_NPC_Common::Speak
+    event_flags_system['cLandTemp:HghEnterBalloon'] = true
+    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
+    return
+
+flow Check_Goods:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.SetNpcSpeakFlow('Check_MyDesign', 'SNPC_hgh')
+    return
+
+flow Check_Mannequin:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(4, false)
+    MainNpc.SetNpcSpeakFlow('Check_Mannequin', 'SNPC_hgh')
+    return
+
+flow Check_FittingRoom:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.SetNpcSpeakFlow('Check_FittingRoom', 'SNPC_hgh')
+    return
+
+flow Check_MyDesign:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(4, false)
+    MainNpc.SetNpcSpeakFlow('Check_MyDesign', 'SNPC_hgh')
+    return
+

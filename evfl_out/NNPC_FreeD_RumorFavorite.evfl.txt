@@ -1,0 +1,151 @@
+flow RumorP_Favorite_CurrentPlayer:
+    MainNpc.NpcRumorDecidePlayer('cCurrentPlayer')
+    MainNpc.NpcRumorDecideTopic('cAllRandom')
+    if MainNpc.NpcRumorIsAnsweredTargetTopic():
+        if (not MainNpc.NpcRumorIsSelectedAllDeny()) or (MainNpc.NpcRumorCheckAllDenyProgressDays(30)):
+            MainNpc.NpcRumorTagSet()
+            if not MainNpc.NpcRumorIsAskedOwn():
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:020', false)
+                if MainNpc.NpcRumorIsSelectedAllDeny():
+                    MainNpc.NpcRumorOpenMessage('040', 'cTopic')
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:041', false)
+                        MainNpc.NpcRumorResetLastDenyTime()
+                        run NNPC_FreeD::RumorP_Favorite_End
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:049', false)
+                        MainNpc.NpcRumorOpenMessage('102', 'cTopic')
+                        run Input
+                else:
+                    MainNpc.NpcRumorOpenMessage('030', 'cCategory')
+                    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:049', false)
+                        MainNpc.NpcRumorOpenMessage('102', 'cTopic')
+                        run Input
+                    elif MainNpc.NpcRumorIsEqualNpcChoice('cPrev') in (0, 1, 2):
+                        MainNpc.NpcRumorOpenMessage('031', 'cCategory')
+                        run sub_Event31
+                    else:
+                        MainNpc.NpcRumorOpenMessage('032', 'cCategory')
+                        run sub_Event31
+            elif not MainNpc.NpcRumorIsSelectedAllDeny():
+                MainNpc.NpcRumorOpenMessage('010', 'cCategory')
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.NpcRumorOpenMessage('011', 'cCategory')
+                    run NNPC_FreeD::RumorP_Favorite_End
+                else:
+                    MainNpc.NpcRumorOpenMessage('101', 'cTopic')
+                    run Input
+    elif MainNpc.NpcCheckMoveInBeforePlayer():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:001', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:003', false)
+        MainNpc.NpcRumorOpenMessage('100', 'cTopic')
+        run Input
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:002', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:003', false)
+        MainNpc.NpcRumorOpenMessage('100', 'cTopic')
+        run Input
+    return
+
+flow Input:
+    fEvent37 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent37 == 3:
+entrypoint Event53:
+        EventFlowSystemActor.UISoftwareKeyboardHandling('cTaste', true)
+        EventFlowSystemActor.SetTagFromUIResult(0, 'cRumorFavorite')
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:051', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_grp!Event38
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:052', false)
+            run Event53
+    elif fEvent37 == 4:
+        if MainNpc.NpcRumorIsSelectedAllDeny():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:061', false)
+        else:
+            MainNpc.NpcRumorOpenMessage('107', 'cTopic')
+            MainNpc.NpcRumorSaveAnswer()
+        run NNPC_FreeD::RumorP_Favorite_End
+    elif fEvent37 in (0, 1, 2):
+        run sub_grp!Event38
+    return
+
+flow RumorOP_Favorite_Villager:
+    MainNpc.NpcRumorDecidePlayer('cRandom')
+    MainNpc.NpcRumorDecideTopic('cAllRandom')
+    if MainNpc.NpcRumorIsAnsweredTargetTopic():
+        MainNpc.NpcRumorTagSet()
+        if MainNpc.NpcRumorIsSelectedAllDeny():
+            MainNpc.NpcRumorOpenMessage('010', 'cTopic')
+        else:
+            MainNpc.NpcRumorOpenMessage('001', 'cCategory')
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:020', false)
+        elif MainNpc.NpcRumorIsAskedOwn():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:021', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:022', false)
+    else:
+        MainNpc.NpcRumorOpenMessage('050', 'cCategory')
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:051', false)
+        else:
+            MainNpc.NpcRumorOpenMessage('060', 'cTopic')
+    return
+
+flow RumorOP_Favorite_Host:
+    MainNpc.NpcRumorDecidePlayer('cHostPlayer')
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:101', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        if MainNpc.NpcRumorIsExistAnswerTopic():
+            MainNpc.NpcRumorDecideTopic('cAnswerRandom')
+            MainNpc.NpcRumorTagSet()
+            if MainNpc.NpcRumorIsSelectedAllDeny():
+                MainNpc.NpcRumorOpenMessage('120', 'cTopic')
+            else:
+                MainNpc.NpcRumorOpenMessage('110', 'cCategory')
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:130', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:131', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:102', false)
+    elif MainNpc.NpcRumorIsExistAnswerTopic():
+        MainNpc.NpcRumorDecideTopic('cAnswerRandom')
+        MainNpc.NpcRumorTagSet()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:160', false)
+        if MainNpc.NpcRumorIsSelectedAllDeny():
+            MainNpc.NpcRumorOpenMessage('180', 'cTopic')
+        else:
+            MainNpc.NpcRumorOpenMessage('170', 'cCategory')
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Favorite:150', false)
+    return
+
+flow sub_Event31:
+    run NNPC_FreeD::RumorP_Favorite_End
+
+flow sub_grp!Event38:
+    if MainNpc.NpcRumorIsEqualPreviousChoice():
+        MainNpc.NpcRumorOpenMessage('060', 'cCategory')
+        if MainNpc.NpcRumorIsAskedOwn():
+            MainNpc.NpcRumorOpenMessage('011', 'cCategory')
+        elif MainNpc.NpcRumorIsEqualNpcChoice('cCurrent') in (0, 1, 2):
+            MainNpc.NpcRumorOpenMessage('031', 'cCategory')
+        else:
+            MainNpc.NpcRumorOpenMessage('032', 'cCategory')
+        run NNPC_FreeD::RumorP_Favorite_End
+    else:
+        fEvent42 = MainNpc.NpcRumorIsEqualNpcChoice('cCurrent')
+        if fEvent42 == 0:
+            MainNpc.NpcRumorOpenMessage('103', 'cTopic')
+        elif fEvent42 == 1:
+            MainNpc.NpcRumorOpenMessage('104', 'cTopic')
+        elif fEvent42 == 2:
+            MainNpc.NpcRumorOpenMessage('105', 'cTopic')
+        elif fEvent42 == 3:
+            MainNpc.NpcRumorOpenMessage('106', 'cTopic')
+        MainNpc.NpcRumorSaveAnswer()
+        run NNPC_FreeD::RumorP_Favorite_End
+

@@ -1,0 +1,10 @@
+Actor Npc_3
+actions:
+- Npc_3.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- Npc_3.SetNpcName(ID: int, NpcNameType: int)
+- Npc_3.TurnNeck(TurnTarget: int)
+- Npc_3.TurnBody(TurnTarget: int, TurnAngle: float)
+- Npc_3.NpcChangeHandTool(IsImmediately: bool, SpecificToolKindString: str, HandToolItemID: int)
+- Npc_3.RequestSimple(AsCommand: str, WaitFinish: bool)
+queries:
+

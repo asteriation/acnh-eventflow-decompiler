@@ -1,0 +1,33 @@
+flow Root:
+    if EventFlowSystemActor.NetIsConnected():
+        run FreeV_Chk
+    else:
+        run Free_Chk
+    return
+
+flow FreeV_Chk:
+    if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+        run NNPC_Free_HouseV::Root
+    elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
+        run NNPC_Free_House::Free_HouseG
+    else:
+        run NNPC_Free_FieldV::Root
+    return
+
+flow Free_Chk:
+    if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+        if MainNpc.NpcIsExistOtherNpc():
+            run NNPC_Free_House::Free_HouseH
+        else:
+            run sub_Event18
+    elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
+        run NNPC_Free_House::Free_HouseG
+    elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+        run sub_Event18
+    else:
+        run NNPC_Free_Field::Root
+    return
+
+flow sub_Event18:
+    run NNPC_Free_House::Root
+

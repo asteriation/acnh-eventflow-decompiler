@@ -1,0 +1,11 @@
+flow Root:
+    if (MainNpc.IsEarlyLateReactionSituation()) and (not event_flag_npc['cNpcMemory:TalkEarlyLateToday']):
+        if EventFlowSystemActor.EnvHourCompare(12, -1, true, true) in (0, 1):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_EarlyLate:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_EarlyLate:002', false)
+        event_flags_npc['cNpcMemory:TalkEarlyLateToday'] = true
+        event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+

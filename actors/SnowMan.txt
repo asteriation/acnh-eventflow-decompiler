@@ -1,0 +1,11 @@
+Actor SnowMan
+actions:
+- SnowMan.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- SnowMan.DecideEventReward(RewardType: str)
+queries:
+- SnowMan.SnowManGrade() -> int4
+- SnowMan.SnowManIsSnowMeltSeason() -> bool
+- SnowMan.SnowManAge() -> int4
+- SnowMan.IsMadeSnowManPlayer() -> bool
+- SnowMan.SnowManIsHeadSmallerThanBody() -> bool
+

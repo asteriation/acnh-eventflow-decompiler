@@ -1,0 +1,41 @@
+flow VisitNWelcome:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Root:
+    MainNpc.SetIsStartNeedActivity('cOff')
+    if EventFlowSystemActor.SystemCheckNowStage('cVisitNPCHouse'):
+        if not MainNpc.SystemIsVisitQuestPlayerEntered():
+            MainNpc.SetNpcFeel('cNormal', 120)
+            if (MainNpc.NpcCheckStateSelectTiming('cTalkEnd')) and (event_flag_npc['cNpcTemp:TalkEndWait']):
+                MainNpc.NpcChangeWaitState('cWait', 'Home_Talk', 'NNPC_Quest_VisitN_Home', '', false, false, 30, true, '')
+                event_flags_npc['cNpcTemp:TalkEndWait'] = false
+            else:
+                MainNpc.NpcChangeAIState('cVisitWelcome', 'NNPC_Quest_VisitN_Home', 'Home_Talk', '', false, true)
+        elif (MainNpc.NpcCheckStateSelectTiming('cTalkEnd')) and (event_flag_npc['cNpcTemp:TalkEndWait']):
+            MainNpc.NpcChangeWaitState('cWait', 'Home_Talk', 'NNPC_Quest_VisitN_Home', '', false, false, 30, true, '')
+            event_flags_npc['cNpcTemp:TalkEndWait'] = false
+        else:
+            run sub_Event3
+    return
+
+flow VisitNGoHome:
+    MainNpc.NpcAISetting(4, false)
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow VisitNFurniture:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Init:
+    run AI_NPC_Indoor::BBRegist
+    return
+
+flow TouchedFurniture:
+    run AI_NPC_Indoor::TouchedFurniture
+    return
+
+flow sub_Event3:
+    MainNpc.NpcChangeAIState('cVisitFollower', 'NNPC_Quest_VisitN_Home', 'Home_Talk', '', false, true)
+

@@ -1,0 +1,22 @@
+flow Root:
+    if event_flags_system['cLandTemp:GstQuestClearFlag']:
+        MainNpc.NpcChangeInvisibleState('cInvisible', 'Root', 'SNPC_gst', '', false, true, 0)
+    elif event_flags_system['cLandTemp:GstQuestStartLandFlag']:
+        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_gst', '', false, true, false, 0, 4, 19, 19)
+    else:
+        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_gst', '', false, true, false, 0, 1, 0, 0)
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(9, false)
+    return
+
+flow Hit:
+    if event_flags_system['cLandTemp:GstQuestStartLandFlag']:
+        MainNpc.NpcChangeAIState('cHit', 'SNPC_gst', 'Gst_Hit', '', false, false)
+    else:
+        MainNpc.NpcChangeAIState('cHit', 'SNPC_gst', 'Root', '', false, false)
+    return
+

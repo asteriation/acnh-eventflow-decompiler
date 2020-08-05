@@ -1,0 +1,421 @@
+flow Root:
+    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cLand:JohnnyRequirePartsNum', 0)
+    run GulTalkChk
+    if EventFlowSystemActor.IsSharePlay(0):
+        run Gul_Share
+    elif not EventFlowSystemActor.IsMyVillage():
+        run Gul_DC
+    elif event_flags_system['cLand:JohnnySitUpFlag']:
+        if event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+            run GulAfterQuest
+        elif event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+entrypoint Event181:
+            if MainNpc.GulFreeQuery2('cGulQueryType_IsQuestClear'):
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:030', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.SetDeliveryItemAtRandom(2381, false, 'cVillageRemakePattern', 0)
+                    MainNpc.NpcDelivery('Keep', 0)
+                    MainNpc.GulFreeAction('cGulActionType_PresentParts')
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:032', true)
+                    MainNpc.NpcDelivery('"Default"', 3)
+entrypoint Event35:
+                    EventFlowSystemActor.WaitFrame(4)
+                    MainNpc.CharacterEmoticonAction('Dance', '', 0, false, false)
+                    EventFlowSystemActor.WaitFrame(60)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:033', true)
+                    MainNpc.SmartPhone(0)
+                    MainNpc.SmartPhone(4)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:036', true)
+                    MainNpc.SmartPhone(1)
+                    MainNpc.DecideEventReward('cJohnny')
+                    MainNpc.SetDeliveryItem(1, true)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:034', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:035', true)
+                    run GulClear
+                    if event_flags_system['cPlayer:JohnnyHelpCount'] == 30:
+                        MainNpc.NpcSetRewardRecipe(8574, false)
+                        EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 6)
+                    else:
+                        fEvent207 = EventFlowSystemActor.RandomChoice5(5)
+                        if fEvent207 == 0:
+                            EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
+                        elif fEvent207 == 1:
+                            EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+                        elif fEvent207 == 2:
+                            EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+                        elif fEvent207 == 3:
+                            EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
+                        elif fEvent207 == 4:
+                            EventFlowSystemActor.SystemMailSend('cGul', 'MAIL_SNpc_gul', 'cFastTomorrow', 'cReward', 'cNone', false, 5)
+                else:
+                    run sub_grp!Event211
+            else:
+                run sub_grp!Event211
+        else:
+            run GulAfterQuest
+    elif event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+        if EventFlowSystemActor.HasKindItem('cKind', 'JohnnyQuest', ''):
+            run GulSitUp
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:080', false)
+            if not MainNpc.GulFreeQuery2('cGulQueryType_OtherPlayerQuestNow'):
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:081', false)
+                if EventFlowSystemActor.HasTargetItem(2381, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:082_pl', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:082', false)
+                run GulGivePartsForced
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:083', false)
+            elif EventFlowSystemActor.HasTargetItem(2381, 2):
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:084_pl', false)
+                run GulGivePartsForced
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:085', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:084', false)
+                run GulGivePartsForced
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:085', false)
+            run GulClear
+        else:
+            run GulKeepSleep
+    elif event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+        run Gul_GetUp_Start
+    else:
+        event_flags_system['cPlayer:JonnyTalkCount'] += 1
+        if event_flags_system['cPlayer:JonnyTalkCount'] == 1:
+            run GulTalkSleep
+        elif EventFlowSystemActor.PercentChoice(10):
+            run Gul_GetUp_NotStart
+        elif event_flags_system['cPlayer:JonnyTalkCount'] >= 6:
+            run Gul_GetUp_NotStart
+        else:
+            run GulTalkSleep
+    return
+
+flow GulKeepSleep:
+    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:060', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow GulAfterQuest:
+    if event_flags_system['cLandTemp:JohnnyTalkShareplay']:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:120', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif not EventFlowSystemActor.HasKindItem('cKind', 'JohnnyQuest', ''):
+        run GulAfterQuestChat
+    elif EventFlowSystemActor.HasTargetItem(2381, 2):
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:082_pl', false)
+        MainNpc.SetDeliveryItemAtRandom(2381, false, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Keep', 0)
+        MainNpc.GulFreeAction('cGulActionType_PresentParts')
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:083', false)
+        run GulClear
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:082', false)
+        MainNpc.SetDeliveryItemAtRandom(2381, false, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Keep', 0)
+        MainNpc.GulFreeAction('cGulActionType_PresentParts')
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:083', false)
+        run GulClear
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow GulSitUp:
+    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:065', true)
+    MainNpc.SetDefaultWaitAs('cDefault')
+    MainNpc.RequestSimple('GulGetUp', true)
+    MainNpc.TurnBody(10, 0.0)
+    event_flags_system['cLand:JohnnySitUpFlag'] = true
+    return
+
+flow GulQuestClear:
+    run Event35
+    return
+
+flow GulTalkChk:
+    if EventFlowSystemActor.IsMyVillage():
+        event_flags_system['cPlayer:JohnnyTalkBeforeFlag'] = true
+        event_flags_system['cLand:JohnnyTalkAnyPlayerFlag'] = true
+    return
+
+flow GulClear:
+    if not event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+        event_flags_system['cLifeSupportAchievement:HelpGul'] += 1
+        event_flags_system['cPlayer:JohnnyHelpCount'] += 1
+        event_flags_system['cPlayer:JohnnyQuestFinishFlag'] = true
+        event_flags_system['cLand:JohnnyQuestFinishFlagIsland'] = true
+    event_flags_system['cPlayer:JohnnyQuestStartFlag'] = false
+    MainNpc.GulFreeAction('cGulActionType_SetAnotherPlayerClearFlag')
+    event_flags_system['cLandTemp:JohnnyTalkShareplay'] = false
+    event_flags_system['cLandTemp:JohnnyClearShareplay'] = true
+    return
+
+flow GulQuestNow:
+    run Event181
+    return
+
+flow GulTalkSleep:
+    fEvent208 = EventFlowSystemActor.RandomChoiceExcludePrevious10(10, true)
+    if fEvent208 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_01', false)
+    elif fEvent208 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_02', false)
+    elif fEvent208 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_03', false)
+    elif fEvent208 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_04', false)
+    elif fEvent208 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_05', false)
+    elif fEvent208 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_06', false)
+    elif fEvent208 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_07', false)
+    elif fEvent208 == 7:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_08', false)
+    elif fEvent208 == 8:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_09', false)
+    elif fEvent208 == 9:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:001_10', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Gul_Share:
+    if event_flags_system['cLand:JohnnySitUpFlag']:
+        if not event_flags_system['cLandTemp:JohnnyClearShareplay']:
+            event_flags_system['cLandTemp:JohnnyTalkShareplay'] = true
+            run sub_grp!Event93
+        elif event_flags_system['cLandTemp:JohnnyTalkShareplay']:
+            run sub_grp!Event93
+        elif event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+            run GulAfterQuestChat
+        elif event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+entrypoint Event173:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:126', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:112', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:127', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:127_01', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:128', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:128_01', false)
+            run GulStart
+            MainNpc.SmartPhone(1)
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:121', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:125', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:112', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:127', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:127_01', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:128', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:128_01', false)
+            run GulStart
+            MainNpc.SmartPhone(1)
+            EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+        run GulKeepSleep
+    elif event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+        run Gul_GetUp_Start
+    else:
+        run Gul_GetUp_NotStart
+    return
+
+flow Gul_GetUp_Start:
+    run GulSitUp
+    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:080', false)
+    if event_flags_system['cPlayer:JohnnyAnotherPlayerClearFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:112', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:113', false)
+        MainNpc.SmartPhone(6)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:113_01', false)
+        MainNpc.SmartPhone(4)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:107', false)
+        MainNpc.SmartPhone(5)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:114', false)
+        MainNpc.SmartPhone(1)
+        run GulStart
+        MainNpc.SmartPhone(1)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:110', false)
+        run GulStart
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Gul_GetUp_NotStart:
+    run GulSitUp
+    if MainNpc.GulFreeQuery2('cGulQueryType_OtherPlayerQuestNow'):
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:100', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:101', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:102', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:103', false)
+    elif MainNpc.GulFreeQuery2('cGulQueryType_OtherPlayerClear'):
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:100', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:101', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:105', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:106', false)
+        MainNpc.SmartPhone(6)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:106_01', false)
+        MainNpc.SmartPhone(4)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:107', false)
+        MainNpc.SmartPhone(5)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:108', false)
+    elif event_flags_system['cPlayer:JohnnySitUpBeforeFlag']:
+        fEvent119 = EventFlowSystemActor.RandomChoice4(4)
+        if fEvent119 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:005', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:006', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_01', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:019', false)
+        elif fEvent119 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:008', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:009', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_01', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:019', false)
+        elif fEvent119 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:011', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:012', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_01', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:019', false)
+        elif fEvent119 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:014', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:015', false)
+            MainNpc.SmartPhone(6)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018', false)
+            MainNpc.SmartPhone(4)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_01', false)
+            MainNpc.SmartPhone(5)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:019', false)
+    else:
+        event_flags_system['cPlayer:JohnnySitUpBeforeFlag'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:002', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:003', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:004', false)
+        MainNpc.SmartPhone(6)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018', false)
+        MainNpc.SmartPhone(4)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_01', false)
+        MainNpc.SmartPhone(5)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:018_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:019', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:020', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:021', false)
+    run GulStart
+    MainNpc.SmartPhone(1)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow GulStart:
+    if event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:023', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:022', false)
+    event_flags_system['cPlayer:JohnnyQuestStartFlag'] = true
+    event_flags_system['cLandTemp:JohnnyTalkShareplay'] = true
+    event_flags_system['cPlayer:JohnnyAnotherPlayerClearFlag'] = false
+    return
+
+flow GulGivePartsForced:
+    MainNpc.SetDeliveryItemAtRandom(2381, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Keep', 0)
+    MainNpc.GulFreeAction('cGulActionType_PresentParts')
+    MainNpc.NpcDelivery('"Default"', 3)
+    return
+
+flow GulQuestNow_OtherClear:
+    run Event173
+    return
+
+flow GulAfterQuestChat:
+    fEvent216 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent216 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:040_01', true)
+    elif fEvent216 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:040_02', true)
+    elif fEvent216 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:040_03', true)
+    MainNpc.SmartPhone(0)
+    MainNpc.SmartPhone(4)
+    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:041', true)
+    MainNpc.SmartPhone(1)
+    fEvent222 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent222 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:042', false)
+    elif fEvent222 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:043', false)
+    elif fEvent222 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:044', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Gul_DC:
+    if not event_flags_system['cLand:JohnnySitUpFlag']:
+        run GulKeepSleep
+    elif event_flags_system['cLandTemp:JohnnyTalkShareplay']:
+        fEvent264 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent264 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:062_01', false)
+        elif fEvent264 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:062_02', false)
+        elif fEvent264 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:062_03', false)
+    else:
+        fEvent260 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent260 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:061_01', false)
+        elif fEvent260 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:061_02', false)
+        elif fEvent260 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:061_03', false)
+    return
+
+flow sub_grp!Event211:
+    fEvent211 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+    if fEvent211 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:031_01', false)
+    elif fEvent211 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:031_02', false)
+    elif fEvent211 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:031_03', false)
+    elif fEvent211 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:031_04', false)
+    elif fEvent211 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:031_05', false)
+
+flow sub_grp!Event93:
+    if event_flags_system['cPlayer:JohnnyQuestFinishFlag']:
+        run GulAfterQuest
+    elif not event_flags_system['cPlayer:JohnnyQuestStartFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:121', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:122', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gul:123', false)
+        run GulStart
+        EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:JohnnyAnotherPlayerClearFlag']:
+        run GulQuestNow_OtherClear
+    else:
+        run GulQuestNow
+

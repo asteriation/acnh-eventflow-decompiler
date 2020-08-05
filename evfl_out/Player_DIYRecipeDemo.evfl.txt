@@ -1,0 +1,7 @@
+flow RememberDIYRecipe:
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemNameFromRecipe')
+    Player.OpenMessageWindow('TalkSys/SYS_Player:509', false)
+    Player.PlayerChangeDemoState('cShowDIYRecipe')
+    Player.OpenMessageWindow('TalkSys/SYS_Player:509_01', false)
+    return
+

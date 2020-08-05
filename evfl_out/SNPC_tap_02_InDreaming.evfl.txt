@@ -1,0 +1,72 @@
+flow Root:
+    EventFlowSystemActor.BGMPropertyControl(105)
+    EventFlowSystemActor.CameraSetDemoParam('Player', 'InDreamZoomIn', '', true, false, false, 0)
+    EventFlowSystemActor.CameraSetDemoParam('Player', 'InDreamZoomOut', 'InDreamZoomInOut', true, false, false, 0)
+    EventFlowSystemActor.WaitFrame(150)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:001', true)
+    EventFlowSystemActor.WaitFrame(10)
+    Player.PlayerStartAnimeBedWaitOpenEyes()
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:001_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:002', false)
+    if not event_flags_system['cPlayer:TapFirstDreamIn']:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:003', false)
+        event_flags_system['cPlayer:TapFirstDreamIn'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:004', true)
+    EventFlowSystemActor.PlayerBaggageOperationForEvent('cRemove')
+    event_flags_system['cLandTemp:TapDreamFirstTalkDone'] = true
+    EventFlowSystemActor.StartMeasurePlayTime('cDreaming')
+    EventFlowSystemActor.SetEnableDofFadeForDream()
+    return
+
+flow Wakeup:
+    Player.PlayerStartAnimeBedWaitOpenEyes()
+    EventFlowSystemActor.CameraSetDemoParam('Player', 'InDreamZoomOut', 'cDefault', true, false, false, 0)
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.BGMPropertyControl(102)
+        EventFlowSystemActor.SoundDuckingOn(42)
+        EventFlowSystemActor.MiniGameSilentCancel()
+        EventFlowSystemActor.StopMeasurePlayTime('cDreaming')
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1002', false)
+        EventFlowSystemActor.ChangeSwitchIdrDreamAromaPot(true)
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1003', true)
+        Player.PlayerStartAnimeBedWaitWithHandsClasped()
+        EventFlowSystemActor.WaitFrame(50)
+        EventFlowSystemActor.CameraSetDemoParam('Player', 'InDreamZoomIn', 'InDreamZoomInOut', true, false, false, 0)
+        EventFlowSystemActor.TapSmoke('cMainFieldSmoke')
+        EventFlowSystemActor.SoundTriggerEmit('WipeDreamingToHome', -1)
+        EventFlowSystemActor.NetExitDream(false)
+        EventFlowSystemActor.BGMPropertyControl(103)
+        EventFlowSystemActor.SoundSceneChangeFadeOutDucking(0)
+        EventFlowSystemActor.SystemRequestChangeStage('cDreamDemo', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1004', false)
+    return
+
+flow InDreamTalk:
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2001', false)
+entrypoint Event35:
+    fEvent35 = EventFlowSystemActor.GeneralTalkChoice4()
+    if fEvent35 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2011', false)
+        run sub_Event41
+    elif fEvent35 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2021', false)
+        run sub_Event41
+    elif fEvent35 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2031', false)
+        run sub_Event41
+    elif fEvent35 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2041', false)
+    return
+
+flow Return_InDreamTalk:
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2002', false)
+    run Event35
+    return
+
+flow sub_Event41:
+    run Return_InDreamTalk
+

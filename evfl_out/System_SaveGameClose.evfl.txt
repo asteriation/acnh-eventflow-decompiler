@@ -1,0 +1,29 @@
+flow Root:
+    run SaveGameCloseCore
+    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow AfterSharePlay:
+    run SaveGameCloseCore
+    EventFlowSystemActor.ReserveSystemFlowDemo('TitleAfterSharePlay', 'System_GrowUp')
+    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow SaveGameCloseCore:
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+    if EventFlowSystemActor.NetHasPOPID(false):
+        run ServerAccess
+    EventFlowSystemActor.SaveSimpleSave('cAll')
+    EventFlowSystemActor.NetShutdown('cNetShutdown', false)
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.MessageUnlockNext()
+    EventFlowSystemActor.PlayReport(0, 'cSysEndSingleMode')
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:012', false)
+    EventFlowSystemActor.EventFlagTempAllClear()
+    return
+
+flow ServerAccess:
+    run System_ServerRegistration::UploadProfileCore
+    return
+

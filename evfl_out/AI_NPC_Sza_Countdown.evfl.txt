@@ -1,0 +1,40 @@
+flow Root:
+    fEvent4 = MainNpc.DevideCountDownState()
+    if fEvent4 in (0, 1, 2, 3):
+        MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_sza_GEvent_Countdown', '', false, true, 30, 2, 0, 0, true, false, '', '')
+    elif fEvent4 in (5, 6):
+        MainNpc.NpcChangeAIState('cCountdownWait', 'SNPC_sza_GEvent_Countdown', 'Root', '', false, false)
+    elif fEvent4 == 7:
+        MainNpc.SetDefaultWaitAs('cNpcStickLightCountdown')
+        fEvent8 = MainNpc.CountdownTalkPrevState()
+        if fEvent8 == 1:
+            MainNpc.NpcChangeAIState('cSwingStickLight', 'SNPC_sza_GEvent_Countdown', 'Root', '', false, false)
+        elif fEvent8 == 2:
+            MainNpc.NpcChangeAIState('cUseCracker', 'SNPC_sza_GEvent_Countdown', 'Root', '', false, false)
+        elif fEvent8 in (0, 3):
+            run sub_grp!Event15
+    elif fEvent4 == 8:
+        MainNpc.SetDefaultWaitAs('cDefault')
+        if MainNpc.NpcIsEquipedHandTool(1):
+            MainNpc.NpcChangeChangeHandToolState('cChangeHandToolSimple', 'Root', 'SNPC_sza_GEvent_Countdown', '', false, false, 65534)
+        else:
+            MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_sza_GEvent_Countdown', '', false, true, 30, 2, 0, 0, true, false, '', '')
+    elif fEvent4 == 4:
+        run sub_grp!Event15
+    return
+
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.ServiceMotionControl(false)
+    return
+
+flow sub_grp!Event15:
+    if not MainNpc.NpcIsCreateAngle():
+        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_sza_GEvent_Countdown', false, false, false, 2, 0.0, '')
+    elif MainNpc.NpcIsEquipedHandTool(1):
+        MainNpc.NpcChangeAIState('cSpNpcNewYearWait', 'SNPC_sza_GEvent_Countdown', 'Root', '', false, false)
+    else:
+        MainNpc.NpcChangeChangeHandToolState('cChangeHandToolSimple', 'Root', 'SNPC_sza_GEvent_Countdown', '', false, false, 5741)
+

@@ -1,0 +1,306 @@
+flow Root:
+    event_flags_system['cLandTemp:CountEnableCeremony'] = 0
+    run ChkCeremonyOffice
+    run ChkCeremonyMarket
+    run ChkCeremonyMuseum
+    run ChkCeremonyTailor
+    run ChkCeremonyCampsite
+    run ChkCeremonyBridge
+    run ChkCeremonySlope
+    return
+
+flow Office:
+    subflow_results[7] = 0
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_01', false)
+entrypoint Event76:
+    run Rco_Ceremony_CmnSel
+    return
+
+flow Market1:
+    subflow_results[7] = 1
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_02', false)
+    run Event76
+    return
+
+flow Market2:
+    subflow_results[7] = 2
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_03', false)
+    run Event76
+    return
+
+flow Museum:
+    subflow_results[7] = 3
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_04', false)
+    run Event76
+    return
+
+flow Tailor:
+    subflow_results[7] = 4
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_05', false)
+    run Event76
+    return
+
+flow CampSite:
+    subflow_results[7] = 5
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_06', false)
+    run Event76
+    return
+
+flow Bridge:
+    subflow_results[7] = 6
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_07', false)
+    run Event76
+    return
+
+flow Slope:
+    subflow_results[7] = 7
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_08', false)
+    run Event76
+    return
+
+flow ChkCeremonyOffice:
+    if (not event_flags_system['cPlayer:HerdCeremonyOffice']) and (event_flags_system['cLand:BuiltTownOffice']) and (EventFlowSystemActor.FacilityOpenPastDays('cOffice', 8)):
+        subflow_results[14] = 1
+        subflow_results[15] = 1
+        event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    run sub_tm!ChkCeremonyOffice
+
+flow ChkCeremonyMarket:
+    fEvent96 = EventFlowSystemActor.ShopLevel()
+    if fEvent96 == NooksCrannyInitial:
+        if (not event_flags_system['cPlayer:HeldCeremonyMarket1']) and (EventFlowSystemActor.FacilityOpenPastDays('cMarket1', 8)):
+            subflow_results[13] = 1
+            subflow_results[15] = 1
+            event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    elif fEvent96 == NooksCrannyUpgraded:
+        if (not event_flags_system['cPlayer:HeldCeremonyMarket2']) and (EventFlowSystemActor.FacilityOpenPastDays('cMarket2', 8)):
+            subflow_results[13] = 2
+            subflow_results[15] = 1
+            event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    return
+
+flow ChkCeremonyMuseum:
+    fEvent135 = EventFlowSystemActor.MuseumLevel()
+    if fEvent135 == BlathersMuseumNoArt:
+        if (event_flags_system['cLand:MuseumConstruction2'] < 1) and (not event_flags_system['cPlayer:HeldCeremonyMuseum']) and (event_flags_system['cLand:Museum2Built']) and (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 8)):
+            subflow_results[12] = 1
+            subflow_results[15] = 1
+            event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    elif fEvent135 == BlathersMuseumArt:
+        if (not event_flags_system['cPlayer:HeldCeremonyMuseum2']) and (event_flags_system['cLand:Museum3Built']) and (EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 8)):
+            subflow_results[12] = 2
+            subflow_results[15] = 1
+            event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    run sub_tm!ChkCeremonyMuseum
+
+flow ChkCeremonyTailor:
+    if (not event_flags_system['cPlayer:HeldCeremonyTailor']) and (event_flags_system['cLand:TailorBuilt']) and (EventFlowSystemActor.FacilityOpenPastDays('cTailor', 8)):
+        subflow_results[11] = 1
+        subflow_results[15] = 1
+        event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    run sub_tm!ChkCeremonyTailor
+
+flow ChkCeremonyCampsite:
+    if (not event_flags_system['cPlayer:HeldCeremonyCampSite']) and (event_flags_system['cLand:CampSiteBuilt']) and (EventFlowSystemActor.FacilityOpenPastDays('cCampSite', 8)):
+        subflow_results[10] = 1
+        subflow_results[15] = 1
+        event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    run sub_tm!ChkCeremonyCampsite
+
+flow ChkCeremonyBridge:
+    if (not event_flags_system['cPlayer:HeldCeremonyBridge']) and (event_flags_system['cLand:CeremonyBuildBridge']):
+        subflow_results[9] = 1
+        subflow_results[15] = 1
+        event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    return
+
+flow ChkCeremonySlope:
+    if (not event_flags_system['cPlayer:HeldCeremonySlope']) and (event_flags_system['cLand:CeremonyBuildSlope']):
+        subflow_results[8] = 1
+        subflow_results[15] = 1
+        event_flags_system['cLandTemp:CountEnableCeremony'] += 1
+    return
+
+flow RcoAttendCeremony:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:101', false)
+    if event_flags_system['cLandTemp:CountEnableCeremony'] >= 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:112', false)
+        fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent26 == 0:
+            subflow_results[7] = 0
+            run Rco_Ceremony_Attend
+        elif fEvent26 == 2:
+entrypoint Event27:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_03', false)
+            if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+                run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
+        elif fEvent26 == 1:
+            if subflow_results[9] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:114', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:113', false)
+            fEvent67 = EventFlowSystemActor.GeneralTalkChoice6()
+            if fEvent67 == 1:
+                subflow_results[7] = 3
+                run sub_Event80
+            elif fEvent67 == 2:
+                subflow_results[7] = 4
+                run sub_Event80
+            elif fEvent67 == 3:
+                subflow_results[7] = 5
+                run sub_Event80
+            elif fEvent67 == 5:
+                run Rco_Ceremony_Multi_Cancel
+            elif fEvent67 == 4:
+                if subflow_results[9] == 0:
+                    subflow_results[7] = 7
+                    run sub_Event80
+                else:
+                    subflow_results[7] = 6
+                    run sub_Event80
+            elif fEvent67 == 0:
+                fEvent86 = subflow_results[13]
+                if fEvent86 == 1:
+                    subflow_results[7] = 1
+                    run sub_Event80
+                elif fEvent86 == 2:
+                    subflow_results[7] = 2
+                    run sub_Event80
+    elif event_flags_system['cLandTemp:CountEnableCeremony'] >= 2:
+        MainNpc.SetCeremonyChoice()
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:111', false)
+        fEvent77 = EventFlowSystemActor.SelectCeremony()
+        if fEvent77 == 0:
+            subflow_results[7] = 0
+            run sub_Event61
+        elif fEvent77 == 2:
+            subflow_results[7] = 3
+            run sub_Event61
+        elif fEvent77 == 3:
+            subflow_results[7] = 4
+            run sub_Event61
+        elif fEvent77 == 4:
+            subflow_results[7] = 5
+            run sub_Event61
+        elif fEvent77 == 5:
+            subflow_results[7] = 6
+            run sub_Event61
+        elif fEvent77 == 6:
+            subflow_results[7] = 7
+            run sub_Event61
+        elif fEvent77 == 7:
+            run Rco_Ceremony_Multi_Cancel
+        elif fEvent77 == 1:
+            fEvent143 = subflow_results[13]
+            if fEvent143 == 1:
+                subflow_results[7] = 1
+                run sub_Event61
+            elif fEvent143 == 2:
+                subflow_results[7] = 2
+                run sub_Event61
+    elif subflow_results[14] == 0:
+        fEvent9 = subflow_results[13]
+        if fEvent9 == 1:
+            run Market1
+        elif fEvent9 == 2:
+            run Market2
+        elif fEvent9 == 0:
+            fEvent157 = subflow_results[12]
+            if fEvent157 == 1:
+                run Museum
+            elif fEvent157 == 2:
+                run Museum2
+            elif fEvent157 == 0:
+                if subflow_results[11] != 0:
+                    run Tailor
+                elif subflow_results[10] != 0:
+                    run CampSite
+                elif subflow_results[9] == 0:
+                    run Slope
+                else:
+                    run Bridge
+    else:
+        run Office
+    return
+
+flow Rco_Ceremony_CmnSel:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event1:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:202', true)
+        fEvent78 = subflow_results[7]
+        if fEvent78 == 0:
+            event_flags_system['cPlayer:HerdCeremonyOffice'] = true
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyOffice', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        elif fEvent78 == 1:
+            event_flags_system['cPlayer:HeldCeremonyMarket1'] = true
+            run sub_Event13
+        elif fEvent78 == 2:
+            event_flags_system['cPlayer:HeldCeremonyMarket2'] = true
+            run sub_Event13
+        elif fEvent78 == 4:
+            event_flags_system['cPlayer:HeldCeremonyTailor'] = true
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyTailor', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        elif fEvent78 == 5:
+            event_flags_system['cPlayer:HeldCeremonyCampSite'] = true
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyCampSite', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        elif fEvent78 == 6:
+            event_flags_system['cPlayer:HeldCeremonyBridge'] = true
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyBridge', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        elif fEvent78 == 7:
+            event_flags_system['cPlayer:HeldCeremonySlope'] = true
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonySlope', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        elif fEvent78 == 3:
+            fEvent153 = subflow_results[12]
+            if fEvent153 == 1:
+                event_flags_system['cPlayer:HeldCeremonyMuseum'] = true
+                EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMuseum', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+            elif fEvent153 == 2:
+                event_flags_system['cPlayer:HeldCeremonyMuseum2'] = true
+                EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMuseum', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    elif subflow_results[7] in (0, 1, 2, 3, 4, 5):
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_01', false)
+        run sub_grp!Event134
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_02', false)
+        run sub_grp!Event134
+    return
+
+flow Rco_Ceremony_Attend:
+    run Event1
+    return
+
+flow Rco_Ceremony_Multi_Cancel:
+    run Event27
+    return
+
+flow Museum2:
+    subflow_results[7] = 3
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_09', false)
+    run Event76
+    return
+
+flow sub_tm!ChkCeremonyOffice:
+    return
+
+flow sub_tm!ChkCeremonyMuseum:
+    return
+
+flow sub_tm!ChkCeremonyTailor:
+    return
+
+flow sub_tm!ChkCeremonyCampsite:
+    return
+
+flow sub_Event80:
+    run Rco_Ceremony_Attend
+
+flow sub_Event61:
+    run Rco_Ceremony_Attend
+
+flow sub_grp!Event134:
+    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+        run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
+
+flow sub_Event13:
+    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMarket', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+

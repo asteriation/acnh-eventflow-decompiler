@@ -1,0 +1,8 @@
+flow Root:
+    if MainNpc.NpcHasPlayerProfileComment():
+        MainNpc.NpcSetPlayerProfileComment()
+        MainNpc.OpenMessageWindow('TalkSys/SYS_Player:1105', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSys/SYS_Player:1106', false)
+    return
+

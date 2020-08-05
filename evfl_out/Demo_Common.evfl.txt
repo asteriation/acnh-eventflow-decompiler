@@ -1,0 +1,46 @@
+flow Demo_Common_MemoNpcToPcKeep:
+    MainNpc.SetDeliveryItemAtRandom(3077, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Keep', 1)
+    return
+
+flow Demo_Cmn_Shopping:
+    MainNpc.SetDeliveryItemAtRandom(2114, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 0)
+    MainNpc.ShopBuyDone(false, false)
+    MainNpc.SetDeliveryItem(4, false)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+
+flow Demo_Cml_Shopping:
+    MainNpc.SetDeliveryItemAtRandom(2114, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 0)
+    run SNPC_cml::Cml_Common_DemoBuy
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+
+flow Demo_Boc_Shopping:
+    MainNpc.SetDeliveryItemAtRandom(2114, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 0)
+    run SNPC_boc::Boc_Common_DemoBuy
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+
+flow Demo_Rco_Countdown_Shopping:
+    MainNpc.SetDeliveryItemAtRandom(2114, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 0)
+    run SNPC_rco_GEvent_Countdown::Rco_Common_DemoBuy
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+
+flow Demo_Slo_Selling:
+    MainNpc.SetDeliveryItemAtRandom(2624, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 0)
+    MainNpc.SetDeliveryItemAtRandom(2114, false, 'cVillageRemakePattern', 0)
+    EventFlowSystemActor.WaitFrame(15)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+

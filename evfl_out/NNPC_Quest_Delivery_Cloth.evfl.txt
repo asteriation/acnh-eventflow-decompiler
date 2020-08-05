@@ -1,0 +1,141 @@
+flow Cloth:
+    MainNpc.SetItemName(0, 11, 0)
+    MainNpc.SetNpcName(1, 3)
+    if MainNpc.DeliveryIsSameClothAsNowWear():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:003', false)
+        MainNpc.SetDeliveryItemApplySave()
+        MainNpc.NpcDelivery('Default', 3)
+        quest_flags['cDeliveryItemOpen'] = false
+        run NotWear
+    else:
+        MainNpc.SetItemToNpcStockList(2, 2)
+        if MainNpc.DeliveryItemIsFavor():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:001', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:004', true)
+entrypoint Event55:
+                MainNpc.SetDeliveryClothToChange(0)
+                MainNpc.NpcDelivery('Default', 4)
+                MainNpc.SetDeliveryClothInfo(0)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:100', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:101', false)
+                    if MainNpc.IsBeforeClothFromPlayer():
+                        quest_flags['cDeliveryOriginalClothFromPlayer'] = true
+                    if MainNpc.DeliveryOriginalIsReadyMade():
+                        quest_flags['cDeliveryClothChange'] = true
+                    MainNpc.NpcSetShowFlag()
+                    quest_flags['cDeliveryClothChangeKeep'] = true
+                    MainNpc.UpdateNpcUsuallyTops('cTops')
+                    run Wear
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:102', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:103', false)
+                        if MainNpc.IsBeforeClothFromPlayer():
+                            quest_flags['cDeliveryOriginalClothFromPlayer'] = true
+                        if MainNpc.DeliveryOriginalIsReadyMade():
+                            quest_flags['cDeliveryClothChange'] = true
+                        MainNpc.NpcSetShowFlag()
+                        quest_flags['cDeliveryClothChangeKeep'] = true
+                        MainNpc.UpdateNpcUsuallyTops('cTops')
+                        run Wear
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:104', false)
+                        MainNpc.SetDeliveryClothToChange(1)
+                        MainNpc.NpcDelivery('Default', 4)
+                        MainNpc.SetDeliveryClothInfo(1)
+                        quest_flags['cDeliveryClothChangeAtLeast'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:105', false)
+                        run NotWear
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:005', false)
+                MainNpc.SetDeliveryItemApplySave()
+                MainNpc.NpcDelivery('Default', 3)
+                quest_flags['cDeliveryItemOpen'] = false
+                run NotWear
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:002', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:006', true)
+                run Recommend
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:007', false)
+                MainNpc.SetDeliveryItemApplySave()
+                MainNpc.NpcDelivery('Default', 3)
+                quest_flags['cDeliveryItemOpen'] = false
+                run NotWear
+    return
+
+flow Recommend:
+    run Event55
+    return
+
+flow Wear:
+    fEvent54 = MainNpc.DeliveryQuestType()
+    if fEvent54 == 3:
+        fEvent19 = MainNpc.CheckClientNpcLook()
+        if fEvent19 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:201', false)
+        elif fEvent19 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:202', false)
+        elif fEvent19 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:203', false)
+        elif fEvent19 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:204', false)
+        elif fEvent19 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:205', false)
+        elif fEvent19 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:206', false)
+        elif fEvent19 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:207', false)
+        elif fEvent19 == 7:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:208', false)
+        run NNPC_Quest_Delivery_End::Thanks2
+    elif fEvent54 == 4:
+        fEvent28 = MainNpc.CheckClientNpcLook()
+        if fEvent28 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:209', false)
+        elif fEvent28 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:210', false)
+        elif fEvent28 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:211', false)
+        elif fEvent28 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:212', false)
+        elif fEvent28 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:213', false)
+        elif fEvent28 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:214', false)
+        elif fEvent28 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:215', false)
+        elif fEvent28 == 7:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:216', false)
+        run NNPC_Quest_Delivery_End::Thanks3
+    return
+
+flow NotWear:
+    fEvent53 = MainNpc.DeliveryQuestType()
+    if fEvent53 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:300', false)
+        run NNPC_Quest_Delivery_End::Thanks2
+    elif fEvent53 == 4:
+        fEvent37 = MainNpc.CheckClientNpcLook()
+        if fEvent37 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:301', false)
+        elif fEvent37 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:302', false)
+        elif fEvent37 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:303', false)
+        elif fEvent37 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:304', false)
+        elif fEvent37 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:305', false)
+        elif fEvent37 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:306', false)
+        elif fEvent37 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:307', false)
+        elif fEvent37 == 7:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:308', false)
+        run NNPC_Quest_Delivery_End::Thanks3
+    return
+

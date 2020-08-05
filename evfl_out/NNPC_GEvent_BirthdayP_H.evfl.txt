@@ -1,0 +1,374 @@
+flow Root:
+    if not event_flags_system['cPlayer:BirthdayPCandleFlag']:
+        fEvent1 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent1 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:100', true)
+        elif fEvent1 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:101', true)
+        elif fEvent1 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:102', true)
+    elif event_flags_system['cLandTemp:PlayerBirthdayPinataEnd']:
+        fEvent5 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+        if fEvent5 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:103', true)
+        elif fEvent5 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:104', true)
+        elif fEvent5 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:105', true)
+        elif fEvent5 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:106', true)
+        elif fEvent5 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:107', true)
+    else:
+        run Root_7_Cupcake_1
+    return
+
+flow Root_1_Field:
+    fEvent11 = EventFlowSystemActor.RandomChoice3(3)
+    if fEvent11 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:001', true)
+    elif fEvent11 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:002', true)
+    elif fEvent11 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:003', true)
+    event_flags_npc['cNpcTemp:PlayerBirthdayCall'] = false
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+    MainNpc.WarpPlayerBirthdayHouse('TargetX', 'TargetZ', 'MiddleTargetX', 'MiddleTargetZ')
+    EventFlowSystemActor.RequestRecreateFtr()
+    EventFlowSystemActor.WaitFrame(30)
+    EventFlowSystemActor.FadeIn(true)
+    EventFlowSystemActor.PlayerBirthdayStopOriginalBGM()
+    MainNpc.CloseUmbrella()
+    fork:
+        branch0:
+        branch1:
+            MainNpc.NpcEnterDoor(true)
+            MainNpc.ChangeNpcPlace('cTalkNpcHouse')
+            EventFlowSystemActor.WaitFrame(50)
+            EventFlowSystemActor.SystemRequestChangeStage('cTalkNpcHouse', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        branch2:
+            EventFlowSystemActor.WaitFrame(50)
+            Player.PlayerMoveToTarget('TargetX', 'TargetZ', 0.0, 0.0, 'cNoDoorIn', true, false)
+    return
+
+flow Root_2_In:
+    EventFlowSystemActor.SoundDuckingOn(21)
+    EventFlowSystemActor.PlayerBirthdayStartBGM()
+    EventFlowSystemActor.CameraSetDemoParam('cPlayer', 'cTalk', 'cTalk', false, false, false, 0)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SetNpcFeel('cHappy', 3000)
+        branch2:
+            Npc_1.SetNpcFeel('cHappy', 3000)
+        branch3:
+            Npc_2.SetNpcFeel('cHappy', 3000)
+    MainNpc.NpcChangeNameStatus(2)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Cheering', '', 0, false, false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:005', true)
+        branch2:
+            Npc_1.CharacterEmoticonAction('Cheering', '', 0, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('Cheering', '', 0, false, false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+    Player.PlayerMoveToTarget(160.0, 185.0, 0.0, 0.0, 'cDemoTalk', true, false)
+    Player.TurnBody(0, 0.0)
+    MainNpc.NpcChangeNameStatus(0)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.TurnBody(10, 0.0)
+            fEvent77 = EventFlowSystemActor.PlayerBirthdayIsSpecialDay()
+            if fEvent77 in (0, 3, 4, 5, 6):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:006', true)
+            elif fEvent77 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:007', true)
+            elif fEvent77 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:008', true)
+            event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
+        branch2:
+            Npc_1.TurnBody(10, 0.0)
+            Npc_1.CharacterEmoticonAction('Clapping', '', 0, false, false)
+            event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
+        branch3:
+            Npc_2.TurnBody(10, 0.0)
+            Npc_2.CharacterEmoticonAction('Clapping', '', 0, false, false)
+            event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
+    EventFlowSystemActor.WaitFrame(5)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.WaitFrame(5)
+            MainNpc.EquipCracker()
+        branch2:
+            EventFlowSystemActor.WaitFrame(10)
+            Npc_1.EquipCracker()
+        branch3:
+            EventFlowSystemActor.WaitFrame(13)
+            Npc_2.EquipCracker()
+    EventFlowSystemActor.WaitFrame(10)
+    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 1.0, 0.5, false)
+    MainNpc.PlayerBirthdayWarpNpcForCandleBlow()
+    EventFlowSystemActor.BirthdaySwitchLight(0)
+    EventFlowSystemActor.BirthdaySwitchCurtain(0)
+    Player.PlayerBirthdayForbidStartUI(0)
+    return
+
+flow Root_3_Stop:
+    fEvent23 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent23 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:009', true)
+    elif fEvent23 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:010', true)
+    elif fEvent23 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:011', true)
+    Player.PlayerDemoMove('cNextInfoAngle', 3)
+    return
+
+flow Root_4_Main:
+    Player.PlayerBirthdayTurnBodyToTable()
+    Player.PlayerCandleBlow()
+    Player.TurnNeck(11)
+    EventFlowSystemActor.WaitFrame(10)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.UseCracker()
+            MainNpc.CharacterEmoticonAction('Clapping', '', 0, true, false)
+        branch2:
+            Npc_1.UseCracker()
+            Npc_1.CharacterEmoticonAction('Clapping', '', 0, true, false)
+        branch3:
+            Npc_2.UseCracker()
+            Npc_2.CharacterEmoticonAction('Clapping', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(40)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SetNpcFeel('cNormal', 120)
+        branch2:
+            Npc_1.SetNpcFeel('cNormal', 120)
+        branch3:
+            Npc_2.SetNpcFeel('cNormal', 120)
+    event_flags_system['cPlayer:BirthdayPCandleFlag'] = true
+    EventFlowSystemActor.WaitFrame(10)
+    EventFlowSystemActor.SoundTriggerEmit('LightOn', -1)
+    EventFlowSystemActor.BirthdaySwitchLight(1)
+    EventFlowSystemActor.WaitFrame(45)
+    event_flags_npc['cNpcTemp:PlayerBirthdayPresent'] = true
+    Player.SetDemoTalkTurnRate(0.10000000149011612)
+    Player.PlayerBirthdayForbidStartUI(0)
+    return
+
+flow Root_5_Present:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:013', false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:014', false)
+            MainNpc.DecideEventReward('cPlayerBirthdayPresent')
+            MainNpc.SetDeliveryItem(1, true)
+            if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:017', true)
+                MainNpc.WrapDeliveryItem()
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.SetBirthdayPresentFlag()
+                Player.CharacterEmoticonAction('Smiling', '', 0, false, false)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:018', true)
+            else:
+                event_flags_system['cPlayer:BirthdayPNotPresentFlag'] = true
+                MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 1, 3, 'cNone', 'cReward', 'cFastToday')
+                MainNpc.SetBirthdayPresentFlag()
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:019', true)
+            EventFlowSystemActor.SoundDuckingOn(33)
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('Smiling', '', 0, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('Smiling', '', 0, false, false)
+    event_flags_npc['cNpcTemp:PlayerBirthdayRestoreCamera'] = 1
+    MainNpc.Pinata(0)
+    EventFlowSystemActor.BirthdaySwitchCurtain(2)
+    Player.SetDemoTalkTurnRate(0.3199999928474426)
+    return
+
+flow Root_6_Pinata_1:
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Pinata', 'cPlayerBDPinataExplain', '', false, false, true, 0)
+    EventFlowSystemActor.SoundDuckingOff(33)
+    EventFlowSystemActor.FadeIn(true)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:020', false)
+    event_flags_npc['cNpcTemp:PlayerBirthdayPinata2'] = true
+    return
+
+flow Root_8_Out:
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SetNpcFeel('cNormal', 0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:033', true)
+        branch2:
+            Npc_1.SetNpcFeel('cNormal', 0)
+            Npc_1.TurnBody(10, 0.0)
+            Npc_1.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+        branch3:
+            Npc_2.SetNpcFeel('cNormal', 0)
+            Npc_2.TurnBody(10, 0.0)
+            Npc_2.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+    event_flags_system['cLandTemp:CanSetPlayerBirthdayCallNpc'] = false
+    EventFlowSystemActor.ReservePlayerMutterDemo('Root', 'cNextOutDoorEnd', 'Player_Demo_BirthdayP', false)
+    EventFlowSystemActor.SoundDuckingOff(21)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Greeting', '', 0, false, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('FaintSmile', '', 0, false, false)
+    EventFlowSystemActor.WaitFrame(20)
+    Player.CharacterEmoticonAction('Greeting', '', 0, false, false)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(10)
+    fork:
+        branch0:
+        branch1:
+            Player.PlayerDemoMove('cNextInfoAngle', -3)
+        branch2:
+            EventFlowSystemActor.WaitFrame(5)
+            EventFlowSystemActor.NextGoTo('Entrance', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow Root_7_Cupcake_1:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:023', true)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Pinata', 'cRoomNormal', 'cPinataStart', false, false, true, 0)
+    Player.PlayerMoveToTarget(160.0, 170.0, 0.0, 0.0, 'cDemoTalk', true, false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.TurnBody(10, 0.0)
+        branch2:
+            Npc_1.TurnBody(10, 0.0)
+        branch3:
+            Npc_2.TurnBody(10, 0.0)
+    Player.TurnBody(12, 180.0)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.EquipPinataStick()
+    run Root_7_Cupcake_2
+    return
+
+flow Root_Init:
+    if (event_flags_system['cPlayer:BirthdayPCandleFlag']) and (not event_flags_system['cLandTemp:PlayerBirthdayPinataEnd']):
+        MainNpc.NpcAITalkCastSetting('PlayerBirthday')
+    return
+
+flow Root_9_Stop2:
+    fEvent196 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent196 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:035', true)
+    elif fEvent196 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:036', true)
+    elif fEvent196 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:037', true)
+    Player.PlayerDemoMove('cNextInfoAngle', 3)
+    return
+
+flow Root_6_Pinata_2:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:021', false)
+    MainNpc.SetDeliveryItemAtRandom(2829, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:022', true)
+    event_flags_npc['cNpcTemp:PlayerBirthdayPinata2'] = false
+    Player.PlayerBirthdayForbidStartUI(1)
+    return
+
+flow Root_7_Cupcake_2:
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Pinata', 'cRoomNormal', '', false, false, true, 0)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:024', true)
+    MainNpc.Pinata(1)
+    fork:
+        branch0:
+        branch1:
+            Player.PlayerPinataWait()
+            event_flags_system['cLandTemp:PlayerBirthdayPinataEnd'] = true
+        branch2:
+            MainNpc.NpcPinataCheer()
+        branch3:
+            Npc_1.NpcPinataCheer()
+        branch4:
+            Npc_2.NpcPinataCheer()
+    fEvent221 = MainNpc.PinataResult()
+    if fEvent221 == 0:
+        MainNpc.SetNumCupCake(10)
+    elif fEvent221 == 1:
+        MainNpc.SetNumCupCake(8)
+    elif fEvent221 == 2:
+        MainNpc.SetNumCupCake(6)
+    MainNpc.Pinata(2)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Pinata', 'cPlayerBDPinataResult', 'cPinataStart', false, false, true, 0)
+    EventFlowSystemActor.WaitFrame(25)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Clapping', '', 30, false, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('Clapping', '', 30, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('Clapping', '', 30, false, false)
+    fEvent60 = MainNpc.PinataResult()
+    if fEvent60 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:027', true)
+    elif fEvent60 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:026', true)
+    elif fEvent60 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:025', true)
+    EventFlowSystemActor.SoundDuckingOn(33)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 1, false, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('EmotEnd', '', 1, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('EmotEnd', '', 1, false, false)
+    MainNpc.Pinata(3)
+    Player.PutawayPinataStick()
+    Player.TurnBody(0, 0.0)
+    event_flags_npc['cNpcTemp:PlayerBirthdayCupcake3'] = true
+    return
+
+flow Root_7_Cupcake_3:
+    MainNpc.DecideEventReward('cCupcake')
+    MainNpc.SetDeliveryItem(1, false)
+    MainNpc.NpcDelivery('Keep', 17)
+    EventFlowSystemActor.SoundDuckingOff(33)
+    EventFlowSystemActor.FadeIn(true)
+    if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:028', false)
+        MainNpc.NpcDelivery('Default', 10)
+        MainNpc.SetEventRewardToPlayerBaggage('cFree')
+        Player.CharacterEmoticonAction('Smiling', '', 0, false, false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:029', false)
+    elif event_flags_system['cPlayer:BirthdayPNotPresentFlag']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:030', false)
+        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 4, 6, 'cNone', 'cReward', 'cFastToday')
+        MainNpc.NpcDelivery('Default', 3)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:031', false)
+        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 4, 6, 'cNone', 'cReward', 'cFastToday')
+        MainNpc.NpcDelivery('Default', 3)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:032', true)
+    event_flags_npc['cNpcTemp:PlayerBirthdayCupcake3'] = false
+    return
+

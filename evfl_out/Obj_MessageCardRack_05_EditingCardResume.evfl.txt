@@ -1,0 +1,106 @@
+flow Root:
+    if subflow_results[1] == 0:
+        fEvent6 = EventFlowSystemActor.UnfinishMailToType()
+        if fEvent6 == 0:
+            EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToNpc', 'cDegit', '', 0)
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:601', false)
+            run sub_Event66
+        elif fEvent6 in (1, 2):
+            EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToPlayer', 'cDegit', '', 0)
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:600', false)
+            run sub_Event66
+        elif fEvent6 == 3:
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:602', false)
+            run sub_Event66
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:604', false)
+        run sub_Event66
+    return
+
+flow EntryPoint_RemoveCard:
+    if event_flags_system['cPlayer:MessageCardPayment']:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:631', false)
+        EventFlowSystemActor.UIMoneyAppear()
+        EventFlowSystemActor.BellCountDown(200, False)
+        event_flags_system['cPlayer:MessageCardPayment'] = false
+        EventFlowSystemActor.UIMoneyDisappear()
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:630', false)
+    if EventFlowSystemActor.HasAttachedPresent():
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:550', false)
+        EventFlowSystemActor.ReturnAttachedPresentToBaggage()
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:552', false)
+    EventFlowSystemActor.DeleteUnfinishMail()
+    EventFlowSystemActor.UISaveIconAppear()
+    EventFlowSystemActor.SaveSimpleSave('cAll')
+    EventFlowSystemActor.UISaveIconDisappear()
+    return
+
+flow EntryPoint_ChangeToName:
+    if event_flags_system['cPlayer:MessageCardPayment']:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:625', false)
+        EventFlowSystemActor.UIMoneyAppear()
+        EventFlowSystemActor.BellCountDown(200, False)
+        event_flags_system['cPlayer:MessageCardPayment'] = false
+        EventFlowSystemActor.UIMoneyDisappear()
+    EventFlowSystemActor.CreateChoiceMailDestination(true)
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:621', false)
+    fEvent13 = EventFlowSystemActor.GeneralTalkChoice4()
+    if fEvent13 == 0:
+        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
+    elif fEvent13 == 1:
+        run Obj_MessageCardRack_02_SendFuture::EntryPoint_SendFuture
+    elif fEvent13 == 2:
+        run Obj_MessageCardRack_03_SendFriend::EntryPoint_SendFriend
+    return
+
+flow EntryPoint_ReEditKeepCard:
+    EventFlowSystemActor.UIMoneyDisappear()
+    EventFlowSystemActor.UITempMsgCardHandling()
+    fEvent4 = EventFlowSystemActor.UIManageUnfinishedMessage()
+    if fEvent4 == 0:
+        EventFlowSystemActor.NetUpdateFriendList('cFriendOnly')
+        fEvent24 = EventFlowSystemActor.IsValidUnfinishMailTo()
+        if fEvent24 == 1:
+            EventFlowSystemActor.SetTagNameUnfinishMail(0, 'cCommonNpc')
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:611', false)
+            run sub_grp!Event29
+        elif fEvent24 in (2, 3):
+            EventFlowSystemActor.SetTagNameUnfinishMail(0, 'cCommonPlayer')
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:610', false)
+            run sub_grp!Event29
+        elif fEvent24 == 0:
+            fEvent12 = EventFlowSystemActor.UnfinishMailToType()
+            if fEvent12 == 2:
+                run Obj_MessageCardRack_03_SendFriend::EntryPoint_EditFriend
+            elif fEvent12 == 3:
+                run Obj_MessageCardRack_02_SendFuture::EntryPoint_EditFuture
+            elif fEvent12 == 4:
+                run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
+            elif fEvent12 == 0:
+                if EventFlowSystemActor.HasFreeInPostOffice('cToNpc'):
+                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditNPC
+                else:
+                    run Obj_MessageCardRack::EntryPoint_StockFull
+            elif fEvent12 == 1:
+                if EventFlowSystemActor.HasFreeInPostOffice('cToVillagePlayer'):
+                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
+                else:
+                    run Obj_MessageCardRack::EntryPoint_StockFull
+    elif fEvent4 == 1:
+        run EntryPoint_ChangeToName
+    elif fEvent4 == 2:
+        run EntryPoint_RemoveCard
+    elif fEvent4 == 3:
+        run Obj_MessageCardRack::EntryPoint_CancelNega
+    return
+
+flow sub_Event66:
+    run EntryPoint_ReEditKeepCard
+
+flow sub_grp!Event29:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run EntryPoint_ChangeToName
+    else:
+        run EntryPoint_RemoveCard
+

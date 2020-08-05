@@ -1,0 +1,34 @@
+flow Root:
+    if not EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+        if event_flags_system['cLandTemp:CatchInsectFesQuestStart']:
+            run CatchInsectFes_Quest
+            MainNpc.SetNpcFeel('cNormal', 120)
+            event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif event_flags_system['cLandTemp:CatchFishFesQuestStart']:
+            run CatchFishFes_Quest
+            MainNpc.SetNpcFeel('cNormal', 120)
+            event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow CatchInsectFes_Quest:
+    fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent7 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:001', true)
+    elif fEvent7 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:002', true)
+    elif fEvent7 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:003', true)
+    return
+
+flow CatchFishFes_Quest:
+    fEvent13 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent13 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:004', true)
+    elif fEvent13 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:005', true)
+    elif fEvent13 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_GEvent_Quest:006', true)
+    return
+

@@ -1,0 +1,35 @@
+flow Root:
+    if event_flags_system['cPlayer:MainmenuRecipe']:
+        if not event_flags_system['cPlayer:CompleteEventMayDay']:
+            if not event_flags_system['cPlayer:GetMayDayTicket']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:001', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:002', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:003', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:004', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:005', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:006', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:007', false)
+                event_flags_system['cPlayer:GetMayDayTicket'] = true
+                event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+                EventFlowSystemActor.ExitFlowchart()
+            elif event_flags_system['cPlayer:UseMayDayTicket']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:008', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:009', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:009_01', false)
+                if event_flags_system['cPlayer:ClearMayDayTour']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:010', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:011', false)
+                event_flags_system['cPlayer:CompleteEventMayDay'] = true
+                event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+                EventFlowSystemActor.ExitFlowchart()
+    elif not event_flags_system['cPlayerTemp:RecommendDIYtrialMayDay']:
+        event_flags_system['cPlayerTemp:RecommendDIYtrialMayDay'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_62_Event_MayDay:012', false)
+        event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+    return
+

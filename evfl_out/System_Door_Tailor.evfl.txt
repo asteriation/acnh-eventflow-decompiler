@@ -1,0 +1,14 @@
+flow Root:
+    if EventFlowSystemActor.NetIsDreaming():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:112_02', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    elif not EventFlowSystemActor.IsDuringBusinessHours('Tailor'):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:112', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    elif EventFlowSystemActor.EnvHourOverGrowUp():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:112_01', false)
+        EventFlowSystemActor.SetCheckResultStructureDoor(1)
+    else:
+        EventFlowSystemActor.SetCheckResultStructureDoor(0)
+    return
+

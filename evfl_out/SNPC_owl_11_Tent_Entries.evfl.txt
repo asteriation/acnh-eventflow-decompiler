@@ -1,0 +1,85 @@
+flow owl_Tent_AfterDonation:
+    event_flags_system['cPlayer:OwlDonationDone'] = true
+    if EventFlowSystemActor.MuseumDonationNumCheck(20):
+        event_flags_system['cPlayer:FutaReadyForMuseum'] = true
+        event_flags_system['cPlayer:FutaReadyForMuseumToday'] = true
+        event_flags_system['cLand:MuseumGrowupEnable1'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:191', false)
+        if event_flags_system['cLand:MuseumTentBuiltToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:191_01', false)
+            event_flags_system['cLand:MuseumGrowupEnable1'] = true
+            event_flags_system['cLand:FinishMuseumPreparation1stDay'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:191_02', false)
+    else:
+        event_flags_system['cLand:DonationAmountForMuseum'] += -1
+        EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cLand:DonationAmountForMuseum', 0)
+        if event_flags_system['cLand:OwlFoundFossil']:
+            if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation1'):
+entrypoint Event29:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:161', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run SNPC_owl_01_Museum_Donation::OwlTentDonationAgain
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:162', false)
+                    run sub_Event6
+            else:
+                run sub_Event6
+        elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):
+            run Owl_TentDonationAgainAsk
+        else:
+            run sub_Event6
+    return
+
+flow owl_DonatedFossil1st_Unknown:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:151_01', false)
+    run SNPC_owl_02_Museum_Judgment::Fossil_Check
+    fEvent42 = EventFlowSystemActor.MuseumLevel()
+    if fEvent42 in (BlathersMuseumNoArt, BlathersMuseumArt):
+        run SNPC_owl_01_Museum_Donation::Fossil_DonationTypeChk
+    elif fEvent42 in (BlathersNotMovedIn, BlathersTent):
+entrypoint Event15:
+        if EventFlowSystemActor.MuseumDonationNumCheck(20):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:152', false)
+            MainNpc.NpcDelivery('"Default"', 10)
+            if event_flags_system['cLand:OwlFoundFossil']:
+                run SNPC_owl_00_Common::Again
+            else:
+                run SNPC_owl_01_Museum_Donation::Eplanation_ExpertOpinion
+        elif EventFlowSystemActor.MuseumDonationNumCheck(19):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:154', false)
+            run sub_grp!Event12
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:153', false)
+            run sub_grp!Event12
+    return
+
+flow owl_DonatedFossil1st_Known:
+    event_flags_system['cPlayerTemp:OwlKnownFossil'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:151_02', false)
+    fEvent36 = EventFlowSystemActor.MuseumLevel()
+    if fEvent36 in (BlathersNotMovedIn, BlathersTent):
+        run FromDonatedFossil1st_Known
+    elif fEvent36 in (BlathersMuseumNoArt, BlathersMuseumArt):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:151_03', false)
+        run SNPC_owl_01_Museum_Donation::Fossil_DonationTypeChk
+    return
+
+flow FromDonatedFossil1st_Known:
+    run Event15
+    return
+
+flow Owl_TentDonationAgainAsk:
+    run Event29
+    return
+
+flow sub_Event6:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
+
+flow sub_grp!Event12:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run SNPC_owl_02_Museum_Judgment::Donation_Accept
+        run owl_Tent_AfterDonation
+    else:
+        run SNPC_owl_02_Museum_Judgment::Donation_Decline
+

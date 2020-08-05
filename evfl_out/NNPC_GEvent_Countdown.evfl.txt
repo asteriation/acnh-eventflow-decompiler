@@ -1,0 +1,248 @@
+flow Root:
+    if EventFlowSystemActor.EventCheck('Countdown') == 1:
+        if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+            run Chat_After
+        else:
+            run Chk_Hat
+            run Chat_Before
+    return
+
+flow Chat_After:
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        if EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0:
+            fEvent68 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+            if fEvent68 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:060', false)
+            elif fEvent68 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:061', false)
+            elif fEvent68 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:062', false)
+            elif fEvent68 == 3:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:063', false)
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            fEvent63 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+            if fEvent63 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:065', false)
+            elif fEvent63 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:066', false)
+            elif fEvent63 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:067', false)
+            elif fEvent63 == 3:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:068', false)
+            EventFlowSystemActor.ExitFlowchart()
+    elif EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0:
+        fEvent58 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+        if fEvent58 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:070', false)
+        elif fEvent58 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:071', false)
+        elif fEvent58 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:072', false)
+        elif fEvent58 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:073', false)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        fEvent53 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+        if fEvent53 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:075', false)
+        elif fEvent53 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:076', false)
+        elif fEvent53 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:077', false)
+        elif fEvent53 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:078', false)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Chat_Before:
+    if EventFlowSystemActor.EnvHourCompare(23, 59, true, true) == 0:
+        if not event_flag_npc['cNpcMemory:GEventTalkProgressFlag']:
+            event_flags_npc['cNpcMemory:GEventTalkProgressFlag'] = true
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:001', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.SystemCheckNowStage('cField'):
+            if EventFlowSystemActor.EnvHourCompare(23, 30, true, true) == 0:
+                if (any (4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191) in MainNpc.NpcEquipItem('cAny')) and (any (5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952) in MainNpc.NpcEquipItem('cAny')):
+                    run WearHat_1hour_Before
+                else:
+                    fEvent96 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                    if fEvent96 == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:004', false)
+                        run sub_Event99
+                    elif fEvent96 == 1:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:005', false)
+                        run sub_Event99
+                    elif fEvent96 == 2:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:006', false)
+                        run sub_Event99
+                    elif fEvent96 in (3, 4):
+                        run Chat_WithHat_1hour_Before
+            elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) != 0:
+                fEvent23 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                if fEvent23 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:032', false)
+                elif fEvent23 == 1:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:033', false)
+                elif fEvent23 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:034', false)
+                EventFlowSystemActor.ExitFlowchart()
+            elif (any (4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191) in MainNpc.NpcEquipItem('cAny')) and (any (5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952) in MainNpc.NpcEquipItem('cAny')):
+                run WearHat_30min_Before
+            else:
+                run sub_grp!Event38
+        elif EventFlowSystemActor.EnvHourCompare(23, 30, true, true) == 0:
+            if (any (4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191) in MainNpc.NpcEquipItem('cAny')) and (any (5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952) in MainNpc.NpcEquipItem('cAny')):
+                run WearHat_1hour_Before
+            else:
+                fEvent9 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                if fEvent9 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:038', false)
+                    run sub_Event134
+                elif fEvent9 == 1:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:039', false)
+                    run sub_Event134
+                elif fEvent9 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:040', false)
+                    run sub_Event134
+                elif fEvent9 in (3, 4):
+                    run Chat_WithHat_1hour_Before
+        elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) != 0:
+            fEvent76 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent76 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:054', false)
+            elif fEvent76 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:055', false)
+            elif fEvent76 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:056', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif (any (4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191) in MainNpc.NpcEquipItem('cAny')) and (any (5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952) in MainNpc.NpcEquipItem('cAny')):
+            run WearHat_30min_Before
+        else:
+            run sub_grp!Event83
+    elif EventFlowSystemActor.SystemCheckNowStage('cField'):
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:035', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:036', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:057', false)
+        run sub_Event133
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:058', false)
+        run sub_Event133
+    return
+
+flow Chat_WithHat_30min_Before:
+    if subflow_results[0] == 0:
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:021', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:022', false)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:023', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:024', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow WearHat_30min_Before:
+    if subflow_results[0] == 0:
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:025', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:026', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:027', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:028', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:030', false)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:029', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:030', false)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow WearHat_1hour_Before:
+    if subflow_results[0] == 0:
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:011', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:012', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:013', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:014', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:016', false)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:015', false)
+        MainNpc.NpcWearNewYearHat()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:016', false)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Chat_WithHat_1hour_Before:
+    if subflow_results[0] == 0:
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:008', false)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:009', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:010', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Chk_Hat:
+    if (not EventFlowSystemActor.PlayerIsEquipItem('cAny', false, true, 4799, 5186, 5187, 5192, 5188, 5190, 5189, 5191)) and (not EventFlowSystemActor.PlayerIsEquipItem('cAny', false, true, 5946, 5947, 5948, 5953, 5949, 5951, 5950, 5952)):
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 0
+    return
+
+flow sub_Event133:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_Event134:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_Event99:
+    EventFlowSystemActor.ExitFlowchart()
+
+flow sub_grp!Event38:
+    fEvent38 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+    if fEvent38 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:018', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent38 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:019', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent38 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:020', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent38 in (3, 4):
+        run Chat_WithHat_30min_Before
+
+flow sub_grp!Event83:
+    fEvent83 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+    if fEvent83 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:046', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent83 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:047', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent83 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:048', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent83 in (3, 4):
+        run Chat_WithHat_30min_Before
+

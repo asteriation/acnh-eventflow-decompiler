@@ -1,0 +1,94 @@
+flow MoveBuildStateChk:
+    if event_flags_system['cLand:RcoMoveReservedAnyone'] >= 2:
+        subflow_results[0] = 2
+    elif event_flags_system['cLand:RcoMoveReservedAnyone'] >= 1:
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 0
+    return
+
+flow MoveBuildKindChk:
+    if event_flags_system['cLand:RcoMoveReservedKind'] >= 6:
+        subflow_results[1] = 6
+    elif event_flags_system['cLand:RcoMoveReservedKind'] >= 5:
+        subflow_results[1] = 5
+    elif event_flags_system['cLand:RcoMoveReservedKind'] >= 4:
+        subflow_results[1] = 4
+    elif event_flags_system['cLand:RcoMoveReservedKind'] >= 3:
+        subflow_results[1] = 3
+    elif event_flags_system['cLand:RcoMoveReservedKind'] >= 2:
+        subflow_results[1] = 2
+    elif event_flags_system['cLand:RcoMoveReservedKind'] >= 1:
+        subflow_results[1] = 1
+    else:
+        subflow_results[1] = 0
+    return
+
+flow MoveBuildError:
+    run MoveBuildStateChk
+    run MoveBuildKindChk
+    run MoveBuildErrorSub
+    fEvent33 = subflow_results[0]
+    if fEvent33 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521', false)
+    elif fEvent33 == 1:
+        if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+            fEvent30 = subflow_results[1]
+            if fEvent30 == 1:
+                if event_flags_system['cPlayer:RcoMoveHouseReserved']:
+                    run sub_Event28
+                else:
+                    run sub_Event29
+            elif fEvent30 in (2, 3, 4, 5, 6):
+                run sub_Event28
+        elif event_flags_system['cPlayer:RcoMoveHouseReserved']:
+            run sub_Event28
+        else:
+            run sub_Event29
+    return
+
+flow MoveBuildErrorSub:
+    EventFlowSystemActor.StructureMoveSetTag(0, 0)
+    EventFlowSystemActor.StructureMoveSetTag(1, 1)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        fEvent19 = subflow_results[1]
+        if fEvent19 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:502', false)
+        elif fEvent19 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:504', false)
+        elif fEvent19 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:503', false)
+        elif fEvent19 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:505', false)
+        elif fEvent19 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:506', false)
+        elif fEvent19 == 1:
+            if event_flags_system['cPlayer:RcoMoveHouseReserved']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:501', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:511', false)
+    else:
+        fEvent20 = subflow_results[1]
+        if fEvent20 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:512', false)
+        elif fEvent20 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:514', false)
+        elif fEvent20 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:513', false)
+        elif fEvent20 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:515', false)
+        elif fEvent20 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:516', false)
+        elif fEvent20 == 1:
+            if event_flags_system['cPlayer:RcoMoveHouseReserved']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:501', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:511', false)
+    return
+
+flow sub_Event28:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
+
+flow sub_Event29:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
+

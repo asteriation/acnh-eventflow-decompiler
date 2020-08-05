@@ -1,0 +1,204 @@
+flow Root:
+    if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+        if EventFlowSystemActor.EnvHourCompare(23, 59, true, true) != 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:010', false)
+        elif EventFlowSystemActor.IsMyVillage():
+            if not event_flags_system['cPlayer:RcoTalkBeforeCountdown']:
+                event_flags_system['cPlayer:RcoTalkBeforeCountdown'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:100', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:102', false)
+                subflow_results[0] = 0
+                subflow_results[1] = 0
+                run Rco_Get_Cracker_Chk
+                run Rco_Common_ItemFull_Get
+            elif event_flags_system['cPlayer:SzaGotCracker']:
+                run Rco_Select_Buy
+            else:
+                subflow_results[0] = 1
+                subflow_results[1] = 0
+                run Rco_Get_Cracker_Chk
+                run Rco_Select_Buy
+        elif not event_flags_system['cPlayerVisit:RcoVisitorTalkBeforeCountdown']:
+            event_flags_system['cPlayerVisit:RcoVisitorTalkBeforeCountdown'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:111', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:113', false)
+            subflow_results[0] = 0
+            subflow_results[1] = 0
+            run Rco_Get_Cracker_Chk
+            run Rco_Common_ItemFull_Get
+        elif event_flags_system['cPlayerVisit:VisitorGotCracker']:
+            run Rco_Select_Buy
+        else:
+            subflow_results[0] = 1
+            subflow_results[1] = 0
+            run Rco_Get_Cracker_Chk
+            run Rco_Select_Buy
+    elif EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayer:RcoTalkAfterCountdown']:
+            event_flags_system['cPlayer:RcoTalkAfterCountdown'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:108', false)
+            if not event_flags_system['cPlayer:RcoTalkBeforeCountdown']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:101', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:102', false)
+                subflow_results[1] = 0
+                run Rco_Get_Cracker_Chk
+                run Rco_Common_ItemFull_Get
+        elif event_flags_system['cPlayer:SzaGotCracker']:
+            run Rco_Select_Buy
+        else:
+            subflow_results[0] = 1
+            subflow_results[1] = 0
+            run Rco_Get_Cracker_Chk
+            run Rco_Select_Buy
+    elif not event_flags_system['cPlayerVisit:RcoVisitorTalkAfterCountdown']:
+        event_flags_system['cPlayerVisit:RcoVisitorTalkAfterCountdown'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:116', false)
+        if not event_flags_system['cPlayer:RcoTalkBeforeCountdown']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:112', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:113', false)
+            subflow_results[0] = 0
+            subflow_results[1] = 0
+            run Rco_Get_Cracker_Chk
+            run Rco_Common_ItemFull_Get
+    elif event_flags_system['cPlayerVisit:VisitorGotCracker']:
+        run Rco_Select_Buy
+    else:
+        subflow_results[0] = 1
+        subflow_results[1] = 0
+        run Rco_Get_Cracker_Chk
+        run Rco_Select_Buy
+    return
+
+flow Rco_Select_Buy:
+    EventFlowSystemActor.UIMoneyAppear()
+    if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:001', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:002', false)
+    EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cMoney', '', 500)
+    EventFlowSystemActor.SetTagFromSystem(1, 'cFlow', 'cMoney', '', 300)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:003', false)
+    fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent1 == 0:
+        MainNpc.CountdownRctManualChoice()
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:009', false)
+        fEvent10 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent10 == 0:
+            MainNpc.RctSetNewYearHat(0)
+            run sub_grp!Event27
+        elif fEvent10 == 1:
+            MainNpc.RctSetNewYearHat(1)
+            run sub_grp!Event27
+        elif fEvent10 == 2:
+            MainNpc.RctSetNewYearHat(2)
+            run sub_grp!Event27
+        elif fEvent10 == 3:
+            MainNpc.RctSetNewYearHat(3)
+            run sub_grp!Event27
+        elif fEvent10 == 4:
+            run Rco_Common_Cancel
+    elif fEvent1 == 1:
+        subflow_results[1] = 1
+        run Rco_Get_Cracker_Chk
+        run Rco_Common_ItemFull_Buy
+    elif fEvent1 == 2:
+        run Rco_Common_Cancel
+    return
+
+flow Rco_Cracker_Get:
+    if subflow_results[0] != 0:
+        if EventFlowSystemActor.IsMyVillage():
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:107', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:114', false)
+    MainNpc.MessageSuspend()
+    MainNpc.SetDeliveryItem(1, true)
+    MainNpc.NpcDelivery('Keep', 1)
+    if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:103', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:104', false)
+    MainNpc.NpcDelivery('"Default"', 2)
+    if EventFlowSystemActor.IsMyVillage():
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:105', false)
+        event_flags_system['cPlayer:SzaGotCracker'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:115', false)
+        event_flags_system['cPlayerVisit:VisitorGotCracker'] = true
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Rco_Get_Cracker_Chk:
+    EventFlowSystemActor.SelectRewardItemDirect(2753, 5, 'cVillageRemakePattern', 0)
+    if EventFlowSystemActor.ShoppingCapacity(2753, 'cReward'):
+        if subflow_results[1] == 0:
+            run Rco_Cracker_Get
+        else:
+            subflow_results[2] = 1
+            run Rco_Common_Buy
+    return
+
+flow Rco_Common_ItemFull_Get:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:106', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Rco_Common_NoMoney:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:005', true)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Rco_Common_ItemFull_Buy:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:006', true)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Rco_Common_Cancel:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:004', true)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Rco_Common_Buy:
+    if subflow_results[2] == 0:
+        if EventFlowSystemActor.HasBellCount(500):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:007', false)
+            run Demo_Common::Demo_Rco_Countdown_Shopping
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:008', true)
+            if subflow_results[2] == 0:
+                EventFlowSystemActor.PlayReport(500, 'cCountdownBuyHat')
+                event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 500
+            else:
+                EventFlowSystemActor.PlayReport(300, 'cCountdownBuyCracker')
+                event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 300
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            run Rco_Common_NoMoney
+    elif EventFlowSystemActor.HasBellCount(300):
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:007', false)
+        run Demo_Common::Demo_Rco_Countdown_Shopping
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:008', true)
+        if subflow_results[2] == 0:
+            EventFlowSystemActor.PlayReport(500, 'cCountdownBuyHat')
+            event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 500
+        else:
+            EventFlowSystemActor.PlayReport(300, 'cCountdownBuyCracker')
+            event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 300
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        run Rco_Common_NoMoney
+    return
+
+flow Rco_Common_DemoBuy:
+    MainNpc.SetDeliveryItem(1, true)
+    if subflow_results[2] == 0:
+        EventFlowSystemActor.BellCountDown(500, True)
+    else:
+        EventFlowSystemActor.BellCountDown(300, True)
+    return
+
+flow sub_grp!Event27:
+    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        run Rco_Common_Buy
+    else:
+        run Rco_Common_ItemFull_Buy
+

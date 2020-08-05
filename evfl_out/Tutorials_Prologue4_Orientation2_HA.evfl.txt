@@ -1,0 +1,131 @@
+flow Root:
+    MainNpc.SetNpcName(0, 14)
+    if event_flags_system['cPlayer:PrologueDone1stTalkAtPlaza']:
+        if event_flags_system['cPlayer:PrologueStartedCampfire']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:101', false)
+        elif event_flags_system['cPlayer:PrologueAfterBuiltTentTalk']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:001', false)
+        elif event_flags_system['cLand:Prologue4BuiltNpcHA']:
+            if not event_flags_system['cPlayer:Prologue4HaGetTent']:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:021', false)
+            elif event_flags_system['cPlayer:Prologue4HaBuiltTent']:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:024', false)
+                if event_flags_system['cPlayer:Prologue4AnGetTent']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:025_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:025_01', false)
+            else:
+                event_flags_system['cPlayer:Prologue4HaBuiltTent'] = true
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:022', false)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:023', false)
+                run Prologue_NnpcTentChk
+        elif event_flags_system['cPlayer:Prologue4HaGetTent']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:013', false)
+        elif event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
+            run sub_grp!Event59
+        else:
+            event_flags_npc['cNpcMemory:FirstMeetGreetAtThisVillage'] = true
+            event_flags_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday'] = true
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:001', false)
+            run sub_grp!Event59
+    elif MainNpc.NpcBlackBoard('ArrivePlaza', 1):
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:002', false)
+    else:
+        fEvent63 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent63 == 0:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:000_01', false)
+        elif fEvent63 == 1:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:000_02', false)
+        elif fEvent63 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:000_03', false)
+    return
+
+flow Prologue_NnpcTentChk:
+    run Event13
+    return
+
+flow sub_grp!Event59:
+    if not event_flags_system['cPlayer:PlayerPocketUIEnable']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:002', false)
+    elif not event_flags_system['cLand:Prologue4BuiltPlayer']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:003', false)
+    elif event_flags_system['cPlayer:Prologue4HaNoTent']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:014', false)
+        MainNpc.SetDeliveryItem(3, true)
+        fEvent3 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent3 == 0:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:005', true)
+            run System_Structure_Common::PreviewStructure
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, false, false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:006', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:007', true)
+                run System_Structure_Common::DeletePreviewAndBuildStructureInNpcTalk
+                MainNpc.SetItemName(0, 3, 0)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_01', false)
+                event_flags_system['cLand:Prologue4BuiltNpcHA'] = true
+entrypoint Event13:
+                if event_flags_system['cLand:Prologue4BuiltNpcAN']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_02', true)
+                    Player.TurnNeck(11)
+                    EventFlowSystemActor.WaitFrame(10)
+                    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('isSpeak', 1, 'rco', 1)
+                elif event_flags_system['cPlayer:Prologue4AnGetTent']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:025_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_03', false)
+            else:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:010', true)
+                run System_Structure_Common::DeletePreviewStructureInNpcTalk
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
+            MainNpc.SetDeliveryItem(3, true)
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
+            MainNpc.NpcDelivery('"Default"', 2)
+            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
+            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
+            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
+        elif fEvent3 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
+    else:
+        event_flags_system['cPlayer:Prologue4HaNoTent'] = true
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:004', false)
+        MainNpc.SetDeliveryItem(3, true)
+        fEvent3 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent3 == 0:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:005', true)
+            run System_Structure_Common::PreviewStructure
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, false, false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:006', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:007', true)
+                run System_Structure_Common::DeletePreviewAndBuildStructureInNpcTalk
+                MainNpc.SetItemName(0, 3, 0)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_01', false)
+                event_flags_system['cLand:Prologue4BuiltNpcHA'] = true
+entrypoint Event13:
+                if event_flags_system['cLand:Prologue4BuiltNpcAN']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_02', true)
+                    Player.TurnNeck(11)
+                    EventFlowSystemActor.WaitFrame(10)
+                    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('isSpeak', 1, 'rco', 1)
+                elif event_flags_system['cPlayer:Prologue4AnGetTent']:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:025_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:008_03', false)
+            else:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:010', true)
+                run System_Structure_Common::DeletePreviewStructureInNpcTalk
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
+            MainNpc.SetDeliveryItem(3, true)
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
+            MainNpc.NpcDelivery('"Default"', 2)
+            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
+            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
+            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
+        elif fEvent3 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
+

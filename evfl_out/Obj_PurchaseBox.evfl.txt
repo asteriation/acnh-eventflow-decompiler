@@ -1,0 +1,50 @@
+flow Root:
+    if EventFlowSystemActor.NetIsDreaming():
+        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:911', false)
+    elif EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
+            event_flags_system['cPlayer:PurchaseBoxUseOnceFlag'] = true
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:010', false)
+        elif event_flags_system['cPlayer:PurchaseBoxUseTodayFlag']:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:002', false)
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:001', false)
+        run BeginningChoice
+    elif event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
+        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:901', false)
+    else:
+        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:902', false)
+    return
+
+flow BeginningChoice:
+    fEvent21 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent21 == 1:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:101', false)
+        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:003', false)
+        run BeginningChoice
+    elif fEvent21 == 0:
+        if not EventFlowSystemActor.PurchaseBoxFreeQuery2('cPurchaseBoxQueryType_SavingFull', 'SellTotal'):
+            fork:
+                branch0:
+                branch1:
+                    GeneralObject.StartAnimation('BoxOpen', 'アクション終了を待たない')
+                    EventFlowSystemActor.WaitFrame(15)
+                    Player.PlayerPurchaseBoxThinking()
+                branch2:
+                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cPurchaseBox', '', 'cSellBox', false)
+                    EventFlowSystemActor.StoreNormalCamera(false)
+            if EventFlowSystemActor.UIResultMenuDecide():
+                EventFlowSystemActor.ShopSellCalc('SellTotal', 1.0, false, true)
+                EventFlowSystemActor.ShopSellDone(1.0, true)
+                GeneralObject.StartAnimation('BoxClose', 'アクション終了を待たない')
+                event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
+                event_flags_system['cPlayer:PurchaseBoxUseTodayFlag'] = true
+                event_flags_system['cPlayer:UsePurchaseBOXFalg'] = true
+            else:
+                GeneralObject.StartAnimation('BoxClose', 'アクション終了を待たない')
+        elif event_flags_system['cPlayer:PurchaseBoxUseTodayFlag']:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:021', false)
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:020', false)
+    return
+

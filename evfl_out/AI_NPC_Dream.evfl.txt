@@ -1,0 +1,14 @@
+flow Root:
+    if MainNpc.IsNpcPlayer():
+        MainNpc.NpcChangeAIState('cBlockWander', 'System_Player_DreamPGhost', 'Root', '', false, false)
+    else:
+        MainNpc.NpcChangeAIState('cBlockWander', 'NNPC_Dream', 'NNPC_Dream', '', false, false)
+    return
+
+flow Init:
+    return
+
+flow ExitStrc:
+    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
+    return
+

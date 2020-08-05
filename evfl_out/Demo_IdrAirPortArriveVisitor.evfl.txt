@@ -1,0 +1,32 @@
+flow Root:
+    EventFlowSystemActor.BGMPropertyControl(50)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0', '', false, false, false, 0)
+    fork:
+        branch0:
+        branch1:
+            SubNpc.NpcRailMove(0, -1, -1, 0, false, true)
+        branch2:
+            EventFlowSystemActor.WaitFrame(20)
+            MainNpc.TurnNeck(1)
+            MainNpc.CharacterEmoticonAction('Clapping', '', 0, true, true)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.SetTagFromSystem(0, 'cNetDemoPlayerName', 'cDegit', '', 0)
+            EventFlowSystemActor.SetTagFromSystem(0, 'cNetDemoPlayerLandName', 'cDegit', '', 0)
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:020', false)
+        branch2:
+            SubNpc.NpcRailMove(1, -1, -1, 0, false, false)
+    EventFlowSystemActor.MessageSuspend()
+    MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+    EventFlowSystemActor.PlayReport(0, 'cVisitFriend')
+    EventFlowSystemActor.WaitFrame(30)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.NetDemoNextStep('cArriveVisitor')
+        branch2:
+            SubNpc.NpcRailMove(2, -1, -1, 0, false, false)
+    return
+

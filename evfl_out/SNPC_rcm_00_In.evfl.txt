@@ -1,0 +1,52 @@
+flow Root:
+    MainNpc.SetTwinsTag()
+    SubNpc.TurnBody(10, 0.0)
+    event_flags_system['cPlayer:RcmForcedTalkTodayFlag'] = true
+    event_flags_system['cLandTemp:RcmEnterBalloon'] = true
+    event_flags_system['cLandTemp:RctEnterBalloon'] = true
+    run SNPC_rcm_03_RenualOpen::Chk_RenualOpen_Talk
+    fEvent24 = subflow_results[1]
+    if fEvent24 == 1:
+        run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
+    elif fEvent24 == 2:
+        run Rcm_Market1_First
+    elif fEvent24 == 3:
+        run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
+    elif fEvent24 == 4:
+        run Rcm_Market2_First
+    elif fEvent24 == 5:
+        run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
+    elif fEvent24 == 0:
+        run sub_Event11
+    return
+
+flow Rcm_InNormal:
+    run sub_Event11
+    return
+
+flow Root_Init:
+    run SNPC_rcm::EntrySubCast
+    return
+
+flow Rcm_Market1_First:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:202', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:204', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:205', false)
+    event_flags_system['cPlayer:RcmHeardAboutNewOpen1'] = true
+entrypoint Event1:
+    event_flags_system['cPlayer:RcmTalked1stAfterPrologue'] = true
+    event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+    return
+
+flow Rcm_Market2_First:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:202', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:204', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:206', false)
+    event_flags_system['cPlayer:RcmHeardAboutNewOpen2'] = true
+    run Event1
+    return
+
+flow sub_Event11:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:201', false)
+    return
+

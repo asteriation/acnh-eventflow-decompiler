@@ -1,0 +1,224 @@
+flow Root:
+    if subflow_results[0] == 0:
+        run Easter_Rco
+        run EarthDay_Rco
+        run MayDay_Rco
+        run JuneBride_Rco
+        run Stamp_Rco
+        run DiveFish_Rco0
+        run Fireworks_Rco
+    else:
+        run Easter_Sza
+        run EarthDay_Sza
+        run MayDay_Sza
+        run JuneBride_Sza
+        run Stamp_Sza
+        run DiveFish_Sza0
+        run Fireworks_Sza
+    return
+
+flow Easter_Sza:
+    if EventFlowSystemActor.GlobalEventNow('Easter', 'cMainOnly', false):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_01_02', false)
+        subflow_results[15] = 1
+    elif (EventFlowSystemActor.GlobalEventNow('Easter', 'cReadyOnly', false)) and (subflow_results[2] == 0) and (not event_flags_system['cPlayer:PAnnouncePreEaster']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_01_01', false)
+        event_flags_system['cPlayer:PAnnouncePreEaster'] = true
+        subflow_results[15] = 0
+    run sub_tm!Easter_Sza
+
+flow Easter_Rco:
+    if EventFlowSystemActor.GlobalEventNow('Easter', 'cMainOnly', false):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:041_02', false)
+        subflow_results[15] = 1
+    elif (EventFlowSystemActor.GlobalEventNow('Easter', 'cReadyOnly', false)) and (not event_flags_system['cPlayer:PAnnouncePreEaster']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:041_01', false)
+        event_flags_system['cPlayer:PAnnouncePreEaster'] = true
+        subflow_results[15] = 0
+    run sub_tm!Easter_Rco
+
+flow EarthDay_Sza:
+    if (EventFlowSystemActor.TermEventNow('EarthDay', false)) and (not event_flags_system['cPlayer:PAnnounceEarthDay']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_03', false)
+        event_flags_system['cPlayer:PAnnounceEarthDay'] = true
+        event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday'] = true
+        subflow_results[15] = 1
+    return
+
+flow EarthDay_Rco:
+    if (EventFlowSystemActor.TermEventNow('EarthDay', false)) and (not event_flags_system['cPlayer:PAnnounceEarthDay']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:043_01', false)
+        event_flags_system['cPlayer:PAnnounceEarthDay'] = true
+        event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday'] = true
+        subflow_results[15] = 1
+    return
+
+flow MayDay_Sza:
+    if EventFlowSystemActor.TermEventNow('MayDay', false):
+        if EventFlowSystemActor.EnvCheckBetweenDate(5, 1, 5, 1, 'cGrowUpTime'):
+            if not ((event_flags_system['cPlayer:PAnnounceMayDayTour']) or (event_flags_system['cPlayer:GetMayDayTicket'])):
+                if event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_02_03', false)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_02_01', false)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+        elif not ((event_flags_system['cPlayer:PAnnounceMayDayTour']) or (event_flags_system['cPlayer:GetMayDayTicket'])):
+            if event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_02_04', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_02_02', false)
+            event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+            subflow_results[15] = 1
+    run sub_tm!MayDay_Sza
+
+flow MayDay_Rco:
+    if EventFlowSystemActor.TermEventNow('MayDay', false):
+        if EventFlowSystemActor.EnvCheckBetweenDate(5, 1, 5, 1, 'cGrowUpTime'):
+            if not event_flags_system['cPlayer:PAnnounceMayDayTour']:
+                if event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_03', false)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_01', false)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+        elif not ((event_flags_system['cPlayer:PAnnounceMayDayTour']) or (event_flags_system['cPlayer:GetMayDayTicket'])):
+            if event_flags_system['cPlayerTemp:PublicAnnounceEarthDayToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_04', false)
+                event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                subflow_results[15] = 1
+            elif EventFlowSystemActor.EnvCheckBetweenDate(5, 7, 5, 7, 'cGrowUpTime'):
+                if event_flags_system['cLand:OfficeConstruction1']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_05', false)
+                    event_flags_system['cPlayer:GetMayDayTicket'] = true
+                    EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastToday', 'cNone', 'cNone', false, 7)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_02', false)
+                    event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
+                    subflow_results[15] = 1
+    run sub_tm!MayDay_Rco
+
+flow JuneBride_Sza:
+    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:PAnnounceJuneBride']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_04', false)
+        event_flags_system['cPlayer:PAnnounceJuneBride'] = true
+        subflow_results[15] = 1
+    run sub_tm!JuneBride_Sza
+
+flow JuneBride_Rco:
+    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:PAnnounceJuneBride']):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:044', false)
+        event_flags_system['cPlayer:PAnnounceJuneBride'] = true
+        subflow_results[15] = 1
+    run sub_tm!JuneBride_Rco
+
+flow Stamp_Sza:
+    if (EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) and (EventFlowSystemActor.MuseumLevel() in (BlathersMuseumNoArt, BlathersMuseumArt)) and (not event_flags_system['cLand:Museum2BuiltToday']) and (not event_flags_system['cLand:Museum3BuiltToday']) and (not event_flags_system['cPlayer:PAnnounceStampRally']):
+        event_flags_system['cPlayer:PAnnounceStampRally'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_05', false)
+        subflow_results[15] = 1
+    run sub_tm!Stamp_Sza
+
+flow Stamp_Rco:
+    if (EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) and (EventFlowSystemActor.MuseumLevel() in (BlathersMuseumNoArt, BlathersMuseumArt)) and (not event_flags_system['cLand:Museum2BuiltToday']) and (not event_flags_system['cLand:Museum3BuiltToday']) and (not event_flags_system['cPlayer:PAnnounceStampRally']):
+        event_flags_system['cPlayer:PAnnounceStampRally'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:045', false)
+        subflow_results[15] = 1
+    run sub_tm!Stamp_Rco
+
+flow Fireworks_Sza:
+    if (EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false)) and (EventFlowSystemActor.EventCheck('Fireworks') in (0, 1)):
+        if event_flags_system['cPlayerTemp:PublicAnnounceDiveFish']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:031', false)
+        if event_flags_system['cPlayer:PAnnounceFireworksSza1']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_06_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_06_01', false)
+            event_flags_system['cPlayer:PAnnounceFireworksSza1'] = true
+        subflow_results[15] = 1
+    return
+
+flow Fireworks_Rco:
+    if (EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false)) and (EventFlowSystemActor.EventCheck('Fireworks') in (0, 1)):
+        if event_flags_system['cPlayerTemp:PublicAnnounceDiveFish']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:031', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:046', false)
+        subflow_results[15] = 1
+    return
+
+flow DiveFish_Sza0:
+    if not ((event_flags_system['cPlayer:DiveFishPublic_1day']) or (event_flags_system['cPlayer:DiveFishPublic_2day']) or (event_flags_system['cPlayer:CharacterCreationFlag'])):
+        if event_flags_system['cPlayer:DiveFish_GetLetter']:
+            event_flags_system['cPlayer:DiveFishPublic_2day'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_07_02', false)
+        else:
+            event_flags_system['cPlayer:DiveFishPublic_1day'] = true
+            event_flags_system['cPlayer:PublicAnnouncement_DiveFish'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_07_01', false)
+        event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
+        subflow_results[15] = 1
+    run sub_tm!DiveFish_Sza0
+
+flow DiveFish_Rco0:
+    if not ((event_flags_system['cPlayer:DiveFishPublic_1day']) or (event_flags_system['cPlayer:DiveFishPublic_2day']) or (event_flags_system['cPlayer:CharacterCreationFlag'])):
+        if event_flags_system['cPlayer:DiveFish_GetLetter']:
+            event_flags_system['cPlayer:DiveFishPublic_2day'] = true
+            fEvent150 = EventFlowSystemActor.ShopLevel()
+            if fEvent150 == InResServiceTent:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_04', false)
+                event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
+                subflow_results[15] = 1
+            elif fEvent150 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_02', false)
+                event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
+                subflow_results[15] = 1
+        else:
+            event_flags_system['cPlayer:DiveFishPublic_1day'] = true
+            event_flags_system['cPlayer:PublicAnnouncement_DiveFish'] = true
+            fEvent148 = EventFlowSystemActor.ShopLevel()
+            if fEvent148 == InResServiceTent:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_03', false)
+                event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
+                subflow_results[15] = 1
+            elif fEvent148 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_01', false)
+                event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
+                subflow_results[15] = 1
+    run sub_tm!DiveFish_Rco0
+
+flow sub_tm!Easter_Sza:
+    return
+
+flow sub_tm!Easter_Rco:
+    return
+
+flow sub_tm!MayDay_Sza:
+    return
+
+flow sub_tm!MayDay_Rco:
+    return
+
+flow sub_tm!JuneBride_Sza:
+    return
+
+flow sub_tm!JuneBride_Rco:
+    return
+
+flow sub_tm!Stamp_Sza:
+    return
+
+flow sub_tm!Stamp_Rco:
+    return
+
+flow sub_tm!DiveFish_Sza0:
+    return
+
+flow sub_tm!DiveFish_Rco0:
+    return
+

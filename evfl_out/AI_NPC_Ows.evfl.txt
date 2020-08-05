@@ -1,0 +1,49 @@
+flow Root:
+    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_ows', '', true, true, false, 0, 1, 0, 0)
+    return
+
+flow Init:
+    return
+
+flow AI_owl_day:
+    if (MainNpc.CheckCurrentNpcAIState('cOwlSleep') == 0) or (MainNpc.NpcCheckStateSelectTiming('cInit')):
+entrypoint Event16:
+        MainNpc.NpcChangeAIState('cOwlSleep', 'SNPC_ows', 'Root', '', false, true)
+        MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
+        MainNpc.NpcSetAIBlackBoard('IsSleep', 1)
+        MainNpc.NpcAISetting(3, false)
+        MainNpc.NpcAISetting(2, false)
+        MainNpc.SetDefaultWaitAs('cMaReSleep')
+    elif MainNpc.PlayerFind():
+        run AI_owl_changeawake
+    else:
+        MainNpc.NpcChangeAIState('cOwlSleepy', 'SNPC_ows', 'Root', '', false, true)
+        MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
+        MainNpc.NpcSetAIBlackBoard('IsSleep', 1)
+        MainNpc.NpcAISetting(3, false)
+        MainNpc.NpcAISetting(2, false)
+        MainNpc.SetDefaultWaitAs('cMaReSleep')
+    return
+
+flow AI_owl_night:
+    if (MainNpc.CheckCurrentNpcAIState('cOwlWait') != 0) and (not MainNpc.NpcCheckStateSelectTiming('cInit')):
+        MainNpc.NpcChangeAIState('cOwlAwake', 'SNPC_ows', 'Root', '', false, true)
+        MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
+    else:
+entrypoint Event17:
+        MainNpc.NpcChangeOwlWaitState('cOwlWait', 'Root', 'SNPC_ows', '', true, true, '', true, 150)
+        MainNpc.SetDefaultWaitAs('cDefault')
+        MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
+    MainNpc.NpcSetAIBlackBoard('IsSleep', 0)
+    MainNpc.NpcAISetting(3, true)
+    MainNpc.NpcAISetting(2, true)
+    return
+
+flow AI_owl_changeawake:
+    run Event17
+    return
+
+flow AI_owl_changesleep:
+    run Event16
+    return
+
