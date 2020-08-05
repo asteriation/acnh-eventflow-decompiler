@@ -4,18 +4,18 @@ flow Hint_Nuts_Rco:
         fEvent159 = EventFlowSystemActor.EnvMonth()
         if fEvent159 in (8, 9, 10):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
-            run sub_Event162
+            run Hint_Nuts_Rco_Cmn
         elif fEvent159 == 11:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
-            run sub_Event162
+            run Hint_Nuts_Rco_Cmn
     else:
         fEvent160 = EventFlowSystemActor.EnvMonth()
         if fEvent160 in (2, 3, 4):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
-            run sub_Event162
+            run Hint_Nuts_Rco_Cmn
         elif fEvent160 == 5:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
-            run sub_Event162
+            run Hint_Nuts_Rco_Cmn
     return
 
 flow Hint_Nuts_Rco_Cmn:
@@ -35,18 +35,18 @@ flow Hint_Nuts_Sza:
         fEvent166 = EventFlowSystemActor.EnvMonth()
         if fEvent166 == 11:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
-            run sub_Event171
+            run Hint_Nuts_Sza_Cmn
         elif fEvent166 in (8, 9, 10):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
-            run sub_Event171
+            run Hint_Nuts_Sza_Cmn
     else:
         fEvent167 = EventFlowSystemActor.EnvMonth()
         if fEvent167 in (2, 3, 4):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
-            run sub_Event171
+            run Hint_Nuts_Sza_Cmn
         elif fEvent167 == 5:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
-            run sub_Event171
+            run Hint_Nuts_Sza_Cmn
     return
 
 flow Hint_Nuts_Sza_Cmn:
@@ -73,9 +73,9 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:705', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:706', false)
         elif fEvent143 == 2:
-            run sub_Event2
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:702', false)
     else:
-        run sub_Event2
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:702', false)
     return
 
 flow SeasonNews_Rco:
@@ -243,13 +243,4 @@ flow SeasonNews_Sza:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4375, '')
     return
-
-flow sub_Event162:
-    run Hint_Nuts_Rco_Cmn
-
-flow sub_Event171:
-    run Hint_Nuts_Sza_Cmn
-
-flow sub_Event2:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:702', false)
 

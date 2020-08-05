@@ -129,46 +129,46 @@ flow ReportD:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:302', false)
         if EventFlowSystemActor.GeneralTalkChoice2() != 0:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:304', true, true)
-            run sub_Event52
+            run FinishSet
         elif MainNpc.DeliveryQuestItemKind() == 0:
             if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                 fEvent205 = MainNpc.DeliveryQuestReceiveNpcLook()
                 if fEvent205 == 0:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:312', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 1:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:313', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 2:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:314', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 3:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:315', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 4:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:316', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 5:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:317', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 6:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:318', true, true)
-                    run sub_Event52
+                    run FinishSet
                 elif fEvent205 == 7:
                     MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:319', true, true)
-                    run sub_Event52
+                    run FinishSet
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:308', true, true)
-                run sub_Event52
+                run FinishSet
         elif quest_flags['cDeliveryClothChangeKeep']:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:307', true, true)
-            run sub_Event51
+            run FinishSet
         elif quest_flags['cDeliveryClothChangeAtLeast']:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:310', true, true)
-            run sub_Event51
+            run FinishSet
         else:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:309', true, true)
-            run sub_Event51
+            run FinishSet
     return
 
 flow ReportE:
@@ -189,10 +189,4 @@ flow ReportE:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_After:404', true, true)
     run FinishSet
     return
-
-flow sub_Event51:
-    run FinishSet
-
-flow sub_Event52:
-    run FinishSet
 

@@ -1206,9 +1206,11 @@ class CFG:
             nodes = list(self.nodes.values())
 
         # print('call', nodes)
-        # if a node has two different node parents and is the root of a DAG, extract to subflow
+        # if a node has two different node parents and is the root of a DAG, and is not a single line,
+        #   extract to subflow
         for node in nodes:
-            if len(set(node.in_edges)) >= 2 and self.__is_cut([node]):
+            if len(set(node.in_edges)) >= 2 and self.__is_cut([node]) and \
+                    (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, GotoNode, NoopNode, EntryPointNode, SubflowNode))):
                 # print('detaching', node.name, [n.name for n in node.in_edges])
                 self.__detach_node_as_sub(node)
             elif isinstance(node, GroupNode):

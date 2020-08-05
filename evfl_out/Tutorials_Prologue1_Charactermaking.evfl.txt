@@ -195,6 +195,3 @@ flow sub_grp!Event0:
     if EventFlowSystemActor.ShopLevel() == InResServiceTent:
         event_flags_system['cPlayer:KaburibaConditionFlag'] = false
 
-flow sub_grp-end!Event123:
-    pass
-

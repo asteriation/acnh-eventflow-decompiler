@@ -68,8 +68,5 @@ flow Root:
         run 1P_Lifestart_Conv
         event_flags_npc['cNpcSave:TalkLifeStart1P1st'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Root
-
-flow sub_tm!Root:
     return
 

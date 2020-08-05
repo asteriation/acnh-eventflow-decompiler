@@ -63,13 +63,13 @@ entrypoint Event10:
                         EventFlowSystemActor.UIShopBuyDisappear()
                 if EventFlowSystemActor.IsMyVillage():
                     if event_flags_system['cPlayer:SkkPurchaseToday']:
-                        run sub_Event12
+                        MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
                     else:
-                        run sub_Event81
+                        MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
                 elif event_flags_system['cPlayerVisit:DC_SkkBuyFlag']:
-                    run sub_Event12
+                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
                 else:
-                    run sub_Event81
+                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
         elif not event_flags_system['cPlayerVisit:DC_SkkTalkFlag']:
             event_flags_system['cPlayerVisit:DC_SkkTalkFlag'] = true
             run Boc_DC_1st
@@ -101,10 +101,4 @@ flow skk_Again_NoMoney:
     MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:032', false)
     run Event128
     return
-
-flow sub_Event12:
-    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
-
-flow sub_Event81:
-    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
 

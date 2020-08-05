@@ -47,7 +47,7 @@ flow EasterGetRecipe:
             run NNPC_ApproachE_Easter::GetEasterRecipe1
             MainNpc.SetEasterApproachVillagerIndex(0)
             EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!EasterGetRecipe
+    return
 
 flow FireworksGetItem:
     if MainNpc.IsFirewoksApproachNpc():
@@ -75,7 +75,7 @@ flow FireworksGetItem:
                             event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
                             event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
                         else:
-                            run sub_Event50
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
                 else:
                     run FireworksSet_Blue
                     if EventFlowSystemActor.ShoppingCapacity(12974, 'cNpcTrade'):
@@ -93,7 +93,7 @@ flow FireworksGetItem:
                             event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = false
                             event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
                         else:
-                            run sub_Event50
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
                 EventFlowSystemActor.ExitFlowchart()
         elif not ((EventFlowSystemActor.EventCheck('Fireworks') != 1) or (event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag']) or (event_flag_npc['cNpcMemory:FireworksGetItemFlag'])):
             if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
@@ -105,7 +105,7 @@ flow FireworksGetItem:
                 run NNPC_ApproachE_Fireworks::GetFireworksItem
                 event_flags_npc['cNpcMemory:FireworksGetItemFlag'] = true
                 EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!FireworksGetItem
+    return
 
 flow FireworksSet_Blue:
     MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
@@ -118,14 +118,5 @@ flow FireworksSet_Red:
 flow Root:
     run EasterGetRecipe
     run FireworksGetItem
-    return
-
-flow sub_Event50:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
-
-flow sub_tm!EasterGetRecipe:
-    return
-
-flow sub_tm!FireworksGetItem:
     return
 

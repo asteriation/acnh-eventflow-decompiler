@@ -13,7 +13,7 @@ flow QuestGive_Chk:
             if MainNpc.HasNpcRequestedItem():
                 run StandingUp_Chk
     elif (MainNpc.IsDeliveryQuestReceiver()) and (not quest_flags['cDeliveryEnd']):
-        run sub_Event50
+        run StandingUp_Chk
     else:
         run sub_grp!Event12
     return
@@ -58,13 +58,10 @@ flow StandingUp_Chk:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow sub_Event50:
-    run StandingUp_Chk
-
 flow sub_grp!Event12:
     if (MainNpc.NpcHaveQuestType('cNotInclude') in (1, 3, 4, 5, 6, 7, 0)) and (quest_flags['cLostUseHint']):
         pass
     else:
         if MainNpc.HasNpcRequestedItem():
-            run sub_Event50
+            run StandingUp_Chk
 

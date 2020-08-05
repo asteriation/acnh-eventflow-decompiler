@@ -73,14 +73,11 @@ entrypoint Event12:
                             run sub_grp!Event195
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:203', false)
-            run sub_Event175
+            run SNPC_owl_00_Common::Again
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:201', true)
-        run sub_Event175
+        run SNPC_owl_00_Common::Again
     return
-
-flow sub_Event175:
-    run SNPC_owl_00_Common::Again
 
 flow sub_grp!Event195:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

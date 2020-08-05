@@ -259,7 +259,7 @@ entrypoint Event466:
                     MainNpc.SmartPhone(1)
     elif event_flags_system['cPlayer:BeyEvent_TotalPoint'] >= 200:
         if event_flags_system['cPlayer:BeyEvent_TalkTrophySilver']:
-            run sub_Event386
+            run GetPoint_next
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:201', false)
             run SmartPhone_TotalPoint
@@ -296,7 +296,7 @@ entrypoint Event466:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:209', false)
         MainNpc.SmartPhone(1)
     else:
-        run sub_Event386
+        run GetPoint_next
     return
 
 flow Check_pay500:
@@ -432,12 +432,12 @@ entrypoint Event197:
                     run SellFish
                 elif fEvent202 == 1:
                     run PointCheck
+                elif fEvent202 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:048', false)
                 elif fEvent202 == 2:
                     run Select_OpenEv_AfterQ
-                elif fEvent202 == 3:
-                    run sub_Event205
             elif fEvent198 == 3:
-                run sub_Event205
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:048', false)
         elif event_flags_system['cPlayer:BevTalkRuleFirst']:
 entrypoint Event210:
             if EventFlowSystemActor.NetHasVisitor():
@@ -529,9 +529,9 @@ flow PointExCancel:
         if EventFlowSystemActor.EnvHourCompare(20, -1, true, true) in (0, 1):
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:018', true)
         else:
-            run sub_Event440
+            run AfterEv_Always
     elif fEvent180 == 3:
-        run sub_Event440
+        run AfterEv_Always
     return
 
 flow PointExchange:
@@ -554,21 +554,21 @@ flow PointExchange:
                     run PointExchange
                 else:
                     run PointExCancel
-                    run sub_Event432
+                    MainNpc.SmartPhone(1)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:015', true)
-                run sub_Event432
+                MainNpc.SmartPhone(1)
         else:
             fEvent28 = EventFlowSystemActor.EventCheck('FishingConvention')
             if fEvent28 in (2, 3):
                 run AfterEv_Always
-                run sub_Event432
+                MainNpc.SmartPhone(1)
             elif fEvent28 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:013', true)
-                run sub_Event432
+                MainNpc.SmartPhone(1)
             elif fEvent28 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:014', true)
-                run sub_Event432
+                MainNpc.SmartPhone(1)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:010', true)
         MainNpc.SmartPhone(1)
@@ -646,13 +646,13 @@ flow Root:
             else:
                 event_flags_system['cPlayer:BeyDaily_TalkFirst'] = true
                 event_flags_system['cPlayer:BeyEvent_TalkFirst'] = true
-                run sub_Event165
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:073', false)
         elif MainNpc.ChmFreeQuery2('cChmQueryType_IsEntryQuestBey'):
             if event_flags_system['cPlayerVisit:DC_BevTalkFirst_BeforeEv']:
                 run sub_grp!Event5
             else:
                 event_flags_system['cPlayerVisit:DC_BevTalkFirst_BeforeEv'] = true
-                run sub_Event165
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:073', false)
         elif event_flags_system['cPlayerVisit:DC_BevTalkFirst_BeforeEv']:
             fEvent276 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent276 == 0:
@@ -666,11 +666,11 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:110', false)
     elif EventFlowSystemActor.IsMyVillage():
         if event_flags_system['cPlayer:BevQuestFinish']:
-            run sub_Event138
+            run Quest_Result
         else:
             run sub_grp!Event254
     elif event_flags_system['cPlayerVisit:DC_BevQuestFinish']:
-        run sub_Event138
+        run Quest_Result
     else:
         run sub_grp!Event254
     return
@@ -682,10 +682,14 @@ flow Select_OpenEv_AfterQ:
 flow SellBOX:
     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:120', false)
     fEvent101 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent101 == 2:
+    if fEvent101 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:130', true)
+    elif fEvent101 == 2:
 entrypoint Event114:
         fEvent114 = EventFlowSystemActor.EventCheck('FishingConvention')
-        if fEvent114 == 1:
+        if fEvent114 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:130', true)
+        elif fEvent114 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:131', true)
         elif fEvent114 == 2:
             if EventFlowSystemActor.EnvHourCompare(20, -1, true, true) == 0:
@@ -693,11 +697,9 @@ entrypoint Event114:
             elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:133', true)
             else:
-                run sub_Event78
-        elif fEvent114 == 0:
-            run sub_Event112
+                run AfterEv_Always
         elif fEvent114 == 3:
-            run sub_Event78
+            run AfterEv_Always
     elif fEvent101 == 0:
         MainNpc.InsectFishBoxSellCalc('SellTotal', 1.5)
         EventFlowSystemActor.SetTagFromSystem(5, 'cFlow', 'cMoney', '', 'SellTotal')
@@ -731,8 +733,6 @@ entrypoint Event114:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:129', false)
         else:
             run SellBoxCancel
-    elif fEvent101 == 1:
-        run sub_Event112
     return
 
 flow SellBoxCancel:
@@ -842,13 +842,13 @@ flow TalkNextSchedule:
 flow TalkRule:
     if EventFlowSystemActor.NetHasVisitor():
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:038', false)
-        run sub_Event348
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:028', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:027', false)
         if EventFlowSystemActor.IsSharePlay(0):
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:164', false)
         else:
-            run sub_Event348
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:028', false)
     if EventFlowSystemActor.NetHasVisitor():
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:033', false)
     elif event_flags_system['cPlayer:BevTalkFirst_EvQuestFinish']:
@@ -866,21 +866,9 @@ flow TalkRule:
         run EvQ_Entry_Cancel
     return
 
-flow sub_Event112:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:130', true)
-
-flow sub_Event138:
-    run Quest_Result
-
-flow sub_Event165:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:073', false)
-
 flow sub_Event20:
     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:000', true)
     return
-
-flow sub_Event205:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:048', false)
 
 flow sub_Event217:
     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:024', false)
@@ -889,21 +877,6 @@ flow sub_Event217:
 flow sub_Event250:
     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:103', false)
     return
-
-flow sub_Event348:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:028', false)
-
-flow sub_Event386:
-    run GetPoint_next
-
-flow sub_Event432:
-    MainNpc.SmartPhone(1)
-
-flow sub_Event440:
-    run AfterEv_Always
-
-flow sub_Event78:
-    run AfterEv_Always
 
 flow sub_grp!Event213:
     fEvent213 = EventFlowSystemActor.GeneralTalkChoice4()

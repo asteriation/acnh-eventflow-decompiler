@@ -34,7 +34,7 @@ flow IslandDevelopmentIntro:
         fEvent16 = EventFlowSystemActor.GeneralTalkChoice3()
         if fEvent16 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_01', false)
-            run sub_Event38
+            run SNPC_rco_00_Common::Root
         elif fEvent16 == 1:
             run SNPC_rco_54_IslandDevelopment::Root
         elif fEvent16 == 2:
@@ -44,7 +44,7 @@ flow IslandDevelopmentIntro:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-            run sub_Event38
+            run SNPC_rco_00_Common::Root
         else:
             run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     elif EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
@@ -52,7 +52,7 @@ flow IslandDevelopmentIntro:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-            run sub_Event38
+            run SNPC_rco_00_Common::Root
         else:
             run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     else:
@@ -61,7 +61,7 @@ flow IslandDevelopmentIntro:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-            run sub_Event38
+            run SNPC_rco_00_Common::Root
         else:
             run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
@@ -177,7 +177,4 @@ flow Rco_Office_Infra:
 flow Rco_SelInfra_Cancel:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:100', false)
     return
-
-flow sub_Event38:
-    run SNPC_rco_00_Common::Root
 

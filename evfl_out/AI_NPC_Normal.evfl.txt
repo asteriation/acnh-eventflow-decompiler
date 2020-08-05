@@ -8,11 +8,11 @@ flow EndTalk:
 flow End_Hit:
     if (MainNpc.NpcIsHitByNet()) and (MainNpc.NpcIsFleaHolder()):
         run State_Speak
-        run sub_Event15
+        MainNpc.NpcClearHitParam()
     else:
         if MainNpc.NpcHitNum(3):
             run State_Speak
-            run sub_Event15
+            MainNpc.NpcClearHitParam()
         else:
             MainNpc.NpcSetHitTimer(60)
             run Root
@@ -57,7 +57,4 @@ flow State_Wait:
 flow State_Wander:
     MainNpc.NpcChangeAIState('cWander', '', '', '', false, true)
     return
-
-flow sub_Event15:
-    MainNpc.NpcClearHitParam()
 

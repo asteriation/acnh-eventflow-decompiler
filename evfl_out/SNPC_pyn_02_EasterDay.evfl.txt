@@ -35,13 +35,13 @@ entrypoint Event220:
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:203', false)
                 event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
                 EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ChkDiyComplete
+    return
 
 flow ChkInventRecipe:
     if (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterGround')) and (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterRock')) and (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterLeaf')) and (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterForest')) and (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterSky')) and (not EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'EasterFish')):
         subflow_results[1] = 0
     else:
-        run sub_Event271
+        subflow_results[1] = 1
     return
 
 flow DiyCompleteReward:
@@ -178,7 +178,7 @@ flow FirstGreeting:
             MainNpc.SetDeliveryItem(1, true)
             MainNpc.NpcDelivery('Default', 1)
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:108', false)
-            run sub_Event45
+            event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:109', false)
             event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
@@ -199,7 +199,7 @@ flow FirstGreeting:
             MainNpc.SetDeliveryItem(1, true)
             MainNpc.NpcDelivery('Default', 1)
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:113', false)
-            run sub_Event45
+            event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:109', false)
             event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
@@ -271,12 +271,12 @@ flow Root:
 entrypoint Event73:
                 run SetEggNumExchange
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:130', false)
-                run sub_Event103
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
             elif (not event_flags_system['cPlayer:PynExplainInventRecipeFlag']) and (not event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']) and (event_flags_system['cPlayer:PynInventRecipeFlag']):
                 event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:131', false)
                 event_flags_system['cPlayer:PynExplainInventRecipeFlag'] = true
-                run sub_Event103
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
             else:
                 if event_flags_system['cPlayerTemp:PynTalkNowFlag']:
 entrypoint Event101:
@@ -294,21 +294,21 @@ entrypoint Event99:
                         MainNpc.NpcStartAS('NpcSpPynDance', false, False)
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:136_02', false)
                         MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-                        run sub_Event103
+                        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
                     elif not MainNpc.PynCheckCraftItemNum(5):
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:132', false)
-                        run sub_Event103
+                        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
                     elif not MainNpc.PynCheckCraftItemNum(11):
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:133', false)
-                        run sub_Event103
+                        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
                     elif (not event_flags_system['cPlayer:PynExplainNnpcRecipeFlag']) and (not EventFlowSystemActor.IsMadeCraftUnlockRecipe('EasterNpc', 'cAND')):
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:135', false)
                         event_flags_system['cPlayer:PynExplainNnpcRecipeFlag'] = true
-                        run sub_Event103
+                        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
                     else:
                         EventFlowSystemActor.SetTagFromSystem(0, 'cEasterNoCraftItem', 'cDegit', '', 0)
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:134', false)
-                        run sub_Event103
+                        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
             fEvent104 = EventFlowSystemActor.GeneralTalkChoice3()
             if fEvent104 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:153', false)
@@ -364,18 +364,9 @@ flow TalkAgain:
     run Event101
     return
 
-flow sub_Event103:
-    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
-
 flow sub_Event126:
     MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:171', false)
     return
-
-flow sub_Event271:
-    subflow_results[1] = 1
-
-flow sub_Event45:
-    event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag'] = true
 
 flow sub_grp!Event200:
     if not ((EventFlowSystemActor.HasTargetItem(12510, 1)) and (EventFlowSystemActor.HasTargetItem(12509, 1)) and (EventFlowSystemActor.HasTargetItem(12513, 1)) and (EventFlowSystemActor.HasTargetItem(12511, 1)) and (EventFlowSystemActor.HasTargetItem(12512, 1)) and (EventFlowSystemActor.HasTargetItem(12514, 1))):
@@ -440,7 +431,4 @@ flow sub_grp!Event200:
                 event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:194', false)
-
-flow sub_tm!ChkDiyComplete:
-    return
 

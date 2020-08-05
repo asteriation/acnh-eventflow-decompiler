@@ -22,7 +22,7 @@ flow ChkCeremonyCampsite:
         subflow_results[10] = 1
         subflow_results[15] = 1
         event_flags_system['cLandTemp:CountEnableCeremony'] += 1
-    run sub_tm!ChkCeremonyCampsite
+    return
 
 flow ChkCeremonyMarket:
     fEvent96 = EventFlowSystemActor.ShopLevel()
@@ -50,14 +50,14 @@ flow ChkCeremonyMuseum:
             subflow_results[12] = 1
             subflow_results[15] = 1
             event_flags_system['cLandTemp:CountEnableCeremony'] += 1
-    run sub_tm!ChkCeremonyMuseum
+    return
 
 flow ChkCeremonyOffice:
     if (not event_flags_system['cPlayer:HerdCeremonyOffice']) and (event_flags_system['cLand:BuiltTownOffice']) and (EventFlowSystemActor.FacilityOpenPastDays('cOffice', 8)):
         subflow_results[14] = 1
         subflow_results[15] = 1
         event_flags_system['cLandTemp:CountEnableCeremony'] += 1
-    run sub_tm!ChkCeremonyOffice
+    return
 
 flow ChkCeremonySlope:
     if (not event_flags_system['cPlayer:HeldCeremonySlope']) and (event_flags_system['cLand:CeremonyBuildSlope']):
@@ -71,7 +71,7 @@ flow ChkCeremonyTailor:
         subflow_results[11] = 1
         subflow_results[15] = 1
         event_flags_system['cLandTemp:CountEnableCeremony'] += 1
-    run sub_tm!ChkCeremonyTailor
+    return
 
 flow Market1:
     subflow_results[7] = 1
@@ -127,60 +127,60 @@ entrypoint Event27:
                 run Rco_Ceremony_Multi_Cancel
             elif fEvent67 == 1:
                 subflow_results[7] = 3
-                run sub_Event80
+                run Rco_Ceremony_Attend
             elif fEvent67 == 2:
                 subflow_results[7] = 4
-                run sub_Event80
+                run Rco_Ceremony_Attend
             elif fEvent67 == 3:
                 subflow_results[7] = 5
-                run sub_Event80
+                run Rco_Ceremony_Attend
             elif fEvent67 == 4:
                 if subflow_results[9] == 0:
                     subflow_results[7] = 7
-                    run sub_Event80
+                    run Rco_Ceremony_Attend
                 else:
                     subflow_results[7] = 6
-                    run sub_Event80
+                    run Rco_Ceremony_Attend
             elif fEvent67 == 0:
                 fEvent86 = subflow_results[13]
                 if fEvent86 == 2:
                     subflow_results[7] = 2
-                    run sub_Event80
+                    run Rco_Ceremony_Attend
                 elif fEvent86 == 1:
                     subflow_results[7] = 1
-                    run sub_Event80
+                    run Rco_Ceremony_Attend
     elif event_flags_system['cLandTemp:CountEnableCeremony'] >= 2:
         MainNpc.SetCeremonyChoice()
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:111', false)
         fEvent77 = EventFlowSystemActor.SelectCeremony()
         if fEvent77 == 6:
             subflow_results[7] = 7
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 7:
             run Rco_Ceremony_Multi_Cancel
         elif fEvent77 == 2:
             subflow_results[7] = 3
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 3:
             subflow_results[7] = 4
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 4:
             subflow_results[7] = 5
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 5:
             subflow_results[7] = 6
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 0:
             subflow_results[7] = 0
-            run sub_Event61
+            run Rco_Ceremony_Attend
         elif fEvent77 == 1:
             fEvent143 = subflow_results[13]
             if fEvent143 == 2:
                 subflow_results[7] = 2
-                run sub_Event61
+                run Rco_Ceremony_Attend
             elif fEvent143 == 1:
                 subflow_results[7] = 1
-                run sub_Event61
+                run Rco_Ceremony_Attend
     elif subflow_results[14] == 0:
         fEvent9 = subflow_results[13]
         if fEvent9 == 1:
@@ -220,10 +220,10 @@ entrypoint Event1:
             EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyOffice', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
         elif fEvent78 == 1:
             event_flags_system['cPlayer:HeldCeremonyMarket1'] = true
-            run sub_Event13
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMarket', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
         elif fEvent78 == 2:
             event_flags_system['cPlayer:HeldCeremonyMarket2'] = true
-            run sub_Event13
+            EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMarket', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
         elif fEvent78 == 5:
             event_flags_system['cPlayer:HeldCeremonyCampSite'] = true
             EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyCampSite', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
@@ -279,28 +279,7 @@ flow Tailor:
     run Event76
     return
 
-flow sub_Event13:
-    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMarket', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-
-flow sub_Event61:
-    run Rco_Ceremony_Attend
-
-flow sub_Event80:
-    run Rco_Ceremony_Attend
-
 flow sub_grp!Event134:
     if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
         run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
-
-flow sub_tm!ChkCeremonyCampsite:
-    return
-
-flow sub_tm!ChkCeremonyMuseum:
-    return
-
-flow sub_tm!ChkCeremonyOffice:
-    return
-
-flow sub_tm!ChkCeremonyTailor:
-    return
 

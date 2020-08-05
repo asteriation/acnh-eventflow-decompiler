@@ -69,27 +69,24 @@ flow Root:
     fEvent1 = EventFlowSystemActor.PlayerHouseLevel()
     if fEvent1 == 7:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:216', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:201', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:211', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:212', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 4:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:213', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 5:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:214', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     elif fEvent1 == 6:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:215', false)
-        run sub_Event18
+        run Rco_Cmn_UpgradeHouseSel
     return
-
-flow sub_Event18:
-    run Rco_Cmn_UpgradeHouseSel
 

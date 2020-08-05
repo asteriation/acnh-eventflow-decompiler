@@ -59,7 +59,7 @@ flow Root:
     elif (not EventFlowSystemActor.NetIsDreaming()) and (not EventFlowSystemActor.NetIsConnected()) and (MainNpc.CheckCurrentNpcAIState('cTurn') != 0):
         fEvent48 = EventFlowSystemActor.MuseumLevel()
         if fEvent48 == BlathersTent:
-            run sub_Event40
+            run AI_owl_changeawake
         elif fEvent48 in (BlathersMuseumNoArt, BlathersMuseumArt):
             if MainNpc.CheckCurrentNpcAIState('cOwlSleepy') == 0:
                 run AI_owl_changesleep
@@ -74,9 +74,6 @@ flow Root:
                 elif fEvent0 in (5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
                     run AI_owl_day
     else:
-        run sub_Event40
+        run AI_owl_changeawake
     return
-
-flow sub_Event40:
-    run AI_owl_changeawake
 

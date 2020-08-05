@@ -42,7 +42,7 @@ entrypoint Event2:
         elif (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']):
             run SNPC_owl_22_Museum_RenualQuest::Select4_Painting
         else:
-            run sub_Event104
+            run Select3_Comp
     elif event_flags_system['cLand:OwlFoundFossil']:
         run Select45
     else:
@@ -140,7 +140,7 @@ flow PaintingReminder:
         event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:003', false)
         run Event16
-    run sub_tm!PaintingReminder
+    return
 
 flow Painting_Again:
     if not event_flags_system['cLand:OwlWantsPainting']:
@@ -212,11 +212,5 @@ flow Select4_Direct:
 
 flow Talk:
     run Event2
-    return
-
-flow sub_Event104:
-    run Select3_Comp
-
-flow sub_tm!PaintingReminder:
     return
 

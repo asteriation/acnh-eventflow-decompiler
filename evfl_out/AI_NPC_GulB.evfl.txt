@@ -15,13 +15,13 @@ flow Root:
         if event_flags_system['cLand:JohnnySitUpFlag']:
             if MainNpc.CanMoveUnit(true):
                 run AI_NPC_Gul::SetStateWakeup
-                run sub_Event15
+                event_flags_system['cLand:JohnnyInvisible'] = false
             else:
                 MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
                 event_flags_system['cLand:JohnnyInvisible'] = true
         elif MainNpc.CanMoveUnit(false):
             run AI_NPC_Gul::SetStateSleep
-            run sub_Event15
+            event_flags_system['cLand:JohnnyInvisible'] = false
         else:
             MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
             event_flags_system['cLand:JohnnyInvisible'] = true
@@ -33,7 +33,4 @@ flow Root:
     else:
         run AI_NPC_Gul::SetStateSleep
     return
-
-flow sub_Event15:
-    event_flags_system['cLand:JohnnyInvisible'] = false
 

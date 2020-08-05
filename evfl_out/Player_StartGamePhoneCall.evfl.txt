@@ -33,7 +33,7 @@ flow ChkPhoneCall:
             subflow_results[6] = 1
         if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
             subflow_results[7] = 1
-    run sub_tm!ChkPhoneCall
+    return
 
 flow DepositPurchaseBoxTell:
     run PhoneIncoming
@@ -55,13 +55,13 @@ entrypoint Event86:
             event_flags_system['cPlayer:PhoneCallByRct'] = true
     if not event_flags_system['cPlayer:DocUsePurchaseServiceFalg']:
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:003', false)
-        run sub_Event180
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
     elif event_flags_system['cPlayer:UsePurchaseBOXFalg']:
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:006', false)
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004_pl', true)
     else:
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:005', false)
-        run sub_Event180
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
     event_flags_system['cPlayer:UsePurchaseBOXFalg'] = false
     event_flags_system['cPlayer:DocUsePurchaseServiceFalg'] = false
     event_flags_system['cPlayer:StandByPhoneCallPurchaseBox'] = false
@@ -198,10 +198,10 @@ flow Root:
         run PhoneTalkEnd2
     elif subflow_results[1] == 0:
         run UnlockSharePlayOn1231
-        run sub_Event46
+        run PhoneTalkEnd2
     else:
         run UnlockSharePlayOn1231_Continued
-        run sub_Event46
+        run PhoneTalkEnd2
     return
 
 flow UnlockAmiiboPosterTell:
@@ -303,14 +303,5 @@ flow UnlockSharePlayTell_Continued:
     Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
     run PhoneUnlock_Continue
     run Event9
-    return
-
-flow sub_Event180:
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
-
-flow sub_Event46:
-    run PhoneTalkEnd2
-
-flow sub_tm!ChkPhoneCall:
     return
 

@@ -104,12 +104,6 @@ flow Talk:
         run sub_grp!Event20
     return
 
-flow sub_Event27:
-    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
-
-flow sub_Event38:
-    run Spn_Explain_Again
-
 flow sub_grp!Event20:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:103', false)
@@ -127,28 +121,28 @@ entrypoint Event29:
         elif fEvent29 == 4:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_02', false)
             if not event_flags_system['cPlayer:SpnPhotoStudioGuideDone']:
-                run sub_Event27
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
         elif fEvent29 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:121', false)
             if event_flags_system['cPlayer:EnableEmoticonUI']:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:122', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:123', false)
-                run sub_Event38
+                run Spn_Explain_Again
             else:
-                run sub_Event38
+                run Spn_Explain_Again
         elif fEvent29 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:131', false)
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:132', false)
-            run sub_Event38
+            run Spn_Explain_Again
         elif fEvent29 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:141', false)
             if event_flags_system['cPlayer:EnableEmoticonUI']:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:142', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:143', false)
-                run sub_Event38
+                run Spn_Explain_Again
             else:
                 run Spn_Explain_Again
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_01', false)
-        run sub_Event27
+        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
 

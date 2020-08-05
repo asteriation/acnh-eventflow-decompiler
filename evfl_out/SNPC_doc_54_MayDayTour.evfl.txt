@@ -10,19 +10,19 @@ flow DocHint_MayDay:
     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:045', false)
     if event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 1:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_3', false)
-        run sub_Event9
+        event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
     elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 2:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_1', false)
-        run sub_Event9
+        event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
     elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] < 3:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_0', false)
-        run sub_Event9
+        event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
     elif event_flags_system['cPlayerTemp:DocHintMayDayTour'] >= 4:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_2', false)
         event_flags_system['cPlayerTemp:DocHintMayDayTour'] += -4
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:046_4', false)
-        run sub_Event9
+        event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
     return
 
 flow Root:
@@ -45,41 +45,41 @@ flow Root:
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:055', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run sub_Event77
+                        run DocCmnReturn_MayDay
                     else:
-                        run sub_Event56
+                        run DocCmnCancel_MayDay
                 else:
-                    run sub_Event56
+                    run DocCmnCancel_MayDay
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:052', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:055', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run sub_Event77
+                        run DocCmnReturn_MayDay
                     else:
-                        run sub_Event56
+                        run DocCmnCancel_MayDay
                 else:
-                    run sub_Event56
+                    run DocCmnCancel_MayDay
         elif EventFlowSystemActor.HasTargetItem(9964, 1):
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:054', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:043', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run sub_Event77
+                    run DocCmnReturn_MayDay
                 else:
-                    run sub_Event56
+                    run DocCmnCancel_MayDay
             else:
-                run sub_Event56
+                run DocCmnCancel_MayDay
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:003', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:043', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run sub_Event77
+                    run DocCmnReturn_MayDay
                 else:
-                    run sub_Event56
+                    run DocCmnCancel_MayDay
             else:
-                run sub_Event56
+                run DocCmnCancel_MayDay
     elif EventFlowSystemActor.HasTargetItem(12472, 1):
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:047', false)
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:048', false)
@@ -125,28 +125,16 @@ entrypoint Event63:
                     EventFlowSystemActor.PlayerBaggageOperationForEvent('cRestore')
                     EventFlowSystemActor.SystemRequestChangeStage('cFromOutlierToHomeland', 'cCircle', 'cDALWithLoadWait', 'cBlack', 1.0, 1.0)
                 else:
-                    run sub_Event64
+                    run DocCmnCancel_MayDay
             else:
-                run sub_Event64
+                run DocCmnCancel_MayDay
         elif fEvent4 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:044', false)
         elif fEvent4 == 3:
             run sub_Event6
     return
 
-flow sub_Event56:
-    run DocCmnCancel_MayDay
-
 flow sub_Event6:
     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:008', false)
     return
-
-flow sub_Event64:
-    run DocCmnCancel_MayDay
-
-flow sub_Event77:
-    run DocCmnReturn_MayDay
-
-flow sub_Event9:
-    event_flags_system['cPlayerTemp:DocHintMayDayTour'] += 1
 

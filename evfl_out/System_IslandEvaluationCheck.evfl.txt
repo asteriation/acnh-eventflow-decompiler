@@ -165,8 +165,5 @@ flow NotEnoughNNpc:
     subflow_results[0] = 0
     if (EventFlowSystemActor.NpcHouseNum('cConstructed') < 7) and (subflow_results[2] in (2, 3, 4)) and (subflow_results[3] in (2, 3, 4)):
         subflow_results[0] = 1
-    run sub_tm!NotEnoughNNpc
-
-flow sub_tm!NotEnoughNNpc:
     return
 

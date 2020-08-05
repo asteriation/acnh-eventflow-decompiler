@@ -12,11 +12,11 @@ flow Free_Chk:
         if MainNpc.NpcIsExistOtherNpc():
             run NNPC_Free_House::Free_HouseH
         else:
-            run sub_Event18
+            run NNPC_Free_House::Root
     elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
         run NNPC_Free_House::Free_HouseG
     elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run sub_Event18
+        run NNPC_Free_House::Root
     else:
         run NNPC_Free_Field::Root
     return
@@ -27,7 +27,4 @@ flow Root:
     else:
         run Free_Chk
     return
-
-flow sub_Event18:
-    run NNPC_Free_House::Root
 

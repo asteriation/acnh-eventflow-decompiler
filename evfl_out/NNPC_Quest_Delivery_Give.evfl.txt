@@ -34,21 +34,21 @@ flow Give:
                 fEvent8 = MainNpc.CheckNpcFavorLevel()
                 if fEvent8 in (2, 3):
                     if EventFlowSystemActor.PercentChoice(20):
-                        run sub_Event68
+                        run NNPC_Quest_Delivery_End::QuizEnd
                     else:
                         MainNpc.SetDeliveryItemApplySave()
                         MainNpc.NpcDelivery('Default', 3)
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:109', false)
                         quest_flags['cDeliveryEnd'] = true
                         event_flags_npc['cNpcMemory:StoodUpFlag'] = false
+                elif fEvent8 in (0, 1):
+                    run NNPC_Quest_Delivery_End::QuizEnd
                 elif fEvent8 in (4, 5):
                     MainNpc.SetDeliveryItemApplySave()
                     MainNpc.NpcDelivery('Default', 3)
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:109', false)
                     quest_flags['cDeliveryEnd'] = true
                     event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-                elif fEvent8 in (0, 1):
-                    run sub_Event68
             elif fEvent3 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:004', false)
                 fEvent69 = MainNpc.CheckNpcFavorLevel()
@@ -257,59 +257,59 @@ flow Give:
                         fEvent16 = MainNpc.CheckClientNpcLook()
                         if fEvent16 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:411', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:412', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:413', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 3:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:414', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 4:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:415', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 5:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:416', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 6:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:417', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 7:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:418', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                     elif fEvent15 == 1:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:402', false)
                         fEvent16 = MainNpc.CheckClientNpcLook()
                         if fEvent16 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:411', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:412', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:413', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 3:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:414', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 4:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:415', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 5:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:416', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 6:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:417', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 7:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:418', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                     elif fEvent15 == 2:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:403', false)
                         if EventFlowSystemActor.PercentChoice(50):
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         else:
                             MainNpc.SetDeliveryItemApplySave()
                             MainNpc.NpcDelivery('Default', 3)
@@ -340,59 +340,59 @@ flow Give:
                         fEvent16 = MainNpc.CheckClientNpcLook()
                         if fEvent16 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:411', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:412', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:413', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 3:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:414', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 4:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:415', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 5:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:416', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 6:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:417', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 7:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:418', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                     elif fEvent15 == 1:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:402', false)
                         fEvent16 = MainNpc.CheckClientNpcLook()
                         if fEvent16 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:411', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:412', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:413', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 3:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:414', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 4:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:415', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 5:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:416', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 6:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:417', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         elif fEvent16 == 7:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:418', false)
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                     elif fEvent15 == 2:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:403', false)
                         if EventFlowSystemActor.PercentChoice(50):
-                            run sub_Event82
+                            run NNPC_Quest_Delivery_End::Thanks1
                         else:
                             MainNpc.SetDeliveryItemApplySave()
                             MainNpc.NpcDelivery('Default', 3)
@@ -414,10 +414,4 @@ flow Give:
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:002', false)
     return
-
-flow sub_Event68:
-    run NNPC_Quest_Delivery_End::QuizEnd
-
-flow sub_Event82:
-    run NNPC_Quest_Delivery_End::Thanks1
 

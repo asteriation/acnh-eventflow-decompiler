@@ -2,10 +2,10 @@ flow Init:
     MainNpc.NpcAISetting(1, true)
     if event_flags_system['cLandTemp:PrologueStartedCampfire']:
         MainNpc.NpcRegistAIBlackBoard('IsForceLife', 1)
-        run sub_Event8
+        MainNpc.NpcRegistAIBlackBoard('PrologueStep', 2)
     elif event_flags_system['cLand:SetPrologueBonfire']:
         MainNpc.NpcRegistAIBlackBoard('IsForceLife', 0)
-        run sub_Event8
+        MainNpc.NpcRegistAIBlackBoard('PrologueStep', 2)
     else:
         MainNpc.NpcRegistAIBlackBoard('PrologueStep', 0)
         MainNpc.NpcRegistAIBlackBoard('IsForceLife', 0)
@@ -18,7 +18,4 @@ flow Init:
 flow Root:
     run AI_NPC_Prologue_Common::Root_Common
     return
-
-flow sub_Event8:
-    MainNpc.NpcRegistAIBlackBoard('PrologueStep', 2)
 

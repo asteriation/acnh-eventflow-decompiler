@@ -10,14 +10,14 @@ flow Action_Villager_Chk:
         run NNPC_FreeD_RumorAction::RumorOP_Action_Villager
         event_flags_system['cPlayer:TalkRumorOActionTodayAnyone'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Action_Villager_Chk
+    return
 
 flow Action_Visitor_Chk:
     if (EventFlowSystemActor.IsMyVillage()) and (not EventFlowSystemActor.NetHasVisitor()) and (MainNpc.HasPlayerActivitySinceMoveIn(1)):
         run NNPC_FreeD_RumorAction::RumorOP_Action_Visitor
         event_flags_npc['cNpcMemory:TalkRumorVActionToday'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Action_Visitor_Chk
+    return
 
 flow KeywordA:
     if event_flags_system['cPlayer:HeardAboutFreeDKeywordA'] == 0:
@@ -57,12 +57,12 @@ flow Moving_Chk:
         MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeD_Moving', '', '', '', true)
         event_flags_npc['cNpcMemory:TalkFreeMovingNow'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Moving_Chk
+    return
 
 flow RumorN1_Chk:
     if (not event_flag_npc['cNpcMemory:TalkRumorNToday']) and (not ((MainNpc.NpcBirthType('cFirst')) and ((event_flag_npc['cNpcTemp:AppWelcomeMigrantsTalk']) or (event_flag_npc['cNpcSave:AppE_WelcomeMigrantsToday'])))):
         run sub_grp!Event74
-    run sub_tm!RumorN1_Chk
+    return
 
 flow RumorN2_Chk:
     if (not event_flags_system['cPlayer:TalkRumorN2TodayAnyone']) and (MainNpc.NpcHasFreeMessage('cFreeDRumorN2')):
@@ -84,17 +84,17 @@ flow RumorO_Favorite_Chk:
             if (not event_flags_system['cPlayer:TalkRumorOVlgFavoriteToday']) and (EventFlowSystemActor.PlayerVillagerCount(2)) and (not EventFlowSystemActor.IsSharePlay(1)):
                 run NNPC_FreeD_RumorFavorite::RumorOP_Favorite_Villager
                 event_flags_system['cPlayer:TalkRumorOVlgFavoriteToday'] = true
-                run sub_Event14
+                EventFlowSystemActor.ExitFlowchart()
         elif not event_flag_npc['cNpcMemory:TalkRumorOFavoriteToday']:
             run NNPC_FreeD_RumorFavorite::RumorOP_Favorite_Host
             event_flags_npc['cNpcMemory:TalkRumorOFavoriteToday'] = true
-            run sub_Event14
-    run sub_tm!RumorO_Favorite_Chk
+            EventFlowSystemActor.ExitFlowchart()
+    return
 
 flow RumorP_Favorite_Chk:
     if (not event_flags_system['cPlayer:TalkRumorPFavoriteTodayAnyone']) and (event_flags_system['cPlayer:RumorPFavoriteProgressDays'] >= 5) and (MainNpc.NpcMoveOutState() in (0, 1, 2, 4)) and (EventFlowSystemActor.NpcHouseNum('cConstructed') < 5):
         run NNPC_FreeD_RumorFavorite::RumorP_Favorite_CurrentPlayer
-    run sub_tm!RumorP_Favorite_Chk
+    return
 
 flow RumorP_Favorite_End:
     event_flags_system['cPlayer:TalkRumorPFavoriteTodayAnyone'] = true
@@ -112,30 +112,9 @@ flow Rumor_Action_Chk:
             run Action_CurrentPlayer_Chk
     return
 
-flow sub_Event14:
-    EventFlowSystemActor.ExitFlowchart()
-
 flow sub_grp!Event74:
     if MainNpc.NpcHasFreeMessage('cFreeDRumorN1'):
         MainNpc.NpcOpenFreeMessage('cFreeDRumorN1')
         event_flags_npc['cNpcMemory:TalkRumorNToday'] = true
         EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!Action_Villager_Chk:
-    return
-
-flow sub_tm!Action_Visitor_Chk:
-    return
-
-flow sub_tm!Moving_Chk:
-    return
-
-flow sub_tm!RumorN1_Chk:
-    return
-
-flow sub_tm!RumorO_Favorite_Chk:
-    return
-
-flow sub_tm!RumorP_Favorite_Chk:
-    return
 

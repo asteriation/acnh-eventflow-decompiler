@@ -4,7 +4,7 @@ flow ChkTalkRcoAboutShopMaterial:
         MainNpc.NpcAISetting(3, false)
         MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'rco')
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ChkTalkRcoAboutShopMaterial
+    return
 
 flow Init:
     MainNpc.NpcAISetting(8, true)
@@ -18,8 +18,5 @@ flow Init:
 flow Root:
     run ChkTalkRcoAboutShopMaterial
     MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_rcm', true, false, true, 2, 0.0, '')
-    return
-
-flow sub_tm!ChkTalkRcoAboutShopMaterial:
     return
 

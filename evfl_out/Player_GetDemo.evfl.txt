@@ -25,7 +25,7 @@ flow Get_CatchFishCompleteDemo:
         Player.OpenMessageWindow('TalkSys/SYS_Get_Fish:003', false)
         Player.PlayerWaitAsFinish()
         event_flags_system['cPlayer:CompleteFish'] = true
-    run sub_tm!Get_CatchFishCompleteDemo
+    return
 
 flow Get_CatchInsectCompleteDemo:
     if (Player.PlayerGetDemoCollectStatus('cCompleteThisTime')) or ((Player.PlayerGetDemoCollectStatus('cCompleteAlready')) and (not event_flags_system['cPlayer:CompleteInsects'])):
@@ -34,11 +34,11 @@ flow Get_CatchInsectCompleteDemo:
         Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:003', false)
         Player.PlayerWaitAsFinish()
         event_flags_system['cPlayer:CompleteInsects'] = true
-    run sub_tm!Get_CatchInsectCompleteDemo
+    return
 
 flow Get_Fish:
     if (Player.PlayerGetDemoCheckItem('cTrash')) or (Player.PlayerGetDemoCheckItem('cOre')):
-        run sub_Event9
+        run Player_GetDemo_20_Fishing::Fishing_Get_Trash
     elif Player.PlayerGetDemoCheckItem('cFishEgg'):
         run Player_GetDemo_Easter::GetWaterEgg
     elif EventFlowSystemActor.NetIsDreaming():
@@ -47,14 +47,14 @@ flow Get_Fish:
         run sub_grp!Event32
     elif Player.PlayerGetDemoCollectStatus('cFirstGet'):
         Player.OpenMessageWindow('TalkSys/SYS_Get_Fish:001', false)
-        run sub_Event166
+        run GetFish_NomalSeq
     elif not Player.PlayerGetDemoCheckItem('cDojou'):
 entrypoint Event6:
         Player.PlayerOpenFishGetMessage()
         run Get_CatchFishCompleteDemo
         run sub_grp!Event32
     elif event_flags_system['cPlayer:Got2ndLoach']:
-        run sub_Event166
+        run GetFish_NomalSeq
     else:
         run Player_GetDemo_20_Fishing::Fishing_Get_2ndLoach
         run Get_CatchFishCompleteDemo
@@ -83,7 +83,7 @@ flow Get_GulParts:
 
 flow Get_Insect:
     if (Player.PlayerGetDemoCheckItem('cSnowCrystal')) or (Player.PlayerGetDemoCheckItem('cSakurapetal')) or (Player.PlayerGetDemoCheckItem('cAutumnLeaf')):
-        run sub_Event112
+        run Get_SnowCrystal
     elif Player.PlayerGetDemoCheckItem('cYutaroWisp'):
         run Get_YutaroWisp
     elif EventFlowSystemActor.NetIsDreaming():
@@ -196,7 +196,7 @@ entrypoint Event59:
                         run TreasureHunt_Finish
                 elif (Player.PlayerGetDemoCheckItem('cPitfallSeed')) and (EventFlowSystemActor.UIResultMenuDecide()):
                     run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk_AfterReplace
-    run sub_tm!Get_Scoop
+    return
 
 flow Get_SnowCrystal:
     if EventFlowSystemActor.NetIsDreaming():
@@ -279,15 +279,6 @@ flow TreasureHunt_Finish:
     run Event2
     return
 
-flow sub_Event112:
-    run Get_SnowCrystal
-
-flow sub_Event166:
-    run GetFish_NomalSeq
-
-flow sub_Event9:
-    run Player_GetDemo_20_Fishing::Fishing_Get_Trash
-
 flow sub_grp!Event32:
     if Player.PlayerCheckAI('cGetDemo_FishFullItem'):
         if Player.PlayerHasExchaneableItem(false, true, true, true):
@@ -309,13 +300,4 @@ flow sub_grp!Event41:
                 EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByHarvest', '', 'cInsectGetFull', false)
         else:
             Player.OpenMessageWindow('TalkSys/SYS_Player:007', true)
-
-flow sub_tm!Get_CatchFishCompleteDemo:
-    return
-
-flow sub_tm!Get_CatchInsectCompleteDemo:
-    return
-
-flow sub_tm!Get_Scoop:
-    return
 

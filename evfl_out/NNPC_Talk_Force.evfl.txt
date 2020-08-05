@@ -3,33 +3,33 @@ flow Flea:
     if fEvent26 == 0:
         if MainNpc.CheckNpcFavorLevel() in (0, 1, 2, 3):
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:001', false)
-            run sub_Event35
+            MainNpc.NpcAddFriendship(5)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:002', false)
-            run sub_Event35
+            MainNpc.NpcAddFriendship(5)
     elif fEvent26 == 2:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:005', false)
-            run sub_Event35
+            MainNpc.NpcAddFriendship(5)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:006', false)
-            run sub_Event35
+            MainNpc.NpcAddFriendship(5)
     elif fEvent26 == 1:
         fEvent70 = MainNpc.CheckNpcLook()
         if fEvent70 == 5:
             if EventFlowSystemActor.EnvSeason() in (0, 2, 3):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:004', false)
-                run sub_Event35
+                MainNpc.NpcAddFriendship(5)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:003', false)
-                run sub_Event35
+                MainNpc.NpcAddFriendship(5)
         elif fEvent70 in (0, 1, 2, 3, 4, 6, 7):
             if EventFlowSystemActor.PlayerGender() == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:003', false)
-                run sub_Event35
+                MainNpc.NpcAddFriendship(5)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:004', false)
-                run sub_Event35
+                MainNpc.NpcAddFriendship(5)
     return
 
 flow Hit:
@@ -78,27 +78,27 @@ flow Hit:
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cAnger', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
                 elif fEvent53 == 1:
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cSad', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Hit:004', false)
                 fEvent37 = MainNpc.CheckNpcLook()
-                if fEvent37 in (1, 3, 5, 6):
+                if fEvent37 == 7:
+                    MainNpc.NpcAddFriendship(-3)
+                elif fEvent37 in (1, 3, 5, 6):
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cAnger', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
                 elif fEvent37 in (0, 2, 4):
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cSad', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
-                elif fEvent37 == 7:
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
         elif fEvent51 in (1, 2, 3, 5, 6, 7):
             if EventFlowSystemActor.PlayerGender() == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Hit:003', false)
@@ -107,27 +107,27 @@ flow Hit:
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cAnger', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
                 elif fEvent53 == 1:
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cSad', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Hit:004', false)
                 fEvent37 = MainNpc.CheckNpcLook()
-                if fEvent37 in (1, 3, 5, 6):
+                if fEvent37 == 7:
+                    MainNpc.NpcAddFriendship(-3)
+                elif fEvent37 in (1, 3, 5, 6):
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cAnger', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
                 elif fEvent37 in (0, 2, 4):
                     run NoAcquaintance_Chk
                     MainNpc.SetNpcFeel('cSad', 120)
                     MainNpc.NpcSetFeelSource(10)
-                    run sub_Event39
-                elif fEvent37 == 7:
-                    run sub_Event39
+                    MainNpc.NpcAddFriendship(-3)
     return
 
 flow NoAcquaintance_Chk:
@@ -276,10 +276,4 @@ flow Talk_Furniture:
     if event_flags_npc['cNpcTemp:IndoorTalkCount'] >= 0:
         event_flags_npc['cNpcTemp:NotAddIndoorTalkCount'] = true
     return
-
-flow sub_Event35:
-    MainNpc.NpcAddFriendship(5)
-
-flow sub_Event39:
-    MainNpc.NpcAddFriendship(-3)
 

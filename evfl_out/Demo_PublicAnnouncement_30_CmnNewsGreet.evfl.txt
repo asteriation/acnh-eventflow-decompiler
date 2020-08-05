@@ -166,36 +166,33 @@ entrypoint Event89:
         fEvent7 = subflow_results[2]
         if fEvent7 == 1:
             run FishSpring
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 2:
             run FishSummer
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 3:
             run FishAutumn
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 4:
             run FishWinter
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 5:
             run Insect1
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 6:
             run Insect2
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 7:
             run Insect3
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 8:
             run Insect4
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 9:
             run NewYearEve
-            run sub_Event18
+            subflow_results[15] = 1
         elif fEvent7 == 0:
             if MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_FirstSnow'):
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:005', false)
     return
-
-flow sub_Event18:
-    subflow_results[15] = 1
 

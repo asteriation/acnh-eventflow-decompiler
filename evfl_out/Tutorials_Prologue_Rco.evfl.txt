@@ -78,10 +78,10 @@ flow Root:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:058', false)
             elif EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3):
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_02', false)
-                run sub_Event100
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
             else:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
-                run sub_Event100
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
         elif EventFlowSystemActor.HasTargetItem(2500, 11):
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:013_01', false)
             MainNpc.SetDeliveryItemAtRandom(2500, false, 'cVillageRemakePattern', 0)
@@ -175,38 +175,32 @@ flow TownFruitTypeChk:
         if EventFlowSystemActor.HasTargetItem(2287, 6):
             EventFlowSystemActor.DeleteTargetItem(2287, 6, false)
             MainNpc.SetDeliveryItemAtRandom(2287, false, 'cVillageRemakePattern', 0)
-            run sub_Event35
+            event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
     elif fEvent29 == 1:
         if EventFlowSystemActor.HasTargetItem(2214, 6):
             EventFlowSystemActor.DeleteTargetItem(2214, 6, false)
             MainNpc.SetDeliveryItemAtRandom(2214, false, 'cVillageRemakePattern', 0)
-            run sub_Event35
+            event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
     elif fEvent29 == 2:
         if EventFlowSystemActor.HasTargetItem(2285, 6):
             EventFlowSystemActor.DeleteTargetItem(2285, 6, false)
             MainNpc.SetDeliveryItemAtRandom(2285, false, 'cVillageRemakePattern', 0)
-            run sub_Event35
+            event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
     elif fEvent29 == 3:
         if EventFlowSystemActor.HasTargetItem(2286, 6):
             EventFlowSystemActor.DeleteTargetItem(2286, 6, false)
             MainNpc.SetDeliveryItemAtRandom(2286, false, 'cVillageRemakePattern', 0)
-            run sub_Event35
+            event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
     elif fEvent29 == 4:
         if EventFlowSystemActor.HasTargetItem(2213, 6):
             EventFlowSystemActor.DeleteTargetItem(2213, 6, false)
             MainNpc.SetDeliveryItemAtRandom(2213, false, 'cVillageRemakePattern', 0)
-            run sub_Event35
+            event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
     return
-
-flow sub_Event100:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
 
 flow sub_Event3:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:001', false)
     return
-
-flow sub_Event35:
-    event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
 
 flow sub_Event5:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:002', false)

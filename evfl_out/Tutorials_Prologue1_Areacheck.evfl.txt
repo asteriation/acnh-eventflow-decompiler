@@ -206,17 +206,17 @@ entrypoint Event27:
 entrypoint Event15:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_03', false)
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:113', false)
-                    run sub_Event89
+                    run AreaSel_ChoiseNorth1st
                 elif fEvent7 == 2:
 entrypoint Event18:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_04', false)
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:114', false)
-                    run sub_Event89
+                    run AreaSel_ChoiseNorth1st
                 elif fEvent7 == 0:
 entrypoint Event59:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_02', false)
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:112', false)
-                    run sub_Event89
+                    run AreaSel_ChoiseNorth1st
                 elif fEvent7 == 3:
                     run Prologue1_SelSouth
     return
@@ -318,9 +318,6 @@ flow Root:
     else:
         run Area_Oceania
     return
-
-flow sub_Event89:
-    run AreaSel_ChoiseNorth1st
 
 flow sub_grp!Event103:
     fEvent103 = EventFlowSystemActor.GeneralTalkChoice3()

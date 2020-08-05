@@ -30,10 +30,10 @@ flow NoTopic:
     elif event_flags_system['cPlayerTemp:OwlWokeHimUp']:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:016', false)
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:017', false)
-        run sub_Event31
+        run SNPC_owl_00_Common::Select4_Direct
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:013', false)
-        run sub_Event31
+        run SNPC_owl_00_Common::Select4_Direct
     return
 
 flow OwlTalkAfterWakeup:
@@ -131,7 +131,4 @@ entrypoint Event32:
     else:
         run SNPC_owl_90_OtherTown::Root
     return
-
-flow sub_Event31:
-    run SNPC_owl_00_Common::Select4_Direct
 

@@ -35,10 +35,10 @@ entrypoint Event0:
                     EventFlowSystemActor.ExitFlowchart()
                 elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:011', false)
-                    run sub_Event58
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:012', false)
-                    run sub_Event58
+                    EventFlowSystemActor.ExitFlowchart()
             elif EventFlowSystemActor.PercentChoice(10):
                 run WaterEgg
             else:
@@ -115,7 +115,4 @@ flow WoodEgg:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:103', false)
     run Event6
     return
-
-flow sub_Event58:
-    EventFlowSystemActor.ExitFlowchart()
 

@@ -115,7 +115,7 @@ flow Root:
         if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
             run Doc_FirstJuneBride
         else:
-            run sub_Event8
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:001', true)
     elif EventFlowSystemActor.YMD(2020, 5, 31, 'cLastGrowUpTime') in (0, 1):
         run Doc_NoService
     elif not EventFlowSystemActor.TermEventNow('JuneBride', false):
@@ -127,7 +127,4 @@ flow Root:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:200', false)
     return
-
-flow sub_Event8:
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:001', true)
 

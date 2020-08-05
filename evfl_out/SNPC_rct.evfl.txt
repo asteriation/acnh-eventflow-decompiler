@@ -33,7 +33,7 @@ flow Root:
                 event_flags_system['cPlayer:RctTnx4ConfirmingStorePlace'] = true
         elif event_flags_system['cLand:RcmShopMaterialComplete']:
             if not event_flags_system['cPlayer:Prologue4RcmGetTent']:
-                run sub_Event24
+                run RctHintCmn
             elif event_flags_system['cPlayer:RctTnx4CollectingMaterials2']:
                 run RctHintCmn
             else:
@@ -41,7 +41,7 @@ flow Root:
                 event_flags_system['cPlayer:RctTnx4CollectingMaterials2'] = true
         elif event_flags_system['cPlayer:RcmTookQuestReq']:
             if event_flags_system['cPlayer:RctTnx4CollectingMaterials']:
-                run sub_Event24
+                run RctHintCmn
             else:
                 event_flags_system['cPlayer:RctTnx4CollectingMaterials'] = true
                 MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_01', false)
@@ -80,9 +80,6 @@ entrypoint Event102:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_03', false)
     return
-
-flow sub_Event24:
-    run RctHintCmn
 
 flow sub_grp!Event7:
     if not EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):

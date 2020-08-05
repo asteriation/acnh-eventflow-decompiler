@@ -20,12 +20,9 @@ entrypoint Event14:
         elif event_flags_system['cPlayerTemp:FreeISelectCount'] < 5:
             event_flags_system['cPlayerTemp:FreeISelectCount'] += 1
             run ReSelect
-    run sub_tm!Present_Chk
+    return
 
 flow ReSelect:
     run Event14
-    return
-
-flow sub_tm!Present_Chk:
     return
 

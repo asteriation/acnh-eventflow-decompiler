@@ -206,7 +206,7 @@ entrypoint Event740:
         elif (event_flags_system['cLand:ImmQ_SetBridge']) and (event_flags_system['cPlayer:ImmQSetBridgeKitMySelf']) and (event_flags_system['cLand:ImmQ_A_GetHousing']) and (event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr']):
             run Rco_ImmQ_ClearTalk_NotForce
             EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Rco_ImmQ_ForceTalkEntry
+    return
 
 flow Rco_ImmQ_ForceTalkEntry_Init:
     run SNPC_rco_01_Tent_1_Entries::RcoTent_Force_DisableTalkCamera
@@ -366,7 +366,4 @@ flow sub_grp!Event69:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:032_01', false)
         event_flags_system['cPlayer:ImmQGetHousingFullItem'] = true
-
-flow sub_tm!Rco_ImmQ_ForceTalkEntry:
-    return
 

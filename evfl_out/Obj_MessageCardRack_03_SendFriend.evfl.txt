@@ -14,7 +14,7 @@ flow EntryPoint_CheckUnlockFriend:
         else:
             run Obj_MessageCardRack::EntryPoint_Cancel
     else:
-        run sub_Event125
+        run Obj_MessageCardRack::EntryPoint_StartTalk
     return
 
 flow EntryPoint_EditFriend:
@@ -86,11 +86,11 @@ entrypoint Event5:
                                 DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Network:001', false)
                                 EventFlowSystemActor.NetConnectInit('cConnectInet', true)
                                 if EventFlowSystemActor.CheckErrorType(2):
-                                    run sub_Event102
+                                    run EntryPoint_SendError
                                 else:
                                     EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
                                     if EventFlowSystemActor.CheckErrorType(2):
-                                        run sub_Event102
+                                        run EntryPoint_SendError
                                     else:
                                         EventFlowSystemActor.MessageSuspend()
                                         DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Network:010', false)
@@ -140,11 +140,11 @@ entrypoint Event5:
                                     DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Network:001', false)
                                     EventFlowSystemActor.NetConnectInit('cConnectInet', true)
                                     if EventFlowSystemActor.CheckErrorType(2):
-                                        run sub_Event102
+                                        run EntryPoint_SendError
                                     else:
                                         EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
                                         if EventFlowSystemActor.CheckErrorType(2):
-                                            run sub_Event102
+                                            run EntryPoint_SendError
                                         else:
                                             EventFlowSystemActor.MessageSuspend()
                                             DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Network:010', false)
@@ -177,17 +177,8 @@ entrypoint Event5:
             else:
                 run Obj_MessageCardRack::EntryPoint_Cancel
         else:
-            run sub_Event131
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:312', true)
     else:
-        run sub_Event131
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:312', true)
     return
-
-flow sub_Event102:
-    run EntryPoint_SendError
-
-flow sub_Event125:
-    run Obj_MessageCardRack::EntryPoint_StartTalk
-
-flow sub_Event131:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:312', true)
 

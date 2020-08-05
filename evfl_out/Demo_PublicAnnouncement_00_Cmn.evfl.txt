@@ -59,14 +59,14 @@ entrypoint Event19:
                 elif fEvent9 == 3:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                    run sub_Event20
+                    run Rco_EndMess
                 elif fEvent9 == 4:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
                 elif fEvent9 == 2:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                    run sub_Event20
+                    run Rco_EndMess
             elif event_flags_system['cLand:TkkFirstLiveReserved']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
                 run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
@@ -89,14 +89,14 @@ entrypoint Event19:
                 elif fEvent9 == 3:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                    run sub_Event20
+                    run Rco_EndMess
                 elif fEvent9 == 4:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
                 elif fEvent9 == 2:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
                     run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                    run sub_Event20
+                    run Rco_EndMess
             elif event_flags_system['cLand:TkkFirstLiveReserved']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
                 run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
@@ -119,14 +119,14 @@ entrypoint Event19:
             elif fEvent9 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                run sub_Event20
+                run Rco_EndMess
             elif fEvent9 == 4:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
             elif fEvent9 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                run sub_Event20
+                run Rco_EndMess
         elif event_flags_system['cLand:TkkFirstLiveReserved']:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
             run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
@@ -149,21 +149,18 @@ entrypoint Event19:
             elif fEvent9 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                run sub_Event20
+                run Rco_EndMess
             elif fEvent9 == 4:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
             elif fEvent9 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
                 run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                run sub_Event20
+                run Rco_EndMess
         elif event_flags_system['cLand:TkkFirstLiveReserved']:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
             run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
         elif subflow_results[4] in (1, 2, 3):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
     return
-
-flow sub_Event20:
-    run Rco_EndMess
 

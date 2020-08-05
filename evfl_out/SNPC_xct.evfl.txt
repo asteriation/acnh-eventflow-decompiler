@@ -38,24 +38,21 @@ flow Xct_First:
         MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:002', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:004', false)
-            run sub_grp-end!Event18
+            goto grp-end!Event18
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:009', false)
-            run sub_grp-end!Event18
+            goto grp-end!Event18
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:003', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:005', false)
-            run sub_grp-end!Event18
+            goto grp-end!Event18
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:010', false)
-            run sub_grp-end!Event18
+            goto grp-end!Event18
 grp-end!Event18::
     MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:007', false)
     MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:008', false)
     event_flags_system['cPlayer:XctFirstTalk'] = true
     return
-
-flow sub_grp-end!Event18:
-    goto grp-end!Event18
 

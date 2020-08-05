@@ -3,13 +3,10 @@ flow Root:
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
     if fEvent1 == 2:
         run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Cancel
+    elif fEvent1 == 0:
+        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Process
     elif fEvent1 == 1:
         subflow_results[0] = 1
-        run sub_Event3
-    elif fEvent1 == 0:
-        run sub_Event3
+        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Process
     return
-
-flow sub_Event3:
-    run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Process
 

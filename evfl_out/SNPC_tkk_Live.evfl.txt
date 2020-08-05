@@ -80,14 +80,14 @@ flow Tkk_LiveAfter_JudgeGet:
         if EventFlowSystemActor.IsSharePlay(0):
             if not event_flags_system['cLandTemp:Tkk_MusicFlag']:
                 run Tkk_LiveAfter_MusicGet_Multi
-                run sub_Event32
+                event_flags_system['cPlayer:TkkGetMusicToday'] = true
         elif MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
             run Tkk_LiveAfter_MusicGet_Multi
-            run sub_Event32
+            event_flags_system['cPlayer:TkkGetMusicToday'] = true
         else:
             run Tkk_LiveAfter_MusicGet_Single
-            run sub_Event32
-    run sub_tm!Tkk_LiveAfter_JudgeGet
+            event_flags_system['cPlayer:TkkGetMusicToday'] = true
+    return
 
 flow Tkk_LiveAfter_LastWord:
     fEvent61 = MainNpc.TkkLiveType()
@@ -250,19 +250,10 @@ flow Tkk_Live_JudgeMiss:
     if (MainNpc.TkkLiveType() == 0) and (MainNpc.TkkQeruestMethodType() == 0) and (any ('TkkMiss', '', '', '', '', '', '', '') in EventFlowSystemActor.FromItemSelect('cPresetItem')):
         subflow_results[0] = 0
     else:
-        run sub_Event29
+        subflow_results[0] = 1
     return
-
-flow sub_Event29:
-    subflow_results[0] = 1
-
-flow sub_Event32:
-    event_flags_system['cPlayer:TkkGetMusicToday'] = true
 
 flow sub_Event53:
     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:023', false)
-    return
-
-flow sub_tm!Tkk_LiveAfter_JudgeGet:
     return
 

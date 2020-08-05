@@ -3,10 +3,10 @@ flow Root:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation2_Rcm:131', false)
         else:
-            run sub_Event23
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation2_Rcm:121', false)
     elif event_flags_system['cPlayer:PrologueStartedCampfire']:
         if EventFlowSystemActor.RandomChoice4(4) in (0, 1, 2):
-            run sub_Event23
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation2_Rcm:121', false)
         else:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation2_Rcm:122', false)
     elif event_flags_system['cPlayer:PrologueForCampfire2']:
@@ -36,7 +36,4 @@ flow Root:
     else:
         run Tutorials_Prologue3_Orientation1::Root
     return
-
-flow sub_Event23:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation2_Rcm:121', false)
 

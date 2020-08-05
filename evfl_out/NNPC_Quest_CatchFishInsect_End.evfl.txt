@@ -75,10 +75,10 @@ flow End:
     fEvent64 = MainNpc.NpcCheckCatchQuestType()
     if fEvent64 == 2:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cQuest', false)
-        run sub_Event103
+        MainNpc.SetItemName(0, 4, 0)
     elif fEvent64 == 0:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Insect', 'cItemSelect', '', 'cQuest', false)
-        run sub_Event103
+        MainNpc.SetItemName(0, 4, 0)
     elif fEvent64 == 1:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Insect', 'cItemSelect', '', 'cQuest', false)
         MainNpc.SetItemName(0, 0, 2)
@@ -114,13 +114,13 @@ flow End:
                     MainNpc.NpcDelivery('Default', 10)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:003', false)
-                run sub_Event100
+                run Give
         elif fEvent12 == 1:
             if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:001', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:002', false)
-            run sub_Event100
+            run Give
         elif fEvent12 == 2:
             if EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 8000):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:024', false)
@@ -129,19 +129,19 @@ flow End:
                     run Give
                 elif MainNpc.NpcCatchQuestFishNormalType() == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:026', false)
-                    run sub_Event101
+                    MainNpc.NpcDelivery('Default', 10)
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:027', false)
-                    run sub_Event101
+                    MainNpc.NpcDelivery('Default', 10)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:023', false)
-                run sub_Event57
+                run Give
         elif fEvent12 == 3:
             if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:021', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:022', false)
-            run sub_Event57
+            run Give
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:053', false)
     else:
@@ -185,16 +185,4 @@ flow Give:
     event_flags_npc['cNpcMemory:StoodUpFlag'] = false
     event_flags_npc['cNpcMemory:OrderQuest'] = true
     return
-
-flow sub_Event100:
-    run Give
-
-flow sub_Event101:
-    MainNpc.NpcDelivery('Default', 10)
-
-flow sub_Event103:
-    MainNpc.SetItemName(0, 4, 0)
-
-flow sub_Event57:
-    run Give
 

@@ -47,7 +47,7 @@ flow CheckWhere:
     elif (not EventFlowSystemActor.SystemCheckNowStage('cPhotoStudioIsland')) and (not EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland')):
         subflow_results[1] = 1
     else:
-        run sub_Event163
+        subflow_results[1] = 2
     return
 
 flow CleanService:
@@ -278,9 +278,6 @@ flow Start_Construction:
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:206', false)
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:209', false)
     return
-
-flow sub_Event163:
-    subflow_results[1] = 2
 
 flow sub_Event20:
     MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:209', false)

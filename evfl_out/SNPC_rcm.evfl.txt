@@ -11,16 +11,16 @@ flow Check:
             run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
         elif fEvent67 == 3:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
-            run sub_Event69
+            run SNPC_rcm_00_Common_ItemCheck::Root
         elif fEvent67 == 1:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
-            run sub_Event69
+            run SNPC_rcm_00_Common_ItemCheck::Root
         elif fEvent67 == 4:
             run SNPC_rcm_00_In::Rcm_Market2_First
-            run sub_Event69
+            run SNPC_rcm_00_Common_ItemCheck::Root
         elif fEvent67 == 2:
             run SNPC_rcm_00_In::Rcm_Market1_First
-            run sub_Event69
+            run SNPC_rcm_00_Common_ItemCheck::Root
         run Rcm_SeqClose
     else:
         run SNPC_rcm_00_Common_ItemCheck::Root
@@ -41,7 +41,7 @@ flow EntrySubCast:
             MainNpc.NpcAITalkSubCastEntry(1, 'rct')
         else:
             MainNpc.NpcAITalkSubCastEntry(1, 'rcm')
-    run sub_tm!EntrySubCast
+    return
 
 flow ForceRenualOpen:
     run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1_ConvHgh
@@ -68,19 +68,19 @@ flow Root:
         fEvent36 = subflow_results[1]
         if fEvent36 == 5:
             run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
-            run sub_Event50
+            run Rcm_SeqClose
         elif fEvent36 == 2:
             run SNPC_rcm_00_In::Rcm_Market1_First
-            run sub_Event50
+            run Rcm_SeqClose
         elif fEvent36 == 4:
             run SNPC_rcm_00_In::Rcm_Market2_First
-            run sub_Event50
+            run Rcm_SeqClose
         elif fEvent36 == 1:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
-            run sub_Event50
+            run Rcm_SeqClose
         elif fEvent36 == 3:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
-            run sub_Event50
+            run Rcm_SeqClose
         elif fEvent36 == 0:
             fEvent35 = EventFlowSystemActor.ShopLevel()
             if fEvent35 == NooksCrannyUpgraded:
@@ -173,14 +173,5 @@ entrypoint Event7:
 
 flow Root_Init:
     run EntrySubCast
-    return
-
-flow sub_Event50:
-    run Rcm_SeqClose
-
-flow sub_Event69:
-    run SNPC_rcm_00_Common_ItemCheck::Root
-
-flow sub_tm!EntrySubCast:
     return
 

@@ -132,18 +132,18 @@ entrypoint Event29:
                     EventFlowSystemActor.SetTagFromSystem(0, 'cTkkLiveRequest', 'cDegit', '', 0)
                     if EventFlowSystemActor.NetIsConnected():
                         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:031', false)
-                        run sub_Event40
+                        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:030', false)
                         run Tkk_Request_Share
-                        run sub_Event40
+                        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
                 elif EventFlowSystemActor.NetIsConnected():
                     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
-                    run sub_Event40
+                    MainNpc.TkkFreeAction('cTkkActionType_ToReady')
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
                     run Tkk_Request_Share
-                    run sub_Event40
+                    MainNpc.TkkFreeAction('cTkkActionType_ToReady')
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:028', false)
                 run Tkk_SelectMusic
@@ -175,9 +175,6 @@ flow Tkk_Request_Share:
 flow Tkk_SelectMusic:
     run Event29
     return
-
-flow sub_Event40:
-    MainNpc.TkkFreeAction('cTkkActionType_ToReady')
 
 flow sub_grp!Event0:
     if EventFlowSystemActor.ExistPlayerAcceptingBirthDayMessage():

@@ -213,13 +213,13 @@ flow Root_Init:
         MainNpc.NpcAITalkSubCastEntry(1, 'hgh')
         if EventFlowSystemActor.IsSharePlay(0):
             if (event_flags_system['cPlayer:HgsCloseness'] >= 11) and (not event_flags_system['cPlayer:HgsTalkTodayFlag']) and (not EventFlowSystemActor.IsUnlockedAllItemRemakeCommonPattern()):
-                run sub_Event161
+                MainNpc.SetDefaultWaitAs('cDefault')
         elif event_flags_system['cPlayer:HgsTalkTodayFlag']:
             if event_flags_system['cPlayer:HgsCloseness'] > 5:
-                run sub_Event161
+                MainNpc.SetDefaultWaitAs('cDefault')
         elif event_flags_system['cPlayer:HgsCloseness'] >= 5:
-            run sub_Event161
-    run sub_tm!Root_Init
+            MainNpc.SetDefaultWaitAs('cDefault')
+    return
 
 flow hgs5:
     if not event_flags_system['cPlayer:HgsTalkTodayFlag']:
@@ -241,11 +241,5 @@ flow hgs6:
         MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:046', true)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:045', true)
-    return
-
-flow sub_Event161:
-    MainNpc.SetDefaultWaitAs('cDefault')
-
-flow sub_tm!Root_Init:
     return
 

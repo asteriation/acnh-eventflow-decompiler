@@ -52,9 +52,9 @@ flow WebSetting_Activate:
                     elif EventFlowSystemActor.NetIsAppError('cUploadProfile'):
                         EventFlowSystemActor.MessageSuspend()
                         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
-                        run sub_Event26
+                        run WebSetting_Activate_Failed
                     else:
-                        run sub_Event26
+                        run WebSetting_Activate_Failed
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_93_BlancoSettings:151', true)
         run SNPC_rco_92_OtherSettings::Seq_Close
@@ -119,7 +119,4 @@ flow WebSetting_Main:
         elif fEvent4 == 2:
             run SNPC_rco_92_OtherSettings::Sel_EndMenu
     return
-
-flow sub_Event26:
-    run WebSetting_Activate_Failed
 

@@ -41,7 +41,7 @@ flow Conditional:
 flow Conditional_Chk:
     if (EventFlowSystemActor.MuseumLevel() == BlathersNotMovedIn) and (event_flags_system['cPlayer:JohnnyHelpCount'] < 1) and (EventFlowSystemActor.VillagerNpcNum(false) < 5) and (EventFlowSystemActor.OfficeLevel() in (ResServiceTent0, ResServiceTent1)):
         run Event0
-    run sub_tm!Conditional_Chk
+    return
 
 flow Root:
     EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_BambooGrass:001', false)
@@ -56,7 +56,4 @@ entrypoint Event0:
         EventFlowSystemActor.MessageSuspend()
         EventFlowSystemActor.ExitFlowchart()
         return
-
-flow sub_tm!Conditional_Chk:
-    return
 

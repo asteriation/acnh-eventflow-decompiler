@@ -8,7 +8,7 @@ entrypoint Event16:
         if not event_flags_system['cPlayer:ImmQHeardClearInfoA']:
 entrypoint Event15:
             event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = true
-    run sub_tm!ChkRcoImmQClearChkA
+    return
 
 flow ChkRcoImmQClearChkASub:
     run Event16
@@ -23,7 +23,7 @@ flow ChkRcoImmQClearChkB:
 entrypoint Event17:
         if not event_flags_system['cPlayer:ImmQHeardClearInfoB']:
             run Event15
-    run sub_tm!ChkRcoImmQClearChkB
+    return
 
 flow ChkRcoImmQClearChkBSub:
     run Event17
@@ -38,7 +38,7 @@ flow ChkRcoImmQClearChkC:
 entrypoint Event18:
         if not event_flags_system['cPlayer:ImmQHeardClearInfoC']:
             run Event15
-    run sub_tm!ChkRcoImmQClearChkC
+    return
 
 flow ChkRcoImmQClearChkCSub:
     run Event18
@@ -84,14 +84,5 @@ flow RcoChkClearReportSkip:
         run CountReportNum
         if subflow_results[1] == 1:
             event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = false
-    return
-
-flow sub_tm!ChkRcoImmQClearChkA:
-    return
-
-flow sub_tm!ChkRcoImmQClearChkB:
-    return
-
-flow sub_tm!ChkRcoImmQClearChkC:
     return
 

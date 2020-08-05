@@ -227,11 +227,11 @@ entrypoint Event314:
             quest_flags['cDeliveryEnd'] = true
             event_flags_npc['cNpcMemory:StoodUpFlag'] = false
         else:
-            run sub_Event386
+            run OpenEnd_Entry
     elif fEvent123 == 4:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:205', false)
         if EventFlowSystemActor.PercentChoice(50):
-            run sub_Event386
+            run OpenEnd_Entry
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:210', false)
             MainNpc.SetDeliveryItemApplySave()
@@ -350,7 +350,4 @@ flow Thanks3:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:108', false)
     run Event2
     return
-
-flow sub_Event386:
-    run OpenEnd_Entry
 

@@ -44,19 +44,19 @@ flow QuestOrder_Chk:
         else:
             if (MainNpc.NpcCanStartQuest()) and (EventFlowSystemActor.PercentChoice(50)):
                 run sub_grp!Event23
-    run sub_tm!QuestOrder_Chk
+    return
 
 flow QuestStart_Chk:
     if MainNpc.NpcIsQuestClient('cTreasure', false, false):
         run NNPC_Quest_TreasureHunt_End::Root
-        run sub_Event50
+        EventFlowSystemActor.ExitFlowchart()
     elif MainNpc.NpcIsQuestClient('cDelivery', true, false):
         if quest_flags['cDeliveryEnd']:
             run NNPC_Quest_Delivery_Report::Report
-            run sub_Event50
+            EventFlowSystemActor.ExitFlowchart()
         elif EventFlowSystemActor.NpcQuestIsLimitOver('cDelivery'):
             run NNPC_Quest_Delivery_TimeOver::TimeOver
-            run sub_Event50
+            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Quest_ConfirmGive:
@@ -104,16 +104,10 @@ flow Root:
         run NNPC_FreeA::TentFirst_Chk
         if (event_flags_npc['cNpcMemory:ContinuousTalkCount'] < 1) and (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0):
             run QuestOrder_Chk
-        run sub_Event40
+        run NNPC_Free_Root::Root
     elif fEvent0 == 4:
         run NNPC_GEvent_BirthdayP::Give_Capcake
     return
-
-flow sub_Event40:
-    run NNPC_Free_Root::Root
-
-flow sub_Event50:
-    EventFlowSystemActor.ExitFlowchart()
 
 flow sub_grp!Event113:
     if MainNpc.HasNpcRequestedItem():
@@ -135,7 +129,4 @@ flow sub_grp!Event23:
             if (not event_flags_system['cLand:LostPropertyFound']) and (not event_flags_system['cPlayerTemp:QuestCancell']):
                 run NNPC_Quest_LostProperty_Begin::Begin
                 EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!QuestOrder_Chk:
-    return
 

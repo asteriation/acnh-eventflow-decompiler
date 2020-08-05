@@ -99,10 +99,10 @@ flow RumorP_Favorite_CurrentPlayer:
                         run Input
                     elif MainNpc.NpcRumorIsEqualNpcChoice('cPrev') in (0, 1, 2):
                         MainNpc.NpcRumorOpenMessage('031', 'cCategory')
-                        run sub_Event31
+                        run NNPC_FreeD::RumorP_Favorite_End
                     else:
                         MainNpc.NpcRumorOpenMessage('032', 'cCategory')
-                        run sub_Event31
+                        run NNPC_FreeD::RumorP_Favorite_End
             elif not MainNpc.NpcRumorIsSelectedAllDeny():
                 MainNpc.NpcRumorOpenMessage('010', 'cCategory')
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -122,9 +122,6 @@ flow RumorP_Favorite_CurrentPlayer:
         MainNpc.NpcRumorOpenMessage('100', 'cTopic')
         run Input
     return
-
-flow sub_Event31:
-    run NNPC_FreeD::RumorP_Favorite_End
 
 flow sub_grp!Event38:
     if MainNpc.NpcRumorIsEqualPreviousChoice():

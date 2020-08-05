@@ -6,9 +6,9 @@ flow FunitureN_Chk:
             MainNpc.NpcOpenFreeMessage('cFreeCFurniture')
             EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_Event0
+            run RoomN_Chk
     else:
-        run sub_Event0
+        run RoomN_Chk
     return
 
 flow FunitureP_Chk:
@@ -76,7 +76,4 @@ flow Room_Chk:
     else:
         run NNPC_FreeA::HouseQuestions_Chk
     return
-
-flow sub_Event0:
-    run RoomN_Chk
 

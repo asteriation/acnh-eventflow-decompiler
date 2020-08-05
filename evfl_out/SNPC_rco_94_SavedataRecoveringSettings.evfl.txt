@@ -84,16 +84,16 @@ entrypoint Event3:
     fEvent3 = EventFlowSystemActor.GeneralTalkChoice5()
     if fEvent3 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_05', false)
-        run sub_Event54
+        run Return_RestoringExplain
     elif fEvent3 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_06', false)
-        run sub_Event54
+        run Return_RestoringExplain
     elif fEvent3 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_07', false)
-        run sub_Event54
+        run Return_RestoringExplain
     elif fEvent3 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_08', false)
-        run sub_Event54
+        run Return_RestoringExplain
     elif fEvent3 == 4:
         run AskStart
     return
@@ -101,7 +101,4 @@ entrypoint Event3:
 flow Seq_Close_AfterEnable:
     run Event20
     return
-
-flow sub_Event54:
-    run Return_RestoringExplain
 

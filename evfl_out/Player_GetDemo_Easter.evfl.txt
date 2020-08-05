@@ -50,7 +50,7 @@ entrypoint Event1:
             EventFlowSystemActor.PlayerSetCraftRecipe(12446, 'EasterCapHat')
             EventFlowSystemActor.PlayerSetCraftRecipe(12448, 'EasterTops')
             Player.OpenMessageWindow('TalkSys/SYS_Player:518', false)
-    run sub_tm!Root
+    return
 
 flow sub_grp!Event10:
     if not EventFlowSystemActor.NetIsDreaming():
@@ -65,7 +65,4 @@ flow sub_grp!Event5:
 entrypoint Event7:
             if EventFlowSystemActor.PlayerGetEasterEggRecipe():
                 EventFlowSystemActor.ReservePlayerMutterDemo('GetDemo_Normal', 'cNextDemoEnd_Simple', 'Player_GetDemo_Easter', false)
-
-flow sub_tm!Root:
-    return
 

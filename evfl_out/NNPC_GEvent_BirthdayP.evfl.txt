@@ -6,7 +6,7 @@ flow Root:
     if (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) or ((event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst'))):
         if (not event_flag_npc['cNpcMemory:BirthdayPAttendance']) and ((not EventFlowSystemActor.IsSharePlay(0)) or (EventFlowSystemActor.IsHoldPlayerBirthdayThisYear())):
             run sub_grp!Event0
-    run sub_tm!Root
+    return
 
 flow Root_NextDay:
     if (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and (not event_flag_npc['cNpcMemory:BirthdayPAttendance']) and (not event_flag_npc['cNpcMemory:BirhdayPTalkFlag']):
@@ -43,7 +43,7 @@ flow Root_NextDay:
                 EventFlowSystemActor.ExitFlowchart()
             else:
                 run Talk_End
-    run sub_tm!Root_NextDay
+    return
 
 flow Talk_End:
     fEvent8 = EventFlowSystemActor.RandomChoice3(3)
@@ -127,10 +127,4 @@ entrypoint Event16:
                 EventFlowSystemActor.ExitFlowchart()
             else:
                 run Talk_End
-
-flow sub_tm!Root:
-    return
-
-flow sub_tm!Root_NextDay:
-    return
 

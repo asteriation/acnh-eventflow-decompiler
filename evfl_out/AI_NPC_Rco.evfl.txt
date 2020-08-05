@@ -8,7 +8,7 @@ flow AI_Rco_ChkForceImmQ:
             elif (event_flags_system['cLand:ImmQ_SetBridge']) and (event_flags_system['cPlayer:ImmQSetBridgeKitMySelf']) and (event_flags_system['cLand:ImmQ_A_GetHousing']) and (event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr']):
                 event_flags_system['cPlayerTemp:RcoForceTalk'] = true
                 run Rco_Force_ImmQ_ClearTalk
-    run sub_tm!AI_Rco_ChkForceImmQ
+    return
 
 flow AI_Rco_ChkForceIslandDevelopment:
     if (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (event_flags_system['cLand:RcoBuildCampsiteOngoing']):
@@ -21,7 +21,7 @@ flow AI_Rco_ChkForceIslandDevelopment:
                 run Rco_Force_IslandDev_BuildCampSite
         elif (event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']) and (not event_flags_system['cPlayer:IslandDevQuestTalkAfterCampSet']):
             run Rco_Force_IslandDev_SetCampSite
-    run sub_tm!AI_Rco_ChkForceIslandDevelopment
+    return
 
 flow AI_Rco_Disable_OfficeFirstTalk:
     run Event78
@@ -44,7 +44,7 @@ flow AI_Rco_NormalTalk:
             MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
     else:
         MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
-    run sub_tm!AI_Rco_NormalTalk
+    return
 
 flow CheckRob_ATM:
     run CheckRob_ATM_Direction
@@ -100,7 +100,7 @@ flow CheckRob_WorkBench:
     elif (not EventFlowSystemActor.NetHasVisitor()) and (not event_flags_system['cPlayer:MainmenuRecipe']) and (not event_flags_system['cPlayer:RcoDIYtrialGetMaterial']) and (event_flags_system['cPlayer:RcoTalked1stAfterPrologue']):
         MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
     else:
-        run sub_Event189
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
     return
 
 flow Init:
@@ -243,18 +243,18 @@ flow Root:
 flow Root2CampSiteVisitor:
     if event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
         if not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
-            run sub_grp-end!Event166
+            pass
         elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
-            run sub_grp-end!Event166
+            pass
         elif (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
-            run sub_Event153
+            run Root3IslandEvaluation
         elif (event_flags_system['cPlayer:SetHousingKitForFirstCamper']) and (not event_flags_system['cPlayer:SzaHeardAboutHousingKit']):
             run Rco_Force_IslandDev_AfterSetCamperHouse
     elif event_flags_system['cLand:RcoMeetFirstVisitorOngoing']:
         pass
     else:
         run Rco_Force_IslandDev_RequestMeetCamper
-    run sub_tm!Root2CampSiteVisitor
+    return
 
 flow Root3IslandEvaluation:
     if (not event_flags_system['cPlayer:RcoHeardAboutEvaluationStart']) and (EventFlowSystemActor.EventCheck('Fireworks') == 3):
@@ -266,12 +266,6 @@ flow SetOfficeForceTalk:
         MainNpc.NpcAISetRequestSpeakFunc('cSitDownOffice', true)
         MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
     return
-
-flow sub_Event153:
-    run Root3IslandEvaluation
-
-flow sub_Event189:
-    MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
 
 flow sub_grp!Event18:
     if MainNpc.NpcCheckStateSelectTiming('cInit'):
@@ -515,19 +509,4 @@ entrypoint Event78:
             MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
     else:
         MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
-
-flow sub_grp-end!Event166:
-    pass
-
-flow sub_tm!AI_Rco_ChkForceImmQ:
-    return
-
-flow sub_tm!AI_Rco_ChkForceIslandDevelopment:
-    return
-
-flow sub_tm!AI_Rco_NormalTalk:
-    return
-
-flow sub_tm!Root2CampSiteVisitor:
-    return
 

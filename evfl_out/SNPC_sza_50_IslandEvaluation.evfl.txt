@@ -77,16 +77,16 @@ flow AdviceForNatural:
 entrypoint Event102:
         if EventFlowSystemActor.VillageScoreTreeNum < 180:
             fEvent101 = EventFlowSystemActor.RandomChoice3(3)
-            if fEvent101 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_02', false)
-            elif fEvent101 == 0:
-                run sub_Event106
+            if fEvent101 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
             elif fEvent101 == 1:
-                run sub_Event107
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
+            elif fEvent101 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_02', false)
         elif EventFlowSystemActor.RandomChoice2(2) == 0:
-            run sub_Event106
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
         else:
-            run sub_Event107
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
     else:
         event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
         if event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
@@ -114,9 +114,9 @@ flow ChkTalkAboutSearchLand:
     if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
         if EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
             if not EventFlowSystemActor.NpcHouseNum('cExist') < 8:
-                run sub_Event192
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
         elif not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
-            run sub_Event192
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
     return
 
 flow ClearTkkFirstLiveScore:
@@ -314,7 +314,7 @@ entrypoint Event110:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_01', false)
         elif fEvent139 == 1:
             if subflow_results[1] == 0:
-                run sub_Event95
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:902', true)
         elif fEvent139 == 3:
@@ -322,7 +322,7 @@ entrypoint Event110:
         elif fEvent139 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:903', true)
         elif fEvent139 == 0:
-            run sub_Event95
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
         EventFlowSystemActor.SwapSpeaker('cNone', false)
         EventFlowSystemActor.WaitFrame(10)
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
@@ -370,18 +370,6 @@ entrypoint Event137:
 flow Sza_Evaluation_NmlSeq:
     run Event110
     return
-
-flow sub_Event106:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
-
-flow sub_Event107:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
-
-flow sub_Event192:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
-
-flow sub_Event95:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
 
 flow sub_grp!Event11:
     if subflow_results[4] in (1, 2, 3):

@@ -8,17 +8,17 @@ flow MoveBuildError:
     elif fEvent33 == 1:
         if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
             fEvent30 = subflow_results[1]
-            if fEvent30 == 1:
+            if fEvent30 in (2, 3, 4, 5, 6):
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
+            elif fEvent30 == 1:
                 if event_flags_system['cPlayer:RcoMoveHouseReserved']:
-                    run sub_Event28
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
                 else:
-                    run sub_Event29
-            elif fEvent30 in (2, 3, 4, 5, 6):
-                run sub_Event28
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
         elif event_flags_system['cPlayer:RcoMoveHouseReserved']:
-            run sub_Event28
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
         else:
-            run sub_Event29
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
     return
 
 flow MoveBuildErrorSub:
@@ -85,10 +85,4 @@ flow MoveBuildStateChk:
     else:
         subflow_results[0] = 0
     return
-
-flow sub_Event28:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
-
-flow sub_Event29:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
 

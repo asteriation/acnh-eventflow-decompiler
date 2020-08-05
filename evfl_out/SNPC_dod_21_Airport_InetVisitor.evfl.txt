@@ -84,15 +84,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -159,15 +159,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -248,15 +248,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -323,15 +323,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -402,15 +402,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -477,15 +477,15 @@ entrypoint Event48:
                                         if fEvent53 == 1:
                                             run SNPC_dod_11_Airport_LocalVisitor::Cmn_Hint_Going
                                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                run sub_Event57
+                                                run EntryPoint_RockRetryInet
                                             else:
                                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                                 run SNPC_dod_AirPort::EntryPoint_Cancel
+                                        elif fEvent53 == 0:
+                                            run EntryPoint_RockRetryInet
                                         elif fEvent53 == 2:
                                             EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
-                                        elif fEvent53 == 0:
-                                            run sub_Event57
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -526,7 +526,4 @@ flow EntryPoint_RockRetryInet:
     EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
     run Event48
     return
-
-flow sub_Event57:
-    run EntryPoint_RockRetryInet
 

@@ -11,10 +11,10 @@ flow BeforeOpen:
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:101_01', false)
             elif event_flags_system['cPlayer:FoxPreVisitBuyArtFlag']:
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:102_01', false)
-                run sub_Event48
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:103', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:102_02', false)
-                run sub_Event48
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:103', false)
             if EventFlowSystemActor.NetHasVisitor():
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:106', false)
             else:
@@ -54,7 +54,7 @@ flow BuyArtAgain:
 flow BuyArtCmnChk:
     if (not event_flags_system['cLand:Museum2ConstructionToday']) and (not event_flags_system['cLand:MuseumGrowupEnable2']) and (event_flags_system['cPlayer:OwlPaintingQuestExplain']) and (not event_flags_system['cLand:FoxPreVisitAlreadyBuyToday']) and (not event_flags_system['cPlayer:FoxPreVisitBuyArtMaxFlag']):
         subflow_results[0] = 1
-    run sub_tm!BuyArtCmnChk
+    return
 
 flow BuyArtFirst:
     event_flags_system['cPlayer:FoxPreVisitWantSellFlag'] = true
@@ -118,13 +118,13 @@ flow PreVisit:
                         EventFlowSystemActor.UIMoneyDisappear()
                         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:013', false)
             elif subflow_results[0] == 0:
-                run sub_Event11
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:050', false)
             else:
                 if not event_flags_system['cPlayer:FoxPreVisitBuyArtFlag']:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:010', false)
                     run BuyArtFirst
                 elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_5'):
-                    run sub_Event11
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:050', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:017', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -161,12 +161,6 @@ flow PreVisit:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:060', false)
     return
 
-flow sub_Event11:
-    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:050', false)
-
-flow sub_Event48:
-    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:103', false)
-
 flow sub_grp!Event127:
     if subflow_results[0] != 0:
         run BuyArtFirst
@@ -174,7 +168,4 @@ flow sub_grp!Event127:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:002_01', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox_01_PreVisit:002_02', false)
-
-flow sub_tm!BuyArtCmnChk:
-    return
 

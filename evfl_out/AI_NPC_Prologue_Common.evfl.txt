@@ -13,7 +13,7 @@ entrypoint Event10:
             if (MainNpc.CheckCurrentNpcAIState('cGoToDestination') == 0) and (MainNpc.NpcAIIsArriveDestination() == 0):
                 MainNpc.NpcSetAIBlackBoard('IsMove', 0)
                 MainNpc.NpcAISetting(8, true)
-                run sub_Event1
+                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
             else:
                 MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'TalkEventFlowName', '', false, true, 1, 'OffsetX', 'OffsetZ')
         else:
@@ -38,7 +38,7 @@ entrypoint Event10:
                 else:
                     MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 3, 'Angle:315')
             else:
-                run sub_Event1
+                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
     else:
         MainNpc.NpcAISetting(6, false)
         if not MainNpc.NpcBlackBoard('IsMove', 1):
@@ -54,7 +54,4 @@ entrypoint Event10:
         else:
             MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'TalkEventFlowName', '', false, true, 1, 'OffsetX', 'OffsetZ')
     return
-
-flow sub_Event1:
-    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
 

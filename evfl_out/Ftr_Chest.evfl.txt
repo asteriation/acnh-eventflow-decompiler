@@ -86,11 +86,11 @@ flow ClosetUI:
 
 flow Root:
     if EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run sub_Event57
+        run Chest_PC_Current
     else:
         if EventFlowSystemActor.SystemCheckNowStage('cField'):
             if EventFlowSystemActor.IsMyVillage():
-                run sub_Event57
+                run Chest_PC_Current
             else:
                 run Chest_PC_Other
         elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
@@ -100,7 +100,4 @@ flow Root:
         else:
             run Chest_Naruhodo
     return
-
-flow sub_Event57:
-    run Chest_PC_Current
 

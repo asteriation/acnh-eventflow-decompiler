@@ -37,10 +37,10 @@ flow EntryPoint_CheckOpenGateFirst:
     if subflow_results[0] != 0:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:126', false)
     elif event_flags_system['cPlayer:OdekakeFirstOpenGate']:
-        run sub_Event87
+        event_flags_system['cPlayer:OdekakeFirstOpenGate'] = true
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:125', true)
-        run sub_Event87
+        event_flags_system['cPlayer:OdekakeFirstOpenGate'] = true
     return
 
 flow EntryPoint_CloseGateAndResetNetwork:
@@ -259,7 +259,7 @@ flow Root:
         elif (EventFlowSystemActor.IsSharePlay(0)) and (event_flags_system['cPlayer:OdekakeFirstTalk']):
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:350', false)
         else:
-            run sub_Event78
+            run SNPC_dod_01_Airport_NormalSeq::Root
     else:
         run Visitor_Root
     return
@@ -289,29 +289,17 @@ entrypoint Event84:
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:118_01', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:118_02', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run sub_Event310
+                    run EntryPoint_LockRetryLeave
                 else:
-                    run sub_Event306
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
             elif fEvent307 == 2:
-                run sub_Event306
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
             elif fEvent307 == 0:
-                run sub_Event310
+                run EntryPoint_LockRetryLeave
         else:
             MainNpc.MessageSuspend()
             EventFlowSystemActor.NetLeaveSessionVillage('cLeaveSession', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
     return
-
-flow sub_Event306:
-    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
-
-flow sub_Event310:
-    run EntryPoint_LockRetryLeave
-
-flow sub_Event78:
-    run SNPC_dod_01_Airport_NormalSeq::Root
-
-flow sub_Event87:
-    event_flags_system['cPlayer:OdekakeFirstOpenGate'] = true
 

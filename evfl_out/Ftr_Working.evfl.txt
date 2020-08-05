@@ -67,7 +67,7 @@ flow RcoDIYtrialOngoing:
         DynamicCast_rco.NpcWaitTurn()
         MainNpc.TalkCamera(true, 0)
         DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:911', false)
-        run sub_Event216
+        EventFlowSystemActor.SoundDuckingOff(18)
     elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
         DynamicCast_rco.RcoStandUpChair()
         DynamicCast_rco.TurnBody(10, 0.0)
@@ -118,7 +118,7 @@ entrypoint Event94:
         DynamicCast_rco.NpcWaitTurn()
         MainNpc.TalkCamera(true, 0)
         DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:912', false)
-        run sub_Event216
+        EventFlowSystemActor.SoundDuckingOff(18)
     return
 
 flow RcoRemakeTrialOngoing:
@@ -239,7 +239,7 @@ entrypoint Event115:
         elif (not EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (not EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse')):
             run WorkingTable_Normal
         else:
-            run sub_Event55
+            run WorkingTable_Borrow
     elif event_flags_system['cPlayer:MainmenuRecipe']:
         run WorkingTable_Borrow
     else:
@@ -342,11 +342,11 @@ flow WorkingTable_Borrow:
             if EventFlowSystemActor.IsMyVillage():
                 run Remake
             elif event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable']:
-                run sub_Event45
+                run Remake
             else:
                 EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_WorkingTable:022', false)
                 event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable'] = true
-                run sub_Event45
+                run Remake
     else:
         Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:021_01', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -373,15 +373,6 @@ flow WorkingTable_Normal:
         else:
             run Cancel
     return
-
-flow sub_Event216:
-    EventFlowSystemActor.SoundDuckingOff(18)
-
-flow sub_Event45:
-    run Remake
-
-flow sub_Event55:
-    run WorkingTable_Borrow
 
 flow sub_grp!Event158:
     fEvent158 = EventFlowSystemActor.OfficeLevel()

@@ -73,7 +73,7 @@ flow HousingKitCommon:
     elif fEvent20 == 1:
         EventFlowSystemActor.BuildStructurePlayReport('StructureType', 'StructureBuildPosType', 'BuildTiming')
         run System_Structure_Common::BuildStructure
-        run sub_Event33
+        EventFlowSystemActor.SystemDeletePlayerItem('cItemWindow', 1)
     elif fEvent20 == 0:
         EventFlowSystemActor.WaitFrame(15)
         Player.CharacterEmoticonAction('AbsentMindedness', '', 0, true, false)
@@ -88,7 +88,7 @@ flow HousingKitCommon:
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             EventFlowSystemActor.BuildStructurePlayReport('StructureType', 'StructureBuildPosType', 'BuildTiming')
             run System_Structure_Common::DeletePreviewAndBuildStructure
-            run sub_Event33
+            EventFlowSystemActor.SystemDeletePlayerItem('cItemWindow', 1)
         else:
             run System_Structure_Common::DeletePreviewStructure
             EventFlowSystemActor.ExitFlowchart()
@@ -243,7 +243,7 @@ flow Root:
     if EventFlowSystemActor.IsRunningMiniGame('cTreasure'):
         Player.OpenMessageWindow('TalkSys/SYS_Player:990', false)
     elif (EventFlowSystemActor.UIPocketMenuItemSelected(4310)) or (EventFlowSystemActor.UIPocketMenuItemSelected(7211)):
-        run sub_Event48
+        run BridgeReserveKit
     elif EventFlowSystemActor.UIPocketMenuItemSelected(4311):
         run SlopeReserveKit
     else:
@@ -281,10 +281,4 @@ flow TailorReserveKit:
     else:
         run HousingKitCommonError
     return
-
-flow sub_Event33:
-    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindow', 1)
-
-flow sub_Event48:
-    run BridgeReserveKit
 

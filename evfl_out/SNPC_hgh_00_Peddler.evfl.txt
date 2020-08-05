@@ -103,11 +103,11 @@ entrypoint Event51:
             if not EventFlowSystemActor.IsMyVillage():
                 run Hgh_AfterPurchase
             elif event_flags_system['cLand:HghPeddlerPurchaceToday']:
-                run sub_Event70
+                run Hgh_AfterPurchase
             else:
                 event_flags_system['cLand:CountTailorBuild'] += 1
                 event_flags_system['cLand:HghPeddlerPurchaceToday'] = true
-                run sub_Event70
+                run Hgh_AfterPurchase
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:113_01', false)
             run Hgh_AfterNoMoney
@@ -226,9 +226,6 @@ flow hgh_Peddler_Sel_3B_Housing:
     elif fEvent128 == 1:
         run Hgh_TailorBuildEvent
     return
-
-flow sub_Event70:
-    run Hgh_AfterPurchase
 
 flow sub_grp!Event54:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

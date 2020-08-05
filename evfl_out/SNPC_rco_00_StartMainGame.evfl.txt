@@ -78,10 +78,10 @@ flow Rco_TutorialGetBill:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:008_02', false)
     elif EventFlowSystemActor.GeneralTalkChoice3() == 0:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:110_01', false)
-        run sub_Event70
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:111', false)
     else:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:110_02', false)
-        run sub_Event70
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:111', false)
     MainNpc.NpcDelivery('Default', 2)
     EventFlowSystemActor.UIMoneyDisappear()
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:009', false)
@@ -101,7 +101,4 @@ flow Root:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:013', true)
     run Rco_OrientationEnd
     return
-
-flow sub_Event70:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:111', false)
 

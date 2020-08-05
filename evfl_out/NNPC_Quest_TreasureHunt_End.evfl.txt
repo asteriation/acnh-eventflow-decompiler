@@ -95,10 +95,10 @@ flow End_Win:
         run Treasure_Finish
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:010', false)
-        run sub_Event77
+        event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:011', false)
-        run sub_Event77
+        event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
     return
 
 flow ForVisitor:
@@ -147,7 +147,4 @@ flow Treasure_Finish:
     event_flags_npc['cNpcMemory:OrderQuest'] = true
     event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = false
     return
-
-flow sub_Event77:
-    event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
 

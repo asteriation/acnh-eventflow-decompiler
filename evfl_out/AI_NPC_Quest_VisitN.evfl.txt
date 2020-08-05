@@ -16,7 +16,7 @@ flow Root:
             MainNpc.NpcChangeWaitState('cWait', 'Home_Talk', 'NNPC_Quest_VisitN_Home', '', false, false, 30, true, '')
             event_flags_npc['cNpcTemp:TalkEndWait'] = false
         else:
-            run sub_Event3
+            MainNpc.NpcChangeAIState('cVisitFollower', 'NNPC_Quest_VisitN_Home', 'Home_Talk', '', false, true)
     return
 
 flow TouchedFurniture:
@@ -35,7 +35,4 @@ flow VisitNGoHome:
 flow VisitNWelcome:
     run AI_NPC_Common::ContinueSpeak
     return
-
-flow sub_Event3:
-    MainNpc.NpcChangeAIState('cVisitFollower', 'NNPC_Quest_VisitN_Home', 'Home_Talk', '', false, true)
 

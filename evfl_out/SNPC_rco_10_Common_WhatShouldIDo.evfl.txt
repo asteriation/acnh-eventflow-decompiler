@@ -47,12 +47,12 @@ flow Rco_Hint_WaitingOpenCampSite:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:163_01_02', false)
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:163_02', false)
                 else:
-                    run sub_Event59
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
             elif fEvent54 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_01_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_02', false)
             elif fEvent54 == 1:
-                run sub_Event59
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
         else:
             fEvent46 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent46 == 1:
@@ -131,11 +131,11 @@ entrypoint Event6:
                     elif EventFlowSystemActor.HasTargetItem(2755, 1):
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
                     else:
-                        run sub_Event2
+                        run Rco_Hint_AboutLoan
                 elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
                 else:
-                    run sub_Event2
+                    run Rco_Hint_AboutLoan
             elif fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
                 if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
 entrypoint Event1:
@@ -160,11 +160,11 @@ entrypoint Event6:
                         elif EventFlowSystemActor.HasTargetItem(2755, 1):
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
                         else:
-                            run sub_Event2
+                            run Rco_Hint_AboutLoan
                     elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
                     else:
-                        run sub_Event2
+                        run Rco_Hint_AboutLoan
                 else:
 entrypoint Event5:
                     if not event_flags_system['cPlayer:RcmTookQuestReq']:
@@ -215,12 +215,6 @@ entrypoint Event98:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:163', false)
             event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
     return
-
-flow sub_Event2:
-    run Rco_Hint_AboutLoan
-
-flow sub_Event59:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
 
 flow sub_Event88:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:900', false)

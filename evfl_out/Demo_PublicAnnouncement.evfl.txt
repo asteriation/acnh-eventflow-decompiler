@@ -172,7 +172,7 @@ flow Root_Init:
         event_flags_system['cLand:TkkFirstLiveReserved'] = true
         event_flags_system['cLand:TkkFirstLiveSubPlayer'] = true
         MainNpc.CancelTodayVisitorNpc()
-    run sub_tm!Root_Init
+    return
 
 flow SzaPostAction:
     fEvent101 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -210,8 +210,5 @@ entrypoint Event56:
 
 flow Sza_NormalPreAction:
     run Event56
-    return
-
-flow sub_tm!Root_Init:
     return
 

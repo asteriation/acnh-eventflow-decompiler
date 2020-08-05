@@ -27,7 +27,7 @@ flow Root:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:013', false)
         EventFlowSystemActor.CancelSharePlayEntry()
     elif (EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland')) or (EventFlowSystemActor.SystemCheckNowStage('cPhotoStudioIsland')):
-        run sub_Event71
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:018', false)
     elif EventFlowSystemActor.IsPlayerBirthdayRoom():
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:017', false)
     elif EventFlowSystemActor.IsSharePlay(1):
@@ -81,10 +81,10 @@ flow SharePlay_AppOpen_Solo:
         run Choice
     elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:020', false)
-        run sub_Event39
+        EventFlowSystemActor.CancelSharePlayEntry()
     else:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:002', true)
-        run sub_Event39
+        EventFlowSystemActor.CancelSharePlayEntry()
     return
 
 flow SharePlay_ChangeLeader:
@@ -112,10 +112,4 @@ flow SharePlay_SaveAndGameEnd:
     EventFlowSystemActor.ReserveSystemFlowDemo('AfterSharePlay', 'System_SaveGameClose')
     EventFlowSystemActor.SystemRequestChangeStage('cSaveGameClose', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
-
-flow sub_Event39:
-    EventFlowSystemActor.CancelSharePlayEntry()
-
-flow sub_Event71:
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:018', false)
 

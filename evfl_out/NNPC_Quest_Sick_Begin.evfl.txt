@@ -29,16 +29,16 @@ flow Cured:
         elif MainNpc.NpcSickCuredBeforeYesterday():
             if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:003', false)
-                run sub_Event9
+                event_flags_npc['cNpcMemory:TalkSickCured'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:004', false)
-                run sub_Event9
+                event_flags_npc['cNpcMemory:TalkSickCured'] = true
         elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:001', false)
-            run sub_Event9
+            event_flags_npc['cNpcMemory:TalkSickCured'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:002', false)
-            run sub_Event9
+            event_flags_npc['cNpcMemory:TalkSickCured'] = true
     else:
         run NNPC_Reaction_First_Root::Root
         MainNpc.SetPlayerName(2)
@@ -51,9 +51,6 @@ flow Cured:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:005', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Sick_Cured:006', false)
-        run sub_Event9
+        event_flags_npc['cNpcMemory:TalkSickCured'] = true
     return
-
-flow sub_Event9:
-    event_flags_npc['cNpcMemory:TalkSickCured'] = true
 

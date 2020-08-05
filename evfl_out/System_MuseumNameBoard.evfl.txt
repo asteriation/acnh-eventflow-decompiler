@@ -52,7 +52,7 @@ entrypoint Event27:
         run Event27
     elif entry_variables['LoopNum'] == 0:
         EventFlowSystemActor.StoreNormalCamera(false)
-        run sub_tm!Root
+        return
     else:
         fEvent23 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
         if fEvent23 == 0:
@@ -63,8 +63,5 @@ entrypoint Event27:
             EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:014', false)
         elif fEvent23 == 1:
             EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
-        run sub_tm!Root
-
-flow sub_tm!Root:
-    return
+        return
 

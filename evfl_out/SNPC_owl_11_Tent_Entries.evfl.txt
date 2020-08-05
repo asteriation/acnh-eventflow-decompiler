@@ -64,17 +64,14 @@ entrypoint Event29:
                     run SNPC_owl_01_Museum_Donation::OwlTentDonationAgain
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:162', false)
-                    run sub_Event6
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
             else:
-                run sub_Event6
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
         elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):
             run Owl_TentDonationAgainAsk
         else:
-            run sub_Event6
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
     return
-
-flow sub_Event6:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
 
 flow sub_grp!Event12:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

@@ -95,7 +95,7 @@ flow Hgh_Chk_BuyMannequin:
 flow Hgh_Chk_UseTicket:
     if (EventFlowSystemActor.HasKindItem('cKind', 'TailorTicket', '')) and (not EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 3001)) and (EventFlowSystemActor.ShoppingCapacity(65534, 'cShoppingTC')):
         run Hgh_Select_BuyTicket
-    run sub_tm!Hgh_Chk_UseTicket
+    return
 
 flow Hgh_Common_Buy:
     MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:011', false)
@@ -199,8 +199,5 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:074', false)
     else:
         run SNPC_hgh_11_In::Root
-    return
-
-flow sub_tm!Hgh_Chk_UseTicket:
     return
 

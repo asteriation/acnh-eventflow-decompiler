@@ -13,7 +13,7 @@ entrypoint Event52:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:203', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                    run sub_Event61
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
                 elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:204', false)
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:205', false)
@@ -26,7 +26,7 @@ entrypoint Event52:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:206', false)
                     EventFlowSystemActor.ExitFlowchart()
             else:
-                run sub_Event61
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
     elif fEvent1 == 0:
 entrypoint Event58:
         if EventFlowSystemActor.BridgeNum('cAll', 8):
@@ -39,7 +39,7 @@ entrypoint Event58:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:103', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                    run sub_Event29
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
                 elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:104', false)
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:105', false)
@@ -52,7 +52,7 @@ entrypoint Event58:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:106', false)
                     EventFlowSystemActor.ExitFlowchart()
             else:
-                run sub_Event29
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
     elif fEvent1 == 2:
 entrypoint Event84:
         EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cMoney', '', 10000)
@@ -93,9 +93,9 @@ entrypoint Event84:
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:310', false)
                             EventFlowSystemActor.ExitFlowchart()
                     else:
-                        run sub_Event106
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:308', false)
                 else:
-                    run sub_Event106
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:308', false)
         elif (not EventFlowSystemActor.BridgeNum('cNoReserve', 1)) and (not EventFlowSystemActor.SlopeNum('cNoReserve', 1)):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:309', false)
         else:
@@ -128,7 +128,7 @@ entrypoint Event84:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:310', false)
                     EventFlowSystemActor.ExitFlowchart()
             else:
-                run sub_Event106
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:308', false)
     elif fEvent1 == 3:
         run sub_Event50
     return
@@ -268,16 +268,7 @@ flow Slope_Catalog:
     run Event52
     return
 
-flow sub_Event106:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:308', false)
-
-flow sub_Event29:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
-
 flow sub_Event50:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:004', false)
     return
-
-flow sub_Event61:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
 

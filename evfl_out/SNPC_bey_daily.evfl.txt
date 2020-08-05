@@ -37,7 +37,7 @@ entrypoint Event81:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:208', false)
             run Explain_ReqOBJ
         elif fEvent127 == 2:
-            run sub_Event140
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
         elif fEvent127 == 0:
             run sub_grp!Event131
     return
@@ -68,11 +68,11 @@ entrypoint Event89:
             if fEvent15 == 0:
                 MainNpc.SetItemName(0, 29, 3)
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:011', false)
-                run sub_Event87
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:014', false)
             elif fEvent15 in (1, 2):
                 MainNpc.SetItemName(0, 29, 3)
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:012', false)
-                run sub_Event87
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:014', false)
             elif fEvent15 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:013', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
@@ -433,12 +433,6 @@ flow Talk_Always:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:009', false)
     return
 
-flow sub_Event140:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
-
-flow sub_Event87:
-    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:014', false)
-
 flow sub_grp!Event131:
     if MainNpc.BeyHaveThreeOrMoreSameFish():
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:204', false)
@@ -482,9 +476,9 @@ flow sub_grp!Event131:
                 else:
                     run BeyDaily_TalkAfter_ObjEntry
             else:
-                run sub_Event140
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
         else:
-            run sub_Event140
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:203', false)
 

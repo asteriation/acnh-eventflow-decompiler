@@ -26,11 +26,8 @@ flow Root:
             elif (EventFlowSystemActor.IsReturnJuneBridePhotoStudio()) and (MainNpc.NpcCheckStateSelectTiming('cInit')):
                 MainNpc.NpcChangeAIState('cSpnReturnJB', 'SNPC_spn', 'Root', '', false, true)
             else:
-                run sub_Event0
+                MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
         else:
-            run sub_Event0
+            MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
     return
-
-flow sub_Event0:
-    MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
 

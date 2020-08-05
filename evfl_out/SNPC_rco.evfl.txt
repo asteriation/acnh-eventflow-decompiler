@@ -5,7 +5,7 @@ flow CheckInfoMoveMyhome:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_03', false)
         run SNPC_rco_00_Common::Root
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!CheckInfoMoveMyhome
+    return
 
 flow ChkFirstCamperRequest:
     if (event_flags_system['cLand:CampSiteBuilt']) and (not EventFlowSystemActor.NpcHouseNum('cExist') < 6) and (event_flags_system['cLand:RcoMeetFirstVisitorComplete']) and (not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']) and (event_flags_system['cPlayer:IslandDevQuestOrderFirstCamperMyself']):
@@ -13,7 +13,7 @@ flow ChkFirstCamperRequest:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_03', false)
         run SNPC_rco_00_Common::Root
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ChkFirstCamperRequest
+    return
 
 flow RcoEntrieChk:
     if event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
@@ -94,15 +94,15 @@ entrypoint Event5:
     if fEvent10 == ResServiceBuilding:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:002', false)
         event_flags_system['cPlayer:RcoFirstTalkNewOffice'] = true
-        run sub_Event8
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
     elif fEvent10 in (ResServiceTent0, ResServiceTent1):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001', false)
         fEvent38 = EventFlowSystemActor.ShopLevel()
         if fEvent38 == InResServiceTent:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_01', false)
-            run sub_Event8
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
         elif fEvent38 in (NooksCrannyInitial, NooksCrannyUpgraded):
-            run sub_Event8
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
     return
 
 flow RcoFirstVisit_Force_Init:
@@ -123,10 +123,7 @@ flow Root_Init:
     if (not EventFlowSystemActor.NetHasVisitor()) and (not EventFlowSystemActor.IsSharePlay(0)) and (EventFlowSystemActor.OfficeLevel() in (ResServiceTent0, ResServiceTent1)) and (not event_flags_system['cPlayer:RcoTalked1stAfterPrologue']) and (not event_flags_system['cPlayer:RcoDIYtrialOngoing']) and (not event_flags_system['cPlayer:RcoTalkAfterMuseumTent']) and (not event_flags_system['cPlayer:RcoPaid1stCharge']) and (event_flags_system['cLand:RcmImmQuestOpen']) and (not event_flags_system['cLand:RcmImmQuestRunning']) and (MainNpc.NpcBlackBoard('ForceImmQIntro', 1)):
         MainNpc.SmartPhone(0)
         MainNpc.SmartPhone(2)
-    run sub_tm!Root_Init
-
-flow sub_Event8:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
+    return
 
 flow sub_grp!Event20:
     fEvent20 = EventFlowSystemActor.OfficeLevel()
@@ -154,16 +151,4 @@ flow sub_grp!Event20:
                 run SNPC_rco_00_Common::Root
         else:
             run SNPC_rco_01_Office_1_Entries::IslandDevelopmentIntro
-
-flow sub_grp-end!Event10:
-    pass
-
-flow sub_tm!CheckInfoMoveMyhome:
-    return
-
-flow sub_tm!ChkFirstCamperRequest:
-    return
-
-flow sub_tm!Root_Init:
-    return
 

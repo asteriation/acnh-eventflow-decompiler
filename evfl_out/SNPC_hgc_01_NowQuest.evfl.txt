@@ -38,10 +38,10 @@ flow Hgc_Check_Chk:
             EventFlowSystemActor.ExitFlowchart()
         elif subflow_results[0] == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:160', false)
-            run sub_Event142
+            EventFlowSystemActor.ExitFlowchart()
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:161', false)
-            run sub_Event142
+            EventFlowSystemActor.ExitFlowchart()
     elif not MainNpc.HgcIsChangeOutfit():
         if MainNpc.HgcFashionCheckResult() in (0, 1, 2):
             MainNpc.HgcThemeMessage()
@@ -80,11 +80,11 @@ flow Hgc_Clear:
     elif fEvent21 == 3:
         event_flags_system['cPlayer:KotonoQuestCount'] += 5
         EventFlowSystemActor.PlayReport(3, 'cHgcFashionCheckResult')
-        run sub_Event101
+        event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
     elif fEvent21 == 2:
         event_flags_system['cPlayer:KotonoQuestCount'] += 4
         EventFlowSystemActor.PlayReport(2, 'cHgcFashionCheckResult')
-        run sub_Event101
+        event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
     event_flags_system['cPlayer:KotonoQuestClearFlag'] = true
     return
 
@@ -236,10 +236,4 @@ flow hgc_Comment:
         elif fEvent19 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:323', false)
     return
-
-flow sub_Event101:
-    event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
-
-flow sub_Event142:
-    EventFlowSystemActor.ExitFlowchart()
 

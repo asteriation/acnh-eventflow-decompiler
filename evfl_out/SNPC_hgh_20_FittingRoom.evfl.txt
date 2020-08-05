@@ -45,16 +45,16 @@ flow Hgh_ExplainFittingRoom:
         event_flags_system['cPlayer:KinuyoExplainFittingRoomFlag'] = true
         if Player.PlayerIsUseCoordinate():
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:020', false)
-            run sub_Event41
+            EventFlowSystemActor.ExitFlowchart()
         elif Player.PlayerOutfitMarinesuit():
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:022', false)
-            run sub_Event41
+            EventFlowSystemActor.ExitFlowchart()
     elif Player.PlayerIsUseCoordinate():
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:019', false)
-        run sub_Event40
+        EventFlowSystemActor.ExitFlowchart()
     elif Player.PlayerOutfitMarinesuit():
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:021', false)
-        run sub_Event40
+        EventFlowSystemActor.ExitFlowchart()
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:001', false)
     return
@@ -75,10 +75,4 @@ flow Root:
     run Hgh_TicketNotice
     run Hgh_BuyFittingRoom
     return
-
-flow sub_Event40:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event41:
-    EventFlowSystemActor.ExitFlowchart()
 

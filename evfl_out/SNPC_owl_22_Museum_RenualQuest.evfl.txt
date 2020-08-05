@@ -53,7 +53,7 @@ flow BeforeRenualQuest:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:204', false)
             event_flags_system['cPlayer:OwlShowPaintingBeforeQuest'] = true
             EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!BeforeRenualQuest
+    return
 
 flow DiveFish_nothing:
     run Event33
@@ -110,32 +110,32 @@ flow QuestCheck:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:001', false)
             event_flags_system['cPlayer:OwlPaintingQuestExplain'] = true
             event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
-            run sub_Event35
+            EventFlowSystemActor.ExitFlowchart()
         elif event_flags_system['cLand:MuseumGrowupEnable2']:
             if not event_flags_system['cPlayer:FutaReadyForMuseum2']:
                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:002', false)
                 event_flags_system['cPlayer:FutaReadyForMuseum2'] = true
-                run sub_Event35
+                EventFlowSystemActor.ExitFlowchart()
         elif not event_flags_system['cPlayer:OwlPaintingQuestExplain']:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:001', false)
             event_flags_system['cPlayer:OwlPaintingQuestExplain'] = true
             event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
-            run sub_Event35
+            EventFlowSystemActor.ExitFlowchart()
         elif EventFlowSystemActor.MuseumComplete():
             run Select4_Painting
-            run sub_Event35
+            EventFlowSystemActor.ExitFlowchart()
         else:
             run Select5_Painting
-            run sub_Event35
+            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Root:
     fEvent32 = EventFlowSystemActor.MuseumLevel()
-    if fEvent32 == BlathersMuseumNoArt:
+    if fEvent32 == BlathersMuseumArt:
+        run SNPC_owl::NoTopic
+    elif fEvent32 == BlathersMuseumNoArt:
         run QuestCheck
-        run sub_Event14
-    elif fEvent32 == BlathersMuseumArt:
-        run sub_Event14
+        run SNPC_owl::NoTopic
     return
 
 flow Select4_Painting:
@@ -225,14 +225,5 @@ entrypoint Event33:
 flow TodayTalk1st:
     if EventFlowSystemActor.MuseumLevel() == BlathersMuseumNoArt:
         run QuestCheck
-    return
-
-flow sub_Event14:
-    run SNPC_owl::NoTopic
-
-flow sub_Event35:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!BeforeRenualQuest:
     return
 

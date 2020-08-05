@@ -108,8 +108,5 @@ flow Spn_FirstJuneBride_Init:
     if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
         MainNpc.NpcAITalkSubCastEntry(1, 'alw')
         MainNpc.NpcAITalkSubCastEntry(2, 'alp')
-    run sub_tm!Spn_FirstJuneBride_Init
-
-flow sub_tm!Spn_FirstJuneBride_Init:
     return
 

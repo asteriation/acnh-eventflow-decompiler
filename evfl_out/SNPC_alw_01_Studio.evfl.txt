@@ -30,10 +30,10 @@ flow Alw_Advice_Theme:
     fEvent281 = subflow_results[0]
     if fEvent281 in (0, 2, 4):
         MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_01', false)
-        run sub_Event89
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_04', false)
     elif fEvent281 in (1, 3):
         MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_02', false)
-        run sub_Event89
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_04', false)
     elif fEvent281 == 5:
         MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_03', false)
     elif fEvent281 in (6, 7):
@@ -43,7 +43,7 @@ flow Alw_Advice_Theme:
         elif fEvent294 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_06', false)
         elif fEvent294 == 0:
-            run sub_Event89
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_04', false)
     return
 
 flow Alw_AfterClear_Flag:
@@ -79,26 +79,26 @@ flow Alw_Camera:
                 EventFlowSystemActor.ExitFlowchart()
         elif (event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']) and (EventFlowSystemActor.PercentChoice(70)):
             run Alw_Advice_Set_Theme
-            run sub_Event337
+            EventFlowSystemActor.ExitFlowchart()
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:072', false)
             event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag'] = true
-            run sub_Event337
+            EventFlowSystemActor.ExitFlowchart()
     elif fEvent175 == 0:
         if event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']:
             fEvent280 = EventFlowSystemActor.CheckJuneBrideStudioTakePicture()
             if fEvent280 == 0:
                 run Alw_Advice_Shoot_Theme
-                run sub_Event302
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent280 == 2:
                 run Alw_Shoot
             elif fEvent280 == 1:
                 if EventFlowSystemActor.RandomChoice2(2) == 0:
                     run Alw_Advice_Shoot_Theme
-                    run sub_Event302
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     run Alw_Advice_Set_Theme
-                    run sub_Event302
+                    EventFlowSystemActor.ExitFlowchart()
         else:
             EventFlowSystemActor.CalcJuneBrideScore()
             if EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 1):
@@ -131,7 +131,7 @@ flow Alw_Camera:
             event_flags_system['cPlayer:AlwJuneBridePartyTalkFlag'] = true
             EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_Event296
+            run Alw_Shoot
     return
 
 flow Alw_DayChk:
@@ -198,7 +198,7 @@ flow Alw_GetItem:
                     EventFlowSystemActor.WaitFrame(10)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:051', false)
-                run sub_Event275
+                EventFlowSystemActor.SystemMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:051', false)
             EventFlowSystemActor.SystemMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
@@ -224,7 +224,7 @@ flow Alw_GetItem:
                     EventFlowSystemActor.WaitFrame(10)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:054', false)
-                run sub_Event275
+                EventFlowSystemActor.SystemMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
     elif not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
         MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:055', false)
         run Alw_LoveCrystalNum
@@ -322,9 +322,9 @@ flow Alw_ScoreCount:
             if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 6:
                 subflow_results[1] = 0
             else:
-                run sub_Event367
+                subflow_results[1] = 1
         elif subflow_results[0] in (0, 1, 2):
-            run sub_Event367
+            subflow_results[1] = 1
         else:
             subflow_results[1] = 2
         event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
@@ -670,17 +670,17 @@ flow Alw_ThanksMsg:
             event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag'] = true
     else:
         fEvent90 = subflow_results[0]
-        if fEvent90 == 1:
+        if fEvent90 in (2, 3, 4, 5, 6, 7):
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
+        elif fEvent90 == 1:
             if event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
                 MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
             else:
-                run sub_Event102
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
         elif fEvent90 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
-        elif fEvent90 in (2, 3, 4, 5, 6, 7):
-            run sub_Event102
     event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag'] = true
     if event_flags_system['cPlayerTemp:AlwJuneBrideBouquetFlag']:
         MainNpc.NpcChangeHandTool(false, 'cNone', 12732)
@@ -722,27 +722,6 @@ flow Root_Init:
     if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']):
         MainNpc.NpcAITalkSubCastEntry(1, 'alp')
     return
-
-flow sub_Event102:
-    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
-
-flow sub_Event275:
-    EventFlowSystemActor.SystemMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
-
-flow sub_Event296:
-    run Alw_Shoot
-
-flow sub_Event302:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event337:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event367:
-    subflow_results[1] = 1
-
-flow sub_Event89:
-    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:038_04', false)
 
 flow sub_grp!Event165:
     if event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']:

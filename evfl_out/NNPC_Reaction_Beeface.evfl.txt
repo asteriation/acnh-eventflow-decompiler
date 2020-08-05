@@ -20,7 +20,7 @@ flow Medicine:
         MainNpc.NpcDelivery('Default', 1)
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:007', false)
     else:
-        run sub_Event10
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:005', false)
     return
 
 flow Root:
@@ -49,15 +49,6 @@ entrypoint Event3:
             event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
             EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_Event20
-    run sub_tm!Root
-
-flow sub_Event10:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:005', false)
-
-flow sub_Event20:
-    run BeeFace_NormalTalk
-
-flow sub_tm!Root:
+            run BeeFace_NormalTalk
     return
 

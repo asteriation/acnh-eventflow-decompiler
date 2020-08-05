@@ -11,8 +11,5 @@ flow FirstDay:
 flow FirstLive:
     if (EventFlowSystemActor.EventBranch(true, 0) == 0) and (not event_flags_system['cLand:TkkFirstLive']) and (event_flags_system['cLand:IslandEvaluationClearTkkLive']):
         EventFlowSystemActor.SetWeatherPattern('EventDay00')
-    run sub_tm!FirstLive
-
-flow sub_tm!FirstLive:
     return
 

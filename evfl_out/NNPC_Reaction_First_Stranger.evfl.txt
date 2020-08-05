@@ -47,7 +47,7 @@ flow S001:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:001', false)
     else:
-        run sub_Event72
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:002', false)
     return
 
 flow S011:
@@ -56,7 +56,7 @@ flow S011:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:011', false)
     else:
-        run sub_Event77
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:012', false)
     return
 
 flow S101:
@@ -65,7 +65,7 @@ flow S101:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:101', false)
     else:
-        run sub_Event106
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:102', false)
     return
 
 flow S111:
@@ -74,7 +74,7 @@ flow S111:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:111', false)
     else:
-        run sub_Event108
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:112', false)
     return
 
 flow S201:
@@ -83,7 +83,7 @@ flow S201:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:201', false)
     else:
-        run sub_Event112
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:202', false)
     return
 
 flow S211:
@@ -92,7 +92,7 @@ flow S211:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:211', false)
     else:
-        run sub_Event115
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:212', false)
     return
 
 flow S301:
@@ -101,7 +101,7 @@ flow S301:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:301', false)
     else:
-        run sub_Event118
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:302', false)
     return
 
 flow S311:
@@ -110,7 +110,7 @@ flow S311:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:311', false)
     else:
-        run sub_Event121
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:312', false)
     return
 
 flow S401:
@@ -119,7 +119,7 @@ flow S401:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:401', false)
     else:
-        run sub_Event82
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:402', false)
     return
 
 flow S411:
@@ -128,7 +128,7 @@ flow S411:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:411', false)
     else:
-        run sub_Event87
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:412', false)
     return
 
 flow S421:
@@ -137,7 +137,7 @@ flow S421:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:421', false)
     else:
-        run sub_Event12
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:422', false)
     return
 
 flow S501:
@@ -163,44 +163,8 @@ flow S511:
     elif (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:511', false)
     else:
-        run sub_Event67
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:512', false)
     return
-
-flow sub_Event106:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:102', false)
-
-flow sub_Event108:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:112', false)
-
-flow sub_Event112:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:202', false)
-
-flow sub_Event115:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:212', false)
-
-flow sub_Event118:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:302', false)
-
-flow sub_Event12:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:422', false)
-
-flow sub_Event121:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:312', false)
-
-flow sub_Event67:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:512', false)
-
-flow sub_Event72:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:002', false)
-
-flow sub_Event77:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:012', false)
-
-flow sub_Event82:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:402', false)
-
-flow sub_Event87:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:412', false)
 
 flow sub_grp!Event91:
     if (not MainNpc.NpcLivingDays(1)) and (MainNpc.NpcIsMovingRoom() == 0):

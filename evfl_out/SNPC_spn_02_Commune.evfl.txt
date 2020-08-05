@@ -89,7 +89,7 @@ flow ToJuneBrideStudio:
         MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:024', false)
         event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ToJuneBrideStudio
+    return
 
 flow sub_grp!Event59:
     if not event_flags_system['cPlayer:SpnJuneBrideGetFenceFrag']:
@@ -156,7 +156,4 @@ entrypoint Event31:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:017_03', false)
                 event_flags_system['cPlayer:SpnJuneBrideNotGetFenceTodayFrag'] = true
                 EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!ToJuneBrideStudio:
-    return
 

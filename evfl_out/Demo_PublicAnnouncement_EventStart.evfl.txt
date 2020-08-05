@@ -51,14 +51,14 @@ flow Root:
         run PrepareDemo
         if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
             EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart', true)
-            run sub_Event3
+            run Cmn_AnnounceEnd
         else:
             EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart_00', true)
-            run sub_Event3
+            run Cmn_AnnounceEnd
     elif fEvent25 == 3:
         run PrepareDemo
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:CountdownStart', true)
-        run sub_Event3
+        run Cmn_AnnounceEnd
     elif fEvent25 == 4:
         run PrepareDemo
         run Cmn_AnnounceEnd
@@ -98,20 +98,17 @@ entrypoint Event21:
             run PrepareDemo
             if EventFlowSystemActor.EnvHourCompare(19, 1, true, true) == 0:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_01', true)
-                run sub_Event3
+                run Cmn_AnnounceEnd
             else:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_02', true)
-                run sub_Event3
+                run Cmn_AnnounceEnd
         else:
             run PrepareDemoRco
             if EventFlowSystemActor.EnvHourCompare(19, 1, true, true) == 0:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart', true)
-                run sub_Event3
+                run Cmn_AnnounceEnd
             else:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FireworksStart_00', true)
-                run sub_Event3
+                run Cmn_AnnounceEnd
     return
-
-flow sub_Event3:
-    run Cmn_AnnounceEnd
 

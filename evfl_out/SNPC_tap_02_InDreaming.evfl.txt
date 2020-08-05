@@ -4,13 +4,13 @@ entrypoint Event35:
     fEvent35 = EventFlowSystemActor.GeneralTalkChoice4()
     if fEvent35 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2011', false)
-        run sub_Event41
+        run Return_InDreamTalk
     elif fEvent35 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2021', false)
-        run sub_Event41
+        run Return_InDreamTalk
     elif fEvent35 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2031', false)
-        run sub_Event41
+        run Return_InDreamTalk
     elif fEvent35 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2041', false)
     return
@@ -66,7 +66,4 @@ flow Wakeup:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1004', false)
     return
-
-flow sub_Event41:
-    run Return_InDreamTalk
 

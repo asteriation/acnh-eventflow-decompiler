@@ -22,7 +22,7 @@ flow ClothesN1_Chk:
         event_flags_npc['cNpcMemory:BanClothesN1Today'] = true
         event_flags_npc['cNpcMemory:BanClothesN2Now'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ClothesN1_Chk
+    return
 
 flow ClothesN2_Chk:
     if (EventFlowSystemActor.EnvWeather() in (0, 1, 2, 7)) and (not event_flag_npc['cNpcMemory:BanClothesN2Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_B')):
@@ -31,7 +31,7 @@ flow ClothesN2_Chk:
         event_flags_npc['cNpcMemory:BanClothesN2Now'] = true
         event_flags_npc['cNpcMemory:BanClothesN1Now'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ClothesN2_Chk
+    return
 
 flow ClothesP_Chk:
     if (not event_flags_system['cPlayerTemp:TalkClothesPNow']) and (not event_flags_system['cPlayerTemp:TalkPresentNow']) and (not Player.PlayerIsUseCoordinate()) and (not event_flags_system['cPlayer:EquipLicenseHelmet']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesP')):
@@ -39,7 +39,7 @@ flow ClothesP_Chk:
         MainNpc.NpcOpenFreeMessage('cFreeAClothesP')
         event_flags_system['cPlayerTemp:TalkClothesPNow'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ClothesP_Chk
+    return
 
 flow FieldQuestions_Chk:
     if event_flag_npc['cNpcMemory:TalkQuestionsNow']:
@@ -56,13 +56,13 @@ flow Fireworks_Chk:
         if EventFlowSystemActor.EnvHourCompare(18, 59, true, true) == 0:
             run ToFreeA_First
         elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) not in (0, 1):
-            run sub_Event44
+            run ToFreeA_First
         elif EventFlowSystemActor.SystemCheckNowStage('cField'):
             run NNPC_Free_Field::Fireworks_1.4
         else:
             run NNPC_Free_FieldV::FireworksV_1.4
     elif fEvent35 == 3:
-        run sub_Event44
+        run ToFreeA_First
     return
 
 flow First_Chk:
@@ -231,17 +231,5 @@ entrypoint Event75:
         event_flags_npc['cNpcMemory:TalkWeekNow'] = true
         event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
         EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow sub_Event44:
-    run ToFreeA_First
-
-flow sub_tm!ClothesN1_Chk:
-    return
-
-flow sub_tm!ClothesN2_Chk:
-    return
-
-flow sub_tm!ClothesP_Chk:
     return
 

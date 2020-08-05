@@ -54,7 +54,7 @@ flow ContinueCommon:
     elif (event_flags_system['cLand:BuiltTownOffice']) and (not event_flags_system['cLand:BuiltTownOfficeToday']):
         EventFlowSystemActor.SystemRequestChangeStage('cGrowUpTalk', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     else:
-        run sub_Event69
+        EventFlowSystemActor.SystemRequestChangeStage('cGrowUpTalkEventPlaza', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
 
 flow DateCheck:
@@ -183,7 +183,4 @@ flow TitleAfterSharePlay:
     EventFlowSystemActor.TimeLock('cUnlock')
     EventFlowSystemActor.SystemRequestChangeStage('cTitle', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
-
-flow sub_Event69:
-    EventFlowSystemActor.SystemRequestChangeStage('cGrowUpTalkEventPlaza', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
 

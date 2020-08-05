@@ -94,13 +94,13 @@ flow Sel_ExistP:
         EventFlowSystemActor.SetTagFromUIResult(0, 'cVillagerPlayerNameD')
         if not EventFlowSystemActor.NetIsAvailableNA():
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8015', false)
-            run sub_Event46
+            subflow_results[1] = 1
         elif EventFlowSystemActor.NetIsRegisteredSameNA():
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8007', false)
             subflow_results[1] = 0
         else:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8014', false)
-            run sub_Event46
+            subflow_results[1] = 1
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             run Sel_Rethink
         else:
@@ -119,7 +119,4 @@ entrypoint Event13:
 flow Sel_Rethink:
     run Event13
     return
-
-flow sub_Event46:
-    subflow_results[1] = 1
 

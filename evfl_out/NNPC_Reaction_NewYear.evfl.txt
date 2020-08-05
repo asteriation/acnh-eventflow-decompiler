@@ -8,8 +8,5 @@ flow Root:
         MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/React/BO_React_NewYear_Chinese', '', '', '')
         event_flags_npc['cNpcMemory:ChineseNewYearGreetingFlag'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Root
-
-flow sub_tm!Root:
     return
 

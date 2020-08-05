@@ -160,11 +160,11 @@ entrypoint Event94:
     if MainNpc.NpcInviteCheck(1):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:209', false)
         event_flags_npc['cNpcMemory:InduceFailVillagerMax'] = true
-        run sub_Event78
+        event_flags_npc['cNpcMemory:InduceFailFlag'] = true
     elif MainNpc.NpcInviteCheck(2):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:208', false)
         event_flags_npc['cNpcMemory:InduceFailSellPlaceNothing'] = true
-        run sub_Event78
+        event_flags_npc['cNpcMemory:InduceFailFlag'] = true
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:204', false)
         MainNpc.NpcFixedInducement()
@@ -175,9 +175,6 @@ entrypoint Event94:
 flow Scout2:
     run Event94
     return
-
-flow sub_Event78:
-    event_flags_npc['cNpcMemory:InduceFailFlag'] = true
 
 flow sub_grp!Event79:
     if MainNpc.IsInduceFailedReasonFixUp():

@@ -5,20 +5,17 @@ flow Root:
                 run sub_grp!Event2
             else:
                 event_flags_system['cPlayer:PynTalkBackTodayFlag'] = true
-                run sub_Event3
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
         elif event_flags_system['cPlayerVisit:DC_PynTalkBackTodayFlag']:
             run sub_grp!Event2
         else:
             event_flags_system['cPlayerVisit:DC_PynTalkBackTodayFlag'] = true
-            run sub_Event3
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
     elif event_flags_system['cLand:PynVisitToday']:
         run SNPC_pyn_01_EasterPreVisit::Root
     else:
         run SNPC_pyn_02_EasterDay::Root
     return
-
-flow sub_Event3:
-    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
 
 flow sub_grp!Event2:
     fEvent2 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)

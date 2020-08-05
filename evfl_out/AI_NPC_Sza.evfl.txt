@@ -19,8 +19,5 @@ flow Root:
             run DisableWorkMotion
     else:
         MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_sza', '', true, true, 30, 2, 0, 0, true, false, '', '')
-    run sub_tm!Root
-
-flow sub_tm!Root:
     return
 

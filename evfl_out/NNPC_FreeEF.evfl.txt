@@ -1,7 +1,7 @@
 flow ChineseZodiac:
     if (not event_flag_npc['cNpcMemory:TalkFreeZodiacNow']) and ((event_flag_npc['cNpcMemory:TalkFreeFNow']) or (EventFlowSystemActor.PercentChoice(50))):
         run sub_grp!Event9
-    run sub_tm!ChineseZodiac
+    return
 
 flow Event_Chk:
     if not event_flag_npc['cNpcMemory:TalkFreeEventNow']:
@@ -40,7 +40,7 @@ flow HHA_Chk:
         MainNpc.NpcOpenFreeMessage('cFreeEHHA')
         event_flags_npc['cNpcMemory:TalkHHAToday'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!HHA_Chk
+    return
 
 flow MultiDayEvent_EarthDay:
     if EventFlowSystemActor.TermEventNow('EarthDay', false):
@@ -113,10 +113,4 @@ flow sub_grp!Event9:
             MainNpc.NpcOpenFreeMessage('cFreeFEto')
             event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!ChineseZodiac:
-    return
-
-flow sub_tm!HHA_Chk:
-    return
 

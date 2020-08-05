@@ -16,13 +16,13 @@ flow RcoDonationReward2:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_06', true)
     elif event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow']:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_03', false)
-        run sub_Event6
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
     elif event_flags_system['cPlayer:RcoDoneDIYmyself']:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_02', false)
-        run sub_Event6
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_04', false)
-        run sub_Event6
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
     MainNpc.SmartPhone(0)
     run Demo_Common_PhoneCall::SendingDataWithP
     EventFlowSystemActor.WaitFrame(5)
@@ -106,7 +106,4 @@ flow RcoTent_GiveSeeds:
         EventFlowSystemActor.SetItemToPocket(3724, 5)
         MainNpc.SetDeliveryItemAtRandom(3724, false, 'cVillageRemakePattern', 0)
     return
-
-flow sub_Event6:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
 

@@ -26,7 +26,7 @@ flow ApproachEmoticons:
             MainNpc.SetIsStartNeedActivity('cOff')
             MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ApproachEmoticons
+    return
 
 flow ApproachFireworks:
     if event_flag_npc['cNpcTemp:FireworksItemTalk']:
@@ -88,15 +88,15 @@ flow ApproachNormal:
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0:
         MainNpc.SetIsStartNeedActivity('cOff')
         MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
-        run sub_Event31
+        EventFlowSystemActor.ExitFlowchart()
     elif MainNpc.CheckNpcTool() in (0, 1, 2, 3, 4):
         MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, true)
         run PassiveBln
-        run sub_Event31
+        EventFlowSystemActor.ExitFlowchart()
     else:
         MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, false)
         run PassiveBln
-        run sub_Event31
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow ApproachWelcomeMigrant:
@@ -121,96 +121,96 @@ flow Countdown:
                 if MainNpc.NpcIsEquipedHandTool(1):
                     if not MainNpc.IsInEventPlazaArea(false):
                         MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 2, -1, -1)
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                     elif (MainNpc.CheckCurrentNpcAIState('cEventPlazaWanderWait') != 0) and (MainNpc.CheckCurrentNpcAIState('cEventPlazaWander') != 0):
                         MainNpc.NpcChangeAIState('cEventPlazaWander', '', '', '', false, false)
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                     else:
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.NpcChangeChangeHandToolState('cChangeHandToolSimple', '', '', '', false, false, 5741)
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 1:
                 MainNpc.NpcChangeAIState('cBlockWander', '', '', '', false, true)
-                run sub_Event150
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 2:
                 if event_flag_npc['cNpcTemp:GotoEventPlazaForCountdown']:
                     if not MainNpc.IsInEventPlazaArea(false):
                         MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 2, -1, -1)
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                     elif (MainNpc.CheckCurrentNpcAIState('cEventPlazaWanderWait') != 0) and (MainNpc.CheckCurrentNpcAIState('cEventPlazaWander') != 0):
                         MainNpc.NpcChangeAIState('cEventPlazaWander', '', '', '', false, false)
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                     else:
-                        run sub_Event150
+                        EventFlowSystemActor.ExitFlowchart()
                 elif MainNpc.IsInEventPlazaArea(false):
                     event_flags_npc['cNpcTemp:GotoEventPlazaForCountdown'] = true
                     MainNpc.NpcChangeAIState('cEventPlazaWander', '', '', '', false, false)
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.NpcChangeAIState('cBlockWander', '', '', '', false, true)
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 7:
                 MainNpc.SetNpcFeel('cHappy', -1)
                 fEvent145 = MainNpc.CountdownTalkPrevState()
                 if fEvent145 == 0:
                     if not event_flag_npc['cNpcTemp:GotoEventPlazaForCountdown']:
                         MainNpc.NpcChangeAIState('cBlockWander', '', '', '', false, true)
-                        run sub_Event133
+                        EventFlowSystemActor.ExitFlowchart()
                     elif not MainNpc.NpcIsEquipedHandTool(1):
                         MainNpc.NpcChangeChangeHandToolState('cChangeHandToolSimple', '', '', '', false, false, 5741)
-                        run sub_Event133
+                        EventFlowSystemActor.ExitFlowchart()
                     elif MainNpc.IsInEventPlazaArea(false):
                         MainNpc.NpcChangeAIState('cNewYearWanderWait', '', '', '', false, false)
-                        run sub_Event133
+                        EventFlowSystemActor.ExitFlowchart()
                     else:
                         MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 2, -1, -1)
-                        run sub_Event133
+                        EventFlowSystemActor.ExitFlowchart()
                 elif fEvent145 == 1:
                     MainNpc.NpcChangeAIState('cSwingStickLight', '', '', '', false, false)
-                    run sub_Event149
+                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent145 == 2:
                     MainNpc.NpcChangeAIState('cUseCracker', '', '', '', false, false)
-                    run sub_Event149
+                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent145 == 3:
                     MainNpc.NpcChangeAIState('cLookFireworksAndClap', '', '', '', false, false)
-                    run sub_Event149
+                    EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 8:
                 MainNpc.SetNpcFeel('cNormal', -1)
                 MainNpc.NpcChangeAIState('cBlockWander', '', '', '', false, true)
-                run sub_Event133
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 6:
                 event_flags_npc['cNpcTemp:GotoCountdownBoard'] = false
                 MainNpc.NpcChangeAIState('cCountdownWait', '', '', '', false, false)
-                run sub_Event46
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 3:
                 if not MainNpc.IsInEventPlazaArea(false):
                     MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 2, -1, -1)
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
                 elif (MainNpc.CheckCurrentNpcAIState('cEventPlazaWanderWait') != 0) and (MainNpc.CheckCurrentNpcAIState('cEventPlazaWander') != 0):
                     MainNpc.NpcChangeAIState('cEventPlazaWander', '', '', '', false, false)
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
-                    run sub_Event150
+                    EventFlowSystemActor.ExitFlowchart()
             elif fEvent121 == 5:
                 if MainNpc.IsInEventPlazaArea(true):
                     if (event_flag_npc['cNpcTemp:GotoCountdownBoard']) and (MainNpc.CheckCurrentNpcAIState('cGoToDestination') == 0):
                         if MainNpc.NpcAIIsArriveDestination() == 0:
                             event_flags_npc['cNpcTemp:GotoCountdownBoard'] = false
                             MainNpc.NpcChangeAIState('cCountdownWait', '', '', '', false, false)
-                            run sub_Event46
+                            EventFlowSystemActor.ExitFlowchart()
                         else:
-                            run sub_Event46
+                            EventFlowSystemActor.ExitFlowchart()
                     else:
                         MainNpc.NpcChangeAIState('cCountdownWait', '', '', '', false, false)
-                        run sub_Event46
+                        EventFlowSystemActor.ExitFlowchart()
                 elif event_flag_npc['cNpcTemp:GotoCountdownBoard']:
                     MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 3, -1, -1)
-                    run sub_Event36
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     event_flags_npc['cNpcTemp:GotoCountdownBoard'] = true
                     MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', true, false, 3, -1, -1)
-                    run sub_Event36
+                    EventFlowSystemActor.ExitFlowchart()
     return
 
 flow FallPit:
@@ -231,29 +231,29 @@ flow Fireworks:
             fEvent224 = MainNpc.FireworksTalkPrevState()
             if fEvent224 == 1:
                 MainNpc.NpcChangeAIState('cPlayFirework', 'NNPC_Talk_Sequence', 'Root', '', false, false)
-                run sub_Event231
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent224 == 2:
                 MainNpc.NpcChangeAIState('cLookFireworks', 'NNPC_Talk_Sequence', 'Root', '', false, false)
-                run sub_Event231
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent224 == 3:
                 MainNpc.NpcChangeAIState('cFireworksSitBench', 'NNPC_Talk_Sequence', 'Root', '', false, false)
-                run sub_Event231
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent224 == 0:
                 if MainNpc.NpcNowPosture() not in (0, 2, 3):
                     MainNpc.NpcChangeAIState('cFireworksSitBench', 'NNPC_Talk_Sequence', 'Root', '', false, false)
                     EventFlowSystemActor.ExitFlowchart()
                 elif event_flag_npc['cNpcTemp:FireworksAroundWater']:
                     MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', 'Root', '', false, true)
-                    run sub_Event231
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     if MainNpc.IsInEventPlazaArea(false):
                         event_flags_npc['cNpcTemp:FireworksAroundWater'] = false
                         event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
                         MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', 'Root', '', false, true)
-                        run sub_Event231
+                        EventFlowSystemActor.ExitFlowchart()
                     else:
                         MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'NNPC_Talk_Sequence', '', false, true, 2, -1, -1)
-                        run sub_Event231
+                        EventFlowSystemActor.ExitFlowchart()
     elif fEvent210 == 4:
         MainNpc.SetDefaultWaitAs('cDefault')
         MainNpc.NpcChangeAIState('cFireworksStartReaction', 'NNPC_Talk_Sequence', '', '', false, false)
@@ -269,45 +269,45 @@ flow Fireworks:
         if event_flag_npc['cNpcTemp:GotoEventPlazaForCountdown']:
             if event_flag_npc['cNpcTemp:FireworksAroundWater']:
                 MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', '', '', false, true)
-                run sub_Event217
+                EventFlowSystemActor.ExitFlowchart()
             elif MainNpc.IsInEventPlazaArea(false):
                 event_flags_npc['cNpcTemp:GotoEventPlazaForCountdown'] = true
                 event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
                 if (MainNpc.CheckCurrentNpcAIState('cEventPlazaWanderWait') != 0) and (MainNpc.CheckCurrentNpcAIState('cEventPlazaWander') != 0):
                     MainNpc.NpcChangeAIState('cEventPlazaWander', 'NNPC_Talk_Sequence', '', '', false, true)
-                    run sub_Event217
+                    EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.SetNpcTalkFlowName('NNPC_Talk_Sequence', 'Root')
-                    run sub_Event217
+                    EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', 'NNPC_Talk_Sequence', '', false, true, 2, -1, -1)
-                run sub_Event217
+                EventFlowSystemActor.ExitFlowchart()
         elif MainNpc.IsInEventPlazaArea(false):
             event_flags_npc['cNpcTemp:GotoEventPlazaForCountdown'] = true
             event_flags_npc['cNpcTemp:FireworksAroundWater'] = false
             event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
             MainNpc.NpcChangeAIState('cEventPlazaWander', 'NNPC_Talk_Sequence', '', '', false, true)
-            run sub_Event217
+            EventFlowSystemActor.ExitFlowchart()
         else:
             MainNpc.NpcChangeAIState('cBlockWander', 'NNPC_Talk_Sequence', '', '', false, true)
-            run sub_Event217
+            EventFlowSystemActor.ExitFlowchart()
     elif fEvent210 == 2:
         MainNpc.SetDefaultWaitAs('cDefault')
         if event_flag_npc['cNpcTemp:FireworksAroundWater']:
             MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', '', '', false, true)
-            run sub_Event217
+            EventFlowSystemActor.ExitFlowchart()
         elif MainNpc.IsInEventPlazaArea(false):
             event_flags_npc['cNpcTemp:GotoEventPlazaForCountdown'] = true
             event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
             if (MainNpc.CheckCurrentNpcAIState('cEventPlazaWanderWait') != 0) and (MainNpc.CheckCurrentNpcAIState('cEventPlazaWander') != 0):
                 MainNpc.NpcChangeAIState('cEventPlazaWander', 'NNPC_Talk_Sequence', '', '', false, true)
-                run sub_Event217
+                EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.SetNpcTalkFlowName('NNPC_Talk_Sequence', 'Root')
-                run sub_Event217
+                EventFlowSystemActor.ExitFlowchart()
         else:
             MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', 'NNPC_Talk_Sequence', '', false, true, 2, -1, -1)
-            run sub_Event217
+            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Hit:
@@ -320,7 +320,7 @@ flow Hit:
             run SitDisableTurn
             MainNpc.NpcClearHitParam()
         else:
-            run sub_Event8
+            MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
     elif (event_flag_npc['cNpcTemp:HitMainPlayer']) and (event_flag_npc['cNpcMemory:HasAcquaintanceship']):
         MainNpc.NpcChangeAIState('cHit', 'NNPC_Talk_Force', 'Flea', 'Flea', false, false)
         MainNpc.NpcAISetting(8, true)
@@ -329,7 +329,7 @@ flow Hit:
         run SitDisableTurn
         MainNpc.NpcClearHitParam()
     else:
-        run sub_Event8
+        MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
     return
 
 flow Init:
@@ -456,35 +456,5 @@ entrypoint Event22:
 flow cHit_State_Hit:
     run AI_NPC_Common::ContinueSpeak
     run Event22
-    return
-
-flow sub_Event133:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event149:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event150:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event217:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event231:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event31:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event36:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event46:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event8:
-    MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
-
-flow sub_tm!ApproachEmoticons:
     return
 

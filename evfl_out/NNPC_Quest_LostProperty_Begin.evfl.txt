@@ -9,7 +9,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:015', false)
-                run sub_Event18
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:002', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -18,7 +18,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:016', false)
-                run sub_Event18
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     elif fEvent0 == 1:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:003', false)
@@ -28,7 +28,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:017', false)
-                run sub_Event19
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:004', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -37,7 +37,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:018', false)
-                run sub_Event19
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     elif fEvent0 == 2:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:006', false)
@@ -47,7 +47,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:024', false)
-                run sub_Event20
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:007', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -56,7 +56,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:025', false)
-                run sub_Event20
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     elif fEvent0 == 3:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:008', false)
@@ -66,7 +66,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:026', false)
-                run sub_Event16
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:009', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -75,7 +75,7 @@ flow Begin:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:027', false)
-                run sub_Event16
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     return
 
 flow Begin_Ap:
@@ -92,7 +92,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:204', false)
-                run sub_Event17
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:202', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -102,7 +102,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:206', false)
-                run sub_Event17
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     elif fEvent139 == 1:
         if MainNpc.CheckNpcApproachType():
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:101', false)
@@ -113,7 +113,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:104', false)
-                run sub_Event14
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:102', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -123,24 +123,6 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:106', false)
-                run sub_Event14
+                event_flags_system['cPlayerTemp:QuestCancell'] = true
     return
-
-flow sub_Event14:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event16:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event17:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event18:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event19:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event20:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
 

@@ -38,11 +38,11 @@ flow FirstTalkInShip_Check:
     if not event_flags_system['cPlayer:TunekichiTalkBefore']:
         event_flags_system['cPlayer:TunekichiTalkBefore'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:009', false)
-        run sub_Event65
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
     elif event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag']:
         event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag'] = false
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:009_01', false)
-        run sub_Event65
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:011', false)
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:012', false)
@@ -71,7 +71,7 @@ flow Root_EnterShop:
         event_flags_system['cPlayer:FoxTalkTodayFlag'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:021', false)
         if (event_flags_system['cPlayer:FoxBuyArtTodayFlag']) or (event_flags_system['cLand:FoxArtStockCount'] <= 0):
-            run sub_Event9
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:024', false)
         elif event_flags_system['cLand:FoxArtStockCount'] <= 2:
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:023', false)
         else:
@@ -121,10 +121,10 @@ flow Root_Talk:
         run FirstTalkInShip
     elif fEvent86 == 2:
         event_flags_system['cPlayer:FoxTalkTodayFlag'] = true
-        run sub_Event20
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
     elif fEvent86 == 3:
         event_flags_system['cPlayerVisit:FoxTalkFlag'] = true
-        run sub_Event20
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
     elif fEvent86 == 0:
         if MainNpc.FoxBuyGalleryForThisIsland():
             fEvent28 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -179,13 +179,4 @@ flow Talk_BeforeBuy:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:222', false)
     return
-
-flow sub_Event20:
-    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
-
-flow sub_Event65:
-    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
-
-flow sub_Event9:
-    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:024', false)
 

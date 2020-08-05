@@ -22,7 +22,7 @@ flow Chk_TrashDiyRecipe:
             elif fEvent37 == 1:
                 if not EventFlowSystemActor.PlayerHasCraftRecipe(12326, ''):
                     EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Boot', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
-    run sub_tm!Chk_TrashDiyRecipe
+    return
 
 flow Cmn_PcActionStop:
     if subflow_results[1] != 0:
@@ -68,8 +68,5 @@ flow SetTrashType:
         subflow_results[0] = 2
     elif Player.PlayerGetDemoCheckItem('cTrash_Can'):
         subflow_results[0] = 3
-    return
-
-flow sub_tm!Chk_TrashDiyRecipe:
     return
 

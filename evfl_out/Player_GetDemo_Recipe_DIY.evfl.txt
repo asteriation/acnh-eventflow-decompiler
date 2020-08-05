@@ -1,7 +1,7 @@
 flow ChumDIY_Chk:
     if (not EventFlowSystemActor.NetIsDreaming()) and (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(4549, '')) and (Player.PlayerGetDemoCheckItem('cGatheringShellfish')):
         EventFlowSystemActor.ReservePlayerMutterDemo('Demo_GetDiyRecipe_Fishfeed', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
-    run sub_tm!ChumDIY_Chk
+    return
 
 flow Demo_GetDiyRecipe_Fishfeed:
     Player.OpenMessageWindow('TalkSys/SYS_Player:508', false)
@@ -64,15 +64,9 @@ flow PitFallDIY_Chk:
 entrypoint Event35:
         if (not EventFlowSystemActor.NetIsDreaming()) and (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(2578, 'None')):
             EventFlowSystemActor.ReservePlayerMutterDemo('GetRecipe_PitFallSeed', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
-    run sub_tm!PitFallDIY_Chk
+    return
 
 flow PitFallDIY_Chk_AfterReplace:
     run Event35
-    return
-
-flow sub_tm!ChumDIY_Chk:
-    return
-
-flow sub_tm!PitFallDIY_Chk:
     return
 

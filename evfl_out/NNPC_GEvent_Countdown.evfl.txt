@@ -62,13 +62,13 @@ flow Chat_Before:
                         run Chat_WithHat_1hour_Before
                     elif fEvent96 == 0:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:004', false)
-                        run sub_Event99
+                        EventFlowSystemActor.ExitFlowchart()
                     elif fEvent96 == 1:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:005', false)
-                        run sub_Event99
+                        EventFlowSystemActor.ExitFlowchart()
                     elif fEvent96 == 2:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:006', false)
-                        run sub_Event99
+                        EventFlowSystemActor.ExitFlowchart()
             elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) != 0:
                 fEvent23 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                 if fEvent23 == 2:
@@ -89,13 +89,13 @@ flow Chat_Before:
                 fEvent9 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
                 if fEvent9 == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:038', false)
-                    run sub_Event134
+                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent9 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:039', false)
-                    run sub_Event134
+                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent9 == 2:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:040', false)
-                    run sub_Event134
+                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent9 in (3, 4):
                     run Chat_WithHat_1hour_Before
         elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) != 0:
@@ -119,10 +119,10 @@ flow Chat_Before:
         EventFlowSystemActor.ExitFlowchart()
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:057', false)
-        run sub_Event133
+        EventFlowSystemActor.ExitFlowchart()
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:058', false)
-        run sub_Event133
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Chat_WithHat_1hour_Before:
@@ -208,15 +208,6 @@ flow WearHat_30min_Before:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Countdown:030', false)
         EventFlowSystemActor.ExitFlowchart()
     return
-
-flow sub_Event133:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event134:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event99:
-    EventFlowSystemActor.ExitFlowchart()
 
 flow sub_grp!Event38:
     fEvent38 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)

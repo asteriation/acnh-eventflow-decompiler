@@ -23,7 +23,7 @@ flow DiveFish_Rco0:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_03', false)
                 event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
                 subflow_results[15] = 1
-    run sub_tm!DiveFish_Rco0
+    return
 
 flow DiveFish_Sza0:
     if not ((event_flags_system['cPlayer:DiveFishPublic_1day']) or (event_flags_system['cPlayer:DiveFishPublic_2day']) or (event_flags_system['cPlayer:CharacterCreationFlag'])):
@@ -36,7 +36,7 @@ flow DiveFish_Sza0:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_07_01', false)
         event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
         subflow_results[15] = 1
-    run sub_tm!DiveFish_Sza0
+    return
 
 flow EarthDay_Rco:
     if (EventFlowSystemActor.TermEventNow('EarthDay', false)) and (not event_flags_system['cPlayer:PAnnounceEarthDay']):
@@ -62,7 +62,7 @@ flow Easter_Rco:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:041_01', false)
         event_flags_system['cPlayer:PAnnouncePreEaster'] = true
         subflow_results[15] = 0
-    run sub_tm!Easter_Rco
+    return
 
 flow Easter_Sza:
     if EventFlowSystemActor.GlobalEventNow('Easter', 'cMainOnly', false):
@@ -72,7 +72,7 @@ flow Easter_Sza:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_01_01', false)
         event_flags_system['cPlayer:PAnnouncePreEaster'] = true
         subflow_results[15] = 0
-    run sub_tm!Easter_Sza
+    return
 
 flow Fireworks_Rco:
     if (EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false)) and (EventFlowSystemActor.EventCheck('Fireworks') in (0, 1)):
@@ -99,14 +99,14 @@ flow JuneBride_Rco:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:044', false)
         event_flags_system['cPlayer:PAnnounceJuneBride'] = true
         subflow_results[15] = 1
-    run sub_tm!JuneBride_Rco
+    return
 
 flow JuneBride_Sza:
     if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:PAnnounceJuneBride']):
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_04', false)
         event_flags_system['cPlayer:PAnnounceJuneBride'] = true
         subflow_results[15] = 1
-    run sub_tm!JuneBride_Sza
+    return
 
 flow MayDay_Rco:
     if EventFlowSystemActor.TermEventNow('MayDay', false):
@@ -136,7 +136,7 @@ flow MayDay_Rco:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:042_02', false)
                     event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
                     subflow_results[15] = 1
-    run sub_tm!MayDay_Rco
+    return
 
 flow MayDay_Sza:
     if EventFlowSystemActor.TermEventNow('MayDay', false):
@@ -157,7 +157,7 @@ flow MayDay_Sza:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_02_02', false)
             event_flags_system['cPlayer:PAnnounceMayDayTour'] = true
             subflow_results[15] = 1
-    run sub_tm!MayDay_Sza
+    return
 
 flow Root:
     if subflow_results[0] == 0:
@@ -183,42 +183,12 @@ flow Stamp_Rco:
         event_flags_system['cPlayer:PAnnounceStampRally'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:045', false)
         subflow_results[15] = 1
-    run sub_tm!Stamp_Rco
+    return
 
 flow Stamp_Sza:
     if (EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) and (EventFlowSystemActor.MuseumLevel() in (BlathersMuseumNoArt, BlathersMuseumArt)) and (not event_flags_system['cLand:Museum2BuiltToday']) and (not event_flags_system['cLand:Museum3BuiltToday']) and (not event_flags_system['cPlayer:PAnnounceStampRally']):
         event_flags_system['cPlayer:PAnnounceStampRally'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:008_05', false)
         subflow_results[15] = 1
-    run sub_tm!Stamp_Sza
-
-flow sub_tm!DiveFish_Rco0:
-    return
-
-flow sub_tm!DiveFish_Sza0:
-    return
-
-flow sub_tm!Easter_Rco:
-    return
-
-flow sub_tm!Easter_Sza:
-    return
-
-flow sub_tm!JuneBride_Rco:
-    return
-
-flow sub_tm!JuneBride_Sza:
-    return
-
-flow sub_tm!MayDay_Rco:
-    return
-
-flow sub_tm!MayDay_Sza:
-    return
-
-flow sub_tm!Stamp_Rco:
-    return
-
-flow sub_tm!Stamp_Sza:
     return
 

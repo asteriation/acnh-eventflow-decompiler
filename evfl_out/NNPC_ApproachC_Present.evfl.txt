@@ -27,19 +27,16 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:300', false)
             MainNpc.NpcDelivery('"Default"', 1)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:302', false)
-            run sub_Event25
+            MainNpc.RegistToReleaseItemList(0)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:301', false)
             MainNpc.NpcDelivery('"Default"', 1)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:303', false)
-            run sub_Event25
+            MainNpc.RegistToReleaseItemList(0)
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:004', false)
         MainNpc.NpcDelivery('"Default"', 1)
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Present:400', false)
-        run sub_Event25
+        MainNpc.RegistToReleaseItemList(0)
     return
-
-flow sub_Event25:
-    MainNpc.RegistToReleaseItemList(0)
 

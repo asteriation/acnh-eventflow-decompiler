@@ -127,7 +127,7 @@ flow OtherNpcHouse:
     if (EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (MainNpc.IsTargetNpcHouse()) and (MainNpc.IsVisitOtherNpc()):
         MainNpc.NpcChangeAIState('cVisitFollower', '', '', '', true, true)
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!OtherNpcHouse
+    return
 
 flow PlayerBirthdayBye:
     MainNpc.NpcAITalkCastSetting('PlayerBirthday')
@@ -185,14 +185,14 @@ flow Root:
     elif (not MainNpc.InDIYArea()) and (MainNpc.CheckNowNpcFeel() == 0):
         MainNpc.NpcChangeAIState('cReturnDIYPos', 'NNPC_Talk_Sequence', '', '', true, false)
     else:
-        run sub_Event6
+        MainNpc.NpcChangeAIState('cDIY', 'NNPC_Talk_Sequence', '', '', true, false)
     return
 
 flow Surprise:
     if MainNpc.NpcBlackBoard('SurpriseHide', 1):
         MainNpc.SetIsStartNeedActivity('cOff')
         MainNpc.NpcChangeAIState('cSurpriseHide', 'NNPC_Spot_VisitP', 'Begin', '', false, false)
-        run sub_Event16
+        EventFlowSystemActor.ExitFlowchart()
     elif MainNpc.NpcBlackBoard('SurpriseVisit', 1):
         MainNpc.SetIsStartNeedActivity('cOff')
         if MainNpc.NpcBlackBoard('SurpriseMove', 1):
@@ -201,22 +201,22 @@ flow Surprise:
             if event_flag_npc['cNpcTemp:AtHomeAI']:
                 MainNpc.SetNpcTalkFlowName('NNPC_Spot_VisitP', 'Talk')
                 MainNpc.SetIsStartNeedActivity('cOnKeepTalkFlow')
-                run sub_Event16
+                EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.NpcChangeAIState('cSurpriseWander', 'NNPC_Spot_VisitP', 'Talk', '', false, false)
-                run sub_Event16
+                EventFlowSystemActor.ExitFlowchart()
         elif (MainNpc.NpcCheckStateSelectTiming('cTalkEnd')) and (event_flag_npc['cNpcTemp:TalkEndWait']):
             MainNpc.NpcChangeWaitState('cWait', 'Talk', 'NNPC_Spot_VisitP', '', false, false, 30, true, '')
             event_flags_npc['cNpcTemp:TalkEndWait'] = false
-            run sub_Event16
+            EventFlowSystemActor.ExitFlowchart()
         else:
             if event_flag_npc['cNpcTemp:AtHomeAI']:
                 MainNpc.SetNpcTalkFlowName('NNPC_Spot_VisitP', 'Talk')
                 MainNpc.SetIsStartNeedActivity('cOnKeepTalkFlow')
-                run sub_Event16
+                EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.NpcChangeAIState('cSurpriseWander', 'NNPC_Spot_VisitP', 'Talk', '', false, false)
-                run sub_Event16
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow SurpriseCall:
@@ -241,16 +241,7 @@ flow TouchedFurniture:
             run Normal
     return
 
-flow sub_Event16:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event6:
-    MainNpc.NpcChangeAIState('cDIY', 'NNPC_Talk_Sequence', '', '', true, false)
-
 flow sub_grp!Event108:
     if (not event_flag_npc['cNpcTemp:ForceFurnitureNow']) and (MainNpc.NpcHasFreeMessage('cFreeCFurniture')):
         run AI_NPC_Common::ContinueSpeak
-
-flow sub_tm!OtherNpcHouse:
-    return
 

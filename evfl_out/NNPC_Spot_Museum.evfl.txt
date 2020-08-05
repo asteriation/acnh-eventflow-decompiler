@@ -13,7 +13,7 @@ flow Museum_Fish:
     elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fish:200', false)
     else:
-        run sub_Event12
+        MainNpc.NpcOpenFacilityMessage()
     return
 
 flow Museum_Fossil:
@@ -22,7 +22,7 @@ flow Museum_Fossil:
     elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fossil:200', false)
     else:
-        run sub_Event29
+        MainNpc.NpcOpenFacilityMessage()
     return
 
 flow Museum_Insect:
@@ -31,7 +31,7 @@ flow Museum_Insect:
     elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Insect:200', false)
     else:
-        run sub_Event23
+        MainNpc.NpcOpenFacilityMessage()
     return
 
 flow Root:
@@ -69,13 +69,4 @@ flow Spot_Museum:
     elif EventFlowSystemActor.SystemCheckNowStage('cMuseumArt'):
         run Museum_Art
     return
-
-flow sub_Event12:
-    MainNpc.NpcOpenFacilityMessage()
-
-flow sub_Event23:
-    MainNpc.NpcOpenFacilityMessage()
-
-flow sub_Event29:
-    MainNpc.NpcOpenFacilityMessage()
 

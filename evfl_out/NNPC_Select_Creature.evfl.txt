@@ -12,9 +12,9 @@ entrypoint Event15:
             MainNpc.NpcDelivery('Default', 10)
             EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_Event22
+            run Donated_DiveFish
     else:
-        run sub_Event22
+        run Donated_DiveFish
     return
 
 flow Donated_DiveFish:
@@ -86,7 +86,4 @@ flow Plant:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:401', false)
     run Event18
     return
-
-flow sub_Event22:
-    run Donated_DiveFish
 

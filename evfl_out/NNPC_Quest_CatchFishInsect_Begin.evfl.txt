@@ -25,7 +25,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:104', false, false)
-                run sub_Event127
+                MainNpc.NpcQuestControl('cFinish')
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:102', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -35,7 +35,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:106', false, false)
-                run sub_Event127
+                MainNpc.NpcQuestControl('cFinish')
     elif fEvent117 == 3:
         MainNpc.SetItemName(0, 0, 3)
         if MainNpc.CheckNpcApproachType():
@@ -47,7 +47,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:204', false, false)
-                run sub_Event60
+                MainNpc.NpcQuestControl('cFinish')
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:202', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -57,7 +57,7 @@ flow Begin_Ap:
                 event_flags_npc['cNpcMemory:OrderQuest'] = true
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:206', false, false)
-                run sub_Event60
+                MainNpc.NpcQuestControl('cFinish')
     elif fEvent117 in (0, 2):
         run NNPC_Approach::Reselection
     return
@@ -194,10 +194,4 @@ flow Rare_No:
 flow Rare_Yes:
     run Event74
     return
-
-flow sub_Event127:
-    MainNpc.NpcQuestControl('cFinish')
-
-flow sub_Event60:
-    MainNpc.NpcQuestControl('cFinish')
 

@@ -64,7 +64,7 @@ flow NewsMarket:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:127_02', false)
             event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfo'] = true
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent1 == 4:
             run NewsConnect
             if event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfo']:
@@ -72,59 +72,59 @@ flow NewsMarket:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:129_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:130', false)
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent1 == 1:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:121_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:122', false)
             fEvent115 = EventFlowSystemActor.EnvHourCompare(8, -1, true, true)
-            if fEvent115 == 0:
+            if fEvent115 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_01', false)
+            elif fEvent115 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_02', false)
             elif fEvent115 == 2:
                 if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) == 0:
-                    run sub_Event105
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_01', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_03', false)
-            elif fEvent115 == 1:
-                run sub_Event105
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:124', false)
             if EventFlowSystemActor.FacilityOpenPastDays('cMarket1', 8):
                 subflow_results[12] = 1
-                run sub_Event40
+                subflow_results[14] = 1
             else:
-                run sub_Event40
+                subflow_results[14] = 1
         elif fEvent1 == 2:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:121_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:122', false)
             fEvent115 = EventFlowSystemActor.EnvHourCompare(8, -1, true, true)
-            if fEvent115 == 0:
+            if fEvent115 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_01', false)
+            elif fEvent115 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_02', false)
             elif fEvent115 == 2:
                 if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) == 0:
-                    run sub_Event105
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_01', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_03', false)
-            elif fEvent115 == 1:
-                run sub_Event105
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:124', false)
             if EventFlowSystemActor.FacilityOpenPastDays('cMarket1', 8):
                 subflow_results[12] = 1
-                run sub_Event40
+                subflow_results[14] = 1
             else:
-                run sub_Event40
+                subflow_results[14] = 1
         elif fEvent1 == 5:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:131_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:132', false)
             subflow_results[12] = 1
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent1 == 6:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:131_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:132', false)
             subflow_results[12] = 1
-            run sub_Event40
+            subflow_results[14] = 1
     else:
         fEvent14 = subflow_results[7]
         if fEvent14 == 3:
@@ -135,7 +135,7 @@ flow NewsMarket:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:127_02', false)
             event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfoSza'] = true
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent14 == 4:
             run NewsConnect
             if event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfoSza']:
@@ -145,19 +145,19 @@ flow NewsMarket:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:130', false)
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent14 == 5:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:131_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:132', false)
             subflow_results[12] = 1
-            run sub_Event40
+            subflow_results[14] = 1
         elif fEvent14 == 6:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:131_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:132', false)
             subflow_results[12] = 1
-            run sub_Event40
+            subflow_results[14] = 1
     return
 
 flow NewsMuseum:
@@ -171,10 +171,10 @@ entrypoint Event19:
             if event_flags_system['cLand:MuseumGrowupEnable1']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:103_02', false)
                 event_flags_system['cPlayer:RcoPAnnounceMuseumSP'] = true
-                run sub_Event30
+                subflow_results[14] = 1
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:103_01', false)
-                run sub_Event30
+                subflow_results[14] = 1
         elif fEvent13 == 2:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:101_02', false)
@@ -182,16 +182,16 @@ entrypoint Event19:
             if event_flags_system['cLand:MuseumGrowupEnable1']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:103_02', false)
                 event_flags_system['cPlayer:RcoPAnnounceMuseumSP'] = true
-                run sub_Event30
+                subflow_results[14] = 1
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:103_01', false)
-                run sub_Event30
+                subflow_results[14] = 1
         elif fEvent13 == 4:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:111_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:112', false)
             subflow_results[12] = 1
-            run sub_Event163
+            subflow_results[14] = 1
         elif fEvent13 == 6:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:113', false)
@@ -200,25 +200,25 @@ entrypoint Event19:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:115', false)
             EventFlowSystemActor.WaitFrame(10)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:116', false)
-            run sub_Event163
+            subflow_results[14] = 1
         elif fEvent13 == 7:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:117', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:119', false)
             subflow_results[12] = 1
-            run sub_Event163
+            subflow_results[14] = 1
         elif fEvent13 == 8:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:118', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:119', false)
             subflow_results[12] = 1
-            run sub_Event163
+            subflow_results[14] = 1
         elif fEvent13 == 5:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:111_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:112', false)
             subflow_results[12] = 1
-            run sub_Event163
+            subflow_results[14] = 1
         elif fEvent13 == 3:
             run NewsConnect
             if event_flags_system['cPlayer:RcoPAnnounceMuseumSP']:
@@ -233,7 +233,7 @@ entrypoint Event19:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:106', true)
             EventFlowSystemActor.WaitFrame(10)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:107', false)
-            run sub_Event30
+            subflow_results[14] = 1
     else:
         fEvent2 = subflow_results[6]
         if fEvent2 == 6:
@@ -244,31 +244,31 @@ entrypoint Event19:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:115', false)
             EventFlowSystemActor.WaitFrame(10)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:116', false)
-            run sub_Event190
+            subflow_results[14] = 1
         elif fEvent2 == 7:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:117', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:119', false)
             subflow_results[12] = 1
-            run sub_Event190
+            subflow_results[14] = 1
         elif fEvent2 == 8:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:118', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:119', false)
             subflow_results[12] = 1
-            run sub_Event190
+            subflow_results[14] = 1
         elif fEvent2 == 4:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:111_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:112', false)
             subflow_results[12] = 1
-            run sub_Event107
+            subflow_results[14] = 1
         elif fEvent2 == 5:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:111_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:112', false)
             subflow_results[12] = 1
-            run sub_Event107
+            subflow_results[14] = 1
         elif fEvent2 == 3:
             run NewsConnect
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:104_01', false)
@@ -277,7 +277,7 @@ entrypoint Event19:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:106', true)
             EventFlowSystemActor.WaitFrame(10)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:107', false)
-            run sub_Event107
+            subflow_results[14] = 1
     return
 
 flow NewsTailor:
@@ -320,36 +320,12 @@ flow Root:
     if subflow_results[0] != 0:
         run NewsCampsite
         if subflow_results[12] == 1:
-            run sub_Event52
+            run NewsCeremony
     elif (subflow_results[12] == 1) and (not event_flags_system['cLand:OfficeConstruction1']):
-        run sub_Event52
-    run sub_tm!Root
-
-flow sub_Event105:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:123_01', false)
-
-flow sub_Event107:
-    subflow_results[14] = 1
-
-flow sub_Event163:
-    subflow_results[14] = 1
-
-flow sub_Event190:
-    subflow_results[14] = 1
-
-flow sub_Event30:
-    subflow_results[14] = 1
-
-flow sub_Event40:
-    subflow_results[14] = 1
-
-flow sub_Event52:
-    run NewsCeremony
+        run NewsCeremony
+    return
 
 flow sub_grp!Event96:
     if subflow_results[0] == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:191', false)
-
-flow sub_tm!Root:
-    return
 

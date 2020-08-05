@@ -83,11 +83,11 @@ entrypoint Event21:
             elif fEvent87 in (1, 2):
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:602', false)
-                run sub_Event100
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
             elif fEvent87 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:603', false)
-                run sub_Event100
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
             elif fEvent87 in (4, 5, 6, 7, 8, 9):
                 run RcoNoNews_Normal
     elif subflow_results[15] == 0:
@@ -96,7 +96,7 @@ entrypoint Event21:
         elif EventFlowSystemActor.EnvSameDate('cEndOfTheMonth', 'cGrowUpTime'):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:801', false)
             if EventFlowSystemActor.EnvHourCompare(2, -1, true, false) != 0:
-                run sub_Event7
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
             elif EventFlowSystemActor.EnvHourCompare(0, -1, true, false) == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:802', false)
                 run Sza_LastDayOfMonthA
@@ -112,13 +112,13 @@ entrypoint Event21:
             elif fEvent92 in (1, 2):
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:600', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:602', false)
-                run sub_Event7
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
             elif fEvent92 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:600', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:603', false)
-                run sub_Event7
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
     else:
-        run sub_Event7
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
     return
 
 flow September:
@@ -149,7 +149,7 @@ flow SzaNoNews_Normal:
             elif fEvent112 == 6:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:827', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:828', false)
-            run sub_Event113
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
         elif fEvent117 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:701', false)
             if EventFlowSystemActor.PercentChoice(5):
@@ -162,7 +162,7 @@ flow SzaNoNews_Normal:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:831', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:899', false)
-            run sub_Event113
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
         elif fEvent117 == 2:
             run sub_grp!Event111
     else:
@@ -220,15 +220,6 @@ flow Sza_LastDayOfMonthB:
     elif fEvent32 == 7:
         run July
     return
-
-flow sub_Event100:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:799', false)
-
-flow sub_Event113:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
-
-flow sub_Event7:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
 
 flow sub_grp!Event111:
     fEvent111 = EventFlowSystemActor.EnvDayOfWeek()

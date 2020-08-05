@@ -33,8 +33,5 @@ entrypoint Event7:
         event_flags_system['cPlayer:RcoEarthDayAnnouncementPre'] = true
         event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Root
-
-flow sub_tm!Root:
     return
 

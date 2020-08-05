@@ -112,72 +112,72 @@ entrypoint Event240:
                 run GotReward
             elif fEvent235 in (1, 2):
                 subflow_results[11] = 0
-                run sub_Event242
+                run Choice_Give1Material
             elif fEvent235 in (3, 4):
                 subflow_results[11] = 1
-                run sub_Event242
+                run Choice_Give1Material
             elif fEvent235 == 5:
-                run sub_Event244
+                run CantGive
         elif fEvent234 == 1:
             fEvent245 = subflow_results[12]
-            if fEvent245 in (0, 2):
+            if fEvent245 == 4:
+                run CantGive
+            elif fEvent245 in (0, 2):
                 subflow_results[11] = 0
-                run sub_Event247
+                run Choice_Give1Material
             elif fEvent245 in (3, 5):
                 subflow_results[11] = 2
-                run sub_Event247
-            elif fEvent245 == 4:
-                run sub_Event244
+                run Choice_Give1Material
             elif fEvent245 == 1:
-                run sub_Event254
+                run Remain2Give2
         elif fEvent234 == 4:
             fEvent248 = subflow_results[12]
             if fEvent248 in (0, 3):
                 subflow_results[11] = 1
-                run sub_Event263
+                run Choice_Give1Material
+            elif fEvent248 == 4:
+                run Remain2Give2
+            elif fEvent248 == 1:
+                run CantGive
             elif fEvent248 in (2, 5):
                 subflow_results[11] = 3
-                run sub_Event263
-            elif fEvent248 == 4:
-                run sub_Event262
-            elif fEvent248 == 1:
-                run sub_Event264
+                run Choice_Give1Material
         elif fEvent234 == 2:
             fEvent251 = subflow_results[12]
             if fEvent251 in (0, 1):
                 subflow_results[11] = 0
-                run sub_Event253
+                run Choice_Give1Material
+            elif fEvent251 == 2:
+                run Remain2Give2
+            elif fEvent251 == 3:
+                run CantGive
             elif fEvent251 in (4, 5):
                 subflow_results[11] = 3
-                run sub_Event253
-            elif fEvent251 == 2:
-                run sub_Event254
-            elif fEvent251 == 3:
-                run sub_Event255
+                run Choice_Give1Material
         elif fEvent234 == 3:
             fEvent257 = subflow_results[12]
-            if fEvent257 in (0, 4):
+            if fEvent257 == 2:
+                run CantGive
+            elif fEvent257 in (0, 4):
                 subflow_results[11] = 1
-                run sub_Event259
+                run Choice_Give1Material
             elif fEvent257 in (1, 5):
                 subflow_results[11] = 2
-                run sub_Event259
-            elif fEvent257 == 2:
-                run sub_Event255
+                run Choice_Give1Material
             elif fEvent257 == 3:
-                run sub_Event262
+                run Remain2Give2
         elif fEvent234 == 5:
             fEvent266 = subflow_results[12]
             if fEvent266 in (2, 4):
                 subflow_results[11] = 3
-                run sub_Event269
+                run Choice_Give1Material
+            elif fEvent266 == 0:
+                run CantGive
             elif fEvent266 == 5:
                 run Remain2Give2
             elif fEvent266 in (1, 3):
                 subflow_results[11] = 2
-                run sub_Event269
-            elif fEvent266 == 0:
-                run sub_Event264
+                run Choice_Give1Material
     elif fEvent193 == 4:
         fEvent24 = subflow_results[2]
         if fEvent24 == 0:
@@ -199,68 +199,68 @@ entrypoint Event240:
             fEvent270 = subflow_results[13]
             if fEvent270 in (2, 3):
                 subflow_results[12] = 0
-                run sub_Event275
+                run Remain2Give2
             elif fEvent270 == 0:
                 subflow_results[11] = 1
-                run sub_Event272
+                run Choice_Give1Material
             elif fEvent270 == 1:
                 subflow_results[11] = 0
-                run sub_Event272
+                run Choice_Give1Material
         elif fEvent271 == 1:
             fEvent276 = subflow_results[13]
             if fEvent276 in (1, 3):
                 subflow_results[12] = 1
-                run sub_Event275
+                run Remain2Give2
             elif fEvent276 == 0:
                 subflow_results[11] = 2
-                run sub_Event278
+                run Choice_Give1Material
             elif fEvent276 == 2:
                 subflow_results[11] = 0
-                run sub_Event278
+                run Choice_Give1Material
         elif fEvent271 == 2:
             fEvent281 = subflow_results[13]
             if fEvent281 in (1, 2):
                 subflow_results[12] = 2
-                run sub_Event279
+                run Remain2Give2
             elif fEvent281 == 0:
                 subflow_results[11] = 3
-                run sub_Event283
+                run Choice_Give1Material
             elif fEvent281 == 3:
                 subflow_results[11] = 0
-                run sub_Event283
+                run Choice_Give1Material
         elif fEvent271 == 3:
             fEvent285 = subflow_results[13]
             if fEvent285 in (0, 3):
                 subflow_results[12] = 3
-                run sub_Event279
+                run Remain2Give2
             elif fEvent285 == 1:
                 subflow_results[11] = 2
-                run sub_Event287
+                run Choice_Give1Material
             elif fEvent285 == 2:
                 subflow_results[11] = 1
-                run sub_Event287
+                run Choice_Give1Material
         elif fEvent271 == 4:
             fEvent289 = subflow_results[13]
             if fEvent289 in (0, 2):
                 subflow_results[12] = 4
-                run sub_Event291
+                run Remain2Give2
             elif fEvent289 == 1:
                 subflow_results[11] = 3
-                run sub_Event293
+                run Choice_Give1Material
             elif fEvent289 == 3:
                 subflow_results[11] = 1
-                run sub_Event293
+                run Choice_Give1Material
         elif fEvent271 == 5:
             fEvent290 = subflow_results[13]
             if fEvent290 in (0, 1):
                 subflow_results[12] = 5
-                run sub_Event291
+                run Remain2Give2
             elif fEvent290 == 2:
                 subflow_results[11] = 3
-                run sub_Event297
+                run Choice_Give1Material
             elif fEvent290 == 3:
                 subflow_results[11] = 2
-                run sub_Event297
+                run Choice_Give1Material
     return
 
 flow DonateMaterials_Remain3:
@@ -284,54 +284,54 @@ flow DonateMaterials_Remain3:
             fEvent104 = subflow_results[12]
             if fEvent104 == 3:
                 subflow_results[11] = 2
-                run sub_Event181
+                run Choice_Give1Material
             elif fEvent104 == 4:
                 subflow_results[11] = 3
-                run sub_Event181
+                run Choice_Give1Material
+            elif fEvent104 in (1, 2, 5):
+                run Choice_Give2Materials
             elif fEvent104 == 0:
                 subflow_results[11] = 0
-                run sub_Event181
-            elif fEvent104 in (1, 2, 5):
-                run sub_Event171
+                run Choice_Give1Material
         elif fEvent137 == 2:
             fEvent145 = subflow_results[12]
             if fEvent145 == 1:
                 subflow_results[11] = 0
-                run sub_Event166
+                run Choice_Give1Material
+            elif fEvent145 in (0, 2, 4):
+                run Choice_Give2Materials
             elif fEvent145 == 3:
                 subflow_results[11] = 1
-                run sub_Event166
+                run Choice_Give1Material
             elif fEvent145 == 5:
                 subflow_results[11] = 3
-                run sub_Event166
-            elif fEvent145 in (0, 2, 4):
-                run sub_Event171
+                run Choice_Give1Material
         elif fEvent137 == 0:
             fEvent138 = subflow_results[12]
             if fEvent138 in (3, 4, 5):
                 run Choice_Give2Materials
             elif fEvent138 == 0:
                 subflow_results[11] = 1
-                run sub_Event162
+                run Choice_Give1Material
             elif fEvent138 == 1:
                 subflow_results[11] = 2
-                run sub_Event162
+                run Choice_Give1Material
             elif fEvent138 == 2:
                 subflow_results[11] = 3
-                run sub_Event162
+                run Choice_Give1Material
         elif fEvent137 == 3:
             fEvent146 = subflow_results[12]
             if fEvent146 in (0, 1, 3):
                 run Choice_Give2Materials
             elif fEvent146 == 2:
                 subflow_results[11] = 0
-                run sub_Event168
+                run Choice_Give1Material
             elif fEvent146 == 4:
                 subflow_results[11] = 1
-                run sub_Event168
+                run Choice_Give1Material
             elif fEvent146 == 5:
                 subflow_results[11] = 2
-                run sub_Event168
+                run Choice_Give1Material
     elif fEvent180 == 3:
         fEvent148 = subflow_results[3]
         if fEvent148 == 0:
@@ -344,74 +344,74 @@ entrypoint Event184:
                 run GotReward
             elif fEvent149 == 1:
                 subflow_results[12] = 5
-                run sub_Event198
+                run Choice_Give2Materials
             elif fEvent149 == 2:
                 subflow_results[12] = 4
-                run sub_Event198
+                run Choice_Give2Materials
             elif fEvent149 == 3:
                 subflow_results[12] = 3
-                run sub_Event198
+                run Choice_Give2Materials
         elif fEvent148 == 1:
             fEvent201 = subflow_results[13]
             if fEvent201 == 0:
                 subflow_results[12] = 5
-                run sub_Event204
+                run Choice_Give2Materials
             elif fEvent201 == 1:
                 run Remain3Give3
             elif fEvent201 == 2:
                 subflow_results[12] = 2
-                run sub_Event204
+                run Choice_Give2Materials
             elif fEvent201 == 3:
                 subflow_results[12] = 1
-                run sub_Event204
+                run Choice_Give2Materials
         elif fEvent148 == 2:
             fEvent207 = subflow_results[13]
             if fEvent207 == 0:
                 subflow_results[12] = 4
-                run sub_Event210
+                run Choice_Give2Materials
             elif fEvent207 == 1:
                 subflow_results[12] = 2
-                run sub_Event210
+                run Choice_Give2Materials
             elif fEvent207 == 2:
                 run Remain3Give3
             elif fEvent207 == 3:
                 subflow_results[12] = 0
-                run sub_Event210
+                run Choice_Give2Materials
         elif fEvent148 == 3:
             fEvent208 = subflow_results[13]
             if fEvent208 == 1:
                 subflow_results[12] = 1
-                run sub_Event216
+                run Choice_Give2Materials
             elif fEvent208 == 2:
                 subflow_results[12] = 0
-                run sub_Event216
+                run Choice_Give2Materials
             elif fEvent208 == 3:
                 run Remain3Give3
             elif fEvent208 == 0:
                 subflow_results[12] = 3
-                run sub_Event216
+                run Choice_Give2Materials
     elif fEvent180 == 1:
         fEvent187 = subflow_results[3]
         if fEvent187 == 0:
             if EventFlowSystemActor.HasTargetItem(2768, 30):
-                run sub_Event143
+                run CantGive
             else:
-                run sub_Event136
+                run Choice_Give1Material
         elif fEvent187 == 1:
             if EventFlowSystemActor.HasTargetItem(2769, 30):
-                run sub_Event143
+                run CantGive
             else:
-                run sub_Event136
+                run Choice_Give1Material
         elif fEvent187 == 3:
             if EventFlowSystemActor.HasTargetItem(2511, 30):
-                run sub_Event143
+                run CantGive
             else:
-                run sub_Event136
+                run Choice_Give1Material
         elif fEvent187 == 2:
             if EventFlowSystemActor.HasTargetItem(2767, 30):
-                run sub_Event143
+                run CantGive
             else:
-                run sub_Event136
+                run Choice_Give1Material
     return
 
 flow DonateMaterials_Remain4:
@@ -637,97 +637,4 @@ flow TalkCollectingProgress:
         elif fEvent51 == 5:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_03_06', false)
     return
-
-flow sub_Event136:
-    run Choice_Give1Material
-
-flow sub_Event143:
-    run CantGive
-
-flow sub_Event162:
-    run Choice_Give1Material
-
-flow sub_Event166:
-    run Choice_Give1Material
-
-flow sub_Event168:
-    run Choice_Give1Material
-
-flow sub_Event171:
-    run Choice_Give2Materials
-
-flow sub_Event181:
-    run Choice_Give1Material
-
-flow sub_Event198:
-    run Choice_Give2Materials
-
-flow sub_Event204:
-    run Choice_Give2Materials
-
-flow sub_Event210:
-    run Choice_Give2Materials
-
-flow sub_Event216:
-    run Choice_Give2Materials
-
-flow sub_Event242:
-    run Choice_Give1Material
-
-flow sub_Event244:
-    run CantGive
-
-flow sub_Event247:
-    run Choice_Give1Material
-
-flow sub_Event253:
-    run Choice_Give1Material
-
-flow sub_Event254:
-    run Remain2Give2
-
-flow sub_Event255:
-    run CantGive
-
-flow sub_Event259:
-    run Choice_Give1Material
-
-flow sub_Event262:
-    run Remain2Give2
-
-flow sub_Event263:
-    run Choice_Give1Material
-
-flow sub_Event264:
-    run CantGive
-
-flow sub_Event269:
-    run Choice_Give1Material
-
-flow sub_Event272:
-    run Choice_Give1Material
-
-flow sub_Event275:
-    run Remain2Give2
-
-flow sub_Event278:
-    run Choice_Give1Material
-
-flow sub_Event279:
-    run Remain2Give2
-
-flow sub_Event283:
-    run Choice_Give1Material
-
-flow sub_Event287:
-    run Choice_Give1Material
-
-flow sub_Event291:
-    run Remain2Give2
-
-flow sub_Event293:
-    run Choice_Give1Material
-
-flow sub_Event297:
-    run Choice_Give1Material
 

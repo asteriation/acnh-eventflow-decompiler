@@ -13,10 +13,10 @@ flow Hgh_1stExplain:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006', false)
         elif event_flags_system['cPlayer:KinuyoTailorBuildFlag']:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:002', false)
-            run sub_Event7
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:003', false)
-            run sub_Event7
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_01_02', false)
         event_flags_system['cPlayer:KinuyoMydesginMachineFlag'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_02', false)
@@ -31,7 +31,4 @@ flow Root:
     run Hgh_1stExplain
     event_flags_system['cPlayerTemp:TailorChkObject'] = false
     return
-
-flow sub_Event7:
-    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
 

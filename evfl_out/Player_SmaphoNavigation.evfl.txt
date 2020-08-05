@@ -87,14 +87,14 @@ flow GotoEscapeSelect:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp2:050_06', true)
             run PlayerWarpTo
         else:
-            run sub_Event177
+            run EscapeSelCansel
     elif EventFlowSystemActor.SystemCheckNowStage('cMysteryTourIsland'):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:048', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp2:050_06', true)
             run PlayerWarpTo
         else:
-            run sub_Event177
+            run EscapeSelCansel
     elif EventFlowSystemActor.IsSharePlay(0):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:043', true)
         run PlayerWarpTo
@@ -329,9 +329,6 @@ flow SequenceStart:
         run ChkRacketIntro
         run sub_grp!Event220
     return
-
-flow sub_Event177:
-    run EscapeSelCansel
 
 flow sub_grp!Event1:
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()

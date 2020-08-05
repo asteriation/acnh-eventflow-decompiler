@@ -19,7 +19,7 @@ flow Root:
                     EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
                     EventFlowSystemActor.UIMoneyDisappear()
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:104', false)
-                    run sub_Event119
+                    MainNpc.SetItemToNpcStockList(1, 0)
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:103', false)
             elif EventFlowSystemActor.PercentChoice(25):
@@ -38,7 +38,7 @@ flow Root:
                                 EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
                                 EventFlowSystemActor.UIMoneyDisappear()
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:113', false)
-                                run sub_Event119
+                                MainNpc.SetItemToNpcStockList(1, 0)
                             else:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:112', false)
                         else:
@@ -50,7 +50,7 @@ flow Root:
                                 EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
                                 EventFlowSystemActor.UIMoneyDisappear()
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:117', false)
-                                run sub_Event119
+                                MainNpc.SetItemToNpcStockList(1, 0)
                             else:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:116', false)
                     else:
@@ -71,7 +71,7 @@ flow Root:
                     EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
                     EventFlowSystemActor.UIMoneyDisappear()
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:205', false)
-                    run sub_Event119
+                    MainNpc.SetItemToNpcStockList(1, 0)
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:204', false)
             else:
@@ -83,9 +83,6 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Want:004', false)
         run sub_grp!Event49
     return
-
-flow sub_Event119:
-    MainNpc.SetItemToNpcStockList(1, 0)
 
 flow sub_grp!Event49:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

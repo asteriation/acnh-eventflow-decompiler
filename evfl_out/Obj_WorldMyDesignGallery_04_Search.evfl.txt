@@ -33,10 +33,10 @@ flow MyOpus:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
             if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
                 EventFlowSystemActor.UIMyDesignSelectHandling(1, 2, 0, 0, 0)
-                run sub_grp-end!Event68
+                goto grp-end!Event68
             else:
                 EventFlowSystemActor.UIMyDesignSelectHandling(1, 1, 0, 0, 0)
-                run sub_grp-end!Event68
+                goto grp-end!Event68
         grp-end!Event68::
             run Obj_WorldMyDesignGallery_01_MainScene::MainUI
     return
@@ -89,12 +89,12 @@ entrypoint Event53:
                             else:
                                 run BackToAuthorOpus
                 else:
-                    run sub_Event15
+                    run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cDesignerIDFromSwkbd')
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2434', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run sub_Event15
+                    run Obj_WorldMyDesignGallery_01_MainScene::MainUI
                 else:
                     run SearchByAuthorID
         else:
@@ -106,7 +106,7 @@ entrypoint Event53:
             EventFlowSystemActor.SetTagFromUIResult(0, 'cDesignerIDFromSwkbd')
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2434', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run sub_Event15
+                run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:
                 run SearchByAuthorID
     return
@@ -176,10 +176,4 @@ entrypoint Event2:
         else:
             run SearchByMyDesignID
     return
-
-flow sub_Event15:
-    run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-
-flow sub_grp-end!Event68:
-    goto grp-end!Event68
 

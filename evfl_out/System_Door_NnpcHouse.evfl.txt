@@ -4,21 +4,21 @@ flow Root:
         fEvent41 = GeneralObject.CheckLockReason()
         if fEvent41 == 1:
             run Sys_Door_Out
-            run sub_Event29
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 0:
             run Sys_Door_Sleep
-            run sub_Event29
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 3:
             run Sys_Door_Sick
-            run sub_Event29
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 5:
             EventFlowSystemActor.SetCheckResultStructureDoor(0)
         elif fEvent41 == 2:
             run Sys_Door_Move
-            run sub_Event29
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 4:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:VisitN', false)
-            run sub_Event29
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
     else:
         EventFlowSystemActor.SetCheckResultStructureDoor(1)
     return
@@ -111,7 +111,4 @@ flow Sys_Door_Sleep:
         elif fEvent1 == 4:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_FU', false)
     return
-
-flow sub_Event29:
-    EventFlowSystemActor.SetCheckResultStructureDoor(1)
 

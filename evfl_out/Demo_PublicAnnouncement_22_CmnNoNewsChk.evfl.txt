@@ -44,7 +44,7 @@ flow SeasonMaterialChk_AutumnNuts:
     if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_Acorn')) and (not event_flags_system['cPlayer:PAnnounce_AutumnNuts']) and ((MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_ExistOak')) or (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_ExistCedar'))):
         subflow_results[11] = 1
         subflow_results[12] = 1
-    run sub_tm!SeasonMaterialChk_AutumnNuts
+    return
 
 flow SeasonMaterialChk_Ornament:
     if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_Illminations')) and (not event_flags_system['cPlayer:PAnnounce_WinterOrnament']):
@@ -74,13 +74,13 @@ flow SeasonMaterialChk_Snowflake:
     if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_SnowGround')) and (EventFlowSystemActor.EnvWeather() in (5, 6)) and (not event_flags_system['cPlayer:PAnnounce_WinterSnowFlake']):
         subflow_results[11] = 5
         subflow_results[12] = 1
-    run sub_tm!SeasonMaterialChk_Snowflake
+    return
 
 flow SeasonMaterialChk_SpringBamboo:
     if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_BambooSpring')) and (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_ExistBanboo')) and (not event_flags_system['cPlayer:PAnnounce_SpringBamboo']):
         subflow_results[11] = 6
         subflow_results[12] = 1
-    run sub_tm!SeasonMaterialChk_SpringBamboo
+    return
 
 flow SeasonMaterialChk_SummerShell:
     if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_SummerShell')) and (not event_flags_system['cPlayer:PAnnounce_SummerShell']):
@@ -92,13 +92,4 @@ flow sub_grp!Event25:
     if not event_flags_system['cPlayer:PAnnounce_AutumnMushroom']:
         subflow_results[11] = 2
         subflow_results[12] = 1
-
-flow sub_tm!SeasonMaterialChk_AutumnNuts:
-    return
-
-flow sub_tm!SeasonMaterialChk_Snowflake:
-    return
-
-flow sub_tm!SeasonMaterialChk_SpringBamboo:
-    return
 

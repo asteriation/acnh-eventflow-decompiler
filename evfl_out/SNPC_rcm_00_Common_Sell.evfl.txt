@@ -13,7 +13,7 @@ flow ChkSellSpecificItem:
     else:
         subflow_results[2] = 0
         run sub_grp!Event2
-    run sub_tm!ChkSellSpecificItem
+    return
 
 flow Cmn_After_Sell_Confirm:
     run Event44
@@ -143,7 +143,7 @@ entrypoint Event44:
         MainNpc.ShopSellDone(1.0, false)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:051_01', false)
         run Cmn_After_Sell_Confirm
-    run sub_tm!rcm_Sell_Confirm
+    return
 
 flow sub_grp!Event2:
     if EventFlowSystemActor.IsMyVillage():
@@ -496,10 +496,4 @@ entrypoint Event78:
         if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
             MainNpc.NpcDelivery('Default', 10)
             event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
-
-flow sub_tm!ChkSellSpecificItem:
-    return
-
-flow sub_tm!rcm_Sell_Confirm:
-    return
 

@@ -30,24 +30,24 @@ flow Mood_Etc:
         fEvent22 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
         if fEvent22 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:001', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
         elif fEvent22 == 2:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:003', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
         elif fEvent22 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:002', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
     elif fEvent16 == 2:
         fEvent26 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
         if fEvent26 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:001', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
         elif fEvent26 == 2:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:003', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
         elif fEvent26 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:002', false)
-            run sub_Event107
+            EventFlowSystemActor.ExitFlowchart()
     elif fEvent16 == 0:
         if (event_flags_npc['cNpcMemory:Again2Count'] < 4) and (not MainNpc.IsDisableWorry()) and (not MainNpc.IsVisitOtherNpc()):
             fEvent119 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -63,7 +63,7 @@ flow Mood_Etc:
             event_flags_npc['cNpcMemory:ContinuousTalkCount'] = 0
             run TalkFlag_Clear
             EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Mood_Etc
+    return
 
 flow Mood_NPC:
     MainNpc.NpcSetFeelSourceActorName()
@@ -186,7 +186,7 @@ flow Mood_Payer:
                         MainNpc.SetNpcFeel('cHappy', 120)
                         MainNpc.NpcSetFeelSource(10)
                         MainNpc.NpcAddFriendship(3)
-                        run sub_Event94
+                        EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:205', false)
                 MainNpc.SetNpcFeel('cNormal', 120)
@@ -214,11 +214,11 @@ flow Mood_Payer:
                     MainNpc.SetNpcFeel('cHappy', 120)
                     MainNpc.NpcSetFeelSource(10)
                     MainNpc.NpcAddFriendship(3)
-                    run sub_Event94
+                    EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:205', false)
             MainNpc.SetNpcFeel('cNormal', 120)
-        run sub_Event94
+        EventFlowSystemActor.ExitFlowchart()
     elif fEvent3 == 3:
         MainNpc.NpcSetReactionType('cSad')
         if event_flags_npc['cNpcTemp:ContinuousReactionTalkCount'] < 2:
@@ -230,7 +230,7 @@ flow Mood_Payer:
                         MainNpc.SetNpcFeel('cHappy', 120)
                         MainNpc.NpcSetFeelSource(10)
                         MainNpc.NpcAddFriendship(3)
-                        run sub_Event95
+                        EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:205', false)
                 MainNpc.SetNpcFeel('cNormal', 120)
@@ -258,11 +258,11 @@ flow Mood_Payer:
                     MainNpc.SetNpcFeel('cHappy', 120)
                     MainNpc.NpcSetFeelSource(10)
                     MainNpc.NpcAddFriendship(3)
-                    run sub_Event95
+                    EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:205', false)
             MainNpc.SetNpcFeel('cNormal', 120)
-        run sub_Event95
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Root:
@@ -288,17 +288,5 @@ flow TalkFlag_Clear:
     run FreeB_Clear
     run FreeDEFG_Clear
     event_flags_npc['cNpcMemory:TalkReSelectLast'] = 0
-    return
-
-flow sub_Event107:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event94:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event95:
-    EventFlowSystemActor.ExitFlowchart()
-
-flow sub_tm!Mood_Etc:
     return
 

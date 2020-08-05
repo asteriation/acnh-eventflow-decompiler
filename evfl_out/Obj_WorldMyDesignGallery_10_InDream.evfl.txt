@@ -13,7 +13,7 @@ flow SearchByAuthorID:
     EventFlowSystemActor.MessageSuspend()
     EventFlowSystemActor.MessageUnlockNext()
     if (EventFlowSystemActor.CheckErrorType(2)) or (EventFlowSystemActor.MyDesignExchangeNetworkError()):
-        run sub_Event118
+        run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
     elif EventFlowSystemActor.NetIsFoundMyDesign('cInDream'):
 entrypoint Event29:
         EventFlowSystemActor.UIMyDesignExchangeListHandling()
@@ -42,17 +42,11 @@ entrypoint Event53:
                     else:
                         run BackToAuthorOpus
         else:
-            run sub_Event15
+            run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
     else:
         EventFlowSystemActor.SetTagFromUIResult(0, 'cDreamingDesignerID')
         event_flags_system['cPlayerTemp:MyDesignExchangeNotFoundOpus'] = true
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2434_01', false)
-        run sub_Event15
+        run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
     return
-
-flow sub_Event118:
-    run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
-
-flow sub_Event15:
-    run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
 

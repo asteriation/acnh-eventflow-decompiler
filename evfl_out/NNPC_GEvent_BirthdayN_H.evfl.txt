@@ -34,7 +34,7 @@ flow Add_Coloseness:
         elif (not EventFlowSystemActor.ItemIsDecoratedAtTalkNpcHouse('cItemSelect')) and (not EventFlowSystemActor.UISelectedItemIsEquiped(0, 'cItemSelect', false)):
             run Reward_Rere
         else:
-            run sub_Event164
+            run Reward_Normal
     return
 
 flow ItemComment:
@@ -250,9 +250,6 @@ flow Root_Out:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:067', true)
             EventFlowSystemActor.ExitFlowchart()
     return
-
-flow sub_Event164:
-    run Reward_Normal
 
 flow sub_grp!Event121:
     if any (2779, 3592, 7146, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):

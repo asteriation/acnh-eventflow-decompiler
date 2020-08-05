@@ -32,11 +32,11 @@ entrypoint Event77:
         event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
         fEvent33 = EventFlowSystemActor.ShopLevel()
-        if fEvent33 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if fEvent33 == InResServiceTent:
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
+        elif fEvent33 in (NooksCrannyInitial, NooksCrannyUpgraded):
             Player.TurnBody(13, 0.0)
-            run sub_Event31
-        elif fEvent33 == InResServiceTent:
-            run sub_Event31
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
     elif fEvent87 == 1:
         fEvent90 = subflow_results[1]
         if fEvent90 == 0:
@@ -115,7 +115,4 @@ flow Root:
         run SNPC_rcm_11_BuyDIYbook::Rcm_Cmn_DisableDIY
         run SNPC_rcm_00_Common::BuyCancelNoAsk
     return
-
-flow sub_Event31:
-    run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
 

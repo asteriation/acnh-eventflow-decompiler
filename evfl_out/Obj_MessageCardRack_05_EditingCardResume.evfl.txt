@@ -81,22 +81,19 @@ flow Root:
         fEvent6 = EventFlowSystemActor.UnfinishMailToType()
         if fEvent6 == 3:
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:602', false)
-            run sub_Event66
+            run EntryPoint_ReEditKeepCard
         elif fEvent6 == 0:
             EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToNpc', 'cDegit', '', 0)
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:601', false)
-            run sub_Event66
+            run EntryPoint_ReEditKeepCard
         elif fEvent6 in (1, 2):
             EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToPlayer', 'cDegit', '', 0)
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:600', false)
-            run sub_Event66
+            run EntryPoint_ReEditKeepCard
     else:
         DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:604', false)
-        run sub_Event66
+        run EntryPoint_ReEditKeepCard
     return
-
-flow sub_Event66:
-    run EntryPoint_ReEditKeepCard
 
 flow sub_grp!Event29:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

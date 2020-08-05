@@ -4,18 +4,18 @@ flow Hgc_Chat1:
         if fEvent26 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:105', true)
         elif fEvent26 == 3:
-            run sub_Event3
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:101', true)
         elif fEvent26 == 2:
-            run sub_Event4
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:100', true)
         elif fEvent26 == 0:
             if MainNpc.NpcIsEquipedHandTool(0):
                 run Hgc_Chat1
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:106', true)
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        run sub_Event4
+        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:100', true)
     else:
-        run sub_Event3
+        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:101', true)
     return
 
 flow Hgc_Chat2:
@@ -58,12 +58,6 @@ flow Root:
     elif fEvent19 == 2:
         run Hgc_Chat3
     return
-
-flow sub_Event3:
-    MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:101', true)
-
-flow sub_Event4:
-    MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:100', true)
 
 flow sub_grp!Event21:
     fEvent21 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)

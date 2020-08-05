@@ -133,12 +133,12 @@ entrypoint Event7:
             event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
             fEvent56 = EventFlowSystemActor.ShopLevel()
-            if fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+            if fEvent56 == InResServiceTent:
+                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+            elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
                 Player.TurnBody(13, 0.0)
                 Player.PlayerWaitTurn()
-                run sub_Event12
-            elif fEvent56 == InResServiceTent:
-                run sub_Event12
+                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     elif any (5604, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
         if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'DIYbook2'):
             run RcmDIYbookBought
@@ -156,12 +156,12 @@ entrypoint Event7:
             event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
             fEvent56 = EventFlowSystemActor.ShopLevel()
-            if fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+            if fEvent56 == InResServiceTent:
+                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+            elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
                 Player.TurnBody(13, 0.0)
                 Player.PlayerWaitTurn()
-                run sub_Event12
-            elif fEvent56 == InResServiceTent:
-                run sub_Event12
+                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     elif EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'DIYbook3'):
         run RcmDIYbookBought
     else:
@@ -178,14 +178,11 @@ entrypoint Event7:
         event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
         fEvent56 = EventFlowSystemActor.ShopLevel()
-        if fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if fEvent56 == InResServiceTent:
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+        elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
             Player.TurnBody(13, 0.0)
             Player.PlayerWaitTurn()
-            run sub_Event12
-        elif fEvent56 == InResServiceTent:
-            run sub_Event12
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     return
-
-flow sub_Event12:
-    run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
 

@@ -218,7 +218,7 @@ flow Root2CampSiteVisitor:
         if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
             if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
                 if (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
-                    run sub_Event69
+                    run Root3IslandEvaluation
                 elif event_flags_system['cPlayer:SetHousingKitForFirstCamper']:
                     run FirstCamperHouseComplete
                 else:
@@ -273,10 +273,10 @@ entrypoint Event92:
                     EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:407_01', false)
-                    run sub_Event98
+                    event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:409', false)
-                run sub_Event98
+                event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:401', false)
@@ -301,10 +301,10 @@ entrypoint Event92:
                     EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:407_01', false)
-                    run sub_Event98
+                    event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:409', false)
-                run sub_Event98
+                event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
     elif event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper']:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:410', false)
         run Rco_Sel_GetHousingKit4Camper
@@ -337,10 +337,10 @@ entrypoint Event92:
                 EventFlowSystemActor.ExitFlowchart()
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:407_01', false)
-                run sub_Event98
+                event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:409', false)
-            run sub_Event98
+            event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
     return
 
 flow SetFirstCamperHouseRequest_Others:
@@ -352,10 +352,4 @@ flow SetFirstCamperHouseRunning:
 
 flow SetFirstCamperHouseRunning_Others:
     return
-
-flow sub_Event69:
-    run Root3IslandEvaluation
-
-flow sub_Event98:
-    event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
 

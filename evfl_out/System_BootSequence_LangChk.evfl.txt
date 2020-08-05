@@ -7,7 +7,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1328', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1342', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 1:
@@ -15,7 +15,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1329', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1343', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 2:
@@ -23,7 +23,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1332', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1346', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 3:
@@ -31,7 +31,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1335', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1349', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 4:
@@ -39,7 +39,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1334', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1348', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 5:
@@ -47,7 +47,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1330', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1344', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 6:
@@ -55,7 +55,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1333', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1347', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 7:
@@ -63,7 +63,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1331', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1345', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 8:
@@ -71,7 +71,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1336', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1350', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 9:
@@ -79,7 +79,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1337', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1351', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 10:
@@ -87,7 +87,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1338', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1352', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 11:
@@ -95,7 +95,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1339', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1353', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 12:
@@ -103,7 +103,7 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1340', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1354', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
         elif fEvent1 == 13:
@@ -111,11 +111,8 @@ flow Root:
             EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1341', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1355', false)
-                run sub_Event58
+                EventFlowSystemActor.WaitFrame(-1)
             else:
                 EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
     return
-
-flow sub_Event58:
-    EventFlowSystemActor.WaitFrame(-1)
 
