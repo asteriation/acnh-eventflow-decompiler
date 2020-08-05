@@ -6,26 +6,26 @@
                     "AccessKey": "str",
                     "AddNum": "int"
                 },
-                "conversion": "event_flags[<AccessKey>] += <AddNum>"
+                "conversion": "event_flags_system[<AccessKey>] += <AddNum>"
             },
             "EventFlagSystemSet": {
                 "params": {
                     "AccessKey": "str",
                     "SetNum": "int"
                 },
-                "conversion": "event_flags[<AccessKey>] = <SetNum>"
+                "conversion": "event_flags_system[<AccessKey>] = <SetNum>"
             },
             "EventFlagSystemOn": {
                 "params": {
                     "AccessKey": "str"
                 },
-                "conversion": "event_flags[<AccessKey>] = 1"
+                "conversion": "event_flags_system[<AccessKey>] = true"
             },
             "EventFlagSystemOff": {
                 "params": {
                     "AccessKey": "str"
                 },
-                "conversion": "event_flags[<AccessKey>] = 0"
+                "conversion": "event_flags_system[<AccessKey>] = false"
             },
             "StructureMoveSaveIndex": {
                 "params": {
@@ -739,7 +739,8 @@
             "NpcQuestFlagOn": {
                 "params": {
                     "QuestFlag": "str"
-                }
+                },
+                "conversion": "quest_flags[<QuestFlag>] = true"
             },
             "SetTreasureFindState": {
                 "params": {}
@@ -1812,63 +1813,90 @@
                 "params": {
                     "AccessKey": "str"
                 },
-                "conversion": "event_flags[<AccessKey>]",
+                "inverted": true,
+                "conversion": "event_flags_system[<AccessKey>]",
                 "return": "bool"
             },
             "EventFlagSystemInt": {
                 "params": {
                     "AccessKey": "str",
-                    "FlagCheckType": "int",
+                    "FlagCheckType": "int6",
                     "Border": "int"
                 },
+                "conversion": {
+                    "key": "FlagCheckType",
+                    "values": [
+                        "event_flags_system[<AccessKey>] == <Border>",
+                        "event_flags_system[<AccessKey>] != <Border>",
+                        "event_flags_system[<AccessKey>] > <Border>",
+                        "event_flags_system[<AccessKey>] >= <Border>",
+                        "event_flags_system[<AccessKey>] < <Border>",
+                        "event_flags_system[<AccessKey>] <= <Border>"
+                    ]
+                },
+                "neg_conversion": {
+                    "key": "FlagCheckType",
+                    "values": [
+                        "event_flags_system[<AccessKey>] != <Border>",
+                        "event_flags_system[<AccessKey>] == <Border>",
+                        "event_flags_system[<AccessKey>] <= <Border>",
+                        "event_flags_system[<AccessKey>] < <Border>",
+                        "event_flags_system[<AccessKey>] >= <Border>",
+                        "event_flags_system[<AccessKey>] > <Border>"
+                    ]
+                },
+                "inverted": true,
                 "return": "bool"
             },
             "IsDoneBcatProcess": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayAccountIsPlayerVillager": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PassDaysSincePreviousGrowUp": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsGamePlayTime": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSharePlay": {
                 "params": {
                     "TargetMode": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "BackDaysSincePreviousGrowUp": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckErrorType": {
                 "params": {
                     "ErrorType": "int"
                 },
-                "return": "bool"
-            },
-            "IsRawDataCheck": {
-                "params": {
-                    "IsRawDataCheck": "bool"
-                },
+                "inverted": true,
                 "return": "bool"
             },
             "GrowUpInterval": {
                 "params": {
                     "Interval": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsDreaming": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerHasCraftRecipe": {
@@ -1906,12 +1934,14 @@
                 },
                 "inverted": true,
                 "conversion": "<.name>(<NpcHouseType>) >= <Num>",
+                "conversion": "<.name>(<NpcHouseType>) < <Num>",
                 "return": "bool"
             },
             "GlobalEventStart": {
                 "params": {
                     "EventLabelString": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EventBranch": {
@@ -1926,6 +1956,7 @@
                     "BorderValue": "float"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNatural >= <BorderValue>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreNatural < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckLife": {
@@ -1933,6 +1964,7 @@
                     "BorderValue": "float"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLife >= <BorderValue>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreLife < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreVeryMessy": {
@@ -1947,6 +1979,7 @@
                     "BorderValue": "int"
                 },
                 "conversion": "<.name> >= <BorderValue>",
+                "neg_conversion": "<.name> < <BorderValue>",
                 "return": "bool"
             },
             "VillageScoreCheckTreeNum": {
@@ -1954,6 +1987,7 @@
                     "BorderNum": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreTreeNum < <BorderNum>",
                 "return": "bool"
             },
             "VillageScoreCheckLifeDeltaBeforeDay": {
@@ -1961,6 +1995,7 @@
                     "DeltaPoint": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay < <DeltaPoint>",
                 "return": "bool"
             },
             "VillageScoreCheckNaturalDeltaBeforeDay": {
@@ -1968,6 +2003,7 @@
                     "DeltaPoint": "int"
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>",
+                "neg_conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay < <DeltaPoint>",
                 "return": "bool"
             },
             "GeneralTalkChoice2": {
@@ -1985,13 +2021,15 @@
                 "params": {
                     "ItemFromType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PercentChoice": {
                 "params": {
                     "Percent": "int"
                 },
-                "return": "int2"
+                "inverted": true,
+                "return": "bool"
             },
             "EventCheck": {
                 "params": {
@@ -2003,6 +2041,7 @@
                 "params": {
                     "Money": "any"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SystemHasBaggageSpace": {
@@ -2015,10 +2054,12 @@
             },
             "FinalFireworksFes": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsMyVillage": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "TermEventNow": {
@@ -2026,18 +2067,21 @@
                     "EventLabelString": "str",
                     "CheckNowTime": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SystemCheckNowStage": {
                 "params": {
                     "CheckStage": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EventNpcSet": {
                 "params": {
                     "EventLabelString": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EnvHourCompare": {
@@ -2051,20 +2095,24 @@
             },
             "NetHasVisitor": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckFirstEnterPlayerCreateParam": {
                 "params": {
                     "Param": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsConnected": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsUnlockedAllItemRemakeCommonPattern": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoiceExcludePrevious2": {
@@ -2080,7 +2128,7 @@
             },
             "MuseumLevel": {
                 "params": {},
-                "return": "int4"
+                "return": "enum[BlathersTent,BlathersMuseumNoArt,BlathersMuseumArt,BlathersNotMovedIn]"
             },
             "CheckEntryVariableInt": {
                 "params": {
@@ -2088,18 +2136,41 @@
                     "CheckType": "int",
                     "CheckValue": "int"
                 },
+                "conversion": {
+                    "key": "CheckType",
+                    "values": [
+                        "entry_variables[<Value>] == <CheckValue>",
+                        "entry_variables[<Value>] != <CheckValue>",
+                        "entry_variables[<Value>] > <CheckValue>",
+                        "entry_variables[<Value>] >= <CheckValue>",
+                        "entry_variables[<Value>] < <CheckValue>",
+                        "entry_variables[<Value>] <= CheckValue>>"
+                    ]
+                },
+                "neg_conversion": {
+                    "key": "CheckType",
+                    "values": [
+                        "entry_variables[<Value>] != <CheckValue>",
+                        "entry_variables[<Value>] == <CheckValue>",
+                        "entry_variables[<Value>] <= <CheckValue>",
+                        "entry_variables[<Value>] < <CheckValue>",
+                        "entry_variables[<Value>] >= <CheckValue>",
+                        "entry_variables[<Value>] > CheckValue>>"
+                    ]
+                },
                 "return": "bool"
             },
             "ShopLevel": {
                 "params": {},
-                "return": "int3"
+                "return": "enum[InResServiceTent,NooksCrannyInitial,NooksCrannyUpgraded]"
             },
             "OfficeLevel": {
                 "params": {},
-                "return": "int3"
+                "return": "enum[ResServiceTent0,ResServiceTent1,ResServiceBuilding]"
             },
             "IsReturnJuneBridePhotoStudio": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SubflowResultChoice2": {
@@ -2125,6 +2196,7 @@
                     "CheckDateType": "str",
                     "TimeType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EnvMonth": {
@@ -2143,6 +2215,7 @@
                 "params": {
                     "IsCheckNpcReservePlayerBirthday": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "FacilityOpenPastDays": {
@@ -2150,10 +2223,12 @@
                     "CountFacilityType": "str",
                     "Days": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsCampSiteOccupied": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "EnvWeather": {
@@ -2213,6 +2288,7 @@
                     "DayType": "str",
                     "CheckNowTime": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EnvCheckBetweenDate": {
@@ -2223,6 +2299,7 @@
                     "Day1": "int",
                     "TimeType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoice7": {
@@ -2246,6 +2323,7 @@
                     "SettlerType": "int",
                     "OutsideCheckType": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerHouseLevel": {
@@ -2256,24 +2334,29 @@
                 "params": {
                     "Count": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerPastDaysFromLastPlay": {
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIResultMenuDecide": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsPlayingAudioMusic": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsLastControlAudioMusic": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "VillagerNpcNum": {
@@ -2281,6 +2364,9 @@
                     "Num": "int",
                     "IncludeNotLiving": "bool"
                 },
+                "inverted": true,
+                "conversion": "<.name>(<IncludeNotLiving>) >= <Num>",
+                "neg_conversion": "<.name>(<IncludeNotLiving>) < <Num>",
                 "return": "bool"
             },
             "RandomChoiceExcludePrevious9": {
@@ -2292,6 +2378,7 @@
             },
             "UIIsExistCoordinateSet": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIClosetItemNum": {
@@ -2304,6 +2391,7 @@
             },
             "SystemRadioPlayMusic": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoiceExcludePrevious7": {
@@ -2332,6 +2420,7 @@
                     "ItemUniqueId": "int",
                     "CapacityCheckType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoiceExcludePrevious8": {
@@ -2349,12 +2438,14 @@
                 "params": {
                     "Count": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SystemCountPlayerNum": {
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CurrentRegionLanguage": {
@@ -2365,6 +2456,7 @@
             },
             "EnvHourOverGrowUp": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerIsEquipItem": {
@@ -2381,12 +2473,14 @@
                     "ItemUniqueID7": "int",
                     "ItemUniqueID8": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "ComparePlayerCreateTime": {
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "BridgeNum": {
@@ -2394,6 +2488,7 @@
                     "BridgeJudgeType": "str",
                     "Num": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SlopeNum": {
@@ -2401,6 +2496,7 @@
                     "SlopeJudgeType": "str",
                     "Num": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoice3": {
@@ -2413,12 +2509,14 @@
                 "params": {
                     "JudgeTarget": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "ItemIsDecoratedAtTalkNpcHouse": {
                 "params": {
                     "JudgeTarget": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UISelectedItemIsEquiped": {
@@ -2427,6 +2525,7 @@
                     "JudgeTarget": "str",
                     "ReferenceLook": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "KindBitParamItemSelectInclude": {
@@ -2434,6 +2533,7 @@
                     "BitParamType": "str",
                     "JudgeTarget": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UICheckSelectedItemPrice": {
@@ -2441,6 +2541,7 @@
                     "JudgeTarget": "str",
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MultiKindItemSelectInclude": {
@@ -2455,6 +2556,8 @@
                     "ItemKindType7": "str",
                     "ItemKindType8": "str"
                 },
+                "inverted": true,
+                "conversion": "any (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>)",
                 "return": "bool"
             },
             "MultiItemSelectInclude": {
@@ -2469,6 +2572,8 @@
                     "ItemUniqueID7": "int",
                     "ItemUniqueID8": "int"
                 },
+                "inverted": true,
+                "conversion": "any (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>)",
                 "return": "bool"
             },
             "HasKindItem": {
@@ -2477,10 +2582,12 @@
                     "ItemKindType": "str",
                     "ItemFilterType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsHoldPlayerBirthdayThisYear": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerBirthdayIsSpecialDay": {
@@ -2511,6 +2618,7 @@
                 "params": {
                     "QuestType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoice6": {
@@ -2521,26 +2629,31 @@
             },
             "SystemIsCanNotLookFace": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SystemCheckPastDaysFromPlayerMade": {
                 "params": {
                     "CheckDays": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsExistBirthdayPlayerInSub": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CanScheduleNowPlayerBirthdayParty": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsInsectChasingPlayer": {
                 "params": {
                     "CheckInsect": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MultiKindItemSelectIncludeChoice5": {
@@ -2566,6 +2679,8 @@
                     "ItemCategoryType7": "str",
                     "ItemCategoryType8": "str"
                 },
+                "inverted": true,
+                "conversion": "any (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>) in EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>)",
                 "return": "bool"
             },
             "MultiKindItemSelectIncludeChoice4": {
@@ -2580,6 +2695,7 @@
             },
             "CheckMoveOutNpcIsMoveKitVillager": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "GeneralTalkChoice4": {
@@ -2588,16 +2704,19 @@
             },
             "SystemIsCorrectFaceCard": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsAbandonedHouseNpc": {
                 "params": {
                     "MoveOutNpcType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerHasCampCraftRecipe": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcGeneralTalkChoice": {
@@ -2608,76 +2727,93 @@
                 "params": {
                     "Rate": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsTheDayAfterTalkPlayerBithday": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsVillageGateOpened": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "InsectFishBoxIsEmpty": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "DonationDone": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIIsAdrSelect": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasFreeInPostOffice": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "ExistUnfinishMail": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ReservedFutureMail": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIManageFutureMessage": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ReservedFutureMailWithPresent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CanReturnToPocketFutureMailPresent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetHasPOPID": {
                 "params": {
                     "IsRawDataCheck": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsApprovedFreeCommunication": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "LimitSendMailToFriend": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasAttachedPresent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetHasAddressData": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UnfinishMailToType": {
@@ -2704,30 +2840,36 @@
                 "params": {
                     "Kind": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsAmiiboNpcMigrated": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsCallableAmiiboNpc": {
                 "params": {
                     "Purpose": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsAlreadyCalledAmiiboNpc": {
                 "params": {
                     "Purpose": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsAcceptableAmiibo": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsAcquaintanceAmiiboNPC": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NfpErrorType": {
@@ -2736,18 +2878,22 @@
             },
             "NfcDisabled": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsAmiiboNpcLiving": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsAmiiboNpcSick": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsAmiiboNpcVisiting": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "AmiiboNameWithTitle": {
@@ -2760,6 +2906,7 @@
             },
             "AmiiboNpcIsIncludedCamperList": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "VillageFlower": {
@@ -2773,12 +2920,14 @@
                     "SettlerType": "int",
                     "InsideMaterialType": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsDuringBusinessHours": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsMadeCraftUnlockRecipe": {
@@ -2786,6 +2935,7 @@
                     "UnlockType": "str",
                     "CheckUnlockMode": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RandomChoice5": {
@@ -2800,14 +2950,17 @@
             },
             "NetHasDesignerID": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasAbleDisplayMyDesign": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsReachedUploadCountMax": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIMyDesignExchangeUploadResult": {
@@ -2816,12 +2969,14 @@
             },
             "IsMatchedOwnDesignerIdAndInputDesignerId": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsFoundMyDesign": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIMyDesignDownloadWindowChoiceResult": {
@@ -2830,20 +2985,24 @@
             },
             "IsSpecifiedMyDesignPosted": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsMyDesignProInMyDesignExchange": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MyDesignExchangeNetworkError": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsValidID": {
                 "params": {
                     "Kind": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "GeneralTalkChoice6": {
@@ -2852,10 +3011,12 @@
             },
             "IsSoloPlayController": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ItemRemove": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIPocketMenuItemSelected": {
@@ -2867,16 +3028,19 @@
             },
             "PlayerGetEasterEggRecipe": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CatchFesFreeQuery2": {
                 "params": {
                     "CatchFesQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IncludeHorizontalController": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasObstacle": {
@@ -2885,6 +3049,7 @@
                     "StructureBuildPosType": "str",
                     "StructureBuildTiming": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CanBuildHere": {
@@ -2893,6 +3058,7 @@
                     "StructureType": "str",
                     "StructureBuildTiming": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIResultHousingKitNpcType": {
@@ -2903,6 +3069,7 @@
                 "params": {
                     "MiniGameType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIResultItemWindowNumCheck": {
@@ -2910,6 +3077,7 @@
                     "JudgeTarget": "str",
                     "Num": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "BeyWeekEndEvent": {
@@ -2925,6 +3093,7 @@
             },
             "UIMiniGameCanStart": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ChyWeekEndEvent": {
@@ -2933,6 +3102,7 @@
             },
             "UISelectedItemCanMoveChest": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PurchaseBoxFreeQuery2": {
@@ -2940,6 +3110,7 @@
                     "PurchaseBoxQueryType": "str",
                     "SellTotal": "any"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "YMD": {
@@ -2967,10 +3138,12 @@
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetAllSessionIsFull": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetLockFailReason": {
@@ -2979,16 +3152,19 @@
             },
             "NetHasFriend": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsFriendOnlySession": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsInviteFriend": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetSessionCreateSetting": {
@@ -3010,10 +3186,12 @@
             },
             "UIIllegalReportResult": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "OverwriteEquipedMyDesign": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "UIShopBuyTailorResult": {
@@ -3022,24 +3200,29 @@
             },
             "UIShopBuyTailorIsWear": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumComplete": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumDonationNumCheck": {
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "ExpensivePurchase": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ItemValuables": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SelectCeremony": {
@@ -3052,16 +3235,19 @@
             },
             "IsFirstNpcLiveInTent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsUnconnectedPlayerVillagerGreaterThan": {
                 "params": {
                     "Count": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsUnconnectedVillageLeader": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveIsExist": {
@@ -3072,6 +3258,7 @@
                 "params": {
                     "Process": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIResultMelodyEdit": {
@@ -3090,10 +3277,13 @@
                     "ItemFromType7": "str",
                     "ItemFromType8": "str"
                 },
+                "inverted": true,
+                "conversion": "any (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>) in EventFlowSystemActor.FromItemSelect(<JudgeTarget>)",
                 "return": "bool"
             },
             "ExistPlayerAcceptingBirthDayMessage": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveLastBackupElapsedDaysGreaterThan": {
@@ -3108,18 +3298,22 @@
             },
             "ControllerIsConnected": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MessageUseBCancel": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsPlayerBirthdayRoom": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetCanRequestLeave": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "JuneBrideScoreCheck": {
@@ -3127,58 +3321,68 @@
                     "ScoreTypeString": "str",
                     "Num": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckCalledNpcNumNormal": {
                 "params": {
                     "NpcNum": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "AlwAlpIsOnBedJuneBride": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameboardIsStillHaveDonateItem": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameboardIsNeedCameraTargetKind": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameboardCheckDonateBoardItemKind": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "int6"
             },
             "MuseumNameBoardIsExistVillageDonatePlayer": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameBoardIsCompleteFossilItem": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameBoardIsDonateFossilItemSomeOne": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumNameBoardIsSingleFossilSet": {
                 "params": {
                     "EntryVariableKeyInt_LoopNum": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetDemoType": {
@@ -3189,30 +3393,36 @@
                 "params": {
                     "CheckValue": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsDemoPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsDifferentAreaVisit": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasSpaceCreateNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CalledNpcNum": {
                 "params": {
                     "CalledNpcNum": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckEntryVariableBool": {
                 "params": {
                     "Value": "str"
                 },
+                "inverted": true,
                 "conversion": "entry_variables[<Value>]",
                 "return": "bool"
             },
@@ -3224,12 +3434,14 @@
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EventFlagAllSharePlayPlayer": {
                 "params": {
                     "AccessKey": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "ControllerConnectResult": {
@@ -3240,6 +3452,7 @@
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "GeneralTalkChoice7": {
@@ -3256,6 +3469,7 @@
             },
             "HasFreeInCommuneMail": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerIsMadeCraftRecipe": {
@@ -3270,16 +3484,19 @@
                     "MadeItemID6": "int",
                     "MadeItemID7": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsEnableToGetEggBasket": {
                 "params": {
                     "NeedNum": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "UIIsRegisteredMyDesignFireworks": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveVersionCheck": {
@@ -3304,6 +3521,7 @@
             },
             "IsRequiredLanguageChangeAnnounce": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PreviousRegionLanguage": {
@@ -3312,14 +3530,17 @@
             },
             "IsFullPlayerVillager": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsRegisteredSameNA": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsAvailableNA": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CeremonyType": {
@@ -3328,20 +3549,23 @@
             },
             "IsBadSightCeremony": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "MuseumCeremonyType": {
                 "params": {},
-                "return": "bool"
+                "return": "int2"
             },
             "CanHearAudioMusicAtFocusPoint": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasCraftRecipeSelectFlow": {
                 "params": {
                     "JudgeTarget": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "HasLifeSupportPoint": {
@@ -3349,10 +3573,12 @@
                     "LifeSupportPointCheckType": "str",
                     "Point": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsSpeakerResetOrRacket": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckJuneBrideStudioTakePicture": {
@@ -3365,10 +3591,12 @@
             },
             "IsSelectedNpcMoveInToday": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSelectedNpcMoveOutDecided": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveBackupLicenseEnabled": {
@@ -3377,10 +3605,12 @@
             },
             "BackupAgentIsMainPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "BackupAgentExist": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveIsEnabledBackupSetting": {
@@ -3403,20 +3633,24 @@
             },
             "HasDreamID": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsMatchedOwnDreamIdAndInputDreamId": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NetIsFoundDreamLand": {
                 "params": {
                     "Type": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "RestoreFlagCheck": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SaveCompareBackupAgentNSAID": {
@@ -3425,6 +3659,7 @@
             },
             "NetHasPOLID": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerHasLoan": {
@@ -3437,18 +3672,22 @@
             },
             "UIIsCatalogBootSmartPhone": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsExistPHouseVisitNpcYet": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "DisplayedNewBirthDayMessage": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSelectedVillageLeader": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             }
         }
@@ -3604,7 +3843,8 @@
             "EventFlagNpcOff": {
                 "params": {
                     "AccessKey": "str"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] = false"
             },
             "NpcChangeSpVisitorTurnState": {
                 "params": {
@@ -3729,7 +3969,8 @@
             "EventFlagNpcOn": {
                 "params": {
                     "AccessKey": "str"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] = true"
             },
             "NpcChangeOwlWaitState": {
                 "params": {
@@ -4029,7 +4270,8 @@
                 "params": {
                     "AccessKey": "str",
                     "SetNum": "int"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] = <SetNum>"
             },
             "SelectFreeBFurnitureFurniture": {
                 "params": {}
@@ -4059,7 +4301,8 @@
                 "params": {
                     "AccessKey": "str",
                     "AddNum": "int"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] += <AddNum>"
             },
             "DecideFreeIType": {
                 "params": {}
@@ -4138,7 +4381,8 @@
             "NpcQuestFlagOn": {
                 "params": {
                     "QuestFlag": "str"
-                }
+                },
+                "conversion": "quest_flags[<QuestFlag>] = true"
             },
             "SetDeliveryClothInfo": {
                 "params": {
@@ -4148,7 +4392,8 @@
             "NpcQuestFlagOff": {
                 "params": {
                     "QuestFlag": "str"
-                }
+                },
+                "conversion": "quest_flags[<QuestFlag>] = false"
             },
             "UpdateNpcUsuallyTops": {
                 "params": {
@@ -4554,7 +4799,7 @@
             "GstDecideReward": {
                 "params": {
                     "NotCollect": "bool",
-                    "ItemGroup": "any",
+                    "ItemGroup": "enum[Furniture,Wallpaper,Flooring,Clothing]",
                     "PriceBottom": "int",
                     "PriceTop": "int"
                 }
@@ -4681,12 +4926,14 @@
                 "params": {
                     "ItemUniqueID": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCheckStateSelectTiming": {
                 "params": {
                     "AISelectorTiming": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcBlackBoard": {
@@ -4694,10 +4941,12 @@
                     "Key": "str",
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsNpcPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "FacilityNpcState": {
@@ -4708,24 +4957,30 @@
                 "params": {
                     "AccessKey": "str"
                 },
+                "inverted": true,
+                "conversion": "event_flag_npc[<AccessKey>]",
                 "return": "bool"
             },
             "IsTargetNpcHouse": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CanMoveUnit": {
                 "params": {
                     "IsExpandArea": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsInvisible": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSurpriseVisitNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsQuestClient": {
@@ -4734,6 +4989,7 @@
                     "CheckPlayer": "bool",
                     "IncludeFinish": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcBirthdayCast": {
@@ -4744,14 +5000,17 @@
                 "params": {
                     "QueryMessageType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsInTheActOfDIY": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ToCatnap": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "DevideCountDownState": {
@@ -4760,10 +5019,12 @@
             },
             "IsVisitOtherNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "InDIYArea": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNowNpcFeel": {
@@ -4772,27 +5033,31 @@
             },
             "ToCatnapAgain": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcHitNum": {
                 "params": {
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsFleaHolder": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsHitByNet": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckCurrentNpcAIState": {
                 "params": {
                     "StateName": "str"
                 },
-                "return": "bool"
+                "return": "int2"
             },
             "NpcMoveOutState": {
                 "params": {},
@@ -4802,6 +5067,7 @@
                 "params": {
                     "AIFlag": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsWarningInsect": {
@@ -4810,10 +5076,12 @@
             },
             "IsApproachAllowed": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCanStartApproach": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "EventFlagNpcInt": {
@@ -4822,10 +5090,33 @@
                     "FlagCheckType": "int",
                     "Border": "int"
                 },
+                "conversion": {
+                    "key": "FlagCheckType",
+                    "values": [
+                        "event_flags_npc[<AccessKey>] == <Border>",
+                        "event_flags_npc[<AccessKey>] != <Border>",
+                        "event_flags_npc[<AccessKey>] > <Border>",
+                        "event_flags_npc[<AccessKey>] >= <Border>",
+                        "event_flags_npc[<AccessKey>] < <Border>",
+                        "event_flags_npc[<AccessKey>] <= <Border>"
+                    ]
+                },
+                "neg_conversion": {
+                    "key": "FlagCheckType",
+                    "values": [
+                        "event_flags_npc[<AccessKey>] != <Border>",
+                        "event_flags_npc[<AccessKey>] == <Border>",
+                        "event_flags_npc[<AccessKey>] <= <Border>",
+                        "event_flags_npc[<AccessKey>] < <Border>",
+                        "event_flags_npc[<AccessKey>] >= <Border>",
+                        "event_flags_npc[<AccessKey>] > <Border>"
+                    ]
+                },
                 "return": "bool"
             },
             "LookToSky": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNpcTool": {
@@ -4836,12 +5127,14 @@
                 "params": {
                     "CountdownBoard": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsEquipedHandTool": {
                 "params": {
                     "ToolType": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CountdownTalkPrevState": {
@@ -4850,6 +5143,7 @@
             },
             "EmoticonCanGet": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcAIIsArriveDestination": {
@@ -4874,68 +5168,82 @@
             },
             "PlayerFind": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsTreasureHuntLimitOver2": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsTreasureFind": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsQuestLimitOver": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SystemIsVisitQuestPlayerEntered": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SystemVisitQuestKind": {
                 "params": {
                     "VisitType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SystemIsInviteQuestNpcEntered": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HghFreeQuery2": {
                 "params": {
                     "HghQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsCreateAngle": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "TkkFreeQuery2": {
                 "params": {
                     "TkkQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsExistMoveNpc": {
                 "params": {
                     "MoveOut": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "EnvPublicAnnouncement": {
                 "params": {
                     "EnvAnnounceQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsSamePhrase": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCanStartQuest": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcHaveQuestType": {
@@ -4953,10 +5261,12 @@
                     "AccessKey": "str",
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "HasNpcWantedItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCanStartApBNickname": {
@@ -4965,16 +5275,19 @@
             },
             "CheckNpcApproachType": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCheckSameWordFromSwkbd": {
                 "params": {
                     "CheckType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsMovingConsultationPlayerNotLiving": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNpcLook": {
@@ -4983,6 +5296,7 @@
             },
             "IsFirewoksApproachNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "EnvWeatherNNpcTalkCustom": {
@@ -4993,40 +5307,48 @@
                 "params": {
                     "Activity": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNpcTalkType": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsNnpcTent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsExistOtherNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasPlayerActivitySinceMoveIn": {
                 "params": {
                     "CheckPlayerType": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CanSelectRumorMessage": {
                 "params": {
                     "RumorType": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcLivingDays": {
                 "params": {
                     "CheckDays": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "HasHandleNameMemory": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HandleNameTalkDayInterval": {
@@ -5034,20 +5356,24 @@
                     "Days": "int",
                     "CheckTarget": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcBirthType": {
                 "params": {
                     "BirthType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcHasAcquaintanceshipRumorPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsFriendRumorPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsRumorActionDaysAgo": {
@@ -5056,14 +5382,17 @@
             },
             "NpcIsRewardDecided": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSameBirthdayNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "TodayIsNpcBirthday": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsEquipItem": {
@@ -5078,6 +5407,7 @@
                     "ItemUniqueID7": "int",
                     "ItemUniqueID8": "int"
                 },
+                "conversion": "any (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>) in MainNpc.NpcEquipItem(<EquipRequireType>)",
                 "return": "bool"
             },
             "NpcCheckCatchQuestType": {
@@ -5092,6 +5422,8 @@
                 "params": {
                     "QuestFlag": "str"
                 },
+                "inverted": true,
+                "conversion": "quest_flags[<QuestFlag>]",
                 "return": "bool"
             },
             "NpcCatchQuestFishNormalType": {
@@ -5104,6 +5436,7 @@
             },
             "IsSelectNpcRequestedItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcQuestReward": {
@@ -5124,6 +5457,7 @@
             },
             "DeliveryItemIsFavor": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckClientNpcLook": {
@@ -5132,18 +5466,22 @@
             },
             "DeliveryOriginalIsReadyMade": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "DeliveryIsSameClothAsNowWear": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsBeforeClothFromPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsDeliveryQuizRightAnswer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRewardType": {
@@ -5160,10 +5498,12 @@
             },
             "HasDeliveryItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasOpenedDeliveryItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcLostQuestType": {
@@ -5172,22 +5512,27 @@
             },
             "HasNpcRequestedItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcSickCuredBeforeYesterday": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcTreasureBurySuccess": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsNpcDIYRecipeCollected": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsEarlyLateReactionSituation": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcInducementType": {
@@ -5196,10 +5541,12 @@
             },
             "NpcIsInducementPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "InducePlayerExist": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsMovingRoom": {
@@ -5212,6 +5559,7 @@
             },
             "NpcPastYMFromLastTalkDate": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcFeelSource": {
@@ -5220,20 +5568,24 @@
             },
             "IsFeelSourcePlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsDisableWorry": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsInduceFailedReasonFixUp": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcInviteCheck": {
                 "params": {
                     "Type": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCanStartReactQuestTalk": {
@@ -5246,24 +5598,29 @@
             },
             "IsDeliveryQuestReceiver": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsWatchItemDonated": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsWatchItemDiveFish": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "OwlIsDonation": {
                 "params": {
                     "DonationCheckItemType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsAbleEquipSelectItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsNpcPlayerRelativeItem": {
@@ -5274,18 +5631,21 @@
                 "params": {
                     "JudgeTarget": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRace": {
                 "params": {
                     "Race": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNpcMoveIn": {
                 "params": {
                     "MoveInCheckType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckCamperNpcMovePoint": {
@@ -5294,10 +5654,12 @@
             },
             "HasCamperQuestItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSameNpcLiving": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckCamperNpcHandheldItem": {
@@ -5306,16 +5668,19 @@
             },
             "CanInduceNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsSettlerQuestInducedNpc": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ContinuousNpcTalkCount": {
                 "params": {
                     "TalkCount": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "CheckNpcCharacterSize": {
@@ -5324,6 +5689,7 @@
             },
             "BeyHaveThreeOrMoreSameFish": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "BeyDailyFishSize": {
@@ -5334,6 +5700,7 @@
                 "params": {
                     "ChmQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "BoaCanSetKabu": {
@@ -5342,10 +5709,12 @@
             },
             "ChyHaveThreeOrMoreSameInsect": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ChyIfSpecialInsect": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ChyCheckSpecialInsect": {
@@ -5354,28 +5723,34 @@
             },
             "FoxIsSoldOut": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "FoxCheckItemBuyPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "FoxCheckItemBuyVillager": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "FoxItemCheck": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "ShopHasBellCount": {
                 "params": {
                     "Rate": "float"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "FoxBuyGalleryForThisIsland": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "FoxBuySelectType": {
@@ -5386,6 +5761,7 @@
                 "params": {
                     "GulQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "HgcFashionCheckResult": {
@@ -5396,14 +5772,17 @@
                 "params": {
                     "HgcQueryType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "HgcPlayerDefaultOutfit": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HgcIsChangeOutfit": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HghMydesignOwner": {
@@ -5424,14 +5803,17 @@
             },
             "OwlDonationFossilIsParts": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "OwlDonationFossilComplete": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "OwlMuseumMultiComplete": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "OwlMuseumCompleteRoomType": {
@@ -5444,6 +5826,7 @@
             },
             "OwlDonationSameItem": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "AppraiseFossilDonationRate": {
@@ -5452,6 +5835,7 @@
             },
             "NpcIsTalkedFromBehind": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "RcmBuySelectType": {
@@ -5462,6 +5846,7 @@
                 "params": {
                     "NpcLabel": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "SeoAppearSide": {
@@ -5470,32 +5855,39 @@
             },
             "SeoCanReturnSwim": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcHasPlayerProfileComment": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorIsAnsweredTargetTopic": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcCheckMoveInBeforePlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorIsSelectedAllDeny": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorCheckAllDenyProgressDays": {
                 "params": {
                     "ProgressDays": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorIsAskedOwn": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorIsEqualNpcChoice": {
@@ -5506,32 +5898,39 @@
             },
             "NpcRumorIsEqualPreviousChoice": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcRumorIsExistAnswerTopic": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PynCheckCraftItemNum": {
                 "params": {
                     "SetNum": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PynHaveExchangeItemEnough": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PynIsEnableToExchangeEgg": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "NpcGreetTypeNegative": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SloNoneWeatherBush": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PinataResult": {
@@ -5617,7 +6016,8 @@
             "EventFlagNpcOn": {
                 "params": {
                     "AccessKey": "str"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] = true"
             },
             "NpcPinataCheer": {
                 "params": {}
@@ -5756,7 +6156,8 @@
             "EventFlagNpcOn": {
                 "params": {
                     "AccessKey": "str"
-                }
+                },
+                "conversion": "event_flags_npc[<AccessKey>] = true"
             },
             "NpcPinataCheer": {
                 "params": {}
@@ -6047,20 +6448,24 @@
         "queries": {
             "PlayerIsUseCoordinate": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerOutfitMarinesuit": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerBedWaitCanopy": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerCheckWaitType": {
                 "params": {
                     "PlayerWaitType": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerOutfitFieldMakeToolKit": {
@@ -6071,6 +6476,7 @@
                 "params": {
                     "PlayerEventFlowAI": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerHasExchaneableItem": {
@@ -6080,26 +6486,31 @@
                     "CheckKindFishAndDiveFish": "bool",
                     "CheckKindInsect": "bool"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerGetDemoCheckItem": {
                 "params": {
                     "CheckItem": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerGetDemoCollectStatus": {
                 "params": {
                     "PlayerGetDemoCollectStatus": "str"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "PlayerIsForbidMainChange": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "HasNoAcquaintance": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             }
         }
@@ -6202,6 +6613,8 @@
                 "params": {
                     "AccessKey": "str"
                 },
+                "inverted": true,
+                "conversion": "event_flag_npc[<AccessKey>]",
                 "return": "bool"
             },
             "NpcCheckPastDays": {
@@ -6209,10 +6622,12 @@
                     "AccessKey": "str",
                     "Border": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "NpcIsFleaHolder": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             }
         }
@@ -6250,6 +6665,7 @@
             },
             "HouseIsTent": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "CheckPlayerHouseLockReason": {
@@ -6384,6 +6800,7 @@
             },
             "SnowManIsSnowMeltSeason": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SnowManAge": {
@@ -6392,10 +6809,12 @@
             },
             "IsMadeSnowManPlayer": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "SnowManIsHeadSmallerThanBody": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             }
         }
@@ -6483,14 +6902,17 @@
                 "params": {
                     "ItemUniqueId": "int"
                 },
+                "inverted": true,
                 "return": "bool"
             },
             "IsMyPost": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             },
             "IsOnStarterFtrSwitch": {
                 "params": {},
+                "inverted": true,
                 "return": "bool"
             }
         }

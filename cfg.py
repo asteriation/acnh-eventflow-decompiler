@@ -82,13 +82,23 @@ class Action:
         }
 
 class Query:
-    def __init__(self, name: str, params: List[Param], rv: str = 'any', inverted: bool = False, conversion: Optional[str] = None, neg_conversion: Optional[str] = None) -> None:
+    def __init__(self, name: str, params: List[Param], rv: str = 'any', inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
         self.name = name
         self.params = params
         self.rv = rv
         self.inverted = inverted
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
-        self.neg_conversion = neg_conversion.replace('<.conversion>', self.conversion) if neg_conversion else f'not {self.conversion}'
+        self.neg_conversion = neg_conversion or ''
+        assert isinstance(self.conversion, str) == isinstance(self.neg_conversion, str)
+        if not self.neg_conversion:
+            self.neg_conversion = f'not {self.conversion}'
+        elif isinstance(self.neg_conversion, str) and isinstance(self.conversion, str):
+            self.neg_conversion = self.neg_conversion.replace(f'<.conversion>', self.conversion)
+        elif not isinstance(self.neg_conversion, str) and not isinstance(self.conversion, str):
+            self.neg_conversion['values'] = [
+                    x.replace(f'<.conversion>', y)
+                    for x, y in zip(self.neg_conversion['values'], self.conversion['values'])
+            ]
         self.default = conversion is None
         self.auto = False
         self.num_values = int(rv[3:]) if rv.startswith('int') and rv != 'int' else \
@@ -98,9 +108,15 @@ class Query:
 
     def format(self, params: Dict[str, Any], negated: bool) -> str:
         if negated:
-            conversion = self.neg_conversion.replace('<.name>', self.name)
+            conversion_used = self.neg_conversion
         else:
-            conversion = self.conversion.replace('<.name>', self.name)
+            conversion_used = self.conversion
+        if not isinstance(conversion_used, str):
+            pivot = params[conversion_used['key']]
+            conversion = conversion_used['values'][pivot]
+        else:
+            conversion = conversion_used
+        conversion = conversion.replace('<.name>', self.name)
         for p in self.params:
             assert p.name in params
             try:
@@ -113,6 +129,7 @@ class Query:
 
     def __str__(self) -> str:
         if self.default:
+            assert isinstance(self.conversion, str)
             auto_s = ' (auto)' if self.auto else ''
             conv = self.conversion.replace('<.name>', self.name)
             for p in self.params:
@@ -130,6 +147,7 @@ class Query:
             e['inverted'] = True
         if not self.default:
             e['conversion'] = self.conversion
+            e['neg_conversion'] = self.neg_conversion
         e['return'] = self.rv
         name = self.name
         if '.' in name:
@@ -276,7 +294,7 @@ class AndPredicate(Predicate):
             isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated)
             for p in self.inners
         )
-        if num_not_predicates * 2 > len(self.inners):
+        if num_not_predicates * 2 >= len(self.inners):
             return OrPredicate([~p for p in self.inners])
         return Predicate.__invert__(self)
 
@@ -298,7 +316,7 @@ class OrPredicate(Predicate):
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
         num_not_predicates = sum(1 for p in self.inners if isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated))
-        if num_not_predicates * 2 > len(self.inners):
+        if num_not_predicates * 2 >= len(self.inners):
             return AndPredicate([~p for p in self.inners])
         return Predicate.__invert__(self)
 
@@ -644,17 +662,25 @@ class GroupNode(Node):
         Node.__init__(self, f'grp!{root.name}')
         self.root = root
         self.goto_node = GotoNode(f'grp-end!{root.name}')
+        self.nodes = self.__enumerate_group()
 
-    def simplify(self) -> None:
+    def __enumerate_group(self) -> List[Node]:
         visited = {self.root}
         s = [self.root]
         while s:
             n = s.pop()
-            n.simplify()
             for c in n.out_edges:
                 if c not in visited:
                     visited.add(c)
                     s.append(c)
+        return list(visited)
+
+    def recalculate_group(self) -> None:
+        self.nodes = self.__enumerate_group()
+
+    def simplify(self) -> None:
+        for node in self.nodes:
+            node.simplify()
 
     def generate_code(self, indent_level: int = 0) -> str:
         return self.root.generate_code(indent_level) + \
@@ -802,7 +828,9 @@ class CFG:
 
     def __detach_root(self, root: RootNode) -> RootNode:
         entry_point = root.out_edges[0]
+        return self.__detach_node_as_sub(entry_point)
 
+    def __detach_node_as_sub(self, entry_point: Node) -> RootNode:
         new_root = RootNode(f'sub_{entry_point.name}')
         new_root.add_out_edge(entry_point)
 
@@ -898,20 +926,19 @@ class CFG:
                     changed = True
         return dom
 
-    def __find_postorder_helper(self, root: Node, pred: Callable[[Node], bool], visited: Dict[str, bool]) -> List[Node]:
+    def __find_postorder_helper(self, root: Node, pred: Callable[[Node], bool], visited: Set[str]) -> List[Node]:
         po: List[Node] = []
         if not pred(root):
             return po
         for node in root.out_edges:
-            if not visited[node.name]:
-                visited[node.name] = True
+            if node.name not in visited:
+                visited.add(node.name)
                 po.extend(self.__find_postorder_helper(node, pred, visited))
         po.append(root)
         return po
 
     def __find_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
-        visited = {name: False for name in self.nodes.keys()}
-        return self.__find_postorder_helper(root, pred, visited)
+        return self.__find_postorder_helper(root, pred, set())
 
     def __find_reverse_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
         return self.__find_postorder(root, pred)[::-1]
@@ -1036,14 +1063,12 @@ class CFG:
                     value_branch = node.default
                     else_branch = node.rules[0].node
                 else:
-                    self.__try_collapse_block(root, node)
                     continue
 
                 # try not to join with ifelse block if it would add a noop branch
                 if self.__path_exists(else_branch, value_branch):
                     node.rules[0] = IfElseNode.Rule(~predicate, else_branch)
                     node.default = value_branch
-                    self.__try_collapse_block(root, node)
                     continue
 
                 ifelse_node = IfElseNode(node.name, [
@@ -1052,7 +1077,6 @@ class CFG:
                 ], else_branch.default)
 
                 self.__merge_coupled_nodes(node, else_branch, ifelse_node)
-                self.__try_collapse_block(root, ifelse_node)
 
     def __merge_coupled_nodes(self, parent_node: Node, child_node: Node, new_node: Node) -> None:
         assert child_node.in_edges == [parent_node]
@@ -1078,7 +1102,9 @@ class CFG:
     def __collapse_cases(self) -> None:
         for root in self.roots:
             for node in self.__find_postorder(root):
-                if not isinstance(node, SwitchNode):
+                # if not isinstance(node, SwitchNode):
+                    # continue
+                if len(set(node.out_edges)) < 2:
                     continue
 
                 node = self.__try_collapse_block(root, node)
@@ -1091,12 +1117,12 @@ class CFG:
         for k in self.__find_postorder(node)[:-1]:
             if k not in dom:
                 continue
-            if dom[k] is not node:
-                continue
             if isinstance(k, TerminalNode):
                 inner_dom = self.__find_dominator_tree(node)
                 if inner_dom[k] is not node:
                     continue
+            elif dom[k] is not node:
+                continue
 
             if not all(self.__path_exists(child, k) for child in node.out_edges):
                 continue
@@ -1110,6 +1136,8 @@ class CFG:
         dom = self.__find_dominator_tree(entry)
         end = self.__find_block_end(root, dom)
 
+        print(entry.name, root.name, end)
+
         if end is None: # no end found, do not collapse
             return root
 
@@ -1120,7 +1148,7 @@ class CFG:
         if end in root.out_edges:
             self.__detach_nodes_with_noop(root, end)
 
-        # print('Collapsing', root.name, 'to', end.name)
+        print('Collapsing', root.name, 'to', end.name)
 
         sw = GroupNode(root)
         for in_node in root.in_edges:
@@ -1164,6 +1192,22 @@ class CFG:
         self.nodes[sw.name] = sw
 
         return sw
+
+    def __extract_reused_blocks(self, nodes: List[Node] = None) -> None:
+        if nodes is None:
+            nodes = list(self.nodes.values())
+
+        # print('call', nodes)
+        # if a node has two different node parents and is the root of a DAG, extract to subflow
+        for node in nodes:
+            if len(set(node.in_edges)) >= 2 and self.__is_cut([node]):
+                print('detaching', node.name, [n.name for n in node.in_edges])
+                self.__detach_node_as_sub(node)
+            elif isinstance(node, GroupNode):
+                l = node.nodes[:]
+                l.remove(node.root)
+                self.__extract_reused_blocks(l)
+                node.recalculate_group()
 
     def __simplify_all(self) -> None:
         for node in self.nodes.values():
@@ -1262,6 +1306,7 @@ class CFG:
                 forks = [f.v.name for f in event.forks] if event.forks else []
 
                 join_node = JoinNode(join, None) if join not in cfg.nodes else cfg.nodes[join]
+                assert isinstance(join_node, JoinNode)
                 cfg.nodes[join] = join_node
                 node = ForkNode(name, join_node, forks)
                 node.add_out_edge(join_node)
@@ -1323,6 +1368,7 @@ class CFG:
             cfg.__collapse_andor()
             cfg.__collapse_if()
             cfg.__collapse_cases()
+            cfg.__extract_reused_blocks()
 
             cfg.__simplify_all()
 
