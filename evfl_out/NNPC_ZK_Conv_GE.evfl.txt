@@ -1,3 +1,15 @@
+flow B_opt0:
+    run Event166
+    return
+
+flow B_opt1:
+    run Event176
+    return
+
+flow B_opt2:
+    run Event191
+    return
+
 flow Root:
     if (event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not event_flag_npc['cNpcSave:PlayerNamePhrase']) and (not MainNpc.IsSamePhrase()):
         MainNpc.NpcCopyPhrase()
@@ -57,18 +69,6 @@ flow Root:
                 SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:206', false)
     else:
         run sub_grp!Event0
-    return
-
-flow B_opt1:
-    run Event176
-    return
-
-flow B_opt2:
-    run Event191
-    return
-
-flow B_opt0:
-    run Event166
     return
 
 flow sub_grp!Event0:
@@ -232,7 +232,47 @@ flow sub_grp!Event0:
                     SubNpc.TurnNeck(0)
             SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:103', false)
             fEvent164 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent164 == 2:
+            if fEvent164 == 0:
+entrypoint Event166:
+                fork:
+                    branch0:
+                    branch1:
+                        MainNpc.TurnNeck(10)
+                        MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:104', false)
+                    branch2:
+                        Player.TurnNeck(0)
+                    branch3:
+                        SubNpc.TurnNeck(10)
+                fork:
+                    branch0:
+                    branch1:
+                        MainNpc.TurnNeck(1)
+                    branch2:
+                        Player.TurnNeck(1)
+                    branch3:
+                        SubNpc.TurnNeck(0)
+                        SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:105', false)
+            elif fEvent164 == 1:
+entrypoint Event176:
+                fork:
+                    branch0:
+                    branch1:
+                        MainNpc.TurnNeck(10)
+                        MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:106', false)
+                    branch2:
+                        Player.TurnNeck(0)
+                    branch3:
+                        SubNpc.TurnNeck(10)
+                fork:
+                    branch0:
+                    branch1:
+                        MainNpc.TurnNeck(1)
+                    branch2:
+                        Player.TurnNeck(1)
+                    branch3:
+                        SubNpc.TurnNeck(0)
+                        SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:107', false)
+            elif fEvent164 == 2:
 entrypoint Event191:
                 fork:
                     branch0:
@@ -261,46 +301,6 @@ entrypoint Event191:
                     branch3:
                         SubNpc.TurnNeck(0)
                         SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:110', false)
-            elif fEvent164 == 1:
-entrypoint Event176:
-                fork:
-                    branch0:
-                    branch1:
-                        MainNpc.TurnNeck(10)
-                        MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:106', false)
-                    branch2:
-                        Player.TurnNeck(0)
-                    branch3:
-                        SubNpc.TurnNeck(10)
-                fork:
-                    branch0:
-                    branch1:
-                        MainNpc.TurnNeck(1)
-                    branch2:
-                        Player.TurnNeck(1)
-                    branch3:
-                        SubNpc.TurnNeck(0)
-                        SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:107', false)
-            elif fEvent164 == 0:
-entrypoint Event166:
-                fork:
-                    branch0:
-                    branch1:
-                        MainNpc.TurnNeck(10)
-                        MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:104', false)
-                    branch2:
-                        Player.TurnNeck(0)
-                    branch3:
-                        SubNpc.TurnNeck(10)
-                fork:
-                    branch0:
-                    branch1:
-                        MainNpc.TurnNeck(1)
-                    branch2:
-                        Player.TurnNeck(1)
-                    branch3:
-                        SubNpc.TurnNeck(0)
-                        SubNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Conv/ZK_Conv_GE:105', false)
         elif fEvent135 == 1:
             fork:
                 branch0:

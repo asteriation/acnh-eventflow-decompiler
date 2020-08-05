@@ -1,8 +1,3 @@
-flow StartTimer:
-    EventFlowSystemActor.BGMPropertyControl(5)
-    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cFishFes')
-    return
-
 flow BgmStop:
     EventFlowSystemActor.BGMPropertyControl(2)
     EventFlowSystemActor.DisappearChatBaloon('cBaloonType_TimerEvent')
@@ -16,5 +11,10 @@ flow FinishTimer:
     EventFlowSystemActor.BGMPropertyControl(3)
     if EventFlowSystemActor.IsSharePlay(0):
         EventFlowSystemActor.SetSharePlayChangeCondition(false)
+    return
+
+flow StartTimer:
+    EventFlowSystemActor.BGMPropertyControl(5)
+    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cFishFes')
     return
 

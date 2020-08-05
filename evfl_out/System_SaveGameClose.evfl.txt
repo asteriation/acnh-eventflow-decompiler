@@ -1,11 +1,11 @@
-flow Root:
-    run SaveGameCloseCore
-    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    return
-
 flow AfterSharePlay:
     run SaveGameCloseCore
     EventFlowSystemActor.ReserveSystemFlowDemo('TitleAfterSharePlay', 'System_GrowUp')
+    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    return
+
+flow Root:
+    run SaveGameCloseCore
     EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
 

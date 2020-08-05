@@ -1,10 +1,29 @@
-flow Root:
-    run Chk_HowManyType
-    fEvent48 = subflow_results[10]
-    if fEvent48 == 2:
-        run Chk_Materials2
-    elif fEvent48 == 3:
-        run Chk_Materials3
+flow Chk_HowManyType:
+    if EventFlowSystemActor.HasTargetItem(2768, 30):
+        entry_variables['BelongingCount'] += 1
+        run SetWood
+    if EventFlowSystemActor.HasTargetItem(2769, 30):
+        entry_variables['BelongingCount'] += 1
+        subflow_results[11] = 1
+        run SetHardWood
+    if EventFlowSystemActor.HasTargetItem(2767, 30):
+        entry_variables['BelongingCount'] += 1
+        subflow_results[11] = 2
+        run SetSoftWood
+    if EventFlowSystemActor.HasTargetItem(2511, 30):
+        entry_variables['BelongingCount'] += 1
+        subflow_results[11] = 3
+        run SetIron
+    if entry_variables['BelongingCount'] != 4:
+        subflow_results[10] = 4
+    elif entry_variables['BelongingCount'] != 3:
+        subflow_results[10] = 3
+    elif entry_variables['BelongingCount'] != 2:
+        subflow_results[10] = 2
+    elif entry_variables['BelongingCount'] == 1:
+        subflow_results[10] = 0
+    else:
+        subflow_results[10] = 1
     return
 
 flow Chk_Materials2:
@@ -34,39 +53,13 @@ flow Chk_Materials3:
         subflow_results[13] = 2
     return
 
-flow Chk_HowManyType:
-    if EventFlowSystemActor.HasTargetItem(2768, 30):
-        entry_variables['BelongingCount'] += 1
-        run SetWood
-    if EventFlowSystemActor.HasTargetItem(2769, 30):
-        entry_variables['BelongingCount'] += 1
-        subflow_results[11] = 1
-        run SetHardWood
-    if EventFlowSystemActor.HasTargetItem(2767, 30):
-        entry_variables['BelongingCount'] += 1
-        subflow_results[11] = 2
-        run SetSoftWood
-    if EventFlowSystemActor.HasTargetItem(2511, 30):
-        entry_variables['BelongingCount'] += 1
-        subflow_results[11] = 3
-        run SetIron
-    if entry_variables['BelongingCount'] != 4:
-        subflow_results[10] = 4
-    elif entry_variables['BelongingCount'] != 3:
-        subflow_results[10] = 3
-    elif entry_variables['BelongingCount'] != 2:
-        subflow_results[10] = 2
-    elif entry_variables['BelongingCount'] == 1:
-        subflow_results[10] = 0
-    else:
-        subflow_results[10] = 1
-    return
-
-flow SetWood:
-    if not event_flags_system['cLand:RcmShopMaterial_Wood']:
-        MainNpc.SetDeliveryItemAtRandom(2768, false, 'cVillageRemakePattern', 0)
-    subflow_results[7] = 0
-    subflow_results[11] = 0
+flow Root:
+    run Chk_HowManyType
+    fEvent48 = subflow_results[10]
+    if fEvent48 == 3:
+        run Chk_Materials3
+    elif fEvent48 == 2:
+        run Chk_Materials2
     return
 
 flow SetHardWood:
@@ -76,6 +69,13 @@ flow SetHardWood:
     subflow_results[11] = 1
     return
 
+flow SetIron:
+    if not event_flags_system['cLand:RcmShopMaterial_Iron']:
+        MainNpc.SetDeliveryItemAtRandom(2511, false, 'cVillageRemakePattern', 0)
+    subflow_results[7] = 3
+    subflow_results[11] = 3
+    return
+
 flow SetSoftWood:
     if not event_flags_system['cLand:RcmShopMaterial_SoftWood']:
         MainNpc.SetDeliveryItemAtRandom(2767, false, 'cVillageRemakePattern', 0)
@@ -83,10 +83,10 @@ flow SetSoftWood:
     subflow_results[11] = 2
     return
 
-flow SetIron:
-    if not event_flags_system['cLand:RcmShopMaterial_Iron']:
-        MainNpc.SetDeliveryItemAtRandom(2511, false, 'cVillageRemakePattern', 0)
-    subflow_results[7] = 3
-    subflow_results[11] = 3
+flow SetWood:
+    if not event_flags_system['cLand:RcmShopMaterial_Wood']:
+        MainNpc.SetDeliveryItemAtRandom(2768, false, 'cVillageRemakePattern', 0)
+    subflow_results[7] = 0
+    subflow_results[11] = 0
     return
 

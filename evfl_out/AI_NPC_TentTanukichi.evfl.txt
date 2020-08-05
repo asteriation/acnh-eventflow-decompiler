@@ -1,5 +1,10 @@
-flow Root:
-    MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
+flow CheckRob:
+    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
+    elif event_flags_system['cPlayer:RcoFinishMakingAxe']:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
+    else:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
     return
 
 flow Init:
@@ -11,12 +16,7 @@ flow Init:
     MainNpc.NpcAISetting(8, true)
     return
 
-flow CheckRob:
-    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
-    elif event_flags_system['cPlayer:RcoFinishMakingAxe']:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
-    else:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
+flow Root:
+    MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
     return
 

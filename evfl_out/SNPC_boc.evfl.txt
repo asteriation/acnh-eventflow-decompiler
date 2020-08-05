@@ -1,3 +1,33 @@
+flow Boc_Buy_After_Process:
+    if not EventFlowSystemActor.IsMyVillage():
+        event_flags_system['cPlayerVisit:DC_KaburibaBuyFlag'] = true
+    elif not event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag']:
+        event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag'] = true
+        event_flags_system['cPlayer:BocAllowAddBuyCount'] = true
+        if (event_flags_system['cPlayer:BocBuyCount'] >= 2) and (event_flags_system['cPlayer:BocBuyNumCount'] >= 100):
+            EventFlowSystemActor.SelectRewardItemDirect(2295, 3, 'cVillageRemakePattern', 0)
+            EventFlowSystemActor.SystemMailSend('cBoc', 'MAIL_SNpc_boc', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        event_flags_system['cLifeSupportAchievement:BuyKabu'] += 1
+        event_flags_system['cLand:FirstKabuBuy'] = true
+    return
+
+flow Boc_Common_DemoBuy:
+    MainNpc.BoaBuyDone()
+    MainNpc.SetDeliveryItemAtRandom(2632, false, 'cVillageRemakePattern', 0)
+    return
+
+flow Boc_DC_1st:
+    run Event44
+    return
+
+flow Boc_DC_Buy:
+    run Event48
+    return
+
+flow Boc_DC_Buy_Again:
+    run Event37
+    return
+
 flow Root:
     MainNpc.BoaFirstTagSet(0)
     EventFlowSystemActor.UIMoneyAppear()
@@ -88,35 +118,5 @@ entrypoint Event21:
                     run boc_Buy
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:017', true)
-    return
-
-flow Boc_Common_DemoBuy:
-    MainNpc.BoaBuyDone()
-    MainNpc.SetDeliveryItemAtRandom(2632, false, 'cVillageRemakePattern', 0)
-    return
-
-flow Boc_DC_1st:
-    run Event44
-    return
-
-flow Boc_DC_Buy:
-    run Event48
-    return
-
-flow Boc_DC_Buy_Again:
-    run Event37
-    return
-
-flow Boc_Buy_After_Process:
-    if not EventFlowSystemActor.IsMyVillage():
-        event_flags_system['cPlayerVisit:DC_KaburibaBuyFlag'] = true
-    elif not event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag']:
-        event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag'] = true
-        event_flags_system['cPlayer:BocAllowAddBuyCount'] = true
-        if (event_flags_system['cPlayer:BocBuyCount'] >= 2) and (event_flags_system['cPlayer:BocBuyNumCount'] >= 100):
-            EventFlowSystemActor.SelectRewardItemDirect(2295, 3, 'cVillageRemakePattern', 0)
-            EventFlowSystemActor.SystemMailSend('cBoc', 'MAIL_SNpc_boc', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
-        event_flags_system['cLifeSupportAchievement:BuyKabu'] += 1
-        event_flags_system['cLand:FirstKabuBuy'] = true
     return
 

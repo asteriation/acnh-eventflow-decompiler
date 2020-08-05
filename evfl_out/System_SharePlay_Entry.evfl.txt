@@ -1,3 +1,21 @@
+flow Choice:
+    EventFlowSystemActor.UIMsgCardAdrCreate('cSharePlay')
+    if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:019', false)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:003', false)
+    EventFlowSystemActor.UIMsgCardAdrHandling('cSharePlay')
+    if EventFlowSystemActor.UIResultMenuDecide():
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.SystemRequestChangeStage('cGrowUpPlayerSwitch', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    else:
+        EventFlowSystemActor.CancelSharePlayEntry()
+    return
+
+flow ExitSharePlay:
+    run Event59
+    return
+
 flow Root:
     if not event_flags_system['cPlayer:Mobile1stBoot_SharePlay']:
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5041', false)
@@ -17,12 +35,10 @@ entrypoint Event59:
         if (not EventFlowSystemActor.CountSharePlayerNum(3)) and (not EventFlowSystemActor.CountWaitingPlayerNum(1)):
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:006_01', true)
             fEvent61 = EventFlowSystemActor.GeneralTalkChoice6()
-            if fEvent61 == 0:
-                run SharePlay_ChangeLeader
-            elif fEvent61 == 1:
-                run System_SharePlay_Exit::Root
-            elif fEvent61 == 2:
+            if fEvent61 == 2:
                 run SharePlay_SaveAndGameEnd
+            elif fEvent61 == 0:
+                run SharePlay_ChangeLeader
             elif fEvent61 == 3:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 EventFlowSystemActor.UIMenuProfileOthersHandling()
@@ -31,53 +47,44 @@ entrypoint Event59:
                 run SharePlay_HowToPlay
             elif fEvent61 == 5:
                 EventFlowSystemActor.CancelSharePlayEntry()
+            elif fEvent61 == 1:
+                run System_SharePlay_Exit::Root
         else:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:006', true)
             fEvent36 = EventFlowSystemActor.GeneralTalkChoice7()
-            if fEvent36 == 0:
+            if fEvent36 == 3:
+                run SharePlay_SaveAndGameEnd
+            elif fEvent36 == 0:
                 run SharePlay_ChangeLeader
             elif fEvent36 == 1:
                 run System_SharePlay_Exit::Root
+            elif fEvent36 == 6:
+                EventFlowSystemActor.CancelSharePlayEntry()
+            elif fEvent36 == 4:
+                EventFlowSystemActor.UIShopMoneyDisappear()
+                EventFlowSystemActor.UIMenuProfileOthersHandling()
             elif fEvent36 == 2:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 EventFlowSystemActor.PrepareSharePlayEntry()
                 run Choice
-            elif fEvent36 == 3:
-                run SharePlay_SaveAndGameEnd
-            elif fEvent36 == 4:
-                EventFlowSystemActor.UIShopMoneyDisappear()
-                EventFlowSystemActor.UIMenuProfileOthersHandling()
             elif fEvent36 == 5:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 run SharePlay_HowToPlay
-            elif fEvent36 == 6:
-                EventFlowSystemActor.CancelSharePlayEntry()
     else:
         run SharePlay_AppOpen_Solo
     return
 
-flow Choice:
-    EventFlowSystemActor.UIMsgCardAdrCreate('cSharePlay')
-    if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:019', false)
+flow SharePlay_AppOpen_Solo:
+    EventFlowSystemActor.PrepareSharePlayEntry()
+    if EventFlowSystemActor.CountWaitingPlayerNum(1):
+        Player.SmartPhone(2)
+        run Choice
+    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:020', false)
+        run sub_Event39
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:003', false)
-    EventFlowSystemActor.UIMsgCardAdrHandling('cSharePlay')
-    if EventFlowSystemActor.UIResultMenuDecide():
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.SystemRequestChangeStage('cGrowUpPlayerSwitch', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    else:
-        EventFlowSystemActor.CancelSharePlayEntry()
-    return
-
-flow ExitSharePlay:
-    run Event59
-    return
-
-flow SharePlay_SaveAndGameEnd:
-    EventFlowSystemActor.QuitSharePlay()
-    EventFlowSystemActor.ReserveSystemFlowDemo('AfterSharePlay', 'System_SaveGameClose')
-    EventFlowSystemActor.SystemRequestChangeStage('cSaveGameClose', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:002', true)
+        run sub_Event39
     return
 
 flow SharePlay_ChangeLeader:
@@ -100,22 +107,15 @@ flow SharePlay_HowToPlay:
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5201_03', false)
     return
 
-flow SharePlay_AppOpen_Solo:
-    EventFlowSystemActor.PrepareSharePlayEntry()
-    if EventFlowSystemActor.CountWaitingPlayerNum(1):
-        Player.SmartPhone(2)
-        run Choice
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:020', false)
-        run sub_Event39
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:002', true)
-        run sub_Event39
+flow SharePlay_SaveAndGameEnd:
+    EventFlowSystemActor.QuitSharePlay()
+    EventFlowSystemActor.ReserveSystemFlowDemo('AfterSharePlay', 'System_SaveGameClose')
+    EventFlowSystemActor.SystemRequestChangeStage('cSaveGameClose', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
-
-flow sub_Event71:
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:018', false)
 
 flow sub_Event39:
     EventFlowSystemActor.CancelSharePlayEntry()
+
+flow sub_Event71:
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:018', false)
 

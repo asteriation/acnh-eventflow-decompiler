@@ -1,3 +1,47 @@
+flow GreetV_Again1:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Again1', '', '', '')
+    return
+
+flow GreetV_Again2:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Again2', '', '', '')
+    return
+
+flow GreetV_Field1:
+    fEvent9 = MainNpc.EnvWeatherNNpcTalkCustom()
+    if fEvent9 == 2:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 4:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 1:
+        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 3:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 5:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 6:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    elif fEvent9 == 0:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
+    return
+
+flow GreetV_XX2:
+    fEvent17 = MainNpc.EnvWeatherNNpcTalkCustom()
+    if fEvent17 == 0:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
+    elif fEvent17 == 2:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
+    elif fEvent17 == 4:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
+    elif fEvent17 == 1:
+        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
+    elif fEvent17 == 3:
+        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
+    elif fEvent17 == 5:
+        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
+    elif fEvent17 == 6:
+        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
+    return
+
 flow Root:
     if event_flags_npc['cNpcMemory:ContinuousTalkCount'] < 1:
         if event_flags_npc['cNpcMemory:ContinuousTalkCount'] >= 4:
@@ -14,49 +58,5 @@ flow Root:
         run GreetV_XX2
     else:
         run GreetV_Field1
-    return
-
-flow GreetV_Again2:
-    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Again2', '', '', '')
-    return
-
-flow GreetV_Again1:
-    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Again1', '', '', '')
-    return
-
-flow GreetV_Field1:
-    fEvent9 = MainNpc.EnvWeatherNNpcTalkCustom()
-    if fEvent9 == 0:
-        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 1:
-        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 2:
-        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 3:
-        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 4:
-        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 5:
-        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 6:
-        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    return
-
-flow GreetV_XX2:
-    fEvent17 = MainNpc.EnvWeatherNNpcTalkCustom()
-    if fEvent17 == 0:
-        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
-    elif fEvent17 == 1:
-        MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
-    elif fEvent17 == 2:
-        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
-    elif fEvent17 == 3:
-        MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
-    elif fEvent17 == 4:
-        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
-    elif fEvent17 == 5:
-        MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
-    elif fEvent17 == 6:
-        MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
     return
 

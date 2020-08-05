@@ -5,22 +5,22 @@ entrypoint Event27:
         if EventFlowSystemActor.MuseumNameboardIsNeedCameraTargetKind('LoopNum'):
             if entry_variables['LoopNum'] == 0:
                 fEvent25 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
-                if fEvent25 in (0, 1, 5):
+                if fEvent25 == 2:
+                    if (EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum')) or (EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne('LoopNum')):
+                        EventFlowSystemActor.MuseumNameBoardFossilCamera('LoopNum')
+                elif fEvent25 in (0, 1, 5):
                     EventFlowSystemActor.MuseumNameBoardCamera('LoopNum')
                 elif fEvent25 in (3, 4):
                     EventFlowSystemActor.MuseumNameBoardArtCamera('LoopNum')
-                elif fEvent25 == 2:
-                    if (EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum')) or (EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne('LoopNum')):
-                        EventFlowSystemActor.MuseumNameBoardFossilCamera('LoopNum')
             else:
                 fEvent9 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
-                if fEvent9 in (0, 1, 5):
-                    EventFlowSystemActor.MuseumNameBoardCamera('LoopNum')
-                elif fEvent9 in (3, 4):
+                if fEvent9 in (3, 4):
                     EventFlowSystemActor.MuseumNameBoardArtCamera('LoopNum')
                 elif fEvent9 == 2:
                     if (EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem('LoopNum')) or (EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne('LoopNum')):
                         EventFlowSystemActor.MuseumNameBoardFossilCamera('LoopNum')
+                elif fEvent9 in (0, 1, 5):
+                    EventFlowSystemActor.MuseumNameBoardCamera('LoopNum')
         fEvent17 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
         if fEvent17 == 0:
             if EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer('LoopNum'):
@@ -57,12 +57,12 @@ entrypoint Event27:
         fEvent23 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
         if fEvent23 == 0:
             EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:005', false)
-        elif fEvent23 == 1:
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
         elif fEvent23 == 2:
             EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:006', false)
         elif fEvent23 in (3, 4, 5):
             EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:014', false)
+        elif fEvent23 == 1:
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
         run sub_tm!Root
 
 flow sub_tm!Root:

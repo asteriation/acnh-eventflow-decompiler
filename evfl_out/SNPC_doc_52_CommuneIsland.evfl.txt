@@ -1,20 +1,6 @@
-flow Root:
-    if not event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone']:
-        event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone'] = true
-        if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
-            run Doc_FirstJuneBride
-        else:
-            run sub_Event8
-    elif EventFlowSystemActor.YMD(2020, 5, 31, 'cLastGrowUpTime') in (0, 1):
-        run Doc_NoService
-    elif not EventFlowSystemActor.TermEventNow('JuneBride', false):
-        run Doc_Service
-    elif not event_flags_system['cPlayer:CommuneIslandAvailable']:
-        run Doc_Service
-    elif event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']:
-        run Doc_Service
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:200', false)
+flow Doc_Cancel:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:113', false)
+    EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Doc_Delivery:
@@ -29,6 +15,39 @@ flow Doc_Delivery:
         run Doc_Thanks
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:112', false)
+    return
+
+flow Doc_DeliveryPurchaseExplain:
+    if not event_flags_system['cPlayer:DocDeliveryPurchaseExplain']:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:105', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:106', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:107', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:108', false)
+        event_flags_system['cPlayer:DocDeliveryPurchaseExplain'] = true
+        event_flags_system['cPlayer:PlayerPocketUIEnableInCommuneIsland'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Doc_FirstJuneBride:
+    EventFlowSystemActor.StoreNormalCamera(false)
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:001', true)
+    MainNpc.TurnBody(12, 190.0)
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:002', true)
+    EventFlowSystemActor.StoreNormalCamera(false)
+    EventFlowSystemActor.WaitFrame(15)
+    return
+
+flow Doc_FirstJuneBrideWalk:
+    Player.PlayerMoveToTarget(365.0, 527.0, 0.0, 0.0, 'cDemoTalk', true, false)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('DemoSpeak', 1, 'spn', 1)
+    return
+
+flow Doc_NoService:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:101', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run Event2
+    else:
+        run Event5
     return
 
 flow Doc_Purchase:
@@ -59,58 +78,11 @@ flow Doc_Purchase:
             run Doc_Cancel
     return
 
-flow Doc_Cancel:
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:113', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Doc_DeliveryPurchaseExplain:
-    if not event_flags_system['cPlayer:DocDeliveryPurchaseExplain']:
-        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:105', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:106', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:107', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:108', false)
-        event_flags_system['cPlayer:DocDeliveryPurchaseExplain'] = true
-        event_flags_system['cPlayer:PlayerPocketUIEnableInCommuneIsland'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Doc_FirstJuneBride:
-    EventFlowSystemActor.StoreNormalCamera(false)
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:001', true)
-    MainNpc.TurnBody(12, 190.0)
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:002', true)
-    EventFlowSystemActor.StoreNormalCamera(false)
-    EventFlowSystemActor.WaitFrame(15)
-    return
-
-flow Doc_Thanks:
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:127', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Doc_FirstJuneBrideWalk:
-    Player.PlayerMoveToTarget(365.0, 527.0, 0.0, 0.0, 'cDemoTalk', true, false)
-    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('DemoSpeak', 1, 'spn', 1)
-    return
-
-flow Doc_NoService:
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:101', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Event2
-    else:
-        run Event5
-    return
-
 flow Doc_Service:
     run Doc_DeliveryPurchaseExplain
     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:110', false)
     fEvent37 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent37 == 1:
-        run Doc_Delivery
-    elif fEvent37 == 2:
-        run Doc_Purchase
-    elif fEvent37 == 0:
+    if fEvent37 == 0:
 entrypoint Event2:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:102', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -123,9 +95,37 @@ entrypoint Event2:
         else:
 entrypoint Event5:
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:104', true)
+    elif fEvent37 == 1:
+        run Doc_Delivery
+    elif fEvent37 == 2:
+        run Doc_Purchase
     elif fEvent37 == 3:
 entrypoint Event5:
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:104', true)
+    return
+
+flow Doc_Thanks:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:127', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Root:
+    if not event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone']:
+        event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone'] = true
+        if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
+            run Doc_FirstJuneBride
+        else:
+            run sub_Event8
+    elif EventFlowSystemActor.YMD(2020, 5, 31, 'cLastGrowUpTime') in (0, 1):
+        run Doc_NoService
+    elif not EventFlowSystemActor.TermEventNow('JuneBride', false):
+        run Doc_Service
+    elif not event_flags_system['cPlayer:CommuneIslandAvailable']:
+        run Doc_Service
+    elif event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']:
+        run Doc_Service
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_52_CommuneIsland:200', false)
     return
 
 flow sub_Event8:

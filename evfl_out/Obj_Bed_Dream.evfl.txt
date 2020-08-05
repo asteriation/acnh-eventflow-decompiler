@@ -1,5 +1,5 @@
-flow Bed_Wakeup:
-    run SNPC_tap_02_InDreaming::Wakeup
+flow Bed_CancelDream:
+    EventFlowSystemActor.StoreNormalCamera(false)
     return
 
 flow Bed_MyHome:
@@ -64,7 +64,7 @@ flow Bed_MyHome:
         EventFlowSystemActor.SystemRequestChangeStage('cDreamHouse', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
     return
 
-flow Bed_CancelDream:
-    EventFlowSystemActor.StoreNormalCamera(false)
+flow Bed_Wakeup:
+    run SNPC_tap_02_InDreaming::Wakeup
     return
 

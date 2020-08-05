@@ -1,3 +1,18 @@
+flow Dod_ChangeGate:
+    if EventFlowSystemActor.IsVillageGateOpened():
+        run Dod_CloseGate
+    else:
+        run Dod_OpenGate
+    return
+
+flow Dod_CloseGate:
+    run Event0
+    return
+
+flow Dod_OpenGate:
+    run Event4
+    return
+
 flow EntryPoint_GateCheck:
     if EventFlowSystemActor.IsVillageGateOpened():
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:306', false)
@@ -27,20 +42,5 @@ entrypoint Event4:
             EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
         else:
             run SNPC_dod_AirPort::EntryPoint_Cancel
-    return
-
-flow Dod_CloseGate:
-    run Event0
-    return
-
-flow Dod_OpenGate:
-    run Event4
-    return
-
-flow Dod_ChangeGate:
-    if EventFlowSystemActor.IsVillageGateOpened():
-        run Dod_CloseGate
-    else:
-        run Dod_OpenGate
     return
 

@@ -1,3 +1,10 @@
+flow Host_Chk:
+    if not event_flag_npc['cNpcMemory:TalkFreeGNow']:
+        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeG_Host', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkFreeGNow'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
 flow Root:
     if EventFlowSystemActor.NetHasVisitor():
         if EventFlowSystemActor.IsMyVillage():
@@ -12,13 +19,6 @@ flow Visitor_Chk:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeG_Visitor:201', false)
         else:
             MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeG_Visitor', '', '', '', true)
-        event_flags_npc['cNpcMemory:TalkFreeGNow'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Host_Chk:
-    if not event_flag_npc['cNpcMemory:TalkFreeGNow']:
-        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeG_Host', '', '', '', true)
         event_flags_npc['cNpcMemory:TalkFreeGNow'] = true
         EventFlowSystemActor.ExitFlowchart()
     return

@@ -1,17 +1,22 @@
-flow Furniture:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
-    if MainNpc.IsNpcPlayerRelativeItem() != 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
-    MainNpc.NpcDelivery('"Default"', 3)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:100', false)
-    if any ('DecorateFtr', '', '', '', '', '', '', '') in EventFlowSystemActor.CategoryItemSelect('cItemSelect'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:101', false)
-    elif any ('DoorDeco', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:102', false)
+flow Art:
+    if any ('Sculpture', 'Picture', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+entrypoint Event45:
+        if not event_flags_system['cLand:Museum3Built']:
+entrypoint Event47:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:122', false)
+            MainNpc.NpcDelivery('Default', 10)
+            EventFlowSystemActor.ExitFlowchart()
+        elif MainNpc.OwlIsDonation('cDeliveryItem'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
+            MainNpc.NpcDelivery('"Default"', 3)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:121', false)
+            MainNpc.NpcAddFriendship(1)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:123', false)
+            MainNpc.NpcDelivery('Default', 10)
+            EventFlowSystemActor.ExitFlowchart()
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:103', false)
-    MainNpc.NpcAddFriendship(3)
-    MainNpc.NpcSetShowFlag()
+        run Real_Art
     return
 
 flow Fossil:
@@ -38,33 +43,28 @@ entrypoint Event33:
         run No_Museum
     return
 
-flow No_Museum:
-    run Event33
-    return
-
-flow Art:
-    if any ('Sculpture', 'Picture', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-entrypoint Event45:
-        if not event_flags_system['cLand:Museum3Built']:
-entrypoint Event47:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:122', false)
-            MainNpc.NpcDelivery('Default', 10)
-            EventFlowSystemActor.ExitFlowchart()
-        elif MainNpc.OwlIsDonation('cDeliveryItem'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
-            MainNpc.NpcDelivery('"Default"', 3)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:121', false)
-            MainNpc.NpcAddFriendship(1)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:123', false)
-            MainNpc.NpcDelivery('Default', 10)
-            EventFlowSystemActor.ExitFlowchart()
+flow Furniture:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
+    if MainNpc.IsNpcPlayerRelativeItem() != 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
+    MainNpc.NpcDelivery('"Default"', 3)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:100', false)
+    if any ('DecorateFtr', '', '', '', '', '', '', '') in EventFlowSystemActor.CategoryItemSelect('cItemSelect'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:101', false)
+    elif any ('DoorDeco', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:102', false)
     else:
-        run Real_Art
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:103', false)
+    MainNpc.NpcAddFriendship(3)
+    MainNpc.NpcSetShowFlag()
     return
 
 flow No_Art:
     run Event47
+    return
+
+flow No_Museum:
+    run Event33
     return
 
 flow Real_Art:

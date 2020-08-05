@@ -1,12 +1,12 @@
 flow Begin:
     MainNpc.NpcDecideCatchRequestItem()
     fEvent0 = MainNpc.NpcCheckCatchQuestType()
-    if fEvent0 == 0:
-        run InsectNormal
-    elif fEvent0 == 1:
+    if fEvent0 == 1:
         run InsectRare
     elif fEvent0 == 2:
         run FishNormal
+    elif fEvent0 == 0:
+        run InsectNormal
     elif fEvent0 == 3:
         run FishRare
     return
@@ -14,9 +14,7 @@ flow Begin:
 flow Begin_Ap:
     MainNpc.NpcDecideCatchRequestItem()
     fEvent117 = MainNpc.NpcCheckCatchQuestType()
-    if fEvent117 in (0, 2):
-        run NNPC_Approach::Reselection
-    elif fEvent117 == 1:
+    if fEvent117 == 1:
         MainNpc.SetItemName(0, 0, 2)
         if MainNpc.CheckNpcApproachType():
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:101', false)
@@ -60,107 +58,8 @@ flow Begin_Ap:
             else:
                 MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:206', false, false)
                 run sub_Event60
-    return
-
-flow Normal_Yes:
-    run Event34
-    return
-
-flow Normal_No:
-    run Event1
-    return
-
-flow InsectNormal:
-    MainNpc.SetItemName(0, 0, 2)
-    fEvent62 = MainNpc.NpcCatchQuestInsectNormalType()
-    if fEvent62 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:021', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event34:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:011', false, false)
-            else:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:012', false, false)
-            MainNpc.NpcQuestControl('cStart')
-            event_flags_npc['cNpcMemory:OrderQuest'] = true
-        else:
-entrypoint Event1:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:015', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:016', false)
-            MainNpc.NpcQuestControl('cFinish')
-    elif fEvent62 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:022', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    elif fEvent62 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:023', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    elif fEvent62 == 3:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:025', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    elif fEvent62 == 4:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:026', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    elif fEvent62 == 5:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:027', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    elif fEvent62 == 6:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:028', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Normal_Yes
-        else:
-            run Normal_No
-    return
-
-flow InsectRare:
-    MainNpc.SetItemName(0, 0, 2)
-    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:003', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event74:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:013', false, false)
-            else:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:014', false, false)
-            MainNpc.NpcQuestControl('cStart')
-            event_flags_npc['cNpcMemory:OrderQuest'] = true
-        else:
-entrypoint Event76:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:017', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:018', false)
-            MainNpc.NpcQuestControl('cFinish')
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:004', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Rare_Yes
-        else:
-            run Rare_No
-    return
-
-flow Rare_No:
-    run Event76
-    return
-
-flow Rare_Yes:
-    run Event74
+    elif fEvent117 in (0, 2):
+        run NNPC_Approach::Reselection
     return
 
 flow FishNormal:
@@ -195,9 +94,110 @@ flow FishRare:
             run Rare_No
     return
 
-flow sub_Event60:
-    MainNpc.NpcQuestControl('cFinish')
+flow InsectNormal:
+    MainNpc.SetItemName(0, 0, 2)
+    fEvent62 = MainNpc.NpcCatchQuestInsectNormalType()
+    if fEvent62 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:025', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    elif fEvent62 == 4:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:026', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    elif fEvent62 == 5:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:027', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    elif fEvent62 == 6:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:028', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    elif fEvent62 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:021', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event34:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:011', false, false)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:012', false, false)
+            MainNpc.NpcQuestControl('cStart')
+            event_flags_npc['cNpcMemory:OrderQuest'] = true
+        else:
+entrypoint Event1:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:015', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:016', false)
+            MainNpc.NpcQuestControl('cFinish')
+    elif fEvent62 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:022', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    elif fEvent62 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:023', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Normal_Yes
+        else:
+            run Normal_No
+    return
+
+flow InsectRare:
+    MainNpc.SetItemName(0, 0, 2)
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:003', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event74:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:013', false, false)
+            else:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:014', false, false)
+            MainNpc.NpcQuestControl('cStart')
+            event_flags_npc['cNpcMemory:OrderQuest'] = true
+        else:
+entrypoint Event76:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:017', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:018', false)
+            MainNpc.NpcQuestControl('cFinish')
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_Begin:004', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Rare_Yes
+        else:
+            run Rare_No
+    return
+
+flow Normal_No:
+    run Event1
+    return
+
+flow Normal_Yes:
+    run Event34
+    return
+
+flow Rare_No:
+    run Event76
+    return
+
+flow Rare_Yes:
+    run Event74
+    return
 
 flow sub_Event127:
+    MainNpc.NpcQuestControl('cFinish')
+
+flow sub_Event60:
     MainNpc.NpcQuestControl('cFinish')
 

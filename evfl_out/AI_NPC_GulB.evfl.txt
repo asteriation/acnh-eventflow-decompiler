@@ -1,3 +1,7 @@
+flow Hit:
+    MainNpc.NpcChangeAIState('cHit', 'SNPC_gulB', 'Root', '', false, false)
+    return
+
 flow Init:
     run AI_NPC_Gul::InitCommon
     if event_flags_system['cLand:JohnnySitUpFlag']:
@@ -28,10 +32,6 @@ flow Root:
         run AI_NPC_Gul::SetStateWakeup
     else:
         run AI_NPC_Gul::SetStateSleep
-    return
-
-flow Hit:
-    MainNpc.NpcChangeAIState('cHit', 'SNPC_gulB', 'Root', '', false, false)
     return
 
 flow sub_Event15:

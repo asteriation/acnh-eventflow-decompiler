@@ -1,38 +1,20 @@
-flow Root:
-    if not EventFlowSystemActor.IsMyVillage():
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:802', true)
-    elif EventFlowSystemActor.NetIsConnected():
-        if EventFlowSystemActor.NetHasVisitor():
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:801', true)
-        elif EventFlowSystemActor.IsVillageGateOpened():
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:804', true)
-        else:
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:801', true)
-    elif EventFlowSystemActor.IsSharePlay(0):
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:803', true)
-    elif not event_flags_system['cPlayer:MyDesignExchangeFirstAccess']:
-        event_flags_system['cPlayer:MyDesignExchangeFirstAccess'] = true
-        event_flags_system['cPlayer:MyDesignExchangeExp_v1_4'] = true
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:010', false)
+flow EntryPoint_AuthorID:
+    EventFlowSystemActor.SetTagFromSystem(0, 'cOwnDesignerID', 'cDegit', '', 0)
+    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:031', false)
+    if event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID']:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:032', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run EntryPoint_SignIn
+            run EntryPoint_Cancel
         else:
-            run EntryPoint_Cancel
-    elif EventFlowSystemActor.NetHasDesignerID():
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:030', false)
-        fEvent15 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent15 == 0:
-            run EntryPoint_SignIn
-        elif fEvent15 == 1:
-            run EntryPoint_AuthorID
-        elif fEvent15 == 2:
-            run EntryPoint_Cancel
+            event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID'] = false
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:033', true)
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:011', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:034', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run EntryPoint_SignIn
-        else:
             run EntryPoint_Cancel
+        else:
+            event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID'] = true
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:035', true)
     return
 
 flow EntryPoint_Cancel:
@@ -64,22 +46,40 @@ flow InDream:
         run EntryPoint_Cancel
     return
 
-flow EntryPoint_AuthorID:
-    EventFlowSystemActor.SetTagFromSystem(0, 'cOwnDesignerID', 'cDegit', '', 0)
-    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:031', false)
-    if event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID']:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:032', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run EntryPoint_Cancel
+flow Root:
+    if not EventFlowSystemActor.IsMyVillage():
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:802', true)
+    elif EventFlowSystemActor.NetIsConnected():
+        if EventFlowSystemActor.NetHasVisitor():
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:801', true)
+        elif EventFlowSystemActor.IsVillageGateOpened():
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:804', true)
         else:
-            event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID'] = false
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:033', true)
+            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:801', true)
+    elif EventFlowSystemActor.IsSharePlay(0):
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:803', true)
+    elif not event_flags_system['cPlayer:MyDesignExchangeFirstAccess']:
+        event_flags_system['cPlayer:MyDesignExchangeFirstAccess'] = true
+        event_flags_system['cPlayer:MyDesignExchangeExp_v1_4'] = true
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:010', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run EntryPoint_SignIn
+        else:
+            run EntryPoint_Cancel
+    elif EventFlowSystemActor.NetHasDesignerID():
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:030', false)
+        fEvent15 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent15 == 2:
+            run EntryPoint_Cancel
+        elif fEvent15 == 0:
+            run EntryPoint_SignIn
+        elif fEvent15 == 1:
+            run EntryPoint_AuthorID
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:034', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:011', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run EntryPoint_Cancel
+            run EntryPoint_SignIn
         else:
-            event_flags_system['cPlayer:MyDesignExchangeDiscloseAuthorID'] = true
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:035', true)
+            run EntryPoint_Cancel
     return
 

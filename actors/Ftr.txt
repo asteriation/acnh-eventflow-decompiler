@@ -1,13 +1,12 @@
 Actor Ftr
 actions:
-- Ftr.FtrOpenMessageBromideMotto()
-- Ftr.FtrSetTagBromideInfo()
-- Ftr.FtrChangeSwitch(IsOn: bool)
-- Ftr.OpenMessageStampRackSpotName()
-- Ftr.OpenMessageStampRackSpotExplain()
-- Ftr.FtrTrashBoxRingSE()
+- FtrOpenMessageBromideMotto()
+- FtrSetTagBromideInfo()
+- FtrChangeSwitch(IsOn: bool)
+- OpenMessageStampRackSpotName()
+- OpenMessageStampRackSpotExplain()
+- FtrTrashBoxRingSE()
 queries:
-- Ftr.IsTargetFtr(ItemUniqueId: int) -> bool
-- Ftr.IsMyPost() -> bool
-- Ftr.IsOnStarterFtrSwitch() -> bool
-
+- IsTargetFtr(ItemUniqueId: int) -> bool (inverted)
+- IsMyPost() -> bool (inverted)
+- IsOnStarterFtrSwitch() -> bool (inverted)

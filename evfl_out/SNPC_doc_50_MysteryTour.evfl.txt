@@ -1,3 +1,25 @@
+flow CloseUI:
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.UIMoneyDisappear()
+        branch2:
+            EventFlowSystemActor.UIShopBuyDisappear()
+    return
+
+flow DocCmnCancel:
+    run sub_Event25
+    return
+
+flow ExchangeCancel:
+    run Event18
+    return
+
+flow FaintEntry:
+    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:021', false)
+    event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
+    return
+
 flow Root:
     event_flags_system['cPlayer:RcoMachineExplainAboutPlaneTicket'] = true
     if EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01'):
@@ -60,28 +82,6 @@ entrypoint Event18:
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:001_02', false)
             event_flags_system['cPlayer:DocMysterytourExplain1st'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:001_03', false)
-    return
-
-flow DocCmnCancel:
-    run sub_Event25
-    return
-
-flow ExchangeCancel:
-    run Event18
-    return
-
-flow CloseUI:
-    fork:
-        branch0:
-        branch1:
-            EventFlowSystemActor.UIMoneyDisappear()
-        branch2:
-            EventFlowSystemActor.UIShopBuyDisappear()
-    return
-
-flow FaintEntry:
-    MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:021', false)
-    event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
     return
 
 flow sub_Event25:

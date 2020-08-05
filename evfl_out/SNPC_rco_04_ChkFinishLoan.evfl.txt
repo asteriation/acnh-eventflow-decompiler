@@ -1,15 +1,26 @@
-flow Root:
-    if event_flags_system['cPlayer:PlayerLoanFinish1st']:
-        run Event1
-    return
-
 flow FinishLoan_Force:
     run SNPC_rco_01_Tent_1_Entries::RcoTent_Force_PlayerPos
     event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
 entrypoint Event1:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:001', false)
     fEvent5 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent5 == 2:
+    if fEvent5 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:007', false)
+        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
+        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent5 == 7:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:008', false)
+        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
+        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent5 == 8:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:009', false)
+        event_flags_system['cPlayer:PcHousingLoanFinish'] = true
+        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
+        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent5 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:003', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
@@ -29,25 +40,14 @@ entrypoint Event1:
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 6:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:007', false)
-        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
-        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 7:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:008', false)
-        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
-        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 8:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:009', false)
-        event_flags_system['cPlayer:PcHousingLoanFinish'] = true
-        event_flags_system['cPlayer:RcoHeardRemodel1'] = true
-        event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
-        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow FinishLoan_Force_Init:
     run SNPC_rco_01_Tent_1_Entries::RcoTent_Force_DisableTalkCamera
+    return
+
+flow Root:
+    if event_flags_system['cPlayer:PlayerLoanFinish1st']:
+        run Event1
     return
 

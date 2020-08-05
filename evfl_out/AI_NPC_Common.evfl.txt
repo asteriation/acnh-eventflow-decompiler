@@ -1,10 +1,10 @@
-flow Speak:
-    MainNpc.NpcChangeAIState('cSpeak', '', '', '', false, true)
+flow ContinueSpeak:
+    MainNpc.NpcChangeAIState('cContinueSpeak', '', '', '', false, true)
     MainNpc.SetNpcSpeakFlow('EntryName', 'FlowName')
     return
 
-flow ContinueSpeak:
-    MainNpc.NpcChangeAIState('cContinueSpeak', '', '', '', false, true)
+flow Speak:
+    MainNpc.NpcChangeAIState('cSpeak', '', '', '', false, true)
     MainNpc.SetNpcSpeakFlow('EntryName', 'FlowName')
     return
 

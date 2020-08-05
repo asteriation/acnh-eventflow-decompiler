@@ -1,126 +1,5 @@
-flow Root:
-    if MainNpc.NpcCanStartQuest():
-        fEvent1 = MainNpc.NpcHaveQuestType('')
-        if fEvent1 == 1:
-            run NNPC_Quest_CatchFishInsect_Begin::Begin_Ap
-        elif fEvent1 == 2:
-            run NNPC_Quest_LostProperty_Begin::Begin_Ap
-        elif fEvent1 == 3:
-            run NNPC_Quest_Delivery_Begin::Begin_Ap
-        elif fEvent1 == 4:
-            run NNPC_Quest_TreasureHunt_Begin::Begin_Ap
-        elif fEvent1 in (7, 0):
-            event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] = 0
-entrypoint Event82:
-            if event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] >= 3:
-                run ApAlways
-            else:
-                event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] += 1
-                fEvent3 = MainNpc.CheckNpcFavorLevel()
-                if fEvent3 in (4, 5):
-                    run ApPresent
-                elif fEvent3 == 0:
-                    fEvent6 = EventFlowSystemActor.RandomChoiceExcludePrevious7(7, true)
-                    if fEvent6 == 0:
-                        run ApWant
-                    elif fEvent6 == 1:
-                        run ApTrade
-                    elif fEvent6 == 2:
-                        run ApGreeting
-                    elif fEvent6 == 3:
-                        run ApHabit
-                    elif fEvent6 == 4:
-                        run ApSell
-                    elif fEvent6 == 5:
-                        run ApNickname
-                    elif fEvent6 == 6:
-                        run ApPresent
-                elif fEvent3 == 1:
-                    fEvent47 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-                    if fEvent47 == 0:
-                        run ApGreeting
-                    elif fEvent47 == 1:
-                        run ApHabit
-                    elif fEvent47 == 2:
-                        run ApSell
-                    elif fEvent47 == 3:
-                        run ApNickname
-                    elif fEvent47 == 4:
-                        run ApPresent
-                elif fEvent3 == 2:
-                    fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-                    if fEvent8 == 0:
-                        run ApHabit
-                    elif fEvent8 == 1:
-                        run ApSell
-                    elif fEvent8 == 2:
-                        run ApNickname
-                    elif fEvent8 == 3:
-                        run ApPresent
-                elif fEvent3 == 3:
-                    fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                    if fEvent7 == 0:
-                        run ApNickname
-                    elif fEvent7 == 1:
-                        run ApSell
-                    elif fEvent7 == 2:
-                        run ApPresent
-    else:
-        event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] = 0
-entrypoint Event82:
-        if event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] >= 3:
-            run ApAlways
-        else:
-            event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] += 1
-            fEvent3 = MainNpc.CheckNpcFavorLevel()
-            if fEvent3 in (4, 5):
-                run ApPresent
-            elif fEvent3 == 0:
-                fEvent6 = EventFlowSystemActor.RandomChoiceExcludePrevious7(7, true)
-                if fEvent6 == 0:
-                    run ApWant
-                elif fEvent6 == 1:
-                    run ApTrade
-                elif fEvent6 == 2:
-                    run ApGreeting
-                elif fEvent6 == 3:
-                    run ApHabit
-                elif fEvent6 == 4:
-                    run ApSell
-                elif fEvent6 == 5:
-                    run ApNickname
-                elif fEvent6 == 6:
-                    run ApPresent
-            elif fEvent3 == 1:
-                fEvent47 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-                if fEvent47 == 0:
-                    run ApGreeting
-                elif fEvent47 == 1:
-                    run ApHabit
-                elif fEvent47 == 2:
-                    run ApSell
-                elif fEvent47 == 3:
-                    run ApNickname
-                elif fEvent47 == 4:
-                    run ApPresent
-            elif fEvent3 == 2:
-                fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-                if fEvent8 == 0:
-                    run ApHabit
-                elif fEvent8 == 1:
-                    run ApSell
-                elif fEvent8 == 2:
-                    run ApNickname
-                elif fEvent8 == 3:
-                    run ApPresent
-            elif fEvent3 == 3:
-                fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent7 == 0:
-                    run ApNickname
-                elif fEvent7 == 1:
-                    run ApSell
-                elif fEvent7 == 2:
-                    run ApPresent
+flow ApAlways:
+    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Approach/BO_ApproachA_Always', '', '', '')
     return
 
 flow ApGreeting:
@@ -130,9 +9,9 @@ flow ApGreeting:
         run Reselection
     return
 
-flow ApPresent:
-    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-        run NNPC_ApproachC_Present::Root
+flow ApHabit:
+    if (not MainNpc.NpcIsFleaHolder()) and (MainNpc.NpcCheckPastDays('cPhrase', 10)):
+        run NNPC_ApproachB_Habit::Root
     else:
         run Reselection
     return
@@ -147,23 +26,9 @@ flow ApNickname:
         run Reselection
     return
 
-flow ApTrade:
-    if MainNpc.HasNpcWantedItem():
-        run NNPC_ApproachC_Trade::Root
-    else:
-        run Reselection
-    return
-
-flow ApHabit:
-    if (not MainNpc.NpcIsFleaHolder()) and (MainNpc.NpcCheckPastDays('cPhrase', 10)):
-        run NNPC_ApproachB_Habit::Root
-    else:
-        run Reselection
-    return
-
-flow ApWant:
-    if MainNpc.HasNpcWantedItem():
-        run NNPC_ApproachC_Want::Root
+flow ApPresent:
+    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        run NNPC_ApproachC_Present::Root
     else:
         run Reselection
     return
@@ -175,11 +40,146 @@ flow ApSell:
         run Reselection
     return
 
-flow ApAlways:
-    MainNpc.NpcSelectMessage('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Approach/BO_ApproachA_Always', '', '', '')
+flow ApTrade:
+    if MainNpc.HasNpcWantedItem():
+        run NNPC_ApproachC_Trade::Root
+    else:
+        run Reselection
+    return
+
+flow ApWant:
+    if MainNpc.HasNpcWantedItem():
+        run NNPC_ApproachC_Want::Root
+    else:
+        run Reselection
     return
 
 flow Reselection:
     run Event82
+    return
+
+flow Root:
+    if MainNpc.NpcCanStartQuest():
+        fEvent1 = MainNpc.NpcHaveQuestType('')
+        if fEvent1 == 1:
+            run NNPC_Quest_CatchFishInsect_Begin::Begin_Ap
+        elif fEvent1 == 3:
+            run NNPC_Quest_Delivery_Begin::Begin_Ap
+        elif fEvent1 == 2:
+            run NNPC_Quest_LostProperty_Begin::Begin_Ap
+        elif fEvent1 == 4:
+            run NNPC_Quest_TreasureHunt_Begin::Begin_Ap
+        elif fEvent1 in (7, 0):
+            event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] = 0
+entrypoint Event82:
+            if event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] >= 3:
+                run ApAlways
+            else:
+                event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] += 1
+                fEvent3 = MainNpc.CheckNpcFavorLevel()
+                if fEvent3 in (4, 5):
+                    run ApPresent
+                elif fEvent3 == 1:
+                    fEvent47 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                    if fEvent47 == 1:
+                        run ApHabit
+                    elif fEvent47 == 3:
+                        run ApNickname
+                    elif fEvent47 == 0:
+                        run ApGreeting
+                    elif fEvent47 == 4:
+                        run ApPresent
+                    elif fEvent47 == 2:
+                        run ApSell
+                elif fEvent3 == 0:
+                    fEvent6 = EventFlowSystemActor.RandomChoiceExcludePrevious7(7, true)
+                    if fEvent6 == 4:
+                        run ApSell
+                    elif fEvent6 == 0:
+                        run ApWant
+                    elif fEvent6 == 3:
+                        run ApHabit
+                    elif fEvent6 == 5:
+                        run ApNickname
+                    elif fEvent6 == 1:
+                        run ApTrade
+                    elif fEvent6 == 2:
+                        run ApGreeting
+                    elif fEvent6 == 6:
+                        run ApPresent
+                elif fEvent3 == 3:
+                    fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                    if fEvent7 == 2:
+                        run ApPresent
+                    elif fEvent7 == 1:
+                        run ApSell
+                    elif fEvent7 == 0:
+                        run ApNickname
+                elif fEvent3 == 2:
+                    fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+                    if fEvent8 == 1:
+                        run ApSell
+                    elif fEvent8 == 3:
+                        run ApPresent
+                    elif fEvent8 == 0:
+                        run ApHabit
+                    elif fEvent8 == 2:
+                        run ApNickname
+    else:
+        event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] = 0
+entrypoint Event82:
+        if event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] >= 3:
+            run ApAlways
+        else:
+            event_flags_system['cPlayerTemp:NnpcApproachSelectCount'] += 1
+            fEvent3 = MainNpc.CheckNpcFavorLevel()
+            if fEvent3 in (4, 5):
+                run ApPresent
+            elif fEvent3 == 1:
+                fEvent47 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+                if fEvent47 == 1:
+                    run ApHabit
+                elif fEvent47 == 3:
+                    run ApNickname
+                elif fEvent47 == 0:
+                    run ApGreeting
+                elif fEvent47 == 4:
+                    run ApPresent
+                elif fEvent47 == 2:
+                    run ApSell
+            elif fEvent3 == 0:
+                fEvent6 = EventFlowSystemActor.RandomChoiceExcludePrevious7(7, true)
+                if fEvent6 == 4:
+                    run ApSell
+                elif fEvent6 == 0:
+                    run ApWant
+                elif fEvent6 == 3:
+                    run ApHabit
+                elif fEvent6 == 5:
+                    run ApNickname
+                elif fEvent6 == 1:
+                    run ApTrade
+                elif fEvent6 == 2:
+                    run ApGreeting
+                elif fEvent6 == 6:
+                    run ApPresent
+            elif fEvent3 == 3:
+                fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                if fEvent7 == 2:
+                    run ApPresent
+                elif fEvent7 == 1:
+                    run ApSell
+                elif fEvent7 == 0:
+                    run ApNickname
+            elif fEvent3 == 2:
+                fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+                if fEvent8 == 1:
+                    run ApSell
+                elif fEvent8 == 3:
+                    run ApPresent
+                elif fEvent8 == 0:
+                    run ApHabit
+                elif fEvent8 == 2:
+                    run ApNickname
     return
 

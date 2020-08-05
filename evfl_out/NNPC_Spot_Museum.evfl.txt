@@ -1,3 +1,39 @@
+flow Museum_Art:
+    if not EventFlowSystemActor.IsMyVillage():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Art:100', false)
+    elif EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 7):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Art:201', false)
+    else:
+        MainNpc.NpcOpenFacilityMessage()
+    return
+
+flow Museum_Fish:
+    if not EventFlowSystemActor.IsMyVillage():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fish:100', false)
+    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fish:200', false)
+    else:
+        run sub_Event12
+    return
+
+flow Museum_Fossil:
+    if not EventFlowSystemActor.IsMyVillage():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fossil:100', false)
+    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fossil:200', false)
+    else:
+        run sub_Event29
+    return
+
+flow Museum_Insect:
+    if not EventFlowSystemActor.IsMyVillage():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Insect:100', false)
+    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Insect:200', false)
+    else:
+        run sub_Event23
+    return
+
 flow Root:
     event_flags_npc['cNpcTemp:TalkEndWait'] = true
     run NNPC_FreeH_Progress::Conceal_MuseumBuilt
@@ -11,16 +47,16 @@ flow Root:
     else:
         run NNPC_Talk_Greet_Spot::Root
     fEvent4 = EventFlowSystemActor.NpcGeneralTalkChoice()
-    if fEvent4 == 0:
-        run Spot_Museum
-    elif fEvent4 == 1:
-        run NNPC_Talk_General::End_Root
-    elif fEvent4 == 2:
+    if fEvent4 == 2:
         run NNPC_Talk_General::Quest_ConfirmGive
     elif fEvent4 == 3:
         run NNPC_Select_Present::Root
     elif fEvent4 == 4:
         run NNPC_GEvent_BirthdayP::Give_Capcake
+    elif fEvent4 == 0:
+        run Spot_Museum
+    elif fEvent4 == 1:
+        run NNPC_Talk_General::End_Root
     return
 
 flow Spot_Museum:
@@ -32,42 +68,6 @@ flow Spot_Museum:
         run Museum_Fossil
     elif EventFlowSystemActor.SystemCheckNowStage('cMuseumArt'):
         run Museum_Art
-    return
-
-flow Museum_Fish:
-    if not EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fish:100', false)
-    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fish:200', false)
-    else:
-        run sub_Event12
-    return
-
-flow Museum_Insect:
-    if not EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Insect:100', false)
-    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Insect:200', false)
-    else:
-        run sub_Event23
-    return
-
-flow Museum_Fossil:
-    if not EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fossil:100', false)
-    elif (EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 7)) and (not EventFlowSystemActor.MuseumRoomDonateRate(30)):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Fossil:200', false)
-    else:
-        run sub_Event29
-    return
-
-flow Museum_Art:
-    if not EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Art:100', false)
-    elif EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 7):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Museum_Art:201', false)
-    else:
-        MainNpc.NpcOpenFacilityMessage()
     return
 
 flow sub_Event12:

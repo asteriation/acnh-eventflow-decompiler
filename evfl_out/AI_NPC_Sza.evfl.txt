@@ -1,3 +1,15 @@
+flow DisableWorkMotion:
+    MainNpc.NpcDisableServiceMotion()
+    MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
+    return
+
+flow Init:
+    if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
+        MainNpc.NpcAISetRequestSpeakFunc('cSitDownOffice', true)
+        if EventFlowSystemActor.NetIsConnected():
+            run DisableWorkMotion
+    return
+
 flow Root:
     if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
         MainNpc.NpcChangeAIState('cOfficeWait', 'SNPC_sza', 'Root', '', true, true)
@@ -8,18 +20,6 @@ flow Root:
     else:
         MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_sza', '', true, true, 30, 2, 0, 0, true, false, '', '')
     run sub_tm!Root
-
-flow Init:
-    if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
-        MainNpc.NpcAISetRequestSpeakFunc('cSitDownOffice', true)
-        if EventFlowSystemActor.NetIsConnected():
-            run DisableWorkMotion
-    return
-
-flow DisableWorkMotion:
-    MainNpc.NpcDisableServiceMotion()
-    MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
-    return
 
 flow sub_tm!Root:
     return

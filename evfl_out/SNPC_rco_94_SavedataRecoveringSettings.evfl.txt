@@ -1,3 +1,21 @@
+flow AskStart:
+    if EventFlowSystemActor.SaveIsEnabledBackupSetting():
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002', false)
+        run Event2
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_01', false)
+        run Event2
+    return
+
+flow Enable_Backup:
+    run Event35
+    return
+
+flow Return_RestoringExplain:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_09', false)
+    run Event3
+    return
+
 flow Root:
     if EventFlowSystemActor.SaveIsEnabledBackupSetting():
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:001', false)
@@ -5,10 +23,10 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:001_01', false)
 entrypoint Event2:
     fEvent2 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent2 == 1:
-        run SavedataRestoringExplain
-    elif fEvent2 == 2:
+    if fEvent2 == 2:
         run SNPC_rco_92_OtherSettings::Sel_EndMenu
+    elif fEvent2 == 1:
+        run SavedataRestoringExplain
     elif fEvent2 == 0:
         if (not EventFlowSystemActor.BackupAgentExist()) or (EventFlowSystemActor.SaveIsEnabledBackupSetting()):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:003', false)
@@ -60,15 +78,6 @@ flow SaveRecoveringSetting:
     EventFlowSystemActor.MessageSuspend()
     return
 
-flow AskStart:
-    if EventFlowSystemActor.SaveIsEnabledBackupSetting():
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002', false)
-        run Event2
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_01', false)
-        run Event2
-    return
-
 flow SavedataRestoringExplain:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_04', false)
 entrypoint Event3:
@@ -87,15 +96,6 @@ entrypoint Event3:
         run sub_Event54
     elif fEvent3 == 4:
         run AskStart
-    return
-
-flow Return_RestoringExplain:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:002_09', false)
-    run Event3
-    return
-
-flow Enable_Backup:
-    run Event35
     return
 
 flow Seq_Close_AfterEnable:

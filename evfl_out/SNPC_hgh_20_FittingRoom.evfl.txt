@@ -1,22 +1,42 @@
-flow Root:
-    EventFlowSystemActor.UIShopBuyTailorCreate()
-    run Hgh_ExplainFittingRoom
-    run Hgh_TicketNotice
-    run Hgh_BuyFittingRoom
-    return
-
-flow Hgh_TicketNotice:
-    if (EventFlowSystemActor.HasTargetItem(5932, 1)) and (not event_flags_system['cPlayerTemp:HghNoticeTicket']):
-        EventFlowSystemActor.SetTagFromSystem(1, 'cFlow', 'cMoney', '', 3000)
-        if EventFlowSystemActor.HasTargetItem(5932, 2):
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:002_pl', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:002', false)
-        event_flags_system['cPlayerTemp:HghNoticeTicket'] = true
-    return
-
 flow Hgh_BuyFitting:
     MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:010', false)
+    return
+
+flow Hgh_BuyFittingRoom:
+    MainNpc.MessageSuspend()
+    MainNpc.TurnBody(11, 0.0)
+    if event_flags_system['cPlayer:EquipLicenseHelmet']:
+        event_flags_system['cPlayer:EquipLicenseHelmet'] = false
+        Player.PlayerOutfitFieldMakeToolKit('cOff')
+    Player.PlayerChangeDemoState('cGoInFittingRoom')
+    EventFlowSystemActor.UIShopBuyHandling('cTailor')
+    Player.PlayerChangeDemoState('cGoOutFittingRoom')
+    Player.TurnBody(0, 0.0)
+    MainNpc.TurnBody(10, 0.0)
+    fEvent8 = EventFlowSystemActor.UIShopBuyTailorResult()
+    if fEvent8 == 4:
+        run Hgh_BuyFitting
+    elif fEvent8 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:012', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent8 == 3:
+        if EventFlowSystemActor.UIShopBuyTailorIsWear():
+            run Hgh_BuyFitting
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:013', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:017', true)
+    elif fEvent8 == 2:
+        if EventFlowSystemActor.UIShopBuyTailorIsWear():
+            run Hgh_BuyFitting
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:012', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:016', false)
+    elif fEvent8 == 1:
+        if EventFlowSystemActor.UIShopBuyTailorIsWear():
+            run Hgh_BuyFitting
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:011', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:015', false)
     return
 
 flow Hgh_ExplainFittingRoom:
@@ -39,41 +59,21 @@ flow Hgh_ExplainFittingRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:001', false)
     return
 
-flow Hgh_BuyFittingRoom:
-    MainNpc.MessageSuspend()
-    MainNpc.TurnBody(11, 0.0)
-    if event_flags_system['cPlayer:EquipLicenseHelmet']:
-        event_flags_system['cPlayer:EquipLicenseHelmet'] = false
-        Player.PlayerOutfitFieldMakeToolKit('cOff')
-    Player.PlayerChangeDemoState('cGoInFittingRoom')
-    EventFlowSystemActor.UIShopBuyHandling('cTailor')
-    Player.PlayerChangeDemoState('cGoOutFittingRoom')
-    Player.TurnBody(0, 0.0)
-    MainNpc.TurnBody(10, 0.0)
-    fEvent8 = EventFlowSystemActor.UIShopBuyTailorResult()
-    if fEvent8 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:012', false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent8 == 4:
-        run Hgh_BuyFitting
-    elif fEvent8 == 1:
-        if EventFlowSystemActor.UIShopBuyTailorIsWear():
-            run Hgh_BuyFitting
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:011', false)
+flow Hgh_TicketNotice:
+    if (EventFlowSystemActor.HasTargetItem(5932, 1)) and (not event_flags_system['cPlayerTemp:HghNoticeTicket']):
+        EventFlowSystemActor.SetTagFromSystem(1, 'cFlow', 'cMoney', '', 3000)
+        if EventFlowSystemActor.HasTargetItem(5932, 2):
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:002_pl', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:015', false)
-    elif fEvent8 == 2:
-        if EventFlowSystemActor.UIShopBuyTailorIsWear():
-            run Hgh_BuyFitting
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:012', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:016', false)
-    elif fEvent8 == 3:
-        if EventFlowSystemActor.UIShopBuyTailorIsWear():
-            run Hgh_BuyFitting
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:013', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:017', true)
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:002', false)
+        event_flags_system['cPlayerTemp:HghNoticeTicket'] = true
+    return
+
+flow Root:
+    EventFlowSystemActor.UIShopBuyTailorCreate()
+    run Hgh_ExplainFittingRoom
+    run Hgh_TicketNotice
+    run Hgh_BuyFittingRoom
     return
 
 flow sub_Event40:

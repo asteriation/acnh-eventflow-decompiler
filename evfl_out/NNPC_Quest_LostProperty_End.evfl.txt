@@ -1,12 +1,3 @@
-flow End:
-    if not MainNpc.NpcIsQuestClient('cLost', true, false):
-        run Give2
-    elif MainNpc.HasNpcRequestedItem():
-        run Give1
-    else:
-        run Confirm
-    return
-
 flow Confirm:
     fEvent14 = MainNpc.NpcLostQuestType()
     if fEvent14 == 0:
@@ -17,6 +8,15 @@ flow Confirm:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_End:050', false)
     elif fEvent14 == 3:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_End:051', false)
+    return
+
+flow End:
+    if not MainNpc.NpcIsQuestClient('cLost', true, false):
+        run Give2
+    elif MainNpc.HasNpcRequestedItem():
+        run Give1
+    else:
+        run Confirm
     return
 
 flow Give1:

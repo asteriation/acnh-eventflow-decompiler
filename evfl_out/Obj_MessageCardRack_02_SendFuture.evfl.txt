@@ -1,3 +1,11 @@
+flow EntryPoint_DeleteFuture:
+    run Event32
+    return
+
+flow EntryPoint_EditFuture:
+    run Event41
+    return
+
 flow EntryPoint_SendFuture:
     EventFlowSystemActor.UIMoneyDisappear()
     if EventFlowSystemActor.ReservedFutureMail():
@@ -109,13 +117,5 @@ entrypoint Event2:
 
 flow EntryPoint_WrongDate:
     run Event2
-    return
-
-flow EntryPoint_DeleteFuture:
-    run Event32
-    return
-
-flow EntryPoint_EditFuture:
-    run Event41
     return
 

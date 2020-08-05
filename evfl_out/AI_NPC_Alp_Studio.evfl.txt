@@ -1,3 +1,8 @@
+flow ExitStrc:
+    if EventFlowSystemActor.SystemCheckNowStage('cPhotoStudio'):
+        MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
+    return
+
 flow Init:
     return
 
@@ -14,11 +19,6 @@ flow Root:
                     run sub_grp!Event12
     else:
         run sub_grp!Event12
-    return
-
-flow ExitStrc:
-    if EventFlowSystemActor.SystemCheckNowStage('cPhotoStudio'):
-        MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
     return
 
 flow sub_grp!Event12:

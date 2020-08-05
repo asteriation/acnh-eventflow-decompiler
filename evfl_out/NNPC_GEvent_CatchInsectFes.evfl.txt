@@ -1,21 +1,36 @@
-flow Root:
-    if EventFlowSystemActor.SystemCheckNowStage('cField'):
-        fEvent79 = EventFlowSystemActor.EventCheck('InsectConvention')
-        if fEvent79 == 0:
-            run NNPC_BeforeEV
-        elif fEvent79 == 1:
-            run NNPC_OpenEV
-        elif fEvent79 == 2:
-            if EventFlowSystemActor.EnvHourCompare(19, -1, true, true) in (0, 1):
-                run NNPC_AfterEV
+flow Month_1.3:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        run Northern
+    else:
+        run Southern
+    return
+
+flow Month_1.4:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        run Northern_1.4
+    else:
+        run Southern_1.4
+    return
+
+flow NNPC_AfterEV:
+    if not event_flag_npc['cNpcMemory:GEventTalkAfterFlag']:
+        event_flags_npc['cNpcMemory:GEventTalkAfterFlag'] = true
+        fEvent50 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent50 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:008', true)
+        elif fEvent50 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:009', true)
+        elif fEvent50 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:007', true)
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow NNPC_BeforeEV:
     fEvent34 = EventFlowSystemActor.RandomChoice3(3)
-    if fEvent34 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:001', true)
-    elif fEvent34 == 1:
+    if fEvent34 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:002', true)
+    elif fEvent34 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:001', true)
     elif fEvent34 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:003', true)
     EventFlowSystemActor.ExitFlowchart()
@@ -36,37 +51,17 @@ flow NNPC_OpenEV:
     else:
         event_flags_npc['cNpcMemory:GEventTalkProgressFlag'] = true
         fEvent54 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-        if fEvent54 == 0:
+        if fEvent54 == 3:
+            run Month_1.3
+        elif fEvent54 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:004', true)
         elif fEvent54 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:005', true)
         elif fEvent54 == 2:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:006', true)
-        elif fEvent54 == 3:
-            run Month_1.3
         elif fEvent54 == 4:
             run Month_1.4
         EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow NNPC_AfterEV:
-    if not event_flag_npc['cNpcMemory:GEventTalkAfterFlag']:
-        event_flags_npc['cNpcMemory:GEventTalkAfterFlag'] = true
-        fEvent50 = EventFlowSystemActor.RandomChoice3(3)
-        if fEvent50 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:008', true)
-        elif fEvent50 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:009', true)
-        elif fEvent50 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:007', true)
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Month_1.3:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
-        run Northern
-    else:
-        run Southern
     return
 
 flow Northern:
@@ -81,25 +76,6 @@ flow Northern:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:107', false)
     return
 
-flow Southern:
-    fEvent24 = EventFlowSystemActor.EnvMonth()
-    if fEvent24 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:106', false)
-    elif fEvent24 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:107', false)
-    elif fEvent24 == 10:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:104', false)
-    elif fEvent24 == 11:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:105', false)
-    return
-
-flow Month_1.4:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
-        run Northern_1.4
-    else:
-        run Southern_1.4
-    return
-
 flow Northern_1.4:
     fEvent29 = EventFlowSystemActor.EnvMonth()
     if fEvent29 == 5:
@@ -112,15 +88,39 @@ flow Northern_1.4:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:204', false)
     return
 
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        fEvent79 = EventFlowSystemActor.EventCheck('InsectConvention')
+        if fEvent79 == 0:
+            run NNPC_BeforeEV
+        elif fEvent79 == 1:
+            run NNPC_OpenEV
+        elif fEvent79 == 2:
+            if EventFlowSystemActor.EnvHourCompare(19, -1, true, true) in (0, 1):
+                run NNPC_AfterEV
+    return
+
+flow Southern:
+    fEvent24 = EventFlowSystemActor.EnvMonth()
+    if fEvent24 == 10:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:104', false)
+    elif fEvent24 == 11:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:105', false)
+    elif fEvent24 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:106', false)
+    elif fEvent24 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:107', false)
+    return
+
 flow Southern_1.4:
     fEvent38 = EventFlowSystemActor.EnvMonth()
-    if fEvent38 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:207', false)
-    elif fEvent38 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:208', false)
-    elif fEvent38 == 10:
+    if fEvent38 == 10:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:205', false)
     elif fEvent38 == 11:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:206', false)
+    elif fEvent38 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:207', false)
+    elif fEvent38 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:208', false)
     return
 

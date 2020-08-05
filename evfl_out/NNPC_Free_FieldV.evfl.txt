@@ -1,6 +1,5 @@
-flow Root:
-    run NNPC_FreeA::First_Chk
-    run Free_FieldV1
+flow FireworksV_1.4:
+    run Event5
     return
 
 flow Free_FieldV1:
@@ -53,7 +52,8 @@ flow Free_FieldV5:
     run NNPC_Free_Field::Free_Field6
     return
 
-flow FireworksV_1.4:
-    run Event5
+flow Root:
+    run NNPC_FreeA::First_Chk
+    run Free_FieldV1
     return
 

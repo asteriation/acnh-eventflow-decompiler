@@ -1,3 +1,9 @@
+flow Init:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(8, true)
+    return
+
 flow Root:
     if (MainNpc.NpcCheckStateSelectTiming('cInit')) and (not EventFlowSystemActor.EventNpcSet('FishingConvention')):
         MainNpc.NpcChangeAIState('cInvisible', 'SNPC_bey_event', 'Root', '', false, true)
@@ -6,11 +12,5 @@ flow Root:
             MainNpc.NpcChangeAIState('cFes', 'SNPC_bey_event', 'Root', '', false, true)
         else:
             MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_bey_event', '', false, true, 30, 2, 0, 0, true, false, '', '')
-    return
-
-flow Init:
-    MainNpc.NpcAISetting(0, true)
-    MainNpc.NpcAISetting(1, true)
-    MainNpc.NpcAISetting(8, true)
     return
 

@@ -1,3 +1,13 @@
+flow Cancell:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:104', true)
+    run Event27
+    return
+
+flow Retype:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:103', true)
+    run Event27
+    return
+
 flow Root:
     if MainNpc.CheckNpcApproachType():
         if event_flag_npc['cNpcMemory:InputGreeting']:
@@ -208,15 +218,5 @@ entrypoint Event27:
                 run Cancell
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:007', false)
-    return
-
-flow Retype:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:103', true)
-    run Event27
-    return
-
-flow Cancell:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:104', true)
-    run Event27
     return
 

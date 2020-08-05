@@ -1,3 +1,7 @@
+flow Init:
+    run AI_NPC_Indoor::BBRegist
+    return
+
 flow Museum:
     MainNpc.NpcAIDefaultSetting(1)
     fEvent20 = MainNpc.FacilityNpcState()
@@ -17,6 +21,19 @@ flow Museum:
             event_flags_npc['cNpcTemp:TalkEndWait'] = false
         else:
             MainNpc.NpcChangeAIState('cFacilityWander', 'NNPC_Spot_Museum', '', '', true, true)
+    return
+
+flow Root:
+    if MainNpc.IsTargetNpcHouse():
+        run AI_NPC_Indoor::Root
+    else:
+        MainNpc.SetIsStartNeedActivity('cOff')
+        if EventFlowSystemActor.SystemCheckNowStage('cMametubu'):
+            run Store
+        elif EventFlowSystemActor.SystemCheckNowStage('cTailor'):
+            run Tailor
+        else:
+            run Museum
     return
 
 flow Store:
@@ -59,22 +76,5 @@ flow Tailor:
             event_flags_npc['cNpcTemp:TalkEndWait'] = false
         else:
             MainNpc.NpcChangeAIState('cFacilityWander', 'NNPC_Spot_Tailor', '', '', true, true)
-    return
-
-flow Root:
-    if MainNpc.IsTargetNpcHouse():
-        run AI_NPC_Indoor::Root
-    else:
-        MainNpc.SetIsStartNeedActivity('cOff')
-        if EventFlowSystemActor.SystemCheckNowStage('cMametubu'):
-            run Store
-        elif EventFlowSystemActor.SystemCheckNowStage('cTailor'):
-            run Tailor
-        else:
-            run Museum
-    return
-
-flow Init:
-    run AI_NPC_Indoor::BBRegist
     return
 

@@ -33,6 +33,38 @@ flow ObjRcoMachineCheck1st:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_02', false)
     return
 
+flow ObjRcoMachineCheck1st_Init:
+    MainNpc.NpcAISetting(4, false)
+    return
+
+flow ObjRcoMachineCheck_2PUnlockFence:
+    run ObjRcoStandChair
+    event_flags_system['cPlayerTemp:RcoMachineTalkCntl'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:031', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:032', false)
+    event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
+    return
+
+flow ObjRcoMachineCheck_2PUnlockFence_Init:
+    MainNpc.NpcAISetting(4, false)
+    return
+
+flow ObjRcoMachineCheck_UnlockAmiibo:
+    run ObjRcoStandChair
+    event_flags_system['cPlayerTemp:RcoMachineTalkCntl'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:021', false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:022', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:023', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:024', false)
+    event_flags_system['cPlayer:RcoMachineAmiiboCamperUnlock'] = true
+    return
+
+flow ObjRcoMachineCheck_UnlockAmiibo_Init:
+    MainNpc.NpcAISetting(4, false)
+    return
+
 flow ObjRcoRecycleBox1st:
     run ObjRcoStandChair
     event_flags_system['cPlayer:AccessLostPropertyBox1st'] = true
@@ -49,18 +81,6 @@ flow ObjRcoRecycleBox1st:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:014', false)
     return
 
-flow ObjRcoMachineCheck_UnlockAmiibo:
-    run ObjRcoStandChair
-    event_flags_system['cPlayerTemp:RcoMachineTalkCntl'] = true
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:021', false)
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:022', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:023', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:024', false)
-    event_flags_system['cPlayer:RcoMachineAmiiboCamperUnlock'] = true
-    return
-
 flow ObjRcoRecycleBox1st_Init:
     MainNpc.NpcAISetting(4, false)
     return
@@ -68,25 +88,5 @@ flow ObjRcoRecycleBox1st_Init:
 flow ObjRcoStandChair:
     MainNpc.RcoStandUpChair()
     MainNpc.TalkCamera(true, 0)
-    return
-
-flow ObjRcoMachineCheck1st_Init:
-    MainNpc.NpcAISetting(4, false)
-    return
-
-flow ObjRcoMachineCheck_UnlockAmiibo_Init:
-    MainNpc.NpcAISetting(4, false)
-    return
-
-flow ObjRcoMachineCheck_2PUnlockFence:
-    run ObjRcoStandChair
-    event_flags_system['cPlayerTemp:RcoMachineTalkCntl'] = true
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:031', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:032', false)
-    event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
-    return
-
-flow ObjRcoMachineCheck_2PUnlockFence_Init:
-    MainNpc.NpcAISetting(4, false)
     return
 

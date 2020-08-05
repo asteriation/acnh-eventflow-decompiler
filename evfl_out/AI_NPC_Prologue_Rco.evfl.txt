@@ -1,3 +1,17 @@
+flow CheckRobTalk:
+    if event_flags_system['cPlayerTemp:PrologueArrivalTalked']:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
+    else:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
+    return
+
+flow CheckRobTalk2:
+    if (event_flags_system['cLand:Prologue4BuiltPlayer']) and (not event_flags_system['cPlayer:PrologueAfterBuiltTentTalk']):
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
+    else:
+        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
+    return
+
 flow Init:
     MainNpc.NpcRegistAIBlackBoard('CheckRobResult', 0)
     MainNpc.NpcRegistAIBlackBoard('Visible', 1)
@@ -70,19 +84,5 @@ flow Root:
     else:
         MainNpc.NpcAISetting(6, false)
         MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'Tutorials_Prologue3_Orientation1', true, false, true, 2, 0.0, '')
-    return
-
-flow CheckRobTalk:
-    if event_flags_system['cPlayerTemp:PrologueArrivalTalked']:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
-    else:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
-    return
-
-flow CheckRobTalk2:
-    if (event_flags_system['cLand:Prologue4BuiltPlayer']) and (not event_flags_system['cPlayer:PrologueAfterBuiltTentTalk']):
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 1)
-    else:
-        MainNpc.NpcSetAIBlackBoard('CheckRobResult', 0)
     return
 

@@ -1,3 +1,66 @@
+flow Hint_Nuts_Rco:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        fEvent159 = EventFlowSystemActor.EnvMonth()
+        if fEvent159 in (8, 9, 10):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
+            run sub_Event162
+        elif fEvent159 == 11:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
+            run sub_Event162
+    else:
+        fEvent160 = EventFlowSystemActor.EnvMonth()
+        if fEvent160 in (2, 3, 4):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
+            run sub_Event162
+        elif fEvent160 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
+            run sub_Event162
+    return
+
+flow Hint_Nuts_Rco_Cmn:
+    if not event_flags_system['cPlayer:MainmenuRecipe']:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_03', false)
+    elif EventFlowSystemActor.PlayerHasCraftRecipe(6079, ''):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_03', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_02_01', true)
+        run Demo_Common_PhoneCall::SendingDataOneWay
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_02_02', false)
+        EventFlowSystemActor.PlayerSetCraftRecipe(6079, '')
+    return
+
+flow Hint_Nuts_Sza:
+    if EventFlowSystemActor.EnvWeatherArea() == 0:
+        fEvent166 = EventFlowSystemActor.EnvMonth()
+        if fEvent166 == 11:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
+            run sub_Event171
+        elif fEvent166 in (8, 9, 10):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
+            run sub_Event171
+    else:
+        fEvent167 = EventFlowSystemActor.EnvMonth()
+        if fEvent167 in (2, 3, 4):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
+            run sub_Event171
+        elif fEvent167 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
+            run sub_Event171
+    return
+
+flow Hint_Nuts_Sza_Cmn:
+    if not event_flags_system['cPlayer:MainmenuRecipe']:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_03', false)
+    elif EventFlowSystemActor.PlayerHasCraftRecipe(6079, ''):
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_03', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_02_01', true)
+        run Demo_Common_PhoneCall::SendingDataOneWay
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_02_02', false)
+        EventFlowSystemActor.PlayerSetCraftRecipe(6079, '')
+    return
+
 flow Root:
     if not event_flags_system['cPlayer:MainmenuRecipe']:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:711', false)
@@ -18,7 +81,31 @@ flow Root:
 flow SeasonNews_Rco:
     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:610', false)
     fEvent21 = subflow_results[11]
-    if fEvent21 == 0:
+    if fEvent21 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(5979, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(5979, '')
+    elif fEvent21 == 7:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(6033, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(6033, '')
+    elif fEvent21 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:611_01', false)
         if not event_flags_system['cPlayer:MainmenuRecipe']:
@@ -30,8 +117,6 @@ flow SeasonNews_Rco:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:611_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4376, '')
-    elif fEvent21 == 1:
-        run Hint_Nuts_Rco
     elif fEvent21 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:613_01', false)
@@ -56,8 +141,8 @@ flow SeasonNews_Rco:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:616_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4271, '')
-    elif fEvent21 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:615', false)
+    elif fEvent21 == 1:
+        run Hint_Nuts_Rco
     elif fEvent21 == 5:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:614_01', false)
         if not event_flags_system['cPlayer:MainmenuRecipe']:
@@ -69,59 +154,15 @@ flow SeasonNews_Rco:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:614_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4375, '')
-    elif fEvent21 == 6:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(5979, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:618_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(5979, '')
-    elif fEvent21 == 7:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(6033, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:617_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(6033, '')
+    elif fEvent21 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:615', false)
     return
 
 flow SeasonNews_Sza:
     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:610', false)
     fEvent86 = subflow_results[11]
-    if fEvent86 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(4376, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(4376, '')
-    elif fEvent86 == 1:
-        run Hint_Nuts_Sza
-    elif fEvent86 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(4726, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(4726, '')
+    if fEvent86 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:615', false)
     elif fEvent86 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:616_01', false)
         if not event_flags_system['cPlayer:MainmenuRecipe']:
@@ -133,30 +174,6 @@ flow SeasonNews_Sza:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:616_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4271, '')
-    elif fEvent86 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:615', false)
-    elif fEvent86 == 5:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(4375, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(4375, '')
-    elif fEvent86 == 6:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_01', false)
-        if not event_flags_system['cPlayer:MainmenuRecipe']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_03', false)
-        elif EventFlowSystemActor.PlayerHasCraftRecipe(5979, ''):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_03', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_02_01', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_02_02', false)
-            EventFlowSystemActor.PlayerSetCraftRecipe(5979, '')
     elif fEvent86 == 7:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:617_01', false)
         if not event_flags_system['cPlayer:MainmenuRecipe']:
@@ -168,6 +185,17 @@ flow SeasonNews_Sza:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:617_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(6033, '')
+    elif fEvent86 == 6:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(5979, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:618_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(5979, '')
     elif fEvent86 == 8:
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:619_01', false)
         if not event_flags_system['cPlayer:MainmenuRecipe']:
@@ -179,77 +207,49 @@ flow SeasonNews_Sza:
             run Demo_Common_PhoneCall::SendingDataOneWay
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:619_02_02', false)
             EventFlowSystemActor.PlayerSetCraftRecipe(4377, '')
+    elif fEvent86 == 1:
+        run Hint_Nuts_Sza
+    elif fEvent86 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(4376, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:611_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(4376, '')
+    elif fEvent86 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(4726, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:613_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(4726, '')
+    elif fEvent86 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_01', false)
+        if not event_flags_system['cPlayer:MainmenuRecipe']:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_03', false)
+        elif EventFlowSystemActor.PlayerHasCraftRecipe(4375, ''):
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_02_01', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:614_02_02', false)
+            EventFlowSystemActor.PlayerSetCraftRecipe(4375, '')
     return
-
-flow Hint_Nuts_Rco:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
-        fEvent159 = EventFlowSystemActor.EnvMonth()
-        if fEvent159 in (8, 9, 10):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
-            run sub_Event162
-        elif fEvent159 == 11:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
-            run sub_Event162
-    else:
-        fEvent160 = EventFlowSystemActor.EnvMonth()
-        if fEvent160 in (2, 3, 4):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
-            run sub_Event162
-        elif fEvent160 == 5:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
-            run sub_Event162
-    return
-
-flow Hint_Nuts_Sza:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
-        fEvent166 = EventFlowSystemActor.EnvMonth()
-        if fEvent166 in (8, 9, 10):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
-            run sub_Event171
-        elif fEvent166 == 11:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
-            run sub_Event171
-    else:
-        fEvent167 = EventFlowSystemActor.EnvMonth()
-        if fEvent167 in (2, 3, 4):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
-            run sub_Event171
-        elif fEvent167 == 5:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
-            run sub_Event171
-    return
-
-flow Hint_Nuts_Rco_Cmn:
-    if not event_flags_system['cPlayer:MainmenuRecipe']:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_03', false)
-    elif EventFlowSystemActor.PlayerHasCraftRecipe(6079, ''):
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_03', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_02_01', true)
-        run Demo_Common_PhoneCall::SendingDataOneWay
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_02_02', false)
-        EventFlowSystemActor.PlayerSetCraftRecipe(6079, '')
-    return
-
-flow Hint_Nuts_Sza_Cmn:
-    if not event_flags_system['cPlayer:MainmenuRecipe']:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_03', false)
-    elif EventFlowSystemActor.PlayerHasCraftRecipe(6079, ''):
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_03', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_02_01', true)
-        run Demo_Common_PhoneCall::SendingDataOneWay
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_02_02', false)
-        EventFlowSystemActor.PlayerSetCraftRecipe(6079, '')
-    return
-
-flow sub_Event2:
-    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:702', false)
 
 flow sub_Event162:
     run Hint_Nuts_Rco_Cmn
 
 flow sub_Event171:
     run Hint_Nuts_Sza_Cmn
+
+flow sub_Event2:
+    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:702', false)
 

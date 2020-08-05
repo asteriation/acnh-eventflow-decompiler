@@ -43,13 +43,19 @@ entrypoint Event20:
         run System_Controller::SetupSoloController
     return
 
+flow NextPlayer:
+    entry_variables['PlayerIndex'] = 'BaseIndex'
+    run Event20
+    return
+
 flow Restart:
     run Event19
     return
 
-flow NextPlayer:
-    entry_variables['PlayerIndex'] = 'BaseIndex'
-    run Event20
+flow Root:
+    EventFlowSystemActor.WaitFaderSleep()
+    run Impl
+    EventFlowSystemActor.DemoShareStartEnd()
     return
 
 flow StartPlay:
@@ -58,12 +64,6 @@ flow StartPlay:
     if not EventFlowSystemActor.EventFlagAllSharePlayPlayer('cPlayer:SharePlayGuideDone'):
         EventFlowSystemActor.EventFlagAllSharePlayPlayer('cPlayer:SharePlayGuideDone')
         run System_SharePlay_Entry::SharePlay_HowToPlay
-    return
-
-flow Root:
-    EventFlowSystemActor.WaitFaderSleep()
-    run Impl
-    EventFlowSystemActor.DemoShareStartEnd()
     return
 
 flow sub_grp!Event31:

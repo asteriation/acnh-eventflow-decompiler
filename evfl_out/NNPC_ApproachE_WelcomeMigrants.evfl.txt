@@ -1,3 +1,24 @@
+flow Cmn_RndItem:
+    fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious8(8, false)
+    if fEvent57 == 1:
+        MainNpc.SetDeliveryItemAtRandom(3816, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 0:
+        MainNpc.SetDeliveryItemAtRandom(2319, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 2:
+        MainNpc.SetDeliveryItemAtRandom(4379, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 3:
+        MainNpc.SetDeliveryItemAtRandom(3078, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 4:
+        MainNpc.SetDeliveryItemAtRandom(144, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 5:
+        MainNpc.SetDeliveryItemAtRandom(3346, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 6:
+        MainNpc.SetDeliveryItemAtRandom(9619, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 7:
+        MainNpc.SetDeliveryItemAtRandom(11943, true, 'cVillageRemakePattern', 0)
+    MainNpc.SetItemName(0, 14, 0)
+    return
+
 flow Root:
     event_flags_npc['cNpcSave:AppE_WelcomoMigrants'] = true
     event_flags_npc['cNpcSave:AppE_WelcomeMigrantsToday'] = true
@@ -49,27 +70,6 @@ flow WelcomeMigrants_AN2:
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Approach/AN_ApproachE_WelcomeMigrants:013', false)
         MainNpc.NpcMailSend('MAIL_XX_LifeStart', 'cDeliveryItem', 2, 'cFastToday', 'cNone')
-    return
-
-flow Cmn_RndItem:
-    fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious8(8, false)
-    if fEvent57 == 0:
-        MainNpc.SetDeliveryItemAtRandom(2319, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 1:
-        MainNpc.SetDeliveryItemAtRandom(3816, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 2:
-        MainNpc.SetDeliveryItemAtRandom(4379, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 3:
-        MainNpc.SetDeliveryItemAtRandom(3078, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 4:
-        MainNpc.SetDeliveryItemAtRandom(144, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 5:
-        MainNpc.SetDeliveryItemAtRandom(3346, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 6:
-        MainNpc.SetDeliveryItemAtRandom(9619, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 7:
-        MainNpc.SetDeliveryItemAtRandom(11943, true, 'cVillageRemakePattern', 0)
-    MainNpc.SetItemName(0, 14, 0)
     return
 
 flow WelcomeMigrants_HA1:

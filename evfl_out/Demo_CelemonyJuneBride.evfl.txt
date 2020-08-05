@@ -1,3 +1,38 @@
+flow PartyEnd_LisaTalk:
+    if event_flags_system['cPlayerTemp:AlwJuneBridePartyEndFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:090', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:093', true)
+            EventFlowSystemActor.WaitFrame(15)
+            run System_JuneBrideParty::PartyEnd_Wipe
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:094', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:092', false)
+        event_flags_system['cPlayerTemp:AlwJuneBridePartyEndFlag'] = true
+    return
+
+flow PartyEnd_Stop:
+    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:091', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:093', true)
+        EventFlowSystemActor.WaitFrame(15)
+        run System_JuneBrideParty::PartyEnd_Wipe
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:094', false)
+        Player.PlayerDemoMove('cNextInfoAngle', 3)
+    return
+
+flow PartyNow_alp:
+    fEvent40 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent40 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:105', false)
+    elif fEvent40 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:106', false)
+    elif fEvent40 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:107', false)
+    return
+
 flow Root:
     EventFlowSystemActor.WaitFrame(30)
     EventFlowSystemActor.SetEventFlagAttendJuneBrideDemo()
@@ -43,40 +78,5 @@ flow WeddingParty_Demo:
         branch2:
             EventFlowSystemActor.CeremonyEmoticon('Smiling', -1, 'Smiling', 'HappyFlower', 'Smiling', 'HappyFlower', 'HappyDance', 'Smiling', 'Smiling', 'Smiling', 'HappyDance', false)
     MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:085', false)
-    return
-
-flow PartyEnd_Stop:
-    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:091', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:093', true)
-        EventFlowSystemActor.WaitFrame(15)
-        run System_JuneBrideParty::PartyEnd_Wipe
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:094', false)
-        Player.PlayerDemoMove('cNextInfoAngle', 3)
-    return
-
-flow PartyEnd_LisaTalk:
-    if event_flags_system['cPlayerTemp:AlwJuneBridePartyEndFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:090', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:093', true)
-            EventFlowSystemActor.WaitFrame(15)
-            run System_JuneBrideParty::PartyEnd_Wipe
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:094', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:092', false)
-        event_flags_system['cPlayerTemp:AlwJuneBridePartyEndFlag'] = true
-    return
-
-flow PartyNow_alp:
-    fEvent40 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent40 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:105', false)
-    elif fEvent40 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:106', false)
-    elif fEvent40 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:107', false)
     return
 

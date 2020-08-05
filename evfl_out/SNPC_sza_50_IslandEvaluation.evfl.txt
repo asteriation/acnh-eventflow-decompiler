@@ -1,51 +1,122 @@
-flow Root:
-    run System_IslandEvaluationCheck::IslandEvaluationChk
-    run System_IslandEvaluationCheck::Compare_BeforeEvaluation
-    event_flags_system['cPlayer:IslandEvaluationUnlockMyself'] = true
-    event_flags_system['cPlayer:SzaHeardAboutIslandEvaluation'] = true
-    if event_flags_system['cPlayer:SzaHeardAboutEvaluationDetail']:
-        run NormalSeq
-        run Sza_Evaluation_CmnImpression
-    else:
-        run FirstSeq
-        event_flags_system['cPlayer:SzaHeardAboutEvaluationDetail'] = true
-        run Sza_Evaluation_CmnImpression
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_05', false)
-    run SNPC_sza_00_Common::Sza_CmnSel_Again
+flow AdviceAboutFtr:
+    run Event164
     return
 
-flow FirstSeq:
-    if event_flags_system['cPlayerTemp:SzaIslandEvaluationUnlockNow']:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:101_02', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:101_01', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:102', false)
-    fEvent94 = subflow_results[0]
-    if fEvent94 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_01', false)
-    elif fEvent94 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_02', false)
-    elif fEvent94 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_03', false)
-    elif fEvent94 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_04', false)
-    elif fEvent94 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_05', false)
+flow AdviceAboutFtr_AfterHalf:
+    run Event176
     return
 
-flow NormalSeq:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_04', false)
-    fEvent16 = subflow_results[0]
-    if fEvent16 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_01', false)
-    elif fEvent16 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_02', false)
-    elif fEvent16 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_03', false)
-    elif fEvent16 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_04', false)
-    elif fEvent16 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_05', false)
+flow AdviceAboutNatural_AfterHalf:
+    run Event102
+    return
+
+flow AdviceForLife:
+    if not event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
+        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
+        if event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:021_01', false)
+            run AdviceAboutFtr_AfterHalf
+        else:
+            run AdviceForLife
+    elif EventFlowSystemActor.PercentChoice(60):
+entrypoint Event164:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:021', false)
+entrypoint Event176:
+        fEvent176 = EventFlowSystemActor.RandomChoice4(4)
+        if fEvent176 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024', false)
+        elif fEvent176 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_01', false)
+        elif fEvent176 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_02', false)
+        elif fEvent176 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_03', false)
+    else:
+        fEvent168 = EventFlowSystemActor.RandomChoice4(4)
+        if fEvent168 == 2:
+            if event_flags_system['cLand:TailorBuilt']:
+                run AdviceAboutFtr
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
+        elif fEvent168 == 3:
+            fEvent187 = EventFlowSystemActor.ShopLevel()
+            if fEvent187 in (InResServiceTent, NooksCrannyInitial):
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
+            elif fEvent187 == NooksCrannyUpgraded:
+                run AdviceAboutFtr
+        elif fEvent168 == 1:
+            if (EventFlowSystemActor.BridgeNum('cNoReserve', 3)) and (EventFlowSystemActor.BridgeNum('cNoReserve', 2)):
+                run AdviceAboutFtr
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_01', false)
+        elif fEvent168 == 0:
+            fEvent175 = EventFlowSystemActor.MuseumLevel()
+            if fEvent175 in (BlathersNotMovedIn, BlathersTent):
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026', false)
+            elif fEvent175 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                run AdviceAboutFtr
+    return
+
+flow AdviceForMinusPoint:
+    fEvent41 = subflow_results[4]
+    if fEvent41 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:032', false)
+    elif fEvent41 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:033', false)
+    elif fEvent41 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:034', false)
+    return
+
+flow AdviceForNatural:
+    if event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:022', false)
+entrypoint Event102:
+        if EventFlowSystemActor.VillageScoreTreeNum < 180:
+            fEvent101 = EventFlowSystemActor.RandomChoice3(3)
+            if fEvent101 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_02', false)
+            elif fEvent101 == 0:
+                run sub_Event106
+            elif fEvent101 == 1:
+                run sub_Event107
+        elif EventFlowSystemActor.RandomChoice2(2) == 0:
+            run sub_Event106
+        else:
+            run sub_Event107
+    else:
+        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
+        if event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:022_01', false)
+            run AdviceAboutNatural_AfterHalf
+        else:
+            run AdviceForNatural
+    return
+
+flow ChkSellLand:
+    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        run Evaluation2ndTime
+    elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
+        if EventFlowSystemActor.NpcHouseNum('cExist') < 8:
+            run Evaluation2ndTime
+        else:
+            run RecommendSearchLand
+    elif EventFlowSystemActor.NpcHouseNum('cExist') < 7:
+        run Evaluation2ndTime
+    else:
+        run RecommendSearchLand
+    return
+
+flow ChkTalkAboutSearchLand:
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
+            if not EventFlowSystemActor.NpcHouseNum('cExist') < 8:
+                run sub_Event192
+        elif not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
+            run sub_Event192
     return
 
 flow ClearTkkFirstLiveScore:
@@ -73,7 +144,16 @@ flow ClearTkkFirstLiveScore:
     DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:510', false)
     MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:511', false)
     fEvent53 = EventFlowSystemActor.EventBranch(false, 1)
-    if fEvent53 == 0:
+    if fEvent53 in (4, 5, 6, 7):
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:512_05', true)
+        DynamicCast_rco.SmartPhone(1)
+        DynamicCast_rco.TurnNeck(11)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:513_01', false)
+        event_flags_system['cLand:IslandEvaluationClearTkkLive'] = true
+        event_flags_system['cLand:IslandDevQuestRunning'] = false
+        event_flags_system['cLand:IslandDevQuestComplete'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent53 == 0:
         DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:512_01', true)
         DynamicCast_rco.SmartPhone(1)
         DynamicCast_rco.TurnNeck(11)
@@ -109,30 +189,113 @@ flow ClearTkkFirstLiveScore:
         event_flags_system['cLand:IslandDevQuestRunning'] = false
         event_flags_system['cLand:IslandDevQuestComplete'] = true
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent53 in (4, 5, 6, 7):
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:512_05', true)
-        DynamicCast_rco.SmartPhone(1)
-        DynamicCast_rco.TurnNeck(11)
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:513_01', false)
-        event_flags_system['cLand:IslandEvaluationClearTkkLive'] = true
-        event_flags_system['cLand:IslandDevQuestRunning'] = false
-        event_flags_system['cLand:IslandDevQuestComplete'] = true
-        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Evaluation2ndTime:
+    if event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:802', false)
+entrypoint Event72:
+        if subflow_results[5] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:803', false)
+            run AdviceAboutFtr_AfterHalf
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:803_01', false)
+            run AdviceAboutNatural_AfterHalf
+    else:
+        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:804', false)
+        if subflow_results[5] == 0:
+            if event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:805_01', false)
+            else:
+                run NoImprovement
+        elif event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:805_02', false)
+        else:
+            run NoImprovement
+    return
+
+flow FirstSeq:
+    if event_flags_system['cPlayerTemp:SzaIslandEvaluationUnlockNow']:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:101_02', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:101_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:102', false)
+    fEvent94 = subflow_results[0]
+    if fEvent94 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_01', false)
+    elif fEvent94 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_02', false)
+    elif fEvent94 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_03', false)
+    elif fEvent94 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_04', false)
+    elif fEvent94 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:002_05', false)
+    return
+
+flow Get_GoldenWateringRecipe:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:201', true)
+    run Demo_Common_PhoneCall::SendingDataWithP_Owl
+    EventFlowSystemActor.PlayerSetCraftRecipe(8533, '')
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:202', false)
+    run Demo_Common_PhoneCall::PuttingMobileAwayWithP
+    run SNPC_sza_00_Common::Sza_CmnSel_Again
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow NoImprovement:
+    run Event72
+    return
+
+flow NormalSeq:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_04', false)
+    fEvent16 = subflow_results[0]
+    if fEvent16 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_01', false)
+    elif fEvent16 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_02', false)
+    elif fEvent16 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_03', false)
+    elif fEvent16 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_04', false)
+    elif fEvent16 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:003_05', false)
+    return
+
+flow RecommendSearchLand:
+    run Event137
+    return
+
+flow Root:
+    run System_IslandEvaluationCheck::IslandEvaluationChk
+    run System_IslandEvaluationCheck::Compare_BeforeEvaluation
+    event_flags_system['cPlayer:IslandEvaluationUnlockMyself'] = true
+    event_flags_system['cPlayer:SzaHeardAboutIslandEvaluation'] = true
+    if event_flags_system['cPlayer:SzaHeardAboutEvaluationDetail']:
+        run NormalSeq
+        run Sza_Evaluation_CmnImpression
+    else:
+        run FirstSeq
+        event_flags_system['cPlayer:SzaHeardAboutEvaluationDetail'] = true
+        run Sza_Evaluation_CmnImpression
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:000_05', false)
+    run SNPC_sza_00_Common::Sza_CmnSel_Again
     return
 
 flow Sza_Evaluation_CmnImpression:
     if subflow_results[6] in (0, 1):
         fEvent136 = subflow_results[0]
-        if fEvent136 == 0:
+        if fEvent136 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_04', false)
+        elif fEvent136 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_05', false)
+        elif fEvent136 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_01', false)
         elif fEvent136 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_02', false)
         elif fEvent136 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_03', false)
-        elif fEvent136 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_04', false)
-        elif fEvent136 == 4:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_05', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:001_06', false)
     if subflow_results[0] in (0, 1, 2):
@@ -142,33 +305,33 @@ flow Sza_Evaluation_CmnImpression:
 entrypoint Event110:
         EventFlowSystemActor.WaitFrame(10)
         fEvent139 = subflow_results[0]
-        if fEvent139 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:903', true)
-        elif fEvent139 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:904', true)
-        elif fEvent139 == 1:
-            if subflow_results[1] == 0:
-                run sub_Event95
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:902', true)
-        elif fEvent139 == 4:
+        if fEvent139 == 4:
             if EventFlowSystemActor.PercentChoice(80):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:905', true)
             elif EventFlowSystemActor.EnvSeason() in (0, 1, 2):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_02', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_01', false)
+        elif fEvent139 == 1:
+            if subflow_results[1] == 0:
+                run sub_Event95
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:902', true)
+        elif fEvent139 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:904', true)
+        elif fEvent139 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:903', true)
         elif fEvent139 == 0:
             run sub_Event95
         EventFlowSystemActor.SwapSpeaker('cNone', false)
         EventFlowSystemActor.WaitFrame(10)
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
         fEvent140 = subflow_results[1]
-        if fEvent140 == 1:
-            run AdviceForLife
-            run sub_grp!Event11
-        elif fEvent140 == 2:
+        if fEvent140 == 2:
             run AdviceForNatural
+            run sub_grp!Event11
+        elif fEvent140 == 1:
+            run AdviceForLife
             run sub_grp!Event11
         elif fEvent140 == 0:
             if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
@@ -208,177 +371,6 @@ flow Sza_Evaluation_NmlSeq:
     run Event110
     return
 
-flow AdviceForNatural:
-    if event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:022', false)
-entrypoint Event102:
-        if EventFlowSystemActor.VillageScoreTreeNum < 180:
-            fEvent101 = EventFlowSystemActor.RandomChoice3(3)
-            if fEvent101 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_02', false)
-            elif fEvent101 == 0:
-                run sub_Event106
-            elif fEvent101 == 1:
-                run sub_Event107
-        elif EventFlowSystemActor.RandomChoice2(2) == 0:
-            run sub_Event106
-        else:
-            run sub_Event107
-    else:
-        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
-        if event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:022_01', false)
-            run AdviceAboutNatural_AfterHalf
-        else:
-            run AdviceForNatural
-    return
-
-flow AdviceForLife:
-    if not event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
-        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
-        if event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:021_01', false)
-            run AdviceAboutFtr_AfterHalf
-        else:
-            run AdviceForLife
-    elif EventFlowSystemActor.PercentChoice(60):
-entrypoint Event164:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:021', false)
-entrypoint Event176:
-        fEvent176 = EventFlowSystemActor.RandomChoice4(4)
-        if fEvent176 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024', false)
-        elif fEvent176 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_01', false)
-        elif fEvent176 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_02', false)
-        elif fEvent176 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:024_03', false)
-    else:
-        fEvent168 = EventFlowSystemActor.RandomChoice4(4)
-        if fEvent168 == 3:
-            fEvent187 = EventFlowSystemActor.ShopLevel()
-            if fEvent187 in (InResServiceTent, NooksCrannyInitial):
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
-            elif fEvent187 == NooksCrannyUpgraded:
-                run AdviceAboutFtr
-        elif fEvent168 == 2:
-            if event_flags_system['cLand:TailorBuilt']:
-                run AdviceAboutFtr
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
-        elif fEvent168 == 0:
-            fEvent175 = EventFlowSystemActor.MuseumLevel()
-            if fEvent175 in (BlathersNotMovedIn, BlathersTent):
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026', false)
-            elif fEvent175 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                run AdviceAboutFtr
-        elif fEvent168 == 1:
-            if (EventFlowSystemActor.BridgeNum('cNoReserve', 3)) and (EventFlowSystemActor.BridgeNum('cNoReserve', 2)):
-                run AdviceAboutFtr
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_01', false)
-    return
-
-flow AdviceAboutFtr:
-    run Event164
-    return
-
-flow AdviceForMinusPoint:
-    fEvent41 = subflow_results[4]
-    if fEvent41 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:032', false)
-    elif fEvent41 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:033', false)
-    elif fEvent41 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:034', false)
-    return
-
-flow NoImprovement:
-    run Event72
-    return
-
-flow AdviceAboutFtr_AfterHalf:
-    run Event176
-    return
-
-flow AdviceAboutNatural_AfterHalf:
-    run Event102
-    return
-
-flow Get_GoldenWateringRecipe:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:201', true)
-    run Demo_Common_PhoneCall::SendingDataWithP_Owl
-    EventFlowSystemActor.PlayerSetCraftRecipe(8533, '')
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:202', false)
-    run Demo_Common_PhoneCall::PuttingMobileAwayWithP
-    run SNPC_sza_00_Common::Sza_CmnSel_Again
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow ChkSellLand:
-    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        run Evaluation2ndTime
-    elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
-        if EventFlowSystemActor.NpcHouseNum('cExist') < 8:
-            run Evaluation2ndTime
-        else:
-            run RecommendSearchLand
-    elif EventFlowSystemActor.NpcHouseNum('cExist') < 7:
-        run Evaluation2ndTime
-    else:
-        run RecommendSearchLand
-    return
-
-flow RecommendSearchLand:
-    run Event137
-    return
-
-flow ChkTalkAboutSearchLand:
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
-            if not EventFlowSystemActor.NpcHouseNum('cExist') < 8:
-                run sub_Event192
-        elif not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
-            run sub_Event192
-    return
-
-flow Evaluation2ndTime:
-    if event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:802', false)
-entrypoint Event72:
-        if subflow_results[5] == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:803', false)
-            run AdviceAboutFtr_AfterHalf
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:803_01', false)
-            run AdviceAboutNatural_AfterHalf
-    else:
-        event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:804', false)
-        if subflow_results[5] == 0:
-            if event_flags_system['cLand:SzaIslandEvaluationImprovementLifeToday']:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:805_01', false)
-            else:
-                run NoImprovement
-        elif event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:805_02', false)
-        else:
-            run NoImprovement
-    return
-
-flow sub_grp!Event11:
-    if subflow_results[4] in (1, 2, 3):
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031', false)
-        run AdviceForMinusPoint
-
-flow sub_Event95:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
-
 flow sub_Event106:
     MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
 
@@ -387,4 +379,12 @@ flow sub_Event107:
 
 flow sub_Event192:
     MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
+
+flow sub_Event95:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
+
+flow sub_grp!Event11:
+    if subflow_results[4] in (1, 2, 3):
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031', false)
+        run AdviceForMinusPoint
 

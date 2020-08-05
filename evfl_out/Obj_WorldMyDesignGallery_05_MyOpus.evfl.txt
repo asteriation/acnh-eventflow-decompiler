@@ -1,60 +1,17 @@
-flow Root:
-    run Obj_WorldMyDesignGallery_02_SubFlow::PreCheckConnection
-    EventFlowSystemActor.MessageLockNext(1)
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2431', false)
-    EventFlowSystemActor.NetSearchMyDesign('cMyself')
-    EventFlowSystemActor.MessageSuspend()
-    EventFlowSystemActor.MessageUnlockNext()
-    if EventFlowSystemActor.CheckErrorType(2):
-        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    elif EventFlowSystemActor.NetIsFoundMyDesign('cMyself'):
-entrypoint Event12:
-        EventFlowSystemActor.UIMyDesignExchangeListHandling()
-        if EventFlowSystemActor.MyDesignExchangeNetworkError():
-            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-        elif EventFlowSystemActor.UIResultMenuDecide():
-            run Obj_WorldMyDesignGallery_02_SubFlow::WaitForPreview
-entrypoint Event8:
-            EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cSaveFromNet')
-            if EventFlowSystemActor.MyDesignExchangeNetworkError():
-                run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-            else:
-                fEvent10 = EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult()
-                if fEvent10 == 0:
-                    run BackToList
-                elif fEvent10 == 1:
-                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
-                    if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
-                        EventFlowSystemActor.UIMyDesignSelectHandling(1, 2, 0, 0, 0)
-                        run sub_grp-end!Event43
-                    else:
-                        EventFlowSystemActor.UIMyDesignSelectHandling(1, 1, 0, 0, 0)
-                        run sub_grp-end!Event43
-                grp-end!Event43::
-                    run BackToOpus
-                elif fEvent10 == 2:
-                    EventFlowSystemActor.UINetConnectWaitAppear()
-                    EventFlowSystemActor.NetDeleteMyDesign()
-                    EventFlowSystemActor.UINetConnectWaitDisappear()
-                    if EventFlowSystemActor.CheckErrorType(2):
-                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-                    else:
-                        event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = false
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2435', false)
-                        run Root
-        else:
-            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    else:
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2438', true)
-        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    return
-
 flow BackToList:
     run Event12
     return
 
+flow BackToList_Full:
+    run Event28
+    return
+
 flow BackToOpus:
     run Event8
+    return
+
+flow BackToOpus_Full:
+    run Event32
     return
 
 flow FullMode:
@@ -78,8 +35,16 @@ entrypoint Event32:
                 run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:
                 fEvent33 = EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult()
-                if fEvent33 == 0:
-                    run BackToList_Full
+                if fEvent33 == 2:
+                    EventFlowSystemActor.UINetConnectWaitAppear()
+                    EventFlowSystemActor.NetDeleteMyDesign()
+                    EventFlowSystemActor.UINetConnectWaitDisappear()
+                    if EventFlowSystemActor.CheckErrorType(2):
+                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+                    else:
+                        event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = false
+                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2435', false)
+                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
                 elif fEvent33 == 1:
                     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
                     if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
@@ -90,7 +55,45 @@ entrypoint Event32:
                         run sub_grp-end!Event50
                 grp-end!Event50::
                     run BackToOpus_Full
-                elif fEvent33 == 2:
+                elif fEvent33 == 0:
+                    run BackToList_Full
+        else:
+            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+    return
+
+flow Root:
+    run Obj_WorldMyDesignGallery_02_SubFlow::PreCheckConnection
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2431', false)
+    EventFlowSystemActor.NetSearchMyDesign('cMyself')
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.MessageUnlockNext()
+    if EventFlowSystemActor.CheckErrorType(2):
+        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+    elif EventFlowSystemActor.NetIsFoundMyDesign('cMyself'):
+entrypoint Event12:
+        EventFlowSystemActor.UIMyDesignExchangeListHandling()
+        if EventFlowSystemActor.MyDesignExchangeNetworkError():
+            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+        elif EventFlowSystemActor.UIResultMenuDecide():
+            run Obj_WorldMyDesignGallery_02_SubFlow::WaitForPreview
+entrypoint Event8:
+            EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cSaveFromNet')
+            if EventFlowSystemActor.MyDesignExchangeNetworkError():
+                run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+            else:
+                fEvent10 = EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult()
+                if fEvent10 == 1:
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
+                    if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
+                        EventFlowSystemActor.UIMyDesignSelectHandling(1, 2, 0, 0, 0)
+                        run sub_grp-end!Event43
+                    else:
+                        EventFlowSystemActor.UIMyDesignSelectHandling(1, 1, 0, 0, 0)
+                        run sub_grp-end!Event43
+                grp-end!Event43::
+                    run BackToOpus
+                elif fEvent10 == 2:
                     EventFlowSystemActor.UINetConnectWaitAppear()
                     EventFlowSystemActor.NetDeleteMyDesign()
                     EventFlowSystemActor.UINetConnectWaitDisappear()
@@ -99,17 +102,14 @@ entrypoint Event32:
                     else:
                         event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = false
                         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2435', false)
-                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+                        run Root
+                elif fEvent10 == 0:
+                    run BackToList
         else:
             run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    return
-
-flow BackToList_Full:
-    run Event28
-    return
-
-flow BackToOpus_Full:
-    run Event32
+    else:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2438', true)
+        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
     return
 
 flow sub_grp-end!Event43:

@@ -1,3 +1,30 @@
+flow MoveCancel:
+    fEvent9 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent9 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:004', false)
+    elif fEvent9 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:005', false)
+    elif fEvent9 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:006', false)
+    MainNpc.SetNpcMoveoutStopInfo(0)
+    event_flags_npc['cNpcMemory:MoveCancelTalk'] = true
+entrypoint Event18:
+    event_flags_npc['cNpcMemory:NextMoveOutTalk'] = true
+    event_flags_system['cLand:IsMovingConsultationToPlayer'] = true
+    return
+
+flow MoveConfirm:
+    fEvent13 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent13 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:007', false)
+    elif fEvent13 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:008', false)
+    elif fEvent13 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:009', false)
+    MainNpc.SetNpcMoveoutStopInfo(1)
+    run Event18
+    return
+
 flow Moving:
     fEvent4 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
     if fEvent4 == 0:
@@ -33,32 +60,5 @@ flow Stay:
         elif fEvent31 == 2:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Stay:003', false)
     event_flags_npc['cNpcMemory:MoveCancelTalk'] = true
-    return
-
-flow MoveCancel:
-    fEvent9 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent9 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:004', false)
-    elif fEvent9 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:005', false)
-    elif fEvent9 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:006', false)
-    MainNpc.SetNpcMoveoutStopInfo(0)
-    event_flags_npc['cNpcMemory:MoveCancelTalk'] = true
-entrypoint Event18:
-    event_flags_npc['cNpcMemory:NextMoveOutTalk'] = true
-    event_flags_system['cLand:IsMovingConsultationToPlayer'] = true
-    return
-
-flow MoveConfirm:
-    fEvent13 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent13 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:007', false)
-    elif fEvent13 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:008', false)
-    elif fEvent13 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachD_Moving:009', false)
-    MainNpc.SetNpcMoveoutStopInfo(1)
-    run Event18
     return
 

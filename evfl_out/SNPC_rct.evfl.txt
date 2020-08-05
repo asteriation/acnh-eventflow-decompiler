@@ -1,3 +1,20 @@
+flow RctCongratMyhome:
+    if (EventFlowSystemActor.PlayerHouseLevel() == 2) and (not event_flags_system['cPlayer:RctHintCongratsMyhome']):
+        event_flags_system['cPlayer:RctOutsideHintToday'] = true
+        event_flags_system['cPlayer:RctHintCongratsMyhome'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_01', false)
+        if event_flags_system['cLand:RcmShopMaterialComplete']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_03', false)
+            event_flags_system['cPlayer:RctTnx4CollectingMaterials2'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_02', false)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow RctHintCmn:
+    run Event102
+    return
+
 flow Root:
     if not EventFlowSystemActor.IsMyVillage():
         MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:009', false)
@@ -62,23 +79,6 @@ entrypoint Event102:
             MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_04', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_03', false)
-    return
-
-flow RctHintCmn:
-    run Event102
-    return
-
-flow RctCongratMyhome:
-    if (EventFlowSystemActor.PlayerHouseLevel() == 2) and (not event_flags_system['cPlayer:RctHintCongratsMyhome']):
-        event_flags_system['cPlayer:RctOutsideHintToday'] = true
-        event_flags_system['cPlayer:RctHintCongratsMyhome'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_01', false)
-        if event_flags_system['cLand:RcmShopMaterialComplete']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_03', false)
-            event_flags_system['cPlayer:RctTnx4CollectingMaterials2'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_02', false)
-        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow sub_Event24:

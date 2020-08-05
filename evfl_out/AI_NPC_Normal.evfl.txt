@@ -1,25 +1,8 @@
-flow State_Wait:
-    MainNpc.NpcChangeAIState('cWait', '', '', '', false, true)
+flow BecomeTalkCast:
+    run State_TalkCast
     return
 
-flow State_Talk:
-    MainNpc.NpcChangeAIState('cTalk', '', '', '', false, true)
-    return
-
-flow State_TalkCast:
-    MainNpc.NpcChangeAIState('cTalkCast', '', '', '', false, true)
-    return
-
-flow State_Speak:
-    MainNpc.NpcChangeAIState('cSpeak', '', '', '', false, true)
-    return
-
-flow State_Wander:
-    MainNpc.NpcChangeAIState('cWander', '', '', '', false, true)
-    return
-
-flow State_Conversation:
-    MainNpc.NpcChangeAIState('cConversation', '', '', '', false, true)
+flow EndTalk:
     return
 
 flow End_Hit:
@@ -35,27 +18,44 @@ flow End_Hit:
             run Root
     return
 
-flow State_Hit:
-    MainNpc.NpcChangeAIState('cHit', '', '', '', false, true)
-    return
-
 flow Push:
     run State_Speak
+    return
+
+flow Root:
+    run State_Wait
     return
 
 flow StartTalk:
     run State_Talk
     return
 
-flow BecomeTalkCast:
-    run State_TalkCast
+flow State_Conversation:
+    MainNpc.NpcChangeAIState('cConversation', '', '', '', false, true)
     return
 
-flow EndTalk:
+flow State_Hit:
+    MainNpc.NpcChangeAIState('cHit', '', '', '', false, true)
     return
 
-flow Root:
-    run State_Wait
+flow State_Speak:
+    MainNpc.NpcChangeAIState('cSpeak', '', '', '', false, true)
+    return
+
+flow State_Talk:
+    MainNpc.NpcChangeAIState('cTalk', '', '', '', false, true)
+    return
+
+flow State_TalkCast:
+    MainNpc.NpcChangeAIState('cTalkCast', '', '', '', false, true)
+    return
+
+flow State_Wait:
+    MainNpc.NpcChangeAIState('cWait', '', '', '', false, true)
+    return
+
+flow State_Wander:
+    MainNpc.NpcChangeAIState('cWander', '', '', '', false, true)
     return
 
 flow sub_Event15:

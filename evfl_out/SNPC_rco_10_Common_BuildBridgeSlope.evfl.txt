@@ -1,70 +1,58 @@
-flow Root:
-    run ReservedChk
-    if event_flags_system['cPlayer:RcoTalkAboutBuildBridgeSlope']:
-        fEvent6 = subflow_results[0]
-        if fEvent6 == 0:
-            run 0_OrderSeq
-        elif fEvent6 == 1:
-            run 1_FindPlaceSeq
-        elif fEvent6 == 2:
-            run 2_RunningDonateSeq
-        elif fEvent6 == 3:
-            run 3_FinishDonateSeq
-        elif fEvent6 == 4:
-            run 4_CancelDonate
-        elif fEvent6 == 5:
-            run 5_RemoveSeq
-    else:
-        run FirstSeq
-    return
-
-flow ReservedChk:
-    if event_flags_system['cLand:RcoDeleteBridgeSlopeReservedAnyone']:
-        subflow_results[0] = 5
-    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 4:
-        subflow_results[0] = 4
-    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 3:
-        subflow_results[0] = 3
-    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 2:
-        subflow_results[0] = 2
-    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 1:
-        subflow_results[0] = 1
-    else:
-        subflow_results[0] = 0
-    return
-
-flow FirstSeq:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:001', false)
-    event_flags_system['cPlayer:RcoTalkAboutBuildBridgeSlope'] = true
-    fEvent113 = subflow_results[0]
-    if fEvent113 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:002', false)
-        fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent39 == 0:
-            run Bridge_Catalog
-        elif fEvent39 == 1:
-            run Slope_Catalog
-        elif fEvent39 == 2:
-            run BridgeSlope_Remove
-        elif fEvent39 == 3:
-            run BridgeSlope_Cancel
-    elif fEvent113 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:011', false)
-    elif fEvent113 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:012', false)
-    elif fEvent113 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:013', false)
-    elif fEvent113 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:014', false)
-    elif fEvent113 == 5:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:015', false)
-    return
-
 flow 0_OrderSeq:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:003', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent1 == 3:
-        run sub_Event50
+    if fEvent1 == 1:
+entrypoint Event52:
+        if EventFlowSystemActor.SlopeNum('cAll', 8):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:208', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:201', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:202', true)
+            EventFlowSystemActor.UIShopBuyHandling('cSlope')
+            if EventFlowSystemActor.UIResultMenuDecide():
+                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:203', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                    run sub_Event61
+                elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:204', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:205', false)
+                    MainNpc.SetBridgeSlopeKitToPlayerBaggage(1)
+                    event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
+                    event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
+                    event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:206', false)
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+                run sub_Event61
+    elif fEvent1 == 0:
+entrypoint Event58:
+        if EventFlowSystemActor.BridgeNum('cAll', 8):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:108', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:101', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:102', true)
+            EventFlowSystemActor.UIShopBuyHandling('cBridge')
+            if EventFlowSystemActor.UIResultMenuDecide():
+                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:103', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                    run sub_Event29
+                elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:104', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:105', false)
+                    MainNpc.SetBridgeSlopeKitToPlayerBaggage(0)
+                    event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
+                    event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
+                    event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = false
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:106', false)
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+                run sub_Event29
     elif fEvent1 == 2:
 entrypoint Event84:
         EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cMoney', '', 10000)
@@ -141,58 +129,8 @@ entrypoint Event84:
                     EventFlowSystemActor.ExitFlowchart()
             else:
                 run sub_Event106
-    elif fEvent1 == 1:
-entrypoint Event52:
-        if EventFlowSystemActor.SlopeNum('cAll', 8):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:208', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:201', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:202', true)
-            EventFlowSystemActor.UIShopBuyHandling('cSlope')
-            if EventFlowSystemActor.UIResultMenuDecide():
-                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:203', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                    run sub_Event61
-                elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:204', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:205', false)
-                    MainNpc.SetBridgeSlopeKitToPlayerBaggage(1)
-                    event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
-                    event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
-                    event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:206', false)
-                    EventFlowSystemActor.ExitFlowchart()
-            else:
-                run sub_Event61
-    elif fEvent1 == 0:
-entrypoint Event58:
-        if EventFlowSystemActor.BridgeNum('cAll', 8):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:108', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:101', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:102', true)
-            EventFlowSystemActor.UIShopBuyHandling('cBridge')
-            if EventFlowSystemActor.UIResultMenuDecide():
-                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:103', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                    run sub_Event29
-                elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:104', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:105', false)
-                    MainNpc.SetBridgeSlopeKitToPlayerBaggage(0)
-                    event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
-                    event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
-                    event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = false
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:106', false)
-                    EventFlowSystemActor.ExitFlowchart()
-            else:
-                run sub_Event29
+    elif fEvent1 == 3:
+        run sub_Event50
     return
 
 flow 1_FindPlaceSeq:
@@ -252,14 +190,6 @@ flow 5_RemoveSeq:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:605', false)
     return
 
-flow Bridge_Catalog:
-    run Event58
-    return
-
-flow Slope_Catalog:
-    run Event52
-    return
-
 flow BridgeSlope_Cancel:
     run sub_Event50
     return
@@ -268,16 +198,86 @@ flow BridgeSlope_Remove:
     run Event84
     return
 
-flow sub_Event50:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:004', false)
+flow Bridge_Catalog:
+    run Event58
     return
 
-flow sub_Event61:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
+flow FirstSeq:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:001', false)
+    event_flags_system['cPlayer:RcoTalkAboutBuildBridgeSlope'] = true
+    fEvent113 = subflow_results[0]
+    if fEvent113 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:002', false)
+        fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent39 == 0:
+            run Bridge_Catalog
+        elif fEvent39 == 1:
+            run Slope_Catalog
+        elif fEvent39 == 3:
+            run BridgeSlope_Cancel
+        elif fEvent39 == 2:
+            run BridgeSlope_Remove
+    elif fEvent113 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:011', false)
+    elif fEvent113 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:012', false)
+    elif fEvent113 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:013', false)
+    elif fEvent113 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:014', false)
+    elif fEvent113 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:015', false)
+    return
+
+flow ReservedChk:
+    if event_flags_system['cLand:RcoDeleteBridgeSlopeReservedAnyone']:
+        subflow_results[0] = 5
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 4:
+        subflow_results[0] = 4
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 3:
+        subflow_results[0] = 3
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 2:
+        subflow_results[0] = 2
+    elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] >= 1:
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 0
+    return
+
+flow Root:
+    run ReservedChk
+    if event_flags_system['cPlayer:RcoTalkAboutBuildBridgeSlope']:
+        fEvent6 = subflow_results[0]
+        if fEvent6 == 0:
+            run 0_OrderSeq
+        elif fEvent6 == 1:
+            run 1_FindPlaceSeq
+        elif fEvent6 == 2:
+            run 2_RunningDonateSeq
+        elif fEvent6 == 3:
+            run 3_FinishDonateSeq
+        elif fEvent6 == 4:
+            run 4_CancelDonate
+        elif fEvent6 == 5:
+            run 5_RemoveSeq
+    else:
+        run FirstSeq
+    return
+
+flow Slope_Catalog:
+    run Event52
+    return
 
 flow sub_Event106:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:308', false)
 
 flow sub_Event29:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
+
+flow sub_Event50:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:004', false)
+    return
+
+flow sub_Event61:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
 

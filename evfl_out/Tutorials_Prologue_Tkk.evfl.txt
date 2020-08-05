@@ -5,6 +5,23 @@ flow Root:
     run Tkk_Dream_AfterTalk
     return
 
+flow Tkk_Dream_AfterTalk:
+    EventFlowSystemActor.BGMPropertyControl(14)
+    MainNpc.NpcRequestAction(1)
+    EventFlowSystemActor.WaitFrame(120)
+    EventFlowSystemActor.BGMPropertyControl(15)
+    EventFlowSystemActor.SoundTriggerEmit('ReturnFromDream', -1)
+    EventFlowSystemActor.ReserveNpcCommand('PrologueNextDayAwake')
+    event_flags_system['cPlayer:PrologueFinishTkkDream'] = true
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.NpcSetRewardRecipe(7142, false)
+        EventFlowSystemActor.SystemMailSendDirect('cNintendo', 'MAIL_SP_Nintendo', 'cReward', 1)
+        EventFlowSystemActor.StartupMailSend(true, true, true)
+    event_flags_system['cLand:Tutorial1PTentLightON'] = true
+    EventFlowSystemActor.TimeLock('cUnlockDemo')
+    EventFlowSystemActor.ReturnStage('', 'cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612)
+    return
+
 flow Tkk_Dream_BeforeTalk:
     EventFlowSystemActor.BGMPropertyControl(14)
     EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'CutSpotlight', '', false, false, false, 0)
@@ -26,22 +43,5 @@ flow Tkk_Dream_Talk:
     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_dream:005', false)
     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_dream:006', false)
     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_dream:007', true)
-    return
-
-flow Tkk_Dream_AfterTalk:
-    EventFlowSystemActor.BGMPropertyControl(14)
-    MainNpc.NpcRequestAction(1)
-    EventFlowSystemActor.WaitFrame(120)
-    EventFlowSystemActor.BGMPropertyControl(15)
-    EventFlowSystemActor.SoundTriggerEmit('ReturnFromDream', -1)
-    EventFlowSystemActor.ReserveNpcCommand('PrologueNextDayAwake')
-    event_flags_system['cPlayer:PrologueFinishTkkDream'] = true
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.NpcSetRewardRecipe(7142, false)
-        EventFlowSystemActor.SystemMailSendDirect('cNintendo', 'MAIL_SP_Nintendo', 'cReward', 1)
-        EventFlowSystemActor.StartupMailSend(true, true, true)
-    event_flags_system['cLand:Tutorial1PTentLightON'] = true
-    EventFlowSystemActor.TimeLock('cUnlockDemo')
-    EventFlowSystemActor.ReturnStage('', 'cNormalFader', 'cNormalFader', 'cBlack', 0.10000000149011612, 0.10000000149011612)
     return
 

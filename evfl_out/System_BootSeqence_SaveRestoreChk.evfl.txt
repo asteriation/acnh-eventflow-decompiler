@@ -1,12 +1,12 @@
+flow RecoveringNotice:
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9010', false)
+    run Event5
+    return
+
 flow StartCheck:
     if (not EventFlowSystemActor.SaveLastBackupElapsedDaysGreaterThan(7)) and (EventFlowSystemActor.SaveIsOnBackupRestoringSettingNotice()):
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9006', false)
 entrypoint Event5:
         EventFlowSystemActor.SaveOnBackupRestoringSettingNotice()
-    return
-
-flow RecoveringNotice:
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9010', false)
-    run Event5
     return
 

@@ -1,9 +1,42 @@
-flow Progress_MyHouseBuilt:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt']) and (EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7)) and (EventFlowSystemActor.FacilityOpenPastDays('cPlayerHouse', 7)) and ((MainNpc.NpcBirthType('cFirst')) or (not event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:002', false)
-        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
+flow Conceal_MuseumBuilt:
+    fEvent91 = EventFlowSystemActor.MuseumLevel()
+    if fEvent91 == BlathersMuseumNoArt:
+        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
+        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
+    elif fEvent91 == BlathersMuseumArt:
+        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt2'] = true
+        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
+        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
+    return
+
+flow Conceal_MyHouseBuilt:
+    fEvent86 = EventFlowSystemActor.PlayerHouseLevel()
+    if fEvent86 == 8:
+        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
+        run sub_Event81
+    elif fEvent86 in (2, 3, 4, 5, 6, 7):
+        run sub_Event81
+    return
+
+flow Conceal_NpcHouseBuilt:
+    event_flags_npc['cNpcMemory:TalkProgressNpcHouseBuilt'] = true
+    return
+
+flow Conceal_ShopBuilt2:
+    event_flags_npc['cNpcMemory:TalkProgressShopBuilt2'] = true
+    event_flags_npc['cNpcMemory:TalkProgressShopBuilt'] = true
+    return
+
+flow Conceal_TailorBuilt:
+    event_flags_npc['cNpcMemory:TalkProgressTailorBuilt'] = true
+    return
+
+flow Progress_BridgeBuilt:
+    if (not event_flag_npc['cNpcMemory:TalkProgressBridgeBuilt']) and (event_flags_system['cLand:CountFirstBridgeAfterBuild'] >= 1) and (EventFlowSystemActor.BridgeNum('cNoReserve', 1)) and (MainNpc.NpcBirthType('cFirst')):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:012', false)
+        event_flags_npc['cNpcMemory:TalkProgressBridgeBuilt'] = true
         EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_MyHouseBuilt
+    run sub_tm!Progress_BridgeBuilt
 
 flow Progress_MigrantsQuest:
     if (not event_flag_npc['cNpcMemory:TalkProgressMigrantsQuest']) and (event_flags_system['cLand:RcmImmQuestRunning']) and (event_flags_system['cPlayer:ImmQRunningForPlayer']) and (MainNpc.NpcBirthType('cFirst')):
@@ -12,12 +45,58 @@ flow Progress_MigrantsQuest:
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Progress_MigrantsQuest
 
+flow Progress_MuseumBuilt:
+    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumBuilt']) and (EventFlowSystemActor.MuseumLevel() == BlathersMuseumNoArt) and (event_flags_system['cPlayer:FirstPlayAfterMuseumBuiltFlag']):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:010', false)
+        run Event39
+    run sub_tm!Progress_MuseumBuilt
+
+flow Progress_MuseumBuilt2:
+    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumBuilt2']) and (EventFlowSystemActor.MuseumLevel() == BlathersMuseumArt) and (event_flags_system['cPlayer:FirstPlayAfterMuseumBuilt2Flag']):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:015', false)
+        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt2'] = true
+entrypoint Event39:
+        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
+        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Progress_MuseumBuilt2
+
+flow Progress_MuseumTent:
+    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumTent']) and (EventFlowSystemActor.MuseumLevel() == BlathersTent) and (event_flags_system['cPlayer:FirstPlayAfterMuseumTentFlag']):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:009', false)
+        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Progress_MuseumTent
+
+flow Progress_MyHouseBuilt:
+    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt']) and (EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7)) and (EventFlowSystemActor.FacilityOpenPastDays('cPlayerHouse', 7)) and ((MainNpc.NpcBirthType('cFirst')) or (not event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:002', false)
+        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Progress_MyHouseBuilt
+
+flow Progress_MyHouseBuilt2:
+    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt2']) and (EventFlowSystemActor.PlayerHouseLevel() == 8) and (EventFlowSystemActor.FacilityOpenPastDays('cUnderGround', 7)):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:003', false)
+        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
+        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Progress_MyHouseBuilt2
+
 flow Progress_OfficeBuilt:
     if (not event_flag_npc['cNpcMemory:TalkProgressOfficeBuilt']) and (event_flags_system['cPlayer:FirstPlayAfterOfficeBuiltFlag']):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:006', false)
         event_flags_npc['cNpcMemory:TalkProgressOfficeBuilt'] = true
         EventFlowSystemActor.ExitFlowchart()
     return
+
+flow Progress_OtherPlayerMoveIn:
+    if (not event_flag_npc['cNpcMemory:TalkProgressOtherPlayerMoveIn']) and (EventFlowSystemActor.PlayerVillagerCount(2)) and (not EventFlowSystemActor.IsSharePlay(1)) and (EventFlowSystemActor.ComparePlayerCreateTime(7)):
+        EventFlowSystemActor.SetTagFromSystem(0, 'cNewVillagerPlayer', 'cDegit', '', 0)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:014', false)
+        event_flags_npc['cNpcMemory:TalkProgressOtherPlayerMoveIn'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Progress_OtherPlayerMoveIn
 
 flow Progress_ShopBuilt:
     if (not event_flag_npc['cNpcMemory:TalkProgressShopBuilt']) and (EventFlowSystemActor.ShopLevel() == NooksCrannyInitial) and (event_flags_system['cPlayer:FirstPlayAfterShopBuiltFlag']) and (MainNpc.NpcBirthType('cFirst')):
@@ -34,48 +113,12 @@ flow Progress_ShopBuilt2:
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Progress_ShopBuilt2
 
-flow Progress_MuseumTent:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumTent']) and (EventFlowSystemActor.MuseumLevel() == BlathersTent) and (event_flags_system['cPlayer:FirstPlayAfterMuseumTentFlag']):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:009', false)
-        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_MuseumTent
-
-flow Progress_MuseumBuilt:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumBuilt']) and (EventFlowSystemActor.MuseumLevel() == BlathersMuseumNoArt) and (event_flags_system['cPlayer:FirstPlayAfterMuseumBuiltFlag']):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:010', false)
-        run Event39
-    run sub_tm!Progress_MuseumBuilt
-
-flow Progress_BridgeBuilt:
-    if (not event_flag_npc['cNpcMemory:TalkProgressBridgeBuilt']) and (event_flags_system['cLand:CountFirstBridgeAfterBuild'] >= 1) and (EventFlowSystemActor.BridgeNum('cNoReserve', 1)) and (MainNpc.NpcBirthType('cFirst')):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:012', false)
-        event_flags_npc['cNpcMemory:TalkProgressBridgeBuilt'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_BridgeBuilt
-
 flow Progress_SlopeBuilt:
     if (not event_flag_npc['cNpcMemory:TalkProgressSlopeBuilt']) and (event_flags_system['cLand:CountFirstSlopeAfterBuild'] >= 1) and (EventFlowSystemActor.SlopeNum('cNoReserve', 1)):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:013', false)
         event_flags_npc['cNpcMemory:TalkProgressSlopeBuilt'] = true
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Progress_SlopeBuilt
-
-flow Progress_OtherPlayerMoveIn:
-    if (not event_flag_npc['cNpcMemory:TalkProgressOtherPlayerMoveIn']) and (EventFlowSystemActor.PlayerVillagerCount(2)) and (not EventFlowSystemActor.IsSharePlay(1)) and (EventFlowSystemActor.ComparePlayerCreateTime(7)):
-        EventFlowSystemActor.SetTagFromSystem(0, 'cNewVillagerPlayer', 'cDegit', '', 0)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:014', false)
-        event_flags_npc['cNpcMemory:TalkProgressOtherPlayerMoveIn'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_OtherPlayerMoveIn
-
-flow Progress_MyHouseBuilt2:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt2']) and (EventFlowSystemActor.PlayerHouseLevel() == 8) and (EventFlowSystemActor.FacilityOpenPastDays('cUnderGround', 7)):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:003', false)
-        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
-        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_MyHouseBuilt2
 
 flow Progress_TailorBuilt:
     if (not event_flag_npc['cNpcMemory:TalkProgressTailorBuilt']) and (event_flags_system['cPlayer:FirstPlayAfterTailorBuiltFlag']):
@@ -84,53 +127,31 @@ flow Progress_TailorBuilt:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Conceal_MyHouseBuilt:
-    fEvent86 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent86 == 8:
-        event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
-        run sub_Event81
-    elif fEvent86 in (2, 3, 4, 5, 6, 7):
-        run sub_Event81
+flow sub_Event81:
+    event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
+
+flow sub_tm!Progress_BridgeBuilt:
     return
 
-flow Conceal_ShopBuilt2:
-    event_flags_npc['cNpcMemory:TalkProgressShopBuilt2'] = true
-    event_flags_npc['cNpcMemory:TalkProgressShopBuilt'] = true
+flow sub_tm!Progress_MigrantsQuest:
     return
 
-flow Conceal_MuseumBuilt:
-    fEvent91 = EventFlowSystemActor.MuseumLevel()
-    if fEvent91 == BlathersMuseumNoArt:
-        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
-        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
-    elif fEvent91 == BlathersMuseumArt:
-        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt2'] = true
-        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
-        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
+flow sub_tm!Progress_MuseumBuilt:
     return
 
-flow Conceal_TailorBuilt:
-    event_flags_npc['cNpcMemory:TalkProgressTailorBuilt'] = true
+flow sub_tm!Progress_MuseumBuilt2:
     return
 
-flow Conceal_NpcHouseBuilt:
-    event_flags_npc['cNpcMemory:TalkProgressNpcHouseBuilt'] = true
+flow sub_tm!Progress_MuseumTent:
     return
-
-flow Progress_MuseumBuilt2:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMuseumBuilt2']) and (EventFlowSystemActor.MuseumLevel() == BlathersMuseumArt) and (event_flags_system['cPlayer:FirstPlayAfterMuseumBuilt2Flag']):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:015', false)
-        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt2'] = true
-entrypoint Event39:
-        event_flags_npc['cNpcMemory:TalkProgressMuseumBuilt'] = true
-        event_flags_npc['cNpcMemory:TalkProgressMuseumTent'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Progress_MuseumBuilt2
 
 flow sub_tm!Progress_MyHouseBuilt:
     return
 
-flow sub_tm!Progress_MigrantsQuest:
+flow sub_tm!Progress_MyHouseBuilt2:
+    return
+
+flow sub_tm!Progress_OtherPlayerMoveIn:
     return
 
 flow sub_tm!Progress_ShopBuilt:
@@ -139,27 +160,6 @@ flow sub_tm!Progress_ShopBuilt:
 flow sub_tm!Progress_ShopBuilt2:
     return
 
-flow sub_tm!Progress_MuseumTent:
-    return
-
-flow sub_tm!Progress_MuseumBuilt:
-    return
-
-flow sub_tm!Progress_BridgeBuilt:
-    return
-
 flow sub_tm!Progress_SlopeBuilt:
     return
-
-flow sub_tm!Progress_OtherPlayerMoveIn:
-    return
-
-flow sub_tm!Progress_MyHouseBuilt2:
-    return
-
-flow sub_tm!Progress_MuseumBuilt2:
-    return
-
-flow sub_Event81:
-    event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
 

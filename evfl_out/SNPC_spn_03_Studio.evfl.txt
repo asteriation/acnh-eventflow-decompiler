@@ -1,14 +1,3 @@
-flow Root:
-    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
-        Player.TurnBody(0, 0.0)
-        EventFlowSystemActor.WaitFrame(10)
-    else:
-        run Setup
-        run Enter
-    run Talk
-    run Exit
-    return
-
 flow Enter:
     Player.PlayerDemoMove('cForward', 1)
     fork:
@@ -40,6 +29,54 @@ flow Enter:
     EventFlowSystemActor.WaitFrame(15)
     return
 
+flow Exit:
+    event_flags_system['cPlayer:SpnPhotoStudioGuideDone'] = true
+    EventFlowSystemActor.SetCatalogFlagPhotoStudioPreset()
+    MainNpc.NpcChangeWaitState('cWait', '', '', '', false, true, 0, true, '')
+    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']):
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.FadeOut('cHeartWipe', 'cCircle', 'cBlack', 1.0, 1.0, true)
+        MainNpc.NpcAISetting(12, false)
+        if event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']:
+            EventFlowSystemActor.StoreNormalCamera(true)
+            EventFlowSystemActor.FadeIn(true)
+        else:
+            event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag'] = true
+            EventFlowSystemActor.StoreNormalCamera(false)
+            Player.PlayerMoveToTarget(15.0, -40.0, 0.0, 0.0, 'cAutoWait', false, true)
+            Player.TurnBody(12, 225.0)
+            EventFlowSystemActor.FadeIn(true)
+            EventFlowSystemActor.SetNpcAIBlackBoardByLabel('DemoSpeak', 1, 'alw', 1)
+    else:
+        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+        MainNpc.NpcAISetting(12, false)
+        EventFlowSystemActor.StoreNormalCamera(true)
+        EventFlowSystemActor.FadeIn(true)
+    return
+
+flow Root:
+    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
+        Player.TurnBody(0, 0.0)
+        EventFlowSystemActor.WaitFrame(10)
+    else:
+        run Setup
+        run Enter
+    run Talk
+    run Exit
+    return
+
+flow Setup:
+    return
+
+flow Spn_Explain_Again:
+    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:105', false)
+    run Event29
+    return
+
+flow Spn_Explain_Select:
+    run Event29
+    return
+
 flow Talk:
     if EventFlowSystemActor.TermEventNow('JuneBride', false):
         if event_flags_system['cPlayer:CommuneIslandAvailable']:
@@ -67,42 +104,11 @@ flow Talk:
         run sub_grp!Event20
     return
 
-flow Exit:
-    event_flags_system['cPlayer:SpnPhotoStudioGuideDone'] = true
-    EventFlowSystemActor.SetCatalogFlagPhotoStudioPreset()
-    MainNpc.NpcChangeWaitState('cWait', '', '', '', false, true, 0, true, '')
-    if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']):
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.FadeOut('cHeartWipe', 'cCircle', 'cBlack', 1.0, 1.0, true)
-        MainNpc.NpcAISetting(12, false)
-        if event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']:
-            EventFlowSystemActor.StoreNormalCamera(true)
-            EventFlowSystemActor.FadeIn(true)
-        else:
-            event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag'] = true
-            EventFlowSystemActor.StoreNormalCamera(false)
-            Player.PlayerMoveToTarget(15.0, -40.0, 0.0, 0.0, 'cAutoWait', false, true)
-            Player.TurnBody(12, 225.0)
-            EventFlowSystemActor.FadeIn(true)
-            EventFlowSystemActor.SetNpcAIBlackBoardByLabel('DemoSpeak', 1, 'alw', 1)
-    else:
-        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
-        MainNpc.NpcAISetting(12, false)
-        EventFlowSystemActor.StoreNormalCamera(true)
-        EventFlowSystemActor.FadeIn(true)
-    return
+flow sub_Event27:
+    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
 
-flow Setup:
-    return
-
-flow Spn_Explain_Again:
-    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:105', false)
-    run Event29
-    return
-
-flow Spn_Explain_Select:
-    run Event29
-    return
+flow sub_Event38:
+    run Spn_Explain_Again
 
 flow sub_grp!Event20:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -118,6 +124,10 @@ entrypoint Event29:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:112_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:113', false)
             run Spn_Explain_Again
+        elif fEvent29 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_02', false)
+            if not event_flags_system['cPlayer:SpnPhotoStudioGuideDone']:
+                run sub_Event27
         elif fEvent29 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:121', false)
             if event_flags_system['cPlayer:EnableEmoticonUI']:
@@ -138,17 +148,7 @@ entrypoint Event29:
                 run sub_Event38
             else:
                 run Spn_Explain_Again
-        elif fEvent29 == 4:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_02', false)
-            if not event_flags_system['cPlayer:SpnPhotoStudioGuideDone']:
-                run sub_Event27
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_01', false)
         run sub_Event27
-
-flow sub_Event38:
-    run Spn_Explain_Again
-
-flow sub_Event27:
-    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
 

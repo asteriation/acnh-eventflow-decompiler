@@ -1,5 +1,8 @@
-flow Root:
-    MainNpc.NpcChangeSpVisitorTurnState('cSpVisitorTurn', 'Root', 'SNPC_fox_GEvent_Fireworks', '', false, true, 30, 1, 15, 0, true, true, '', '')
+flow Check_Stall:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.NpcAISetting(18, true)
+    MainNpc.SetNpcSpeakFlow('BoxCheck', 'SNPC_fox_GEvent_Fireworks')
     return
 
 flow Init:
@@ -9,10 +12,7 @@ flow Init:
     MainNpc.NpcAISetRequestSpeakFunc('cFireWorksStall', true)
     return
 
-flow Check_Stall:
-    MainNpc.NpcAISetting(9, false)
-    MainNpc.NpcAISetting(5, false)
-    MainNpc.NpcAISetting(18, true)
-    MainNpc.SetNpcSpeakFlow('BoxCheck', 'SNPC_fox_GEvent_Fireworks')
+flow Root:
+    MainNpc.NpcChangeSpVisitorTurnState('cSpVisitorTurn', 'Root', 'SNPC_fox_GEvent_Fireworks', '', false, true, 30, 1, 15, 0, true, true, '', '')
     return
 

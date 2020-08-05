@@ -5,10 +5,10 @@ flow Root:
 entrypoint Event86:
                 if EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0:
                     fEvent104 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-                    if fEvent104 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:052', true)
-                    elif fEvent104 == 1:
+                    if fEvent104 == 1:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:053', true)
+                    elif fEvent104 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:052', true)
                     elif fEvent104 == 2:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:054', true)
                     elif fEvent104 == 3:
@@ -17,9 +17,7 @@ entrypoint Event86:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:056', true)
                 else:
                     fEvent107 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-                    if fEvent107 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:057', true)
-                    elif fEvent107 == 1:
+                    if fEvent107 == 1:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:058', true)
                     elif fEvent107 == 2:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:059', true)
@@ -27,6 +25,8 @@ entrypoint Event86:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:060', true)
                     elif fEvent107 == 4:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:061', true)
+                    elif fEvent107 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:057', true)
             elif EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:043', false)
                 run Sza_Get_StickLight
@@ -56,10 +56,10 @@ entrypoint Event86:
                 run Sza_Get_StickLight
     elif EventFlowSystemActor.EnvHourCompare(23, 59, true, true) != 0:
         fEvent14 = EventFlowSystemActor.RandomChoice3(3)
-        if fEvent14 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:030', false)
-        elif fEvent14 == 1:
+        if fEvent14 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:031', false)
+        elif fEvent14 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:030', false)
         elif fEvent14 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:032', false)
     elif EventFlowSystemActor.IsMyVillage():
@@ -70,10 +70,10 @@ entrypoint Event26:
                 if EventFlowSystemActor.RandomChoice2(2) == 0:
 entrypoint Event30:
                     fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-                    if fEvent30 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
-                    elif fEvent30 == 1:
+                    if fEvent30 == 1:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:027', true)
+                    elif fEvent30 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
                     elif fEvent30 == 2:
                         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:028', true)
                     elif fEvent30 == 3:
@@ -91,10 +91,10 @@ entrypoint Event30:
                         if EventFlowSystemActor.EnvHourCompare(23, -1, true, true) == 0:
 entrypoint Event30:
                             fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-                            if fEvent30 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
-                            elif fEvent30 == 1:
+                            if fEvent30 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:027', true)
+                            elif fEvent30 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:026', true)
                             elif fEvent30 == 2:
                                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:028', true)
                             elif fEvent30 == 3:
@@ -108,29 +108,29 @@ entrypoint Event30:
                                     run sub_Event32
                         elif EventFlowSystemActor.EnvHourCompare(23, 55, true, true) == 0:
                             fEvent51 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                            if fEvent51 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:021', true)
-                            elif fEvent51 == 1:
+                            if fEvent51 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:022', true)
+                            elif fEvent51 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:021', true)
                             elif fEvent51 == 2:
                                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:023', true)
                         elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:024', true)
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:025', true)
-                    elif fEvent31 in (0, 1, 2):
-                        fEvent39 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                        if fEvent39 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:016', true)
-                        elif fEvent39 == 1:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:017', true)
-                        elif fEvent39 == 2:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:018', true)
                     elif fEvent31 == 3:
                         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:019', true)
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:020', true)
+                    elif fEvent31 in (0, 1, 2):
+                        fEvent39 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                        if fEvent39 == 1:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:017', true)
+                        elif fEvent39 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:016', true)
+                        elif fEvent39 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:018', true)
             elif EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:012', false)
                 run Sza_Get_StickLight
@@ -181,8 +181,8 @@ entrypoint Event30:
             run sub_grp!Event5
     return
 
-flow Sza_Talk_Before_Newyear:
-    run Event25
+flow Sza_Chat_After_Newyear:
+    run Event86
     return
 
 flow Sza_Chat_Before_Newyear:
@@ -193,18 +193,21 @@ flow Sza_Get_StickLight:
     run Event70
     return
 
-flow Sza_Chat_After_Newyear:
-    run Event86
+flow Sza_Talk_Before_Newyear:
+    run Event25
     return
 
 flow sub_Event131:
     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:040', false)
 
-flow sub_Event85:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:042', false)
-
 flow sub_Event134:
     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:041', false)
+
+flow sub_Event32:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_00', true)
+
+flow sub_Event85:
+    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:042', false)
 
 flow sub_grp!Event5:
     if EventFlowSystemActor.ShoppingCapacity(5741, 'cItemName'):
@@ -223,7 +226,4 @@ entrypoint Event70:
         MainNpc.NpcDelivery('Default', 2)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:008', true)
-
-flow sub_Event32:
-    MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_00', true)
 

@@ -224,21 +224,13 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:008', false)
     return
 
-flow sub_grp!Event139:
-    if EventFlowSystemActor.HasBellCount('ItemPrice'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:401', false)
-        MainNpc.NpcDelivery('"Default"', 8)
-        EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
-        EventFlowSystemActor.UIMoneyDisappear()
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:402', false)
-        run sub_Event131
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:009', false)
-
-flow sub_Event131:
+flow sub_Event128:
     MainNpc.RegistToReleaseItemList(0)
 
-flow sub_Event128:
+flow sub_Event129:
+    MainNpc.RegistToReleaseItemList(0)
+
+flow sub_Event131:
     MainNpc.RegistToReleaseItemList(0)
 
 flow sub_grp!Event134:
@@ -252,9 +244,6 @@ flow sub_grp!Event134:
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:009', false)
 
-flow sub_Event129:
-    MainNpc.RegistToReleaseItemList(0)
-
 flow sub_grp!Event138:
     if EventFlowSystemActor.HasBellCount('ItemPrice'):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:301', false)
@@ -263,6 +252,17 @@ flow sub_grp!Event138:
         EventFlowSystemActor.UIMoneyDisappear()
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:302', false)
         MainNpc.RegistToReleaseItemList(0)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:009', false)
+
+flow sub_grp!Event139:
+    if EventFlowSystemActor.HasBellCount('ItemPrice'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:401', false)
+        MainNpc.NpcDelivery('"Default"', 8)
+        EventFlowSystemActor.BellCountDown('ItemPrice', 'Reverse')
+        EventFlowSystemActor.UIMoneyDisappear()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:402', false)
+        run sub_Event131
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:009', false)
 

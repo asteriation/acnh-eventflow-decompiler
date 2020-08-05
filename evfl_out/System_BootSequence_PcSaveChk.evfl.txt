@@ -1,3 +1,11 @@
+flow NACheckAgain:
+    run Event48
+    return
+
+flow ReSelect:
+    run Event2
+    return
+
 flow Root:
     if EventFlowSystemActor.PlayAccountIsPlayerVillager():
         if EventFlowSystemActor.NetHasPOPID(false):
@@ -60,12 +68,20 @@ entrypoint Event2:
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8002', false)
     return
 
-flow ReSelect:
-    run Event2
-    return
-
-flow Sel_Rethink:
-    run Event13
+flow Sel_Delete_User:
+    EventFlowSystemActor.UIMsgCardAdrHandling('cPlayerRemove')
+    if EventFlowSystemActor.UIResultMenuDecide():
+        EventFlowSystemActor.SetTagFromUIResult(1, 'cVillagerPlayerNameD')
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0012', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            subflow_results[0] = 1
+            EventFlowSystemActor.MessageSuspend()
+            run System_Cmn_UserSaveDataAccess::Cmn_User_Delete
+            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8002', false)
+        else:
+            run Sel_Rethink
+    else:
+        run Sel_Rethink
     return
 
 flow Sel_ExistP:
@@ -100,24 +116,8 @@ entrypoint Event13:
             run ReSelect
     return
 
-flow Sel_Delete_User:
-    EventFlowSystemActor.UIMsgCardAdrHandling('cPlayerRemove')
-    if EventFlowSystemActor.UIResultMenuDecide():
-        EventFlowSystemActor.SetTagFromUIResult(1, 'cVillagerPlayerNameD')
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0012', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            subflow_results[0] = 1
-            EventFlowSystemActor.MessageSuspend()
-            run System_Cmn_UserSaveDataAccess::Cmn_User_Delete
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8002', false)
-        else:
-            run Sel_Rethink
-    else:
-        run Sel_Rethink
-    return
-
-flow NACheckAgain:
-    run Event48
+flow Sel_Rethink:
+    run Event13
     return
 
 flow sub_Event46:

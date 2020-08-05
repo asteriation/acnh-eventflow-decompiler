@@ -82,27 +82,6 @@ flow Begin_Ap:
     fEvent139 = MainNpc.NpcLostQuestType()
     if fEvent139 in (0, 2):
         run NNPC_Approach::Reselection
-    elif fEvent139 == 1:
-        if MainNpc.CheckNpcApproachType():
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:101', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:103', false, false)
-                MainNpc.NpcQuestControl('cStart')
-                event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
-                event_flags_npc['cNpcMemory:OrderQuest'] = true
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:104', false)
-                run sub_Event14
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:102', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:105', false, false)
-                MainNpc.NpcQuestControl('cStart')
-                event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
-                event_flags_npc['cNpcMemory:OrderQuest'] = true
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:106', false)
-                run sub_Event14
     elif fEvent139 == 3:
         if MainNpc.CheckNpcApproachType():
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:201', false)
@@ -124,23 +103,44 @@ flow Begin_Ap:
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:206', false)
                 run sub_Event17
+    elif fEvent139 == 1:
+        if MainNpc.CheckNpcApproachType():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:101', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:103', false, false)
+                MainNpc.NpcQuestControl('cStart')
+                event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
+                event_flags_npc['cNpcMemory:OrderQuest'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:104', false)
+                run sub_Event14
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:102', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:105', false, false)
+                MainNpc.NpcQuestControl('cStart')
+                event_flags_npc['cNpcMemory:ApproachQuestOrdered'] = true
+                event_flags_npc['cNpcMemory:OrderQuest'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_LostProperty_Begin:106', false)
+                run sub_Event14
     return
 
-flow sub_Event18:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event20:
-    event_flags_system['cPlayerTemp:QuestCancell'] = true
-
-flow sub_Event19:
+flow sub_Event14:
     event_flags_system['cPlayerTemp:QuestCancell'] = true
 
 flow sub_Event16:
     event_flags_system['cPlayerTemp:QuestCancell'] = true
 
-flow sub_Event14:
+flow sub_Event17:
     event_flags_system['cPlayerTemp:QuestCancell'] = true
 
-flow sub_Event17:
+flow sub_Event18:
+    event_flags_system['cPlayerTemp:QuestCancell'] = true
+
+flow sub_Event19:
+    event_flags_system['cPlayerTemp:QuestCancell'] = true
+
+flow sub_Event20:
     event_flags_system['cPlayerTemp:QuestCancell'] = true
 

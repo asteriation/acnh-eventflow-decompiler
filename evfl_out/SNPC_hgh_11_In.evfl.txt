@@ -1,11 +1,3 @@
-flow Root:
-    event_flags_system['cPlayer:KinuyoForcesTalkTodayFlag'] = true
-    event_flags_system['cPlayerTemp:KinuyoTalkSceneFlag'] = true
-    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:001', false)
-    run Hgh_1stExplain
-    event_flags_system['cPlayerTemp:TailorChkObject'] = false
-    return
-
 flow Hgh_1stExplain:
     if event_flags_system['cPlayer:KinuyoTalkInTailorFlag']:
         if event_flags_system['cPlayer:KinuyoMydesginMachineFlag']:
@@ -30,6 +22,14 @@ flow Hgh_1stExplain:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006_02', false)
     else:
         event_flags_system['cPlayerTemp:TailorChkObject'] = false
+    return
+
+flow Root:
+    event_flags_system['cPlayer:KinuyoForcesTalkTodayFlag'] = true
+    event_flags_system['cPlayerTemp:KinuyoTalkSceneFlag'] = true
+    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:001', false)
+    run Hgh_1stExplain
+    event_flags_system['cPlayerTemp:TailorChkObject'] = false
     return
 
 flow sub_Event7:

@@ -48,14 +48,14 @@ flow sub_grp!Event70:
             SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:008', true)
             SubNpc.CharacterEmoticonAction('Worried', '', 0, true, false)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:009', false)
-        elif fEvent10 == 3:
-            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:010', false)
-            SubNpc.CharacterEmoticonAction('Worried', '', 0, true, false)
-            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:009', false)
         elif fEvent10 == 4:
             SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:011', false)
             SubNpc.CharacterEmoticonAction('FaintSmile', '', 0, true, false)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:013', false)
+        elif fEvent10 == 3:
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:010', false)
+            SubNpc.CharacterEmoticonAction('Worried', '', 0, true, false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_BO:009', false)
     else:
         fork:
             branch0:

@@ -1,3 +1,28 @@
+flow BeeFace_GetMedicineRecipe:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:011', false)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:012', true)
+    MainNpc.NpcSetRewardRecipe(2777, false)
+    MainNpc.SetDeliveryItem(1, true)
+    MainNpc.NpcDelivery('Keep', 1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:013', false)
+    MainNpc.NpcDelivery('Default', 2)
+    event_flags_system['cPlayer:GotMedicineRecipe'] = true
+    return
+
+flow BeeFace_NormalTalk:
+    run Event3
+    return
+
+flow Medicine:
+    MainNpc.SetDeliveryItemAtRandom(2777, true, 'cVillageRemakePattern', 0)
+    if (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag')) and (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (MainNpc.CheckNpcFavorLevel() in (0, 1, 2, 3, 4)):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:006', false)
+        MainNpc.NpcDelivery('Default', 1)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:007', false)
+    else:
+        run sub_Event10
+    return
+
 flow Root:
     if not ((not event_flags_system['cPlayer:PlayerStungByBee']) or (event_flag_npc['cNpcMemory:TalkBeefaceToday']) or (EventFlowSystemActor.SystemIsCanNotLookFace())):
         if event_flags_system['cPlayer:GotMedicineRecipe']:
@@ -27,37 +52,12 @@ entrypoint Event3:
             run sub_Event20
     run sub_tm!Root
 
-flow Medicine:
-    MainNpc.SetDeliveryItemAtRandom(2777, true, 'cVillageRemakePattern', 0)
-    if (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag')) and (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (MainNpc.CheckNpcFavorLevel() in (0, 1, 2, 3, 4)):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:006', false)
-        MainNpc.NpcDelivery('Default', 1)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:007', false)
-    else:
-        run sub_Event10
-    return
-
-flow BeeFace_NormalTalk:
-    run Event3
-    return
-
-flow BeeFace_GetMedicineRecipe:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:011', false)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:012', true)
-    MainNpc.NpcSetRewardRecipe(2777, false)
-    MainNpc.SetDeliveryItem(1, true)
-    MainNpc.NpcDelivery('Keep', 1)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:013', false)
-    MainNpc.NpcDelivery('Default', 2)
-    event_flags_system['cPlayer:GotMedicineRecipe'] = true
-    return
-
-flow sub_tm!Root:
-    return
+flow sub_Event10:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:005', false)
 
 flow sub_Event20:
     run BeeFace_NormalTalk
 
-flow sub_Event10:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Beeface:005', false)
+flow sub_tm!Root:
+    return
 

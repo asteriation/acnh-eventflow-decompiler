@@ -1,3 +1,32 @@
+flow UploadProfileCore:
+    EventFlowSystemActor.NetCheckProfileBan('IgnoreError')
+    if EventFlowSystemActor.CheckErrorType(2):
+        subflow_results[0] = 1
+        if entry_variables['Terminate']:
+            EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:UploadPlayerProfileIllegal']:
+        if event_flags_system['cPlayer:ImprovePlayerProfile']:
+            event_flags_system['cPlayer:UploadPlayerProfileIllegal'] = false
+            event_flags_system['cPlayer:ImprovePlayerProfile'] = false
+            EventFlowSystemActor.UploadProfile('IgnoreError')
+            if EventFlowSystemActor.CheckErrorType(2):
+                subflow_results[0] = 1
+                if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
+                    EventFlowSystemActor.MessageSuspend()
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
+                if entry_variables['Terminate']:
+                    EventFlowSystemActor.ExitFlowchart()
+    else:
+        EventFlowSystemActor.UploadProfile('IgnoreError')
+        if EventFlowSystemActor.CheckErrorType(2):
+            subflow_results[0] = 1
+            if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
+                EventFlowSystemActor.MessageSuspend()
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
+            if entry_variables['Terminate']:
+                EventFlowSystemActor.ExitFlowchart()
+    return
+
 flow UserRegist:
     subflow_results[0] = 0
     EventFlowSystemActor.MessageLockNext(1)
@@ -48,34 +77,5 @@ flow UserResistCore:
                     subflow_results[0] = 1
                 else:
                     run UploadProfileCore
-    return
-
-flow UploadProfileCore:
-    EventFlowSystemActor.NetCheckProfileBan('IgnoreError')
-    if EventFlowSystemActor.CheckErrorType(2):
-        subflow_results[0] = 1
-        if entry_variables['Terminate']:
-            EventFlowSystemActor.ExitFlowchart()
-    elif event_flags_system['cPlayer:UploadPlayerProfileIllegal']:
-        if event_flags_system['cPlayer:ImprovePlayerProfile']:
-            event_flags_system['cPlayer:UploadPlayerProfileIllegal'] = false
-            event_flags_system['cPlayer:ImprovePlayerProfile'] = false
-            EventFlowSystemActor.UploadProfile('IgnoreError')
-            if EventFlowSystemActor.CheckErrorType(2):
-                subflow_results[0] = 1
-                if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
-                    EventFlowSystemActor.MessageSuspend()
-                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
-                if entry_variables['Terminate']:
-                    EventFlowSystemActor.ExitFlowchart()
-    else:
-        EventFlowSystemActor.UploadProfile('IgnoreError')
-        if EventFlowSystemActor.CheckErrorType(2):
-            subflow_results[0] = 1
-            if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
-                EventFlowSystemActor.MessageSuspend()
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
-            if entry_variables['Terminate']:
-                EventFlowSystemActor.ExitFlowchart()
     return
 

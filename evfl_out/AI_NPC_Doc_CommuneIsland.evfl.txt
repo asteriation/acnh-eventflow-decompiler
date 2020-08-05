@@ -1,11 +1,3 @@
-flow Root:
-    if event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone']:
-        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_doc_52_CommuneIsland', true, false, true, 1, 0.0, '')
-    else:
-        MainNpc.SetNpcSpeakFlow('Root', 'SNPC_doc_52_CommuneIsland')
-        MainNpc.NpcChangeAIState('cSpeak', 'SNPC_doc_52_CommuneIsland', 'Root', '', false, true)
-    return
-
 flow Init:
     MainNpc.NpcAISetting(8, true)
     if EventFlowSystemActor.TermEventNow('JuneBride', false):
@@ -17,5 +9,13 @@ flow JuneBrideDemo_First:
     MainNpc.NpcAISetting(5, false)
     MainNpc.NpcAISetting(4, false)
     run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Root:
+    if event_flags_system['cPlayerTemp:DocCommuneIslandFirstTalkDone']:
+        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_doc_52_CommuneIsland', true, false, true, 1, 0.0, '')
+    else:
+        MainNpc.SetNpcSpeakFlow('Root', 'SNPC_doc_52_CommuneIsland')
+        MainNpc.NpcChangeAIState('cSpeak', 'SNPC_doc_52_CommuneIsland', 'Root', '', false, true)
     return
 

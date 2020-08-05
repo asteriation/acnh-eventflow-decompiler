@@ -1,73 +1,25 @@
-flow Root:
-    run CmnMoveInChk
-    run CmnFacilitiesChk
-    run CmnMoveOutChk
-    run CmnFoxVisitChk
-    if subflow_results[0] == 0:
-        run ChkOfficeNews
-    return
-
-flow CmnMoveInChk:
-    if MainNpc.IsExistMoveNpc(false):
-        subflow_results[5] = 1
-        subflow_results[4] = 1
-    return
-
-flow CmnFacilitiesChk:
-    run ChkMuseum
-    run ChkMarket
-    run ChkTailor
-    run ChkCampsite
-    return
-
-flow CmnMoveOutChk:
-    if MainNpc.IsExistMoveNpc(true):
-        subflow_results[10] = 1
-        if subflow_results[4] == 0:
-            subflow_results[4] = 2
-        else:
-            subflow_results[4] = 3
-    return
-
-flow ChkMuseum:
-    if event_flags_system['cLand:MuseumConstructionToday']:
-        subflow_results[6] = 3
-        subflow_results[4] = 1
-    elif event_flags_system['cLand:Museum2ConstructionToday']:
-        subflow_results[6] = 6
-        subflow_results[4] = 1
-    else:
-        fEvent6 = EventFlowSystemActor.MuseumLevel()
-        if fEvent6 == BlathersTent:
-            if (subflow_results[0] == 0) and (not event_flags_system['cPlayer:AnnouncementOwlMovedIn']):
-                if event_flags_system['cLand:MuseumTentBuiltToday']:
-                    subflow_results[6] = 1
-                else:
-                    subflow_results[6] = 2
+flow ChkCampsite:
+    if event_flags_system['cPlayer:PAnnounceCampsite']:
+        if EventFlowSystemActor.IsCampSiteOccupied():
+            subflow_results[9] = 3
+            subflow_results[4] = 1
+            run sub_Event44
+    elif EventFlowSystemActor.FacilityOpenPastDays('cCampSite', 8):
+        if event_flags_system['cLand:CampSiteBuilt']:
+            if event_flags_system['cLand:CampSiteBuiltToday']:
+                subflow_results[9] = 1
                 subflow_results[4] = 1
-                event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
-        elif fEvent6 == BlathersMuseumNoArt:
-            if EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 8):
-                if not event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag']:
-                    if event_flags_system['cLand:Museum2BuiltToday']:
-                        subflow_results[6] = 4
-                    else:
-                        subflow_results[6] = 5
-                    subflow_results[4] = 1
-                    run sub_Event9
+                run sub_Event44
             else:
-                run sub_Event9
-        elif fEvent6 == BlathersMuseumArt:
-            if EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 8):
-                if not event_flags_system['cPlayer:TownNewsHeardMuseum2OpenFlag']:
-                    if event_flags_system['cLand:Museum3BuiltToday']:
-                        subflow_results[6] = 7
-                    else:
-                        subflow_results[6] = 8
-                    subflow_results[4] = 1
-                    run sub_Event92
-            else:
-                run sub_Event92
+                subflow_results[9] = 2
+                subflow_results[4] = 1
+                run sub_Event44
+    elif EventFlowSystemActor.IsCampSiteOccupied():
+        subflow_results[9] = 3
+        subflow_results[4] = 1
+        run sub_Event44
+    else:
+        run sub_Event44
     return
 
 flow ChkMarket:
@@ -103,17 +55,45 @@ flow ChkMarket:
             subflow_results[4] = 1
     run sub_tm!ChkMarket
 
-flow ChkTailor:
-    if EventFlowSystemActor.FacilityOpenPastDays('cTailor', 8):
-        if (not event_flags_system['cPlayer:PAnnounceTailorBuilt']) and (event_flags_system['cLand:TailorBuilt']):
-            if event_flags_system['cLand:TailorBuiltToday']:
-                subflow_results[8] = 1
-            else:
-                subflow_results[8] = 2
-            subflow_results[4] = 1
-            run sub_Event34
+flow ChkMuseum:
+    if event_flags_system['cLand:MuseumConstructionToday']:
+        subflow_results[6] = 3
+        subflow_results[4] = 1
+    elif event_flags_system['cLand:Museum2ConstructionToday']:
+        subflow_results[6] = 6
+        subflow_results[4] = 1
     else:
-        run sub_Event34
+        fEvent6 = EventFlowSystemActor.MuseumLevel()
+        if fEvent6 == BlathersMuseumNoArt:
+            if EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 8):
+                if not event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag']:
+                    if event_flags_system['cLand:Museum2BuiltToday']:
+                        subflow_results[6] = 4
+                    else:
+                        subflow_results[6] = 5
+                    subflow_results[4] = 1
+                    run sub_Event9
+            else:
+                run sub_Event9
+        elif fEvent6 == BlathersTent:
+            if (subflow_results[0] == 0) and (not event_flags_system['cPlayer:AnnouncementOwlMovedIn']):
+                if event_flags_system['cLand:MuseumTentBuiltToday']:
+                    subflow_results[6] = 1
+                else:
+                    subflow_results[6] = 2
+                subflow_results[4] = 1
+                event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
+        elif fEvent6 == BlathersMuseumArt:
+            if EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 8):
+                if not event_flags_system['cPlayer:TownNewsHeardMuseum2OpenFlag']:
+                    if event_flags_system['cLand:Museum3BuiltToday']:
+                        subflow_results[6] = 7
+                    else:
+                        subflow_results[6] = 8
+                    subflow_results[4] = 1
+                    run sub_Event92
+            else:
+                run sub_Event92
     return
 
 flow ChkOfficeNews:
@@ -130,28 +110,24 @@ flow ChkOfficeNews:
         run sub_grp!Event63
     run sub_tm!ChkOfficeNews
 
-flow ChkCampsite:
-    if event_flags_system['cPlayer:PAnnounceCampsite']:
-        if EventFlowSystemActor.IsCampSiteOccupied():
-            subflow_results[9] = 3
-            subflow_results[4] = 1
-            run sub_Event44
-    elif EventFlowSystemActor.FacilityOpenPastDays('cCampSite', 8):
-        if event_flags_system['cLand:CampSiteBuilt']:
-            if event_flags_system['cLand:CampSiteBuiltToday']:
-                subflow_results[9] = 1
-                subflow_results[4] = 1
-                run sub_Event44
+flow ChkTailor:
+    if EventFlowSystemActor.FacilityOpenPastDays('cTailor', 8):
+        if (not event_flags_system['cPlayer:PAnnounceTailorBuilt']) and (event_flags_system['cLand:TailorBuilt']):
+            if event_flags_system['cLand:TailorBuiltToday']:
+                subflow_results[8] = 1
             else:
-                subflow_results[9] = 2
-                subflow_results[4] = 1
-                run sub_Event44
-    elif EventFlowSystemActor.IsCampSiteOccupied():
-        subflow_results[9] = 3
-        subflow_results[4] = 1
-        run sub_Event44
+                subflow_results[8] = 2
+            subflow_results[4] = 1
+            run sub_Event34
     else:
-        run sub_Event44
+        run sub_Event34
+    return
+
+flow CmnFacilitiesChk:
+    run ChkMuseum
+    run ChkMarket
+    run ChkTailor
+    run ChkCampsite
     return
 
 flow CmnFoxVisitChk:
@@ -159,16 +135,43 @@ flow CmnFoxVisitChk:
         subflow_results[4] = 1
     return
 
+flow CmnMoveInChk:
+    if MainNpc.IsExistMoveNpc(false):
+        subflow_results[5] = 1
+        subflow_results[4] = 1
+    return
+
+flow CmnMoveOutChk:
+    if MainNpc.IsExistMoveNpc(true):
+        subflow_results[10] = 1
+        if subflow_results[4] == 0:
+            subflow_results[4] = 2
+        else:
+            subflow_results[4] = 3
+    return
+
 flow CmnPhoneCallImmQ:
     if (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (not event_flags_system['cLand:PAnnounceRcoCalling']):
         subflow_results[13] = 1
     return
 
-flow sub_tm!ChkMarket:
+flow Root:
+    run CmnMoveInChk
+    run CmnFacilitiesChk
+    run CmnMoveOutChk
+    run CmnFoxVisitChk
+    if subflow_results[0] == 0:
+        run ChkOfficeNews
     return
 
-flow sub_tm!ChkOfficeNews:
-    return
+flow sub_Event34:
+    event_flags_system['cPlayer:PAnnounceTailorBuilt'] = true
+
+flow sub_Event40:
+    event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
+
+flow sub_Event44:
+    event_flags_system['cPlayer:PAnnounceCampsite'] = true
 
 flow sub_Event9:
     event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag'] = true
@@ -176,18 +179,15 @@ flow sub_Event9:
 flow sub_Event92:
     event_flags_system['cPlayer:TownNewsHeardMuseum2OpenFlag'] = true
 
-flow sub_Event40:
-    event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
-
-flow sub_Event34:
-    event_flags_system['cPlayer:PAnnounceTailorBuilt'] = true
-
 flow sub_grp!Event63:
     if (event_flags_system['cLand:ImmQClearNextDay']) and (event_flags_system['cPlayer:MainmenuRecipe']) and (not event_flags_system['cPlayer:TownNewsHeardRemakeTrialFlag']):
         subflow_results[13] = 2
         event_flags_system['cPlayer:TownNewsHeardRemakeTrialFlag'] = true
         event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = true
 
-flow sub_Event44:
-    event_flags_system['cPlayer:PAnnounceCampsite'] = true
+flow sub_tm!ChkMarket:
+    return
+
+flow sub_tm!ChkOfficeNews:
+    return
 

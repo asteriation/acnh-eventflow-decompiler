@@ -1,5 +1,16 @@
-flow Root:
-    MainNpc.NpcChangeAIState('cFox', 'SNPC_fox', 'Root_Talk', '', false, true)
+flow Check_fox:
+    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
+        MainNpc.NpcAISetting(9, false)
+        MainNpc.NpcAISetting(5, false)
+        MainNpc.SetNpcSpeakFlow('Root_ItemCheck', 'SNPC_fox')
+    return
+
+flow Enter_fox:
+    MainNpc.NpcAISetting(13, true)
+    MainNpc.NpcAISetting(18, true)
+    run AI_NPC_Common::Speak
+    event_flags_system['cLandTemp:FoxEnterBalloon'] = true
+    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
     return
 
 flow Init:
@@ -23,22 +34,11 @@ flow Init:
         MainNpc.NpcAISetting(8, false)
     return
 
-flow Check_fox:
-    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
-        MainNpc.NpcAISetting(9, false)
-        MainNpc.NpcAISetting(5, false)
-        MainNpc.SetNpcSpeakFlow('Root_ItemCheck', 'SNPC_fox')
-    return
-
 flow Leave_fox:
     run AI_NPC_Common::ContinueSpeak
     return
 
-flow Enter_fox:
-    MainNpc.NpcAISetting(13, true)
-    MainNpc.NpcAISetting(18, true)
-    run AI_NPC_Common::Speak
-    event_flags_system['cLandTemp:FoxEnterBalloon'] = true
-    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
+flow Root:
+    MainNpc.NpcChangeAIState('cFox', 'SNPC_fox', 'Root_Talk', '', false, true)
     return
 

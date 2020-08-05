@@ -32,13 +32,7 @@ flow Give:
                 elif fEvent4 == 7:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:108', false)
                 fEvent8 = MainNpc.CheckNpcFavorLevel()
-                if fEvent8 in (4, 5):
-                    MainNpc.SetDeliveryItemApplySave()
-                    MainNpc.NpcDelivery('Default', 3)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:109', false)
-                    quest_flags['cDeliveryEnd'] = true
-                    event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-                elif fEvent8 in (2, 3):
+                if fEvent8 in (2, 3):
                     if EventFlowSystemActor.PercentChoice(20):
                         run sub_Event68
                     else:
@@ -47,36 +41,18 @@ flow Give:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:109', false)
                         quest_flags['cDeliveryEnd'] = true
                         event_flags_npc['cNpcMemory:StoodUpFlag'] = false
+                elif fEvent8 in (4, 5):
+                    MainNpc.SetDeliveryItemApplySave()
+                    MainNpc.NpcDelivery('Default', 3)
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:109', false)
+                    quest_flags['cDeliveryEnd'] = true
+                    event_flags_npc['cNpcMemory:StoodUpFlag'] = false
                 elif fEvent8 in (0, 1):
                     run sub_Event68
             elif fEvent3 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:004', false)
                 fEvent69 = MainNpc.CheckNpcFavorLevel()
-                if fEvent69 in (2, 3):
-                    fEvent92 = EventFlowSystemActor.PercentChoice3(20, 10, 70)
-                    if fEvent92 == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:202', false)
-                        run NNPC_Quest_Delivery_End::QuizEnd
-                    elif fEvent92 == 1:
-                        MainNpc.NpcDelivery('Default', 6)
-                        quest_flags['cDeliveryItemOpen'] = true
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:203', false)
-                        MainNpc.NpcDecideDeliveryQuestReward(1, 2)
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:204', false)
-                        MainNpc.SetDeliveryItemApplySave()
-                        MainNpc.NpcDelivery('Default', 10)
-                        quest_flags['cDeliverySameBought'] = true
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:205', false)
-                        MainNpc.RegistToReleaseItemList(1)
-                        quest_flags['cDeliveryEnd'] = true
-                        quest_flags['cDeliveryItemOpen'] = false
-                        event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-                    elif fEvent92 == 2:
-                        MainNpc.NpcDelivery('Default', 6)
-                        quest_flags['cDeliveryItemOpen'] = true
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:201', false)
-                        run NNPC_Quest_Delivery_End::Thanks1
-                elif fEvent69 in (4, 5):
+                if fEvent69 in (4, 5):
                     MainNpc.NpcDelivery('Default', 6)
                     quest_flags['cDeliveryItemOpen'] = true
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:201', false)
@@ -99,82 +75,34 @@ flow Give:
                         quest_flags['cDeliveryEnd'] = true
                         quest_flags['cDeliveryItemOpen'] = false
                         event_flags_npc['cNpcMemory:StoodUpFlag'] = false
+                elif fEvent69 in (2, 3):
+                    fEvent92 = EventFlowSystemActor.PercentChoice3(20, 10, 70)
+                    if fEvent92 == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:202', false)
+                        run NNPC_Quest_Delivery_End::QuizEnd
+                    elif fEvent92 == 2:
+                        MainNpc.NpcDelivery('Default', 6)
+                        quest_flags['cDeliveryItemOpen'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:201', false)
+                        run NNPC_Quest_Delivery_End::Thanks1
+                    elif fEvent92 == 1:
+                        MainNpc.NpcDelivery('Default', 6)
+                        quest_flags['cDeliveryItemOpen'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:203', false)
+                        MainNpc.NpcDecideDeliveryQuestReward(1, 2)
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:204', false)
+                        MainNpc.SetDeliveryItemApplySave()
+                        MainNpc.NpcDelivery('Default', 10)
+                        quest_flags['cDeliverySameBought'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:205', false)
+                        MainNpc.RegistToReleaseItemList(1)
+                        quest_flags['cDeliveryEnd'] = true
+                        quest_flags['cDeliveryItemOpen'] = false
+                        event_flags_npc['cNpcMemory:StoodUpFlag'] = false
             elif fEvent3 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:005', false)
                 fEvent73 = MainNpc.CheckNpcFavorLevel()
-                if fEvent73 in (2, 3):
-                    fEvent91 = EventFlowSystemActor.PercentChoice3(10, 20, 70)
-                    if fEvent91 == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:304', false)
-                        MainNpc.NpcDelivery('Keep', 10)
-                        quest_flags['cDeliveryGetFree'] = true
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:305', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            MainNpc.NpcDelivery('Default', 5)
-                            quest_flags['cDeliveryItemOpen'] = true
-                            if MainNpc.DeliveryQuestItemKind() == 0:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:308', false)
-                                MainNpc.SetDeliveryItemApplySave()
-                                MainNpc.NpcDelivery('Default', 2)
-                                if event_flags_npc['cNpcMemory:VisitCount'] >= 1:
-                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:313', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:309', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:307', false)
-                                MainNpc.SetDeliveryItemApplySave()
-                                MainNpc.NpcDelivery('Default', 2)
-                        else:
-                            MainNpc.NpcDecideDeliveryQuestReward(4, 2)
-                            MainNpc.NpcDelivery('Default', 2)
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:306', false)
-                            quest_flags['cDeliveryItemOpen'] = true
-                            MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
-                        MainNpc.RegistToReleaseItemList(1)
-                        quest_flags['cDeliveryItemOpen'] = false
-                        quest_flags['cDeliveryEnd'] = true
-                        event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-                    elif fEvent91 == 2:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:301', false)
-                        MainNpc.NpcDelivery('Default', 6)
-                        quest_flags['cDeliveryItemOpen'] = true
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:302', false)
-                        run NNPC_Quest_Delivery_End::Thanks1
-                    elif fEvent91 == 1:
-                        if quest_flags['cDeliveryItemOpen']:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:304', false)
-                            MainNpc.NpcDelivery('Keep', 10)
-                            quest_flags['cDeliveryGetFree'] = true
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:305', false)
-                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                MainNpc.NpcDelivery('Default', 5)
-                                quest_flags['cDeliveryItemOpen'] = true
-                                if MainNpc.DeliveryQuestItemKind() == 0:
-                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:308', false)
-                                    MainNpc.SetDeliveryItemApplySave()
-                                    MainNpc.NpcDelivery('Default', 2)
-                                    if event_flags_npc['cNpcMemory:VisitCount'] >= 1:
-                                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:313', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:309', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:307', false)
-                                    MainNpc.SetDeliveryItemApplySave()
-                                    MainNpc.NpcDelivery('Default', 2)
-                            else:
-                                MainNpc.NpcDecideDeliveryQuestReward(4, 2)
-                                MainNpc.NpcDelivery('Default', 2)
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:306', false)
-                                quest_flags['cDeliveryItemOpen'] = true
-                                MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
-                            MainNpc.RegistToReleaseItemList(1)
-                            quest_flags['cDeliveryItemOpen'] = false
-                            quest_flags['cDeliveryEnd'] = true
-                            event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-                        else:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:303', false)
-                            run NNPC_Quest_Delivery_End::QuizEnd
-                elif fEvent73 in (4, 5):
+                if fEvent73 in (4, 5):
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:301', false)
                     MainNpc.NpcDelivery('Default', 6)
                     quest_flags['cDeliveryItemOpen'] = true
@@ -245,6 +173,78 @@ flow Give:
                         else:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:303', false)
                             run NNPC_Quest_Delivery_End::QuizEnd
+                elif fEvent73 in (2, 3):
+                    fEvent91 = EventFlowSystemActor.PercentChoice3(10, 20, 70)
+                    if fEvent91 == 1:
+                        if quest_flags['cDeliveryItemOpen']:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:304', false)
+                            MainNpc.NpcDelivery('Keep', 10)
+                            quest_flags['cDeliveryGetFree'] = true
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:305', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                MainNpc.NpcDelivery('Default', 5)
+                                quest_flags['cDeliveryItemOpen'] = true
+                                if MainNpc.DeliveryQuestItemKind() == 0:
+                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:308', false)
+                                    MainNpc.SetDeliveryItemApplySave()
+                                    MainNpc.NpcDelivery('Default', 2)
+                                    if event_flags_npc['cNpcMemory:VisitCount'] >= 1:
+                                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:313', false)
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:309', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:307', false)
+                                    MainNpc.SetDeliveryItemApplySave()
+                                    MainNpc.NpcDelivery('Default', 2)
+                            else:
+                                MainNpc.NpcDecideDeliveryQuestReward(4, 2)
+                                MainNpc.NpcDelivery('Default', 2)
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:306', false)
+                                quest_flags['cDeliveryItemOpen'] = true
+                                MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
+                            MainNpc.RegistToReleaseItemList(1)
+                            quest_flags['cDeliveryItemOpen'] = false
+                            quest_flags['cDeliveryEnd'] = true
+                            event_flags_npc['cNpcMemory:StoodUpFlag'] = false
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:303', false)
+                            run NNPC_Quest_Delivery_End::QuizEnd
+                    elif fEvent91 == 2:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:301', false)
+                        MainNpc.NpcDelivery('Default', 6)
+                        quest_flags['cDeliveryItemOpen'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:302', false)
+                        run NNPC_Quest_Delivery_End::Thanks1
+                    elif fEvent91 == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:304', false)
+                        MainNpc.NpcDelivery('Keep', 10)
+                        quest_flags['cDeliveryGetFree'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:305', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            MainNpc.NpcDelivery('Default', 5)
+                            quest_flags['cDeliveryItemOpen'] = true
+                            if MainNpc.DeliveryQuestItemKind() == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:308', false)
+                                MainNpc.SetDeliveryItemApplySave()
+                                MainNpc.NpcDelivery('Default', 2)
+                                if event_flags_npc['cNpcMemory:VisitCount'] >= 1:
+                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:313', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:309', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:307', false)
+                                MainNpc.SetDeliveryItemApplySave()
+                                MainNpc.NpcDelivery('Default', 2)
+                        else:
+                            MainNpc.NpcDecideDeliveryQuestReward(4, 2)
+                            MainNpc.NpcDelivery('Default', 2)
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:306', false)
+                            quest_flags['cDeliveryItemOpen'] = true
+                            MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
+                        MainNpc.RegistToReleaseItemList(1)
+                        quest_flags['cDeliveryItemOpen'] = false
+                        quest_flags['cDeliveryEnd'] = true
+                        event_flags_npc['cNpcMemory:StoodUpFlag'] = false
             elif fEvent3 == 3:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:006', false)
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:400', false)
@@ -415,9 +415,9 @@ flow Give:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Give:002', false)
     return
 
-flow sub_Event82:
-    run NNPC_Quest_Delivery_End::Thanks1
-
 flow sub_Event68:
     run NNPC_Quest_Delivery_End::QuizEnd
+
+flow sub_Event82:
+    run NNPC_Quest_Delivery_End::Thanks1
 

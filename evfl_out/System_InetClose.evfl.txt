@@ -1,61 +1,3 @@
-flow InetClose:
-    EventFlowSystemActor.NetCaptureScreenshot()
-    if not EventFlowSystemActor.NetIsInviteFriend():
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:005', true)
-        fEvent14 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent14 == 0:
-            run EntryPoint_OkaeriVisitor
-        elif fEvent14 == 1:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIMenuProfileOthersHandling()
-        elif fEvent14 == 2:
-entrypoint Event52:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIIllegalReportHandling(5)
-            run RevertWalletUI
-            if EventFlowSystemActor.UIIllegalReportResult():
-                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:005', true)
-                fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent39 == 0:
-                    run EntryPoint_OkaeriVisitor
-                elif fEvent39 == 1:
-                    EventFlowSystemActor.UIShopMoneyDisappear()
-                    EventFlowSystemActor.UIMenuProfileOthersHandling()
-                elif fEvent39 == 2:
-                    run Report_Visitor
-    elif EventFlowSystemActor.NetHasVisitor():
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:002', true)
-        fEvent3 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent3 == 0:
-            run EntryPoint_OhiakiHost
-        elif fEvent3 == 1:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIMenuProfileOthersHandling()
-        elif fEvent3 == 2:
-entrypoint Event49:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIIllegalReportHandling(5)
-            run RevertWalletUI
-            if EventFlowSystemActor.UIIllegalReportResult():
-                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:006', true)
-                fEvent41 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent41 == 0:
-                    run EntryPoint_OhiakiHost
-                elif fEvent41 == 1:
-                    EventFlowSystemActor.UIShopMoneyDisappear()
-                    EventFlowSystemActor.UIMenuProfileOthersHandling()
-                elif fEvent41 == 2:
-                    run Report_Host
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:001', true)
-        fEvent20 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent20 == 0:
-            run EntryPoint_OhiakiHost
-        elif fEvent20 == 1:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIMenuProfileOthersHandling()
-    return
-
 flow EntryPoint_OhiakiHost:
     if EventFlowSystemActor.NetCanRequestLeave():
         EventFlowSystemActor.MessageLockNext(1)
@@ -77,19 +19,6 @@ flow EntryPoint_OhiakiHost:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:007', false)
     return
 
-flow RevertWalletUI:
-    if (EventFlowSystemActor.SystemCheckNowStage('cMametubu')) or (EventFlowSystemActor.SystemCheckNowStage('cTailor')):
-        EventFlowSystemActor.UIMoneyAppear()
-    return
-
-flow Report_Host:
-    run Event49
-    return
-
-flow Report_Visitor:
-    run Event52
-    return
-
 flow EntryPoint_OkaeriVisitor:
     if EventFlowSystemActor.NetCanRequestLeave():
         EventFlowSystemActor.MessageLockNext(1)
@@ -108,5 +37,76 @@ flow EntryPoint_OkaeriVisitor:
             EventFlowSystemActor.NetLeaveSessionVillage('cLeaveSession', false)
     else:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:007', false)
+    return
+
+flow InetClose:
+    EventFlowSystemActor.NetCaptureScreenshot()
+    if not EventFlowSystemActor.NetIsInviteFriend():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:005', true)
+        fEvent14 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent14 == 2:
+entrypoint Event52:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIIllegalReportHandling(5)
+            run RevertWalletUI
+            if EventFlowSystemActor.UIIllegalReportResult():
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:005', true)
+                fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent39 == 0:
+                    run EntryPoint_OkaeriVisitor
+                elif fEvent39 == 2:
+                    run Report_Visitor
+                elif fEvent39 == 1:
+                    EventFlowSystemActor.UIShopMoneyDisappear()
+                    EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif fEvent14 == 1:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif fEvent14 == 0:
+            run EntryPoint_OkaeriVisitor
+    elif EventFlowSystemActor.NetHasVisitor():
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:002', true)
+        fEvent3 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent3 == 0:
+            run EntryPoint_OhiakiHost
+        elif fEvent3 == 2:
+entrypoint Event49:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIIllegalReportHandling(5)
+            run RevertWalletUI
+            if EventFlowSystemActor.UIIllegalReportResult():
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:006', true)
+                fEvent41 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent41 == 0:
+                    run EntryPoint_OhiakiHost
+                elif fEvent41 == 2:
+                    run Report_Host
+                elif fEvent41 == 1:
+                    EventFlowSystemActor.UIShopMoneyDisappear()
+                    EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif fEvent3 == 1:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:001', true)
+        fEvent20 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent20 == 0:
+            run EntryPoint_OhiakiHost
+        elif fEvent20 == 1:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+    return
+
+flow Report_Host:
+    run Event49
+    return
+
+flow Report_Visitor:
+    run Event52
+    return
+
+flow RevertWalletUI:
+    if (EventFlowSystemActor.SystemCheckNowStage('cMametubu')) or (EventFlowSystemActor.SystemCheckNowStage('cTailor')):
+        EventFlowSystemActor.UIMoneyAppear()
     return
 

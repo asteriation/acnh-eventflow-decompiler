@@ -1,127 +1,211 @@
-flow ImmQBox:
+flow 2ndChkOutdoorFtrA:
+    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3):
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
+        if (event_flags_system['cLand:ImmQ_A_Interior1Donate']) and (event_flags_system['cLand:ImmQ_A_Interior2Donate']) and (event_flags_system['cLand:ImmQ_A_Interior3Donate']):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
+            run ChkCompleteDemo_Notice
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
+            run sub_Event388
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
+        run sub_Event388
+    return
+
+flow 2ndChkOutdoorFtrB:
+    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(1, 3):
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
+        if (event_flags_system['cLand:ImmQ_B_Interior1Donate']) and (event_flags_system['cLand:ImmQ_B_Interior2Donate']) and (event_flags_system['cLand:ImmQ_B_Interior3Donate']):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
+            run ChkCompleteDemo_Notice
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
+            run sub_Event387
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
+        run sub_Event387
+    return
+
+flow 2ndChkOutdoorFtrC:
+    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(2, 3):
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
+        if (event_flags_system['cLand:ImmQ_C_Interior1Donate']) and (event_flags_system['cLand:ImmQ_C_Interior2Donate']) and (event_flags_system['cLand:ImmQ_C_Interior3Donate']):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
+            run ChkCompleteDemo_Notice
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
+            run sub_Event355
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
+        run sub_Event355
+    return
+
+flow BoxForMigrantQuest_Sel:
     event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] = 0
-    event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] = 0
-    fEvent356 = GeneralObject.SettlerQuest()
-    if fEvent356 == 1:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_01', false)
-        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
-            if event_flags_system['cLand:ImmQ_A_Complete']:
-                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
-            else:
-                run VisitorIsMyIsland
-                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
-entrypoint Event268:
-                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 3:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
-                elif fEvent268 == 1:
-entrypoint Event359:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
-                    fEvent441 = GeneralObject.SettlerQuest()
-                    if fEvent441 == 1:
-                        run ChkOutdoorFtrA
-                        run 2ndChkOutdoorFtrA
-                    elif fEvent441 == 2:
-                        run ChkOutdoorFtrB
-                        run 2ndChkOutdoorFtrB
-                    elif fEvent441 == 3:
-                        run ChkOutdoorFtrC
-                        run 2ndChkOutdoorFtrC
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        run sub_Event0
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        run sub_Event0
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        run sub_Event0
-    elif fEvent356 == 2:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_02', false)
-        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
-            if event_flags_system['cLand:ImmQ_B_Complete']:
-                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
-            else:
-                run VisitorIsMyIsland
-                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
-entrypoint Event268:
-                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 3:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
-                elif fEvent268 == 1:
-entrypoint Event359:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
-                    fEvent441 = GeneralObject.SettlerQuest()
-                    if fEvent441 == 1:
-                        run ChkOutdoorFtrA
-                        run 2ndChkOutdoorFtrA
-                    elif fEvent441 == 2:
-                        run ChkOutdoorFtrB
-                        run 2ndChkOutdoorFtrB
-                    elif fEvent441 == 3:
-                        run ChkOutdoorFtrC
-                        run 2ndChkOutdoorFtrC
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        run sub_Event0
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        run sub_Event0
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        run sub_Event0
-    elif fEvent356 == 3:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_03', false)
-        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
-            if event_flags_system['cLand:ImmQ_C_Complete']:
-                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
-            else:
-                run VisitorIsMyIsland
-                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
-entrypoint Event268:
-                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 3:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
-                elif fEvent268 == 1:
-entrypoint Event359:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
-                    fEvent441 = GeneralObject.SettlerQuest()
-                    if fEvent441 == 1:
-                        run ChkOutdoorFtrA
-                        run 2ndChkOutdoorFtrA
-                    elif fEvent441 == 2:
-                        run ChkOutdoorFtrB
-                        run 2ndChkOutdoorFtrB
-                    elif fEvent441 == 3:
-                        run ChkOutdoorFtrC
-                        run 2ndChkOutdoorFtrC
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        run sub_Event0
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        run sub_Event0
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        run sub_Event0
+    run Event268
+    return
+
+flow ChkCompleteDemoSeq:
+    subflow_results[0] = 0
+    if (not event_flags_system['cLand:RcmImmQuestComplete']) and (not event_flags_system['cPlayer:ImmQCompleteDemo']) and (event_flags_system['cLand:ImmQ_A_Interior1Donate']) and (event_flags_system['cLand:ImmQ_A_Interior2Donate']) and (event_flags_system['cLand:ImmQ_A_Interior3Donate']) and (event_flags_system['cLand:ImmQ_B_Interior1Donate']) and (event_flags_system['cLand:ImmQ_B_Interior2Donate']) and (event_flags_system['cLand:ImmQ_B_Interior3Donate']) and (event_flags_system['cLand:ImmQ_C_Interior1Donate']) and (event_flags_system['cLand:ImmQ_C_Interior2Donate']) and (event_flags_system['cLand:ImmQ_C_Interior3Donate']) and ((EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3)) or (event_flags_system['cLand:ImmQ_A_Complete'])):
+        run sub_grp!Event104
+    run sub_tm!ChkCompleteDemoSeq
+
+flow ChkCompleteDemo_Notice:
+    run ChkCompleteDemoSeq
+    if subflow_results[0] == 1:
+        EventFlowSystemActor.ReservePlayerMutterDemo('ImmQComplete_Notice', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+        Player.OpenMessageWindow('TalkSys/SYS_Player:214', false)
+    return
+
+flow ChkCompleteDemo_PutIn:
+    run ChkCompleteDemoSeq
+    if subflow_results[0] == 1:
+        EventFlowSystemActor.ReservePlayerMutterDemo('ImmQComplete_PutIn', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+    return
+
+flow ChkHaveFtrA3:
+    if EventFlowSystemActor.HasTargetItem(2559, 1):
+        run HaveFtrATrue
+    else:
+        run NextChkHaveFtrAEnd
+    return
+
+flow ChkHaveFtrB1:
+    if EventFlowSystemActor.HasTargetItem(3205, 1):
+        run HaveFtrBTrue
+    else:
+        run NextChkHaveFtrB2
+    return
+
+flow ChkHaveFtrB2:
+    if EventFlowSystemActor.HasTargetItem(1565, 1):
+        run HaveFtrBTrue
+    else:
+        run NextChkHaveFtrB3
+    return
+
+flow ChkHaveFtrC1:
+    if EventFlowSystemActor.HasTargetItem(2605, 1):
+        run HaveFtrCTrue
+    else:
+        run NextChkHaveFtrC2
+    return
+
+flow ChkHaveFtrC2:
+    if EventFlowSystemActor.HasTargetItem(1913, 1):
+        run HaveFtrCTrue
+    else:
+        run NextChkHaveFtrC3
+    return
+
+flow ChkHaveFtrC3:
+    if EventFlowSystemActor.HasTargetItem(4073, 1):
+        run HaveFtrCTrue
+    else:
+        run NextChkHaveFtrCEnd
+    return
+
+flow ChkHaveFtrFlower:
+    fEvent190 = EventFlowSystemActor.VillageFlower('cBirthday')
+    if fEvent190 == 0:
+        if EventFlowSystemActor.HasTargetItem(5467, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 1:
+        if EventFlowSystemActor.HasTargetItem(5641, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 2:
+        if EventFlowSystemActor.HasTargetItem(4293, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 3:
+        if EventFlowSystemActor.HasTargetItem(5468, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 4:
+        if EventFlowSystemActor.HasTargetItem(5437, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 5:
+        if EventFlowSystemActor.HasTargetItem(5436, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 6:
+        if EventFlowSystemActor.HasTargetItem(5670, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    elif fEvent190 == 7:
+        if EventFlowSystemActor.HasTargetItem(5466, 1):
+            run HaveFtrBTrue
+        else:
+            run NextChkHaveFtrBEnd
+    return
+
+flow ChkHaveFtrFruit1:
+    fEvent165 = EventFlowSystemActor.LandFruit()
+    if fEvent165 == 0:
+        if EventFlowSystemActor.HasTargetItem(4011, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA2
+    elif fEvent165 == 1:
+        if EventFlowSystemActor.HasTargetItem(3976, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA2
+    elif fEvent165 == 2:
+        if EventFlowSystemActor.HasTargetItem(1263, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA2
+    elif fEvent165 == 3:
+        if EventFlowSystemActor.HasTargetItem(4128, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA2
+    elif fEvent165 == 4:
+        if EventFlowSystemActor.HasTargetItem(4134, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA2
+    return
+
+flow ChkHaveFtrFruit2:
+    fEvent167 = EventFlowSystemActor.LandFruit()
+    if fEvent167 == 0:
+        if EventFlowSystemActor.HasTargetItem(4012, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA3
+    elif fEvent167 == 1:
+        if EventFlowSystemActor.HasTargetItem(3975, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA3
+    elif fEvent167 == 2:
+        if EventFlowSystemActor.HasTargetItem(4546, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA3
+    elif fEvent167 == 3:
+        if EventFlowSystemActor.HasTargetItem(4127, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA3
+    elif fEvent167 == 4:
+        if EventFlowSystemActor.HasTargetItem(2596, 1):
+            run HaveFtrATrue
+        else:
+            run NextChkHaveFtrA3
     return
 
 flow ChkIndoorFtrA:
@@ -246,409 +330,6 @@ entrypoint Event217:
         run ChkHaveFtrC1
     return
 
-flow SelFruitFtr:
-    fEvent36 = EventFlowSystemActor.LandFruit()
-    if fEvent36 == 0:
-        EventFlowSystemActor.NpcEventItemSet(4011, 3, 'cTalk', 'ItemPrice')
-        EventFlowSystemActor.NpcEventItemSet(4012, 4, 'cTalk', 'ItemPrice')
-    elif fEvent36 == 1:
-        EventFlowSystemActor.NpcEventItemSet(3976, 3, 'cTalk', 'ItemPrice')
-        EventFlowSystemActor.NpcEventItemSet(3975, 4, 'cTalk', 'ItemPrice')
-    elif fEvent36 == 2:
-        EventFlowSystemActor.NpcEventItemSet(1263, 3, 'cTalk', 'ItemPrice')
-        EventFlowSystemActor.NpcEventItemSet(4546, 4, 'cTalk', 'ItemPrice')
-    elif fEvent36 == 3:
-        EventFlowSystemActor.NpcEventItemSet(4128, 3, 'cTalk', 'ItemPrice')
-        EventFlowSystemActor.NpcEventItemSet(4127, 4, 'cTalk', 'ItemPrice')
-    elif fEvent36 == 4:
-        EventFlowSystemActor.NpcEventItemSet(4134, 3, 'cTalk', 'ItemPrice')
-        EventFlowSystemActor.NpcEventItemSet(2596, 4, 'cTalk', 'ItemPrice')
-    return
-
-flow SelFlowerFtr:
-    fEvent37 = EventFlowSystemActor.VillageFlower('cBirthday')
-    if fEvent37 == 0:
-        EventFlowSystemActor.NpcEventItemSet(5467, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 1:
-        EventFlowSystemActor.NpcEventItemSet(5641, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 2:
-        EventFlowSystemActor.NpcEventItemSet(4293, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 3:
-        EventFlowSystemActor.NpcEventItemSet(5468, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 4:
-        EventFlowSystemActor.NpcEventItemSet(5437, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 5:
-        EventFlowSystemActor.NpcEventItemSet(5436, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 6:
-        EventFlowSystemActor.NpcEventItemSet(5670, 5, 'cTalk', 'ItemPrice')
-    elif fEvent37 == 7:
-        EventFlowSystemActor.NpcEventItemSet(5466, 5, 'cTalk', 'ItemPrice')
-    return
-
-flow DelFtrA1:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 0):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 0)
-        event_flags_system['cLand:ImmQ_A_Interior1Donate'] = true
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
-        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
-    return
-
-flow DelFtrA2:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 1):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 1)
-        event_flags_system['cLand:ImmQ_A_Interior2Donate'] = true
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
-        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
-    return
-
-flow DelFtrA3:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 2):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 2)
-        event_flags_system['cLand:ImmQ_A_Interior3Donate'] = true
-entrypoint Event152:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
-        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
-    return
-
-flow DelFtrB1:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 0):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 0)
-        event_flags_system['cLand:ImmQ_B_Interior1Donate'] = true
-        run Event152
-    return
-
-flow DelFtrB2:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 1):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 1)
-        event_flags_system['cLand:ImmQ_B_Interior2Donate'] = true
-        run Event152
-    return
-
-flow DelFtrC1:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 0):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 0)
-        event_flags_system['cLand:ImmQ_C_Interior1Donate'] = true
-        run Event152
-    return
-
-flow DelFtrC2:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 1):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 1)
-        event_flags_system['cLand:ImmQ_C_Interior2Donate'] = true
-        run Event152
-    return
-
-flow DelFtrC3:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 2):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 2)
-        event_flags_system['cLand:ImmQ_C_Interior3Donate'] = true
-        run Event152
-    return
-
-flow DelFtrB3:
-    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 2):
-        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 2)
-        event_flags_system['cLand:ImmQ_B_Interior3Donate'] = true
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
-        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
-    return
-
-flow ChkHaveFtrFruit1:
-    fEvent165 = EventFlowSystemActor.LandFruit()
-    if fEvent165 == 0:
-        if EventFlowSystemActor.HasTargetItem(4011, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA2
-    elif fEvent165 == 1:
-        if EventFlowSystemActor.HasTargetItem(3976, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA2
-    elif fEvent165 == 2:
-        if EventFlowSystemActor.HasTargetItem(1263, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA2
-    elif fEvent165 == 3:
-        if EventFlowSystemActor.HasTargetItem(4128, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA2
-    elif fEvent165 == 4:
-        if EventFlowSystemActor.HasTargetItem(4134, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA2
-    return
-
-flow ChkHaveFtrFruit2:
-    fEvent167 = EventFlowSystemActor.LandFruit()
-    if fEvent167 == 0:
-        if EventFlowSystemActor.HasTargetItem(4012, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA3
-    elif fEvent167 == 1:
-        if EventFlowSystemActor.HasTargetItem(3975, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA3
-    elif fEvent167 == 2:
-        if EventFlowSystemActor.HasTargetItem(4546, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA3
-    elif fEvent167 == 3:
-        if EventFlowSystemActor.HasTargetItem(4127, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA3
-    elif fEvent167 == 4:
-        if EventFlowSystemActor.HasTargetItem(2596, 1):
-            run HaveFtrATrue
-        else:
-            run NextChkHaveFtrA3
-    return
-
-flow ChkHaveFtrFlower:
-    fEvent190 = EventFlowSystemActor.VillageFlower('cBirthday')
-    if fEvent190 == 0:
-        if EventFlowSystemActor.HasTargetItem(5467, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 1:
-        if EventFlowSystemActor.HasTargetItem(5641, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 2:
-        if EventFlowSystemActor.HasTargetItem(4293, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 3:
-        if EventFlowSystemActor.HasTargetItem(5468, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 4:
-        if EventFlowSystemActor.HasTargetItem(5437, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 5:
-        if EventFlowSystemActor.HasTargetItem(5436, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 6:
-        if EventFlowSystemActor.HasTargetItem(5670, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    elif fEvent190 == 7:
-        if EventFlowSystemActor.HasTargetItem(5466, 1):
-            run HaveFtrBTrue
-        else:
-            run NextChkHaveFtrBEnd
-    return
-
-flow NextChkHaveFtrA2:
-    run Event60
-    return
-
-flow NextChkHaveFtrA3:
-    run Event61
-    return
-
-flow HaveFtrATrue:
-    run CmnInsideFtrSel
-    if not event_flags_system['cLand:ImmQ_A_Interior1Donate']:
-        run DelFtrA1
-    if not event_flags_system['cLand:ImmQ_A_Interior2Donate']:
-        run DelFtrA2
-    if not event_flags_system['cLand:ImmQ_A_Interior3Donate']:
-        run DelFtrA3
-    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
-        run DisplayFtrPutInNum
-        run IndoorClearCntA
-        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
-            run ChkCompleteDemo_PutIn
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-    else:
-        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-    return
-
-flow HaveFtrBTrue:
-    run CmnInsideFtrSel
-    if not event_flags_system['cLand:ImmQ_B_Interior1Donate']:
-        run DelFtrB1
-    if not event_flags_system['cLand:ImmQ_B_Interior2Donate']:
-        run DelFtrB2
-    if not event_flags_system['cLand:ImmQ_B_Interior3Donate']:
-        run DelFtrB3
-    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
-        run DisplayFtrPutInNum
-        run IndoorClearCntB
-        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(1, 3):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
-            run ChkCompleteDemo_PutIn
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-    else:
-        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-    return
-
-flow HaveFtrCTrue:
-    run CmnInsideFtrSel
-    if not event_flags_system['cLand:ImmQ_C_Interior1Donate']:
-        run DelFtrC1
-    if not event_flags_system['cLand:ImmQ_C_Interior2Donate']:
-        run DelFtrC2
-    if not event_flags_system['cLand:ImmQ_C_Interior3Donate']:
-        run DelFtrC3
-    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
-        run DisplayFtrPutInNum
-        run IndoorClearCntC
-        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(2, 3):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
-            run ChkCompleteDemo_PutIn
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
-            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-            EventFlowSystemActor.ExitFlowchart()
-    else:
-        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-    return
-
-flow NextChkHaveFtrB2:
-    run Event67
-    return
-
-flow NextChkHaveFtrB3:
-    run Event68
-    return
-
-flow NextChkHaveFtrC2:
-    run Event70
-    return
-
-flow NextChkHaveFtrC3:
-    run Event71
-    return
-
-flow ChkHaveFtrA3:
-    if EventFlowSystemActor.HasTargetItem(2559, 1):
-        run HaveFtrATrue
-    else:
-        run NextChkHaveFtrAEnd
-    return
-
-flow NextChkHaveFtrAEnd:
-    run Event199
-    return
-
-flow NextChkHaveFtrBEnd:
-    run Event203
-    return
-
-flow NextChkHaveFtrCEnd:
-    run Event217
-    return
-
-flow ChkHaveFtrB1:
-    if EventFlowSystemActor.HasTargetItem(3205, 1):
-        run HaveFtrBTrue
-    else:
-        run NextChkHaveFtrB2
-    return
-
-flow ChkHaveFtrB2:
-    if EventFlowSystemActor.HasTargetItem(1565, 1):
-        run HaveFtrBTrue
-    else:
-        run NextChkHaveFtrB3
-    return
-
-flow ChkHaveFtrC1:
-    if EventFlowSystemActor.HasTargetItem(2605, 1):
-        run HaveFtrCTrue
-    else:
-        run NextChkHaveFtrC2
-    return
-
-flow ChkHaveFtrC2:
-    if EventFlowSystemActor.HasTargetItem(1913, 1):
-        run HaveFtrCTrue
-    else:
-        run NextChkHaveFtrC3
-    return
-
-flow ChkHaveFtrC3:
-    if EventFlowSystemActor.HasTargetItem(4073, 1):
-        run HaveFtrCTrue
-    else:
-        run NextChkHaveFtrCEnd
-    return
-
-flow IndoorClearCntA:
-    if not event_flags_system['cLand:ImmQ_A_Interior1Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_A_Interior2Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_A_Interior3Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
-    return
-
-flow IndoorClearCntB:
-    if not event_flags_system['cLand:ImmQ_B_Interior1Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_B_Interior2Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_B_Interior3Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
-    return
-
-flow IndoorClearCntC:
-    if not event_flags_system['cLand:ImmQ_C_Interior1Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_C_Interior2Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    if not event_flags_system['cLand:ImmQ_C_Interior3Donate']:
-        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
-    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
-    return
-
-flow BoxForMigrantQuest_Sel:
-    event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] = 0
-    run Event268
-    return
-
 flow ChkOutdoorFtrA:
     if EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 0):
         EventFlowSystemActor.NpcEventItemSet(6895, 0, 'cTalk', 'ItemPrice')
@@ -739,77 +420,95 @@ flow ChkOutdoorFtrC:
         EventFlowSystemActor.NpcEventItemSet(880, 5, 'cTalk', 'ItemPrice')
     return
 
-flow 2ndChkOutdoorFtrA:
-    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3):
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
-        if (event_flags_system['cLand:ImmQ_A_Interior1Donate']) and (event_flags_system['cLand:ImmQ_A_Interior2Donate']) and (event_flags_system['cLand:ImmQ_A_Interior3Donate']):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
-            run ChkCompleteDemo_Notice
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
-            run sub_Event388
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
-        run sub_Event388
-    return
-
-flow 2ndChkOutdoorFtrB:
-    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(1, 3):
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
-        if (event_flags_system['cLand:ImmQ_B_Interior1Donate']) and (event_flags_system['cLand:ImmQ_B_Interior2Donate']) and (event_flags_system['cLand:ImmQ_B_Interior3Donate']):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
-            run ChkCompleteDemo_Notice
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
-            run sub_Event387
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
-        run sub_Event387
-    return
-
-flow 2ndChkOutdoorFtrC:
-    if EventFlowSystemActor.IsSettlerQuestOutsideComplete(2, 3):
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:011', false)
-        if (event_flags_system['cLand:ImmQ_C_Interior1Donate']) and (event_flags_system['cLand:ImmQ_C_Interior2Donate']) and (event_flags_system['cLand:ImmQ_C_Interior3Donate']):
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_01', false)
-            run ChkCompleteDemo_Notice
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:023_03', false)
-            run sub_Event355
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:015', false)
-        run sub_Event355
-    return
-
 flow CmnInsideFtrSel:
     EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:012', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()
     if fEvent1 == 0:
         GeneralObject.StartAnimation('Open', 'アクション終了を待たない')
         fEvent289 = GeneralObject.SettlerQuest()
-        if fEvent289 == 1:
-            EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsA', false)
-            run sub_grp!Event76
-        elif fEvent289 == 2:
+        if fEvent289 == 2:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsB', false)
             run sub_grp!Event76
         elif fEvent289 == 3:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsC', false)
             run sub_grp!Event76
+        elif fEvent289 == 1:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsA', false)
+            run sub_grp!Event76
+    elif fEvent1 == 3:
+        EventFlowSystemActor.ExitFlowchart()
     elif fEvent1 == 1:
         run SelForOutsideFtr
     elif fEvent1 == 2:
         run SelForInstructions
-    elif fEvent1 == 3:
-        EventFlowSystemActor.ExitFlowchart()
     return
 
-flow SelForOutsideFtr:
-    run Event359
+flow DelFtrA1:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 0):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 0)
+        event_flags_system['cLand:ImmQ_A_Interior1Donate'] = true
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
+        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
     return
 
-flow SelForInstructions:
-    run Event269
+flow DelFtrA2:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 1):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 1)
+        event_flags_system['cLand:ImmQ_A_Interior2Donate'] = true
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
+        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
+    return
+
+flow DelFtrA3:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(0, 2):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(0, 2)
+        event_flags_system['cLand:ImmQ_A_Interior3Donate'] = true
+entrypoint Event152:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
+        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
+    return
+
+flow DelFtrB1:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 0):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 0)
+        event_flags_system['cLand:ImmQ_B_Interior1Donate'] = true
+        run Event152
+    return
+
+flow DelFtrB2:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 1):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 1)
+        event_flags_system['cLand:ImmQ_B_Interior2Donate'] = true
+        run Event152
+    return
+
+flow DelFtrB3:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(1, 2):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(1, 2)
+        event_flags_system['cLand:ImmQ_B_Interior3Donate'] = true
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNow'] = true
+        event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] += 1
+    return
+
+flow DelFtrC1:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 0):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 0)
+        event_flags_system['cLand:ImmQ_C_Interior1Donate'] = true
+        run Event152
+    return
+
+flow DelFtrC2:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 1):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 1)
+        event_flags_system['cLand:ImmQ_C_Interior2Donate'] = true
+        run Event152
+    return
+
+flow DelFtrC3:
+    if EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(2, 2):
+        EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(2, 2)
+        event_flags_system['cLand:ImmQ_C_Interior3Donate'] = true
+        run Event152
     return
 
 flow DisplayFtrPutInNum:
@@ -821,24 +520,325 @@ flow DisplayFtrPutInNum:
         Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:021_01', false)
     return
 
-flow ChkCompleteDemo_Notice:
-    run ChkCompleteDemoSeq
-    if subflow_results[0] == 1:
-        EventFlowSystemActor.ReservePlayerMutterDemo('ImmQComplete_Notice', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
-        Player.OpenMessageWindow('TalkSys/SYS_Player:214', false)
+flow HaveFtrATrue:
+    run CmnInsideFtrSel
+    if not event_flags_system['cLand:ImmQ_A_Interior1Donate']:
+        run DelFtrA1
+    if not event_flags_system['cLand:ImmQ_A_Interior2Donate']:
+        run DelFtrA2
+    if not event_flags_system['cLand:ImmQ_A_Interior3Donate']:
+        run DelFtrA3
+    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
+        run DisplayFtrPutInNum
+        run IndoorClearCntA
+        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
+            run ChkCompleteDemo_PutIn
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+    else:
+        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
     return
 
-flow ChkCompleteDemo_PutIn:
-    run ChkCompleteDemoSeq
-    if subflow_results[0] == 1:
-        EventFlowSystemActor.ReservePlayerMutterDemo('ImmQComplete_PutIn', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+flow HaveFtrBTrue:
+    run CmnInsideFtrSel
+    if not event_flags_system['cLand:ImmQ_B_Interior1Donate']:
+        run DelFtrB1
+    if not event_flags_system['cLand:ImmQ_B_Interior2Donate']:
+        run DelFtrB2
+    if not event_flags_system['cLand:ImmQ_B_Interior3Donate']:
+        run DelFtrB3
+    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
+        run DisplayFtrPutInNum
+        run IndoorClearCntB
+        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(1, 3):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
+            run ChkCompleteDemo_PutIn
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+    else:
+        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
     return
 
-flow ChkCompleteDemoSeq:
-    subflow_results[0] = 0
-    if (not event_flags_system['cLand:RcmImmQuestComplete']) and (not event_flags_system['cPlayer:ImmQCompleteDemo']) and (event_flags_system['cLand:ImmQ_A_Interior1Donate']) and (event_flags_system['cLand:ImmQ_A_Interior2Donate']) and (event_flags_system['cLand:ImmQ_A_Interior3Donate']) and (event_flags_system['cLand:ImmQ_B_Interior1Donate']) and (event_flags_system['cLand:ImmQ_B_Interior2Donate']) and (event_flags_system['cLand:ImmQ_B_Interior3Donate']) and (event_flags_system['cLand:ImmQ_C_Interior1Donate']) and (event_flags_system['cLand:ImmQ_C_Interior2Donate']) and (event_flags_system['cLand:ImmQ_C_Interior3Donate']) and ((EventFlowSystemActor.IsSettlerQuestOutsideComplete(0, 3)) or (event_flags_system['cLand:ImmQ_A_Complete'])):
-        run sub_grp!Event104
-    run sub_tm!ChkCompleteDemoSeq
+flow HaveFtrCTrue:
+    run CmnInsideFtrSel
+    if not event_flags_system['cLand:ImmQ_C_Interior1Donate']:
+        run DelFtrC1
+    if not event_flags_system['cLand:ImmQ_C_Interior2Donate']:
+        run DelFtrC2
+    if not event_flags_system['cLand:ImmQ_C_Interior3Donate']:
+        run DelFtrC3
+    if event_flags_system['cPlayerTemp:ImmQPutInFtrNow']:
+        run DisplayFtrPutInNum
+        run IndoorClearCntC
+        if event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] != 0:
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.IsSettlerQuestOutsideComplete(2, 3):
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022_01', false)
+            run ChkCompleteDemo_PutIn
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:022', false)
+            GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+            EventFlowSystemActor.ExitFlowchart()
+    else:
+        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+    return
+
+flow ImmQBox:
+    event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] = 0
+    event_flags_system['cPlayerTemp:ImmQNowHandInFtrNum'] = 0
+    fEvent356 = GeneralObject.SettlerQuest()
+    if fEvent356 == 1:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_01', false)
+        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
+            if event_flags_system['cLand:ImmQ_A_Complete']:
+                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
+            else:
+                run VisitorIsMyIsland
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
+entrypoint Event268:
+                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
+                elif fEvent268 == 1:
+entrypoint Event359:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
+                    fEvent441 = GeneralObject.SettlerQuest()
+                    if fEvent441 == 1:
+                        run ChkOutdoorFtrA
+                        run 2ndChkOutdoorFtrA
+                    elif fEvent441 == 2:
+                        run ChkOutdoorFtrB
+                        run 2ndChkOutdoorFtrB
+                    elif fEvent441 == 3:
+                        run ChkOutdoorFtrC
+                        run 2ndChkOutdoorFtrC
+                elif fEvent268 == 3:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        run sub_Event0
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        run sub_Event0
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        run sub_Event0
+    elif fEvent356 == 2:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_02', false)
+        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
+            if event_flags_system['cLand:ImmQ_B_Complete']:
+                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
+            else:
+                run VisitorIsMyIsland
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
+entrypoint Event268:
+                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
+                elif fEvent268 == 1:
+entrypoint Event359:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
+                    fEvent441 = GeneralObject.SettlerQuest()
+                    if fEvent441 == 1:
+                        run ChkOutdoorFtrA
+                        run 2ndChkOutdoorFtrA
+                    elif fEvent441 == 2:
+                        run ChkOutdoorFtrB
+                        run 2ndChkOutdoorFtrB
+                    elif fEvent441 == 3:
+                        run ChkOutdoorFtrC
+                        run 2ndChkOutdoorFtrC
+                elif fEvent268 == 3:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        run sub_Event0
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        run sub_Event0
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        run sub_Event0
+    elif fEvent356 == 3:
+        EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_03', false)
+        if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
+            if event_flags_system['cLand:ImmQ_C_Complete']:
+                Player.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:002', false)
+            else:
+                run VisitorIsMyIsland
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
+entrypoint Event268:
+                fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
+                elif fEvent268 == 1:
+entrypoint Event359:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
+                    fEvent441 = GeneralObject.SettlerQuest()
+                    if fEvent441 == 1:
+                        run ChkOutdoorFtrA
+                        run 2ndChkOutdoorFtrA
+                    elif fEvent441 == 2:
+                        run ChkOutdoorFtrB
+                        run 2ndChkOutdoorFtrB
+                    elif fEvent441 == 3:
+                        run ChkOutdoorFtrC
+                        run 2ndChkOutdoorFtrC
+                elif fEvent268 == 3:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        run sub_Event0
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        run sub_Event0
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        run sub_Event0
+    return
+
+flow IndoorClearCntA:
+    if not event_flags_system['cLand:ImmQ_A_Interior1Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_A_Interior2Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_A_Interior3Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
+    return
+
+flow IndoorClearCntB:
+    if not event_flags_system['cLand:ImmQ_B_Interior1Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_B_Interior2Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_B_Interior3Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
+    return
+
+flow IndoorClearCntC:
+    if not event_flags_system['cLand:ImmQ_C_Interior1Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_C_Interior2Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    if not event_flags_system['cLand:ImmQ_C_Interior3Donate']:
+        event_flags_system['cPlayerTemp:ImmQPutInFtrNum'] += 1
+    EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cPlayerTemp:ImmQPutInFtrNum', 3)
+    return
+
+flow NextChkHaveFtrA2:
+    run Event60
+    return
+
+flow NextChkHaveFtrA3:
+    run Event61
+    return
+
+flow NextChkHaveFtrAEnd:
+    run Event199
+    return
+
+flow NextChkHaveFtrB2:
+    run Event67
+    return
+
+flow NextChkHaveFtrB3:
+    run Event68
+    return
+
+flow NextChkHaveFtrBEnd:
+    run Event203
+    return
+
+flow NextChkHaveFtrC2:
+    run Event70
+    return
+
+flow NextChkHaveFtrC3:
+    run Event71
+    return
+
+flow NextChkHaveFtrCEnd:
+    run Event217
+    return
+
+flow SelFlowerFtr:
+    fEvent37 = EventFlowSystemActor.VillageFlower('cBirthday')
+    if fEvent37 == 0:
+        EventFlowSystemActor.NpcEventItemSet(5467, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 1:
+        EventFlowSystemActor.NpcEventItemSet(5641, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 2:
+        EventFlowSystemActor.NpcEventItemSet(4293, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 3:
+        EventFlowSystemActor.NpcEventItemSet(5468, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 4:
+        EventFlowSystemActor.NpcEventItemSet(5437, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 5:
+        EventFlowSystemActor.NpcEventItemSet(5436, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 6:
+        EventFlowSystemActor.NpcEventItemSet(5670, 5, 'cTalk', 'ItemPrice')
+    elif fEvent37 == 7:
+        EventFlowSystemActor.NpcEventItemSet(5466, 5, 'cTalk', 'ItemPrice')
+    return
+
+flow SelForInstructions:
+    run Event269
+    return
+
+flow SelForOutsideFtr:
+    run Event359
+    return
+
+flow SelFruitFtr:
+    fEvent36 = EventFlowSystemActor.LandFruit()
+    if fEvent36 == 0:
+        EventFlowSystemActor.NpcEventItemSet(4011, 3, 'cTalk', 'ItemPrice')
+        EventFlowSystemActor.NpcEventItemSet(4012, 4, 'cTalk', 'ItemPrice')
+    elif fEvent36 == 1:
+        EventFlowSystemActor.NpcEventItemSet(3976, 3, 'cTalk', 'ItemPrice')
+        EventFlowSystemActor.NpcEventItemSet(3975, 4, 'cTalk', 'ItemPrice')
+    elif fEvent36 == 2:
+        EventFlowSystemActor.NpcEventItemSet(1263, 3, 'cTalk', 'ItemPrice')
+        EventFlowSystemActor.NpcEventItemSet(4546, 4, 'cTalk', 'ItemPrice')
+    elif fEvent36 == 3:
+        EventFlowSystemActor.NpcEventItemSet(4128, 3, 'cTalk', 'ItemPrice')
+        EventFlowSystemActor.NpcEventItemSet(4127, 4, 'cTalk', 'ItemPrice')
+    elif fEvent36 == 4:
+        EventFlowSystemActor.NpcEventItemSet(4134, 3, 'cTalk', 'ItemPrice')
+        EventFlowSystemActor.NpcEventItemSet(2596, 4, 'cTalk', 'ItemPrice')
+    return
 
 flow VisitorIsMyIsland:
     if EventFlowSystemActor.NetHasVisitor():
@@ -846,34 +846,26 @@ flow VisitorIsMyIsland:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow sub_tm!ChkCompleteDemoSeq:
-    return
-
 flow sub_Event0:
     GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
 
-flow sub_Event64:
+flow sub_Event322:
     run BoxForMigrantQuest_Sel
 
 flow sub_Event324:
     run BoxForMigrantQuest_Sel
 
-flow sub_Event322:
-    run BoxForMigrantQuest_Sel
-
-flow sub_Event388:
+flow sub_Event355:
     run BoxForMigrantQuest_Sel
 
 flow sub_Event387:
     run BoxForMigrantQuest_Sel
 
-flow sub_Event355:
+flow sub_Event388:
     run BoxForMigrantQuest_Sel
 
-flow sub_grp!Event76:
-    if not EventFlowSystemActor.UIResultMenuDecide():
-        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-        EventFlowSystemActor.ExitFlowchart()
+flow sub_Event64:
+    run BoxForMigrantQuest_Sel
 
 flow sub_grp!Event104:
     if (not EventFlowSystemActor.IsSettlerQuestOutsideComplete(1, 3)) and (not event_flags_system['cLand:ImmQ_B_Complete']):
@@ -883,4 +875,12 @@ flow sub_grp!Event104:
             pass
         else:
             subflow_results[0] = 1
+
+flow sub_grp!Event76:
+    if not EventFlowSystemActor.UIResultMenuDecide():
+        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+        EventFlowSystemActor.ExitFlowchart()
+
+flow sub_tm!ChkCompleteDemoSeq:
+    return
 

@@ -22,6 +22,20 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:002', false)
     return
 
+flow Spn_JuneBride_GetFence:
+    fEvent91 = subflow_results[0]
+    if fEvent91 == 6:
+        if not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
+            run sub_grp!Event59
+    elif fEvent91 == 7:
+        run sub_grp!Event59
+    return
+
+flow Spn_JuneBride_Select:
+    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:010', false)
+    run Event31
+    return
+
 flow ToJuneBrideStudio:
     if EventFlowSystemActor.TermEventNow('JuneBride', false):
         if event_flags_system['cPlayer:CommuneIslandAvailable']:
@@ -77,23 +91,6 @@ flow ToJuneBrideStudio:
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!ToJuneBrideStudio
 
-flow Spn_JuneBride_Select:
-    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:010', false)
-    run Event31
-    return
-
-flow Spn_JuneBride_GetFence:
-    fEvent91 = subflow_results[0]
-    if fEvent91 == 6:
-        if not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
-            run sub_grp!Event59
-    elif fEvent91 == 7:
-        run sub_grp!Event59
-    return
-
-flow sub_tm!ToJuneBrideStudio:
-    return
-
 flow sub_grp!Event59:
     if not event_flags_system['cPlayer:SpnJuneBrideGetFenceFrag']:
         if event_flags_system['cPlayer:SpnJuneBrideNotGetFenceTodayFrag']:
@@ -106,9 +103,7 @@ flow sub_grp!Event59:
                 if event_flags_system['cPlayer:MainmenuRecipe']:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018', false)
                     fEvent72 = subflow_results[0]
-                    if fEvent72 == 6:
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent72 == 7:
+                    if fEvent72 == 7:
                         MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:019', false)
 entrypoint Event31:
                         fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -121,6 +116,8 @@ entrypoint Event31:
                             run SNPC_spn_03_Studio::Spn_Explain_Select
                         elif fEvent31 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:013', false)
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent72 == 6:
                         EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018_02', false)
@@ -136,9 +133,7 @@ entrypoint Event31:
                 if event_flags_system['cPlayer:MainmenuRecipe']:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018', false)
                     fEvent72 = subflow_results[0]
-                    if fEvent72 == 6:
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent72 == 7:
+                    if fEvent72 == 7:
                         MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:019', false)
 entrypoint Event31:
                         fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -152,6 +147,8 @@ entrypoint Event31:
                         elif fEvent31 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:013', false)
                         EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent72 == 6:
+                        EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018_02', false)
                     EventFlowSystemActor.ExitFlowchart()
@@ -159,4 +156,7 @@ entrypoint Event31:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:017_03', false)
                 event_flags_system['cPlayer:SpnJuneBrideNotGetFenceTodayFrag'] = true
                 EventFlowSystemActor.ExitFlowchart()
+
+flow sub_tm!ToJuneBrideStudio:
+    return
 

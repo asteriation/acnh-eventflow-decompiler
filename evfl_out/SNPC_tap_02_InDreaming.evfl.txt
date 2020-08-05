@@ -1,3 +1,25 @@
+flow InDreamTalk:
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2001', false)
+entrypoint Event35:
+    fEvent35 = EventFlowSystemActor.GeneralTalkChoice4()
+    if fEvent35 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2011', false)
+        run sub_Event41
+    elif fEvent35 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2021', false)
+        run sub_Event41
+    elif fEvent35 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2031', false)
+        run sub_Event41
+    elif fEvent35 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2041', false)
+    return
+
+flow Return_InDreamTalk:
+    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2002', false)
+    run Event35
+    return
+
 flow Root:
     EventFlowSystemActor.BGMPropertyControl(105)
     EventFlowSystemActor.CameraSetDemoParam('Player', 'InDreamZoomIn', '', true, false, false, 0)
@@ -43,28 +65,6 @@ flow Wakeup:
         EventFlowSystemActor.SystemRequestChangeStage('cDreamDemo', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:1004', false)
-    return
-
-flow InDreamTalk:
-    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2001', false)
-entrypoint Event35:
-    fEvent35 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent35 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2011', false)
-        run sub_Event41
-    elif fEvent35 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2021', false)
-        run sub_Event41
-    elif fEvent35 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2031', false)
-        run sub_Event41
-    elif fEvent35 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2041', false)
-    return
-
-flow Return_InDreamTalk:
-    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap_InDream:2002', false)
-    run Event35
     return
 
 flow sub_Event41:

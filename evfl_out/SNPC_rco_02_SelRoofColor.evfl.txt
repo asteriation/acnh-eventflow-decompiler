@@ -1,29 +1,3 @@
-flow Root:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:203', false)
-    fEvent1 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent1 == 0:
-        run RoofCol_A
-    elif fEvent1 == 1:
-        run RoofCol_B
-    elif fEvent1 == 2:
-        run RoofCol_C
-    elif fEvent1 == 3:
-        run RoofCol_D
-    elif fEvent1 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:204', false)
-        fEvent15 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent15 == 0:
-            run RoofCol_E
-        elif fEvent15 == 1:
-            run RoofCol_F
-        elif fEvent15 == 2:
-            run RoofCol_G
-        elif fEvent15 == 3:
-            run RoofCol_H
-        elif fEvent15 == 4:
-            run SelRoofColor_Loop
-    return
-
 flow RoofCol_A:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_01', false)
     EventFlowSystemActor.PlayerHouseSetRoofColor('Red')
@@ -62,6 +36,32 @@ flow RoofCol_G:
 flow RoofCol_H:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:208_08', false)
     EventFlowSystemActor.PlayerHouseSetRoofColor('Purple')
+    return
+
+flow Root:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:203', false)
+    fEvent1 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent1 == 0:
+        run RoofCol_A
+    elif fEvent1 == 1:
+        run RoofCol_B
+    elif fEvent1 == 2:
+        run RoofCol_C
+    elif fEvent1 == 3:
+        run RoofCol_D
+    elif fEvent1 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:204', false)
+        fEvent15 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent15 == 0:
+            run RoofCol_E
+        elif fEvent15 == 1:
+            run RoofCol_F
+        elif fEvent15 == 2:
+            run RoofCol_G
+        elif fEvent15 == 3:
+            run RoofCol_H
+        elif fEvent15 == 4:
+            run SelRoofColor_Loop
     return
 
 flow SelRoofColor_Loop:

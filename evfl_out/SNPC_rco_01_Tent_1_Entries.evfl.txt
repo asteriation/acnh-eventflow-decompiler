@@ -1,147 +1,28 @@
-flow RcoTentAboutMyhome:
-    if event_flags_system['cPlayer:RcoPaid1stCharge']:
-        run SNPC_rco_10_Common_AboutMyHome::Root
-    elif EventFlowSystemActor.PlayerHouseLevel() == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:400', false)
-    else:
-        EventFlowSystemActor.UISonkatsuPointAppear()
-        EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', '', 5000)
-        if EventFlowSystemActor.HasLifeSupportPoint('Now', 5000):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:402', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:404', false)
-                EventFlowSystemActor.LifeSupportPointCountDown(-5000, false)
-                event_flags_system['cPlayer:RcoPaid1stCharge'] = true
-                event_flags_system['cLifeSupportAchievement:PayImmigrationCost'] += 1
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:405', false)
-                EventFlowSystemActor.UISonkatsuPointDisappear()
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:406', false)
-                fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent26 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_01', false)
-                elif fEvent26 == 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_02', false)
-                elif fEvent26 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_03', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_05', false)
-                if event_flags_system['cLand:RcmImmQuestComplete']:
-                    event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
-                if event_flags_system['cLand:OpeningSeqBGMChangeCounter'] <= 8:
-                    event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 8
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:403', false)
-                run sub_Event99
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:401', false)
-            run sub_Event99
-    return
-
-flow RcoTentWhatShoudIdo:
-    run SNPC_rco_10_Common_WhatShouldIDo::Root
-    return
-
-flow RcoTentAskDIYtrial:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:201', false)
-    fEvent39 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent39 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:204', true)
-        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
-        EventFlowSystemActor.WaitFrame(45)
-        EventFlowSystemActor.FadeIn(true)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:205', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:206', false)
-        event_flags_system['cPlayer:RcoHeardDetailDIYtrial'] = true
-        event_flags_system['cPlayer:RcoDIYtrialOngoing'] = true
-    elif fEvent39 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:202', false)
-    elif fEvent39 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:203', false)
-    return
-
-flow RcoTentFishInsect:
-    if not event_flags_system['cPlayer:RcoTentDonation']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_01', false)
-    elif event_flags_system['cPlayerTemp:RcoDonationNow']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_03', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_02', false)
-    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'RcoDonationForMuseum', 'cItemFilter', false)
-    if EventFlowSystemActor.UIResultMenuDecide():
-        MainNpc.SetDeliveryItem(4, false)
-        EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-        MainNpc.NpcDelivery('Keep', 0)
-        if MainNpc.OwlIsDonation('cUISelect'):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:003_01', false)
-            MainNpc.NpcDelivery('Default', 10)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:004', false)
-            if event_flags_system['cPlayer:RcoTentDonation']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_03', false)
-            elif event_flags_system['cPlayer:RcoTentDonatinDeclined']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_02', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_01', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                if EventFlowSystemActor.MuseumDonationNumCheck(5):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:006_01', true)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:006_01', false)
-                MainNpc.NpcDelivery('Default', 3)
-                event_flags_system['cPlayer:RcoTentDonation'] = true
-                event_flags_system['cPlayerTemp:RcoDonationNow'] = true
-                run SNPC_rco_51_DonationReward::Root
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:010', false)
-                MainNpc.NpcDelivery('Default', 10)
-                event_flags_system['cPlayer:RcoTentDonatinDeclined'] = true
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:002', false)
-    return
-
-flow RcoDIYongoing:
-    if not EventFlowSystemActor.HasTargetItem(2500, 5):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:911', false)
-    elif event_flags_system['cPlayer:RcoDIYtrialGetMaterial']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:207', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:921', true)
-        event_flags_system['cPlayer:RcoDIYtrialGetMaterial'] = true
-    return
-
-flow RcoTentAboutBuildMuseumTent:
-    run Event119
-    return
-
-flow RcoTentImmQuestIntro_Force:
+flow AboutBuildMuseumTent_Force:
     run RcoTent_Force_PlayerPos
     event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
-    run Event7
+entrypoint Event119:
+    event_flags_system['cPlayer:RcoTalkAfterMuseumTent'] = false
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:016', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:017', false)
+    if not event_flags_system['cPlayer:RcoPaid1stCharge']:
+        if event_flags_system['cLand:TodayStartTown1P']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:018_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:018_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:019', false)
     return
 
-flow RcoTentImmQuestIntroNotForce:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:000_01', false)
-    run Demo_Common_PhoneCall::CallIn
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:000_02', false)
-entrypoint Event7:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:001', true)
-    run Demo_Common_PhoneCall::FinishCall
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:002', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:003', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:004', true)
-    EventFlowSystemActor.WaitFrame(10)
-    MainNpc.CharacterEmoticonAction('Sighing', '', 0, false, false)
-    EventFlowSystemActor.WaitFrame(70)
-    MainNpc.CharacterEmoticonAction('Shocked', '', 0, false, false)
-    EventFlowSystemActor.WaitFrame(30)
-    MainNpc.CharacterEmoticonAction('IdeaBulb', '', 0, false, false)
-    EventFlowSystemActor.WaitFrame(30)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:005', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:006', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:007', false)
-    event_flags_system['cPlayer:ImmQRunningForPlayer'] = true
-    event_flags_system['cLand:RcmImmQuestRunning'] = true
-    event_flags_system['cPlayer:RcoImmQClear1QuestToday'] = true
+flow AboutBuildMuseumTent_Force_Init:
+    run RcoTent_Force_DisableTalkCamera
+    return
+
+flow CancelRemakeTrial:
+    run Event5
+    return
+
+flow DoRemakeTrial:
+    run Event89
     return
 
 flow RcoAskRemakeTrial:
@@ -220,31 +101,18 @@ entrypoint Event89:
         run sub_grp!Event134
     return
 
+flow RcoDIYongoing:
+    if not EventFlowSystemActor.HasTargetItem(2500, 5):
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:911', false)
+    elif event_flags_system['cPlayer:RcoDIYtrialGetMaterial']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:207', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:921', true)
+        event_flags_system['cPlayer:RcoDIYtrialGetMaterial'] = true
+    return
+
 flow RcoRemakeTrialIntro:
     run Event14
-    return
-
-flow DoRemakeTrial:
-    run Event89
-    return
-
-flow CancelRemakeTrial:
-    run Event5
-    return
-
-flow AboutBuildMuseumTent_Force:
-    run RcoTent_Force_PlayerPos
-    event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
-entrypoint Event119:
-    event_flags_system['cPlayer:RcoTalkAfterMuseumTent'] = false
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:016', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:017', false)
-    if not event_flags_system['cPlayer:RcoPaid1stCharge']:
-        if event_flags_system['cLand:TodayStartTown1P']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:018_01', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:018_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:019', false)
     return
 
 flow RcoRemakeTrialIntro_Force:
@@ -261,10 +129,148 @@ entrypoint Event14:
     event_flags_system['cPlayer:RcoHeardInviteRemakeWS'] = true
     return
 
-flow RcoTent_Force_PlayerPos:
-    if EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
-        Player.PlayerMoveToTarget(157.0, 170.0, 0.0, 0.0, '', false, false)
-        MainNpc.TalkCamera(true, 0)
+flow RcoRemakeTrialIntro_Force_Init:
+    run RcoTent_Force_DisableTalkCamera
+    return
+
+flow RcoTentAboutBuildMuseumTent:
+    run Event119
+    return
+
+flow RcoTentAboutMyhome:
+    if event_flags_system['cPlayer:RcoPaid1stCharge']:
+        run SNPC_rco_10_Common_AboutMyHome::Root
+    elif EventFlowSystemActor.PlayerHouseLevel() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:400', false)
+    else:
+        EventFlowSystemActor.UISonkatsuPointAppear()
+        EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', '', 5000)
+        if EventFlowSystemActor.HasLifeSupportPoint('Now', 5000):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:402', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:404', false)
+                EventFlowSystemActor.LifeSupportPointCountDown(-5000, false)
+                event_flags_system['cPlayer:RcoPaid1stCharge'] = true
+                event_flags_system['cLifeSupportAchievement:PayImmigrationCost'] += 1
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:405', false)
+                EventFlowSystemActor.UISonkatsuPointDisappear()
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:406', false)
+                fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent26 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_01', false)
+                elif fEvent26 == 1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_02', false)
+                elif fEvent26 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_03', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_05', false)
+                if event_flags_system['cLand:RcmImmQuestComplete']:
+                    event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
+                if event_flags_system['cLand:OpeningSeqBGMChangeCounter'] <= 8:
+                    event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 8
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:403', false)
+                run sub_Event99
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:401', false)
+            run sub_Event99
+    return
+
+flow RcoTentAskDIYtrial:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:201', false)
+    fEvent39 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent39 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:202', false)
+    elif fEvent39 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:203', false)
+    elif fEvent39 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:204', true)
+        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+        EventFlowSystemActor.WaitFrame(45)
+        EventFlowSystemActor.FadeIn(true)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:205', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:206', false)
+        event_flags_system['cPlayer:RcoHeardDetailDIYtrial'] = true
+        event_flags_system['cPlayer:RcoDIYtrialOngoing'] = true
+    return
+
+flow RcoTentFishInsect:
+    if not event_flags_system['cPlayer:RcoTentDonation']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_01', false)
+    elif event_flags_system['cPlayerTemp:RcoDonationNow']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_03', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_02', false)
+    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'RcoDonationForMuseum', 'cItemFilter', false)
+    if EventFlowSystemActor.UIResultMenuDecide():
+        MainNpc.SetDeliveryItem(4, false)
+        EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+        MainNpc.NpcDelivery('Keep', 0)
+        if MainNpc.OwlIsDonation('cUISelect'):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:003_01', false)
+            MainNpc.NpcDelivery('Default', 10)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:004', false)
+            if event_flags_system['cPlayer:RcoTentDonation']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_03', false)
+            elif event_flags_system['cPlayer:RcoTentDonatinDeclined']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_01', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                if EventFlowSystemActor.MuseumDonationNumCheck(5):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:006_01', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:006_01', false)
+                MainNpc.NpcDelivery('Default', 3)
+                event_flags_system['cPlayer:RcoTentDonation'] = true
+                event_flags_system['cPlayerTemp:RcoDonationNow'] = true
+                run SNPC_rco_51_DonationReward::Root
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:010', false)
+                MainNpc.NpcDelivery('Default', 10)
+                event_flags_system['cPlayer:RcoTentDonatinDeclined'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:002', false)
+    return
+
+flow RcoTentImmQuestIntroNotForce:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:000_01', false)
+    run Demo_Common_PhoneCall::CallIn
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:000_02', false)
+entrypoint Event7:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:001', true)
+    run Demo_Common_PhoneCall::FinishCall
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:002', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:003', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:004', true)
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.CharacterEmoticonAction('Sighing', '', 0, false, false)
+    EventFlowSystemActor.WaitFrame(70)
+    MainNpc.CharacterEmoticonAction('Shocked', '', 0, false, false)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.CharacterEmoticonAction('IdeaBulb', '', 0, false, false)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:005', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:006', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:007', false)
+    event_flags_system['cPlayer:ImmQRunningForPlayer'] = true
+    event_flags_system['cLand:RcmImmQuestRunning'] = true
+    event_flags_system['cPlayer:RcoImmQClear1QuestToday'] = true
+    return
+
+flow RcoTentImmQuestIntro_Force:
+    run RcoTent_Force_PlayerPos
+    event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
+    run Event7
+    return
+
+flow RcoTentImmQuestIntro_Force_Init:
+    run RcoTent_Force_DisableTalkCamera
+    return
+
+flow RcoTentWhatShoudIdo:
+    run SNPC_rco_10_Common_WhatShouldIDo::Root
     return
 
 flow RcoTent_Force_DisableTalkCamera:
@@ -272,16 +278,10 @@ flow RcoTent_Force_DisableTalkCamera:
         MainNpc.NpcAISetting(4, false)
     return
 
-flow AboutBuildMuseumTent_Force_Init:
-    run RcoTent_Force_DisableTalkCamera
-    return
-
-flow RcoRemakeTrialIntro_Force_Init:
-    run RcoTent_Force_DisableTalkCamera
-    return
-
-flow RcoTentImmQuestIntro_Force_Init:
-    run RcoTent_Force_DisableTalkCamera
+flow RcoTent_Force_PlayerPos:
+    if EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
+        Player.PlayerMoveToTarget(157.0, 170.0, 0.0, 0.0, '', false, false)
+        MainNpc.TalkCamera(true, 0)
     return
 
 flow sub_Event99:

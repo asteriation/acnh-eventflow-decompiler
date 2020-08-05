@@ -42,15 +42,7 @@ flow sub_grp!Event0:
         MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:001', false)
         Player.TurnNeck(1)
         fEvent14 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-        if fEvent14 == 0:
-            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:002', false)
-            Player.TurnNeck(0)
-            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:003', false)
-        elif fEvent14 == 1:
-            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:007', false)
-            Player.TurnNeck(0)
-            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:008', false)
-        elif fEvent14 == 2:
+        if fEvent14 == 2:
             SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:009', false)
             Player.TurnNeck(0)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:010', false)
@@ -58,6 +50,14 @@ flow sub_grp!Event0:
             SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:011', false)
             Player.TurnNeck(0)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:012', false)
+        elif fEvent14 == 0:
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:002', false)
+            Player.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:003', false)
+        elif fEvent14 == 1:
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:007', false)
+            Player.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:008', false)
         Player.TurnNeck(1)
         SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_AN:004', false)
         Player.TurnNeck(0)

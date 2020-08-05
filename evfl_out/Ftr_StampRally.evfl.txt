@@ -50,8 +50,8 @@ flow Root:
         run sub_Event37
     run sub_tm!Root
 
-flow sub_tm!Root:
-    return
+flow sub_Event37:
+    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:304', false)
 
 flow sub_Event40:
     Player.OpenMessageWindow('TalkFtr/FTR_StampRally:301', false)
@@ -62,6 +62,6 @@ flow sub_Event41:
 flow sub_Event42:
     Player.OpenMessageWindow('TalkFtr/FTR_StampRally:303', false)
 
-flow sub_Event37:
-    Player.OpenMessageWindow('TalkFtr/FTR_StampRally:304', false)
+flow sub_tm!Root:
+    return
 

@@ -1,3 +1,80 @@
+flow 1P_Cmn1_Root_ABC:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:001', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:002', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:003', false)
+    return
+
+flow 2P_Cmn2_Root_A:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
+    return
+
+flow 2P_Com1_Root_ABC:
+    if (event_flags_system['cPlayer:2P_CreatedAfterOwlMoving']) and (not event_flags_system['cLand:MuseumTentBuiltToday']):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:015', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:001', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:021', false)
+    return
+
+flow ALL_Cmn1_Root_AB:
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:004', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:022', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:005', false)
+    return
+
+flow ALL_Cmn2_Root_A:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:008', true)
+    run ALL_Cmn_SendRecipe
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:009', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
+    event_flags_system['cLand:OwlTentExplainFor1P'] = true
+    return
+
+flow ALL_Cmn3_RootAB:
+    if event_flags_system['cLand:OwlFoundFossil']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:023', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
+    return
+
+flow ALL_Cmn4_RootAB:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:024', true)
+    run ALL_Cmn_SendRecipe
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:025', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
+    return
+
+flow ALL_Cmn5_RootC:
+    if event_flags_system['cLand:MuseumTentBuiltToday']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:011_02', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:011_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:012', true)
+    return
+
+flow ALL_Cmn6_RootC:
+    EventFlowSystemActor.WaitFrame(10)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:013', false)
+    run ALL_Cmn_SendRecipe
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:014', false)
+    return
+
+flow ALL_Cmn_SendRecipe:
+    run Demo_Common_PhoneCall::SendingDataWithP_Owl
+    run Demo_Common_PhoneCall::PuttingMobileAwayWithP
+    EventFlowSystemActor.PlayerSetCraftRecipe(65534, 'Owl001')
+    event_flags_system['cPlayer:OwlGotDiyRecipe'] = true
+    event_flags_system['cLand:VillageExtensionLevel2'] = true
+    return
+
 flow Root:
     EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cLand:DonationAmountForMuseum', 0)
     event_flags_system['cPlayer:OwlFinished1stTalk'] = true
@@ -20,37 +97,10 @@ flow Root:
         run Root0_2P
     return
 
-flow Root2:
-    run 1P_Cmn1_Root_ABC
-    run ALL_Cmn5_RootC
-    run ALL_Cmn6_RootC
-    return
-
 flow Root0:
     run 1P_Cmn1_Root_ABC
     run ALL_Cmn1_Root_AB
     run ALL_Cmn2_Root_A
-    return
-
-flow Root1:
-    run 1P_Cmn1_Root_ABC
-    run ALL_Cmn1_Root_AB
-    run ALL_Cmn3_RootAB
-    run ALL_Cmn4_RootAB
-    return
-
-flow 1P_Cmn1_Root_ABC:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:001', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:002', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:003', false)
-    return
-
-flow ALL_Cmn1_Root_AB:
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:004', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:022', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:005', false)
     return
 
 flow Root0_2P:
@@ -62,22 +112,11 @@ flow Root0_2P:
         run 2P_Cmn2_Root_A
     return
 
-flow ALL_Cmn2_Root_A:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:008', true)
-    run ALL_Cmn_SendRecipe
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:009', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
-    event_flags_system['cLand:OwlTentExplainFor1P'] = true
-    return
-
-flow ALL_Cmn_SendRecipe:
-    run Demo_Common_PhoneCall::SendingDataWithP_Owl
-    run Demo_Common_PhoneCall::PuttingMobileAwayWithP
-    EventFlowSystemActor.PlayerSetCraftRecipe(65534, 'Owl001')
-    event_flags_system['cPlayer:OwlGotDiyRecipe'] = true
-    event_flags_system['cLand:VillageExtensionLevel2'] = true
+flow Root1:
+    run 1P_Cmn1_Root_ABC
+    run ALL_Cmn1_Root_AB
+    run ALL_Cmn3_RootAB
+    run ALL_Cmn4_RootAB
     return
 
 flow Root1_2P:
@@ -90,27 +129,10 @@ flow Root1_2P:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:026', false)
     return
 
-flow 2P_Com1_Root_ABC:
-    if (event_flags_system['cPlayer:2P_CreatedAfterOwlMoving']) and (not event_flags_system['cLand:MuseumTentBuiltToday']):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:015', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:001', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:021', false)
-    return
-
-flow ALL_Cmn3_RootAB:
-    if event_flags_system['cLand:OwlFoundFossil']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:023', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
-    return
-
-flow ALL_Cmn4_RootAB:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:024', true)
-    run ALL_Cmn_SendRecipe
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:025', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
+flow Root2:
+    run 1P_Cmn1_Root_ABC
+    run ALL_Cmn5_RootC
+    run ALL_Cmn6_RootC
     return
 
 flow Root2_2P:
@@ -118,27 +140,5 @@ flow Root2_2P:
     run ALL_Cmn5_RootC
     if event_flags_system['cPlayer:MainmenuRecipe']:
         run ALL_Cmn6_RootC
-    return
-
-flow ALL_Cmn5_RootC:
-    if event_flags_system['cLand:MuseumTentBuiltToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:011_02', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:011_01', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:012', true)
-    return
-
-flow ALL_Cmn6_RootC:
-    EventFlowSystemActor.WaitFrame(10)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:013', false)
-    run ALL_Cmn_SendRecipe
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:014', false)
-    return
-
-flow 2P_Cmn2_Root_A:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:006', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:007_01', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:010', false)
     return
 

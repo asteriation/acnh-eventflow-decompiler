@@ -1,21 +1,12 @@
+flow ForcePurgeAttention:
+    if not event_flags_system['cPlayer:OhirakiRollbackTutorial']:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0805', true)
+        event_flags_system['cPlayer:OhirakiRollbackTutorial'] = true
+    return
+
 flow MultiplaySave:
     fEvent10 = EventFlowSystemActor.NetDemoType()
-    if fEvent10 in (2, 3):
-        EventFlowSystemActor.NetWaitDemo('cStartSave')
-        EventFlowSystemActor.MessageLockNext(1)
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
-        if EventFlowSystemActor.NetIsInviteFriend():
-            EventFlowSystemActor.SaveSimpleSave('cNet')
-            if EventFlowSystemActor.CheckErrorType(3):
-                EventFlowSystemActor.NetDemoNextStep('cSaveFailed')
-            else:
-                EventFlowSystemActor.NetDemoNextStep('cSaveSuccess')
-        else:
-            EventFlowSystemActor.NetWaitDemo('cEndSave')
-        EventFlowSystemActor.MessageUnlockNext()
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.NetDemoNextStep('cSaveDone')
-    elif fEvent10 == 1:
+    if fEvent10 == 1:
         if not EventFlowSystemActor.NetIsDemoPlayer():
             EventFlowSystemActor.NetWaitDemo('cStartSave')
             EventFlowSystemActor.MessageLockNext(1)
@@ -31,6 +22,21 @@ flow MultiplaySave:
             EventFlowSystemActor.MessageUnlockNext()
             EventFlowSystemActor.MessageSuspend()
             EventFlowSystemActor.NetDemoNextStep('cSaveDone')
+    elif fEvent10 in (2, 3):
+        EventFlowSystemActor.NetWaitDemo('cStartSave')
+        EventFlowSystemActor.MessageLockNext(1)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+        if EventFlowSystemActor.NetIsInviteFriend():
+            EventFlowSystemActor.SaveSimpleSave('cNet')
+            if EventFlowSystemActor.CheckErrorType(3):
+                EventFlowSystemActor.NetDemoNextStep('cSaveFailed')
+            else:
+                EventFlowSystemActor.NetDemoNextStep('cSaveSuccess')
+        else:
+            EventFlowSystemActor.NetWaitDemo('cEndSave')
+        EventFlowSystemActor.MessageUnlockNext()
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.NetDemoNextStep('cSaveDone')
     return
 
 flow VisitEndMileGet:
@@ -47,11 +53,5 @@ flow VisitEndMileGet:
             event_flags_system['cPlayer:DodTodayFlightMileGet'] = true
             EventFlowSystemActor.UISonkatsuPointDisappear()
     EventFlowSystemActor.SpecialDemoEnd('cReturnMulti')
-    return
-
-flow ForcePurgeAttention:
-    if not event_flags_system['cPlayer:OhirakiRollbackTutorial']:
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0805', true)
-        event_flags_system['cPlayer:OhirakiRollbackTutorial'] = true
     return
 

@@ -1,3 +1,9 @@
+flow Init:
+    MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcRegistAIBlackBoard('DemoSpeak', 0)
+    return
+
 flow Root:
     if (not MainNpc.NpcCheckStateSelectTiming('cInit')) and (MainNpc.NpcBlackBoard('DemoSpeak', 1)):
         MainNpc.NpcAISetting(3, false)
@@ -23,12 +29,6 @@ flow Root:
                 run sub_Event0
         else:
             run sub_Event0
-    return
-
-flow Init:
-    MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
-    MainNpc.NpcAISetting(8, true)
-    MainNpc.NpcRegistAIBlackBoard('DemoSpeak', 0)
     return
 
 flow sub_Event0:

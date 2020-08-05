@@ -1,5 +1,17 @@
-flow ReSelection:
-    run Event41
+flow BestFriend:
+    if EventFlowSystemActor.PercentChoice(26):
+        run NNPC_FreeC::Furniture_Chk
+    if EventFlowSystemActor.PercentChoice(21):
+        run NNPC_FreeC::Room_Chk
+    if EventFlowSystemActor.PercentChoice(9):
+        run NNPC_FreeA::Week_Chk
+    if EventFlowSystemActor.PercentChoice(20):
+        run NNPC_FreeA::ClothesN2_Chk
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeA::AlwaysAB_Chk
+    if EventFlowSystemActor.PercentChoice(75):
+        run NNPC_FreeA::Always_Chk
+    run NNPC_FreeA::HouseQuestions_Chk
     return
 
 flow Free_House1:
@@ -35,6 +47,40 @@ flow Free_House3:
     run Free_House4
     return
 
+flow Free_House4:
+    event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] = 0
+entrypoint Event41:
+    if event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] >= 10:
+        run ReSelect1
+    else:
+        event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] += 1
+        fEvent44 = MainNpc.CheckNpcFavorLevel()
+        if fEvent44 == 5:
+            run Friend
+        elif fEvent44 in (2, 3, 4):
+            run GoodFriend
+        elif fEvent44 in (0, 1):
+            run BestFriend
+    return
+
+flow Free_HouseG:
+    MainNpc.SetNpcName(0, 15)
+    fEvent82 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent82 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:006', false)
+    elif fEvent82 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:007', false)
+    elif fEvent82 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:008', false)
+    return
+
+flow Free_HouseH:
+    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        run NNPC_FreeC::RoomN_withG
+    else:
+        run NNPC_FreeC::FunitureN_Chk
+    return
+
 flow Friend:
     if EventFlowSystemActor.PercentChoice(25):
         run NNPC_FreeC::Furniture_Chk
@@ -61,22 +107,6 @@ flow GoodFriend:
     run NNPC_FreeA::HouseQuestions_Chk
     return
 
-flow BestFriend:
-    if EventFlowSystemActor.PercentChoice(26):
-        run NNPC_FreeC::Furniture_Chk
-    if EventFlowSystemActor.PercentChoice(21):
-        run NNPC_FreeC::Room_Chk
-    if EventFlowSystemActor.PercentChoice(9):
-        run NNPC_FreeA::Week_Chk
-    if EventFlowSystemActor.PercentChoice(20):
-        run NNPC_FreeA::ClothesN2_Chk
-    if EventFlowSystemActor.PercentChoice(50):
-        run NNPC_FreeA::AlwaysAB_Chk
-    if EventFlowSystemActor.PercentChoice(75):
-        run NNPC_FreeA::Always_Chk
-    run NNPC_FreeA::HouseQuestions_Chk
-    return
-
 flow ReSelect1:
 entrypoint Event88:
     if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
@@ -94,6 +124,10 @@ flow ReSelect2:
     run Event88
     return
 
+flow ReSelection:
+    run Event41
+    return
+
 flow Root:
     run NNPC_FreeD::Moving_Chk
     if EventFlowSystemActor.PercentChoice(50):
@@ -107,39 +141,5 @@ flow Root:
     if EventFlowSystemActor.PercentChoice(50):
         run NNPC_FreeD::KeywordA
     run Free_House1
-    return
-
-flow Free_HouseH:
-    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        run NNPC_FreeC::RoomN_withG
-    else:
-        run NNPC_FreeC::FunitureN_Chk
-    return
-
-flow Free_HouseG:
-    MainNpc.SetNpcName(0, 15)
-    fEvent82 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent82 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:006', false)
-    elif fEvent82 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:007', false)
-    elif fEvent82 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG:008', false)
-    return
-
-flow Free_House4:
-    event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] = 0
-entrypoint Event41:
-    if event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] >= 10:
-        run ReSelect1
-    else:
-        event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] += 1
-        fEvent44 = MainNpc.CheckNpcFavorLevel()
-        if fEvent44 in (0, 1):
-            run BestFriend
-        elif fEvent44 in (2, 3, 4):
-            run GoodFriend
-        elif fEvent44 == 5:
-            run Friend
     return
 

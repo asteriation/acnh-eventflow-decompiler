@@ -1,3 +1,54 @@
+flow EntryPoint_CheckUnlockFriend:
+    if event_flags_system['cPlayer:FriendMailSendEnable']:
+        run Obj_MessageCardRack::EntryPoint_StartTalk
+    elif (event_flags_system['cPlayer:NetIsRegistHomeLand']) and (EventFlowSystemActor.NetHasAddressData('cFriend')):
+        event_flags_system['cPlayer:FriendMailSendEnable'] = true
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:010', false)
+        if not event_flags_system['cPlayer:FriendMailGuideRetentionPeriod']:
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:020', true)
+            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0335', false)
+            event_flags_system['cPlayer:FriendMailGuideRetentionPeriod'] = true
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:040', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run Obj_MessageCardRack::EntryPoint_SelectTo
+        else:
+            run Obj_MessageCardRack::EntryPoint_Cancel
+    else:
+        run sub_Event125
+    return
+
+flow EntryPoint_EditFriend:
+    EventFlowSystemActor.CheckFreeCommunication(true)
+    if EventFlowSystemActor.IsApprovedFreeCommunication():
+        run Event46
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:311', true)
+    return
+
+flow EntryPoint_RetrySendFriend:
+    run Event5
+    return
+
+flow EntryPoint_SendError:
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.MessageUnlockNext()
+    run Obj_MessageCardRack::EntryPoint_PostProcedure
+    EventFlowSystemActor.UIMoneyAppear()
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:380', true)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run EntryPoint_RetrySendFriend
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:381', false)
+        EventFlowSystemActor.BellCountDown(200, False)
+        if EventFlowSystemActor.HasAttachedPresent():
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:382', true)
+            EventFlowSystemActor.ReturnAttachedPresentToBaggage()
+        EventFlowSystemActor.MessageSuspend()
+        event_flags_system['cPlayer:MessageCardPayment'] = false
+        EventFlowSystemActor.UIMoneyDisappear()
+        run Obj_MessageCardRack::EntryPoint_SaveToMenu
+    return
+
 flow EntryPoint_SendFriend:
     EventFlowSystemActor.UIMoneyDisappear()
     EventFlowSystemActor.CheckFreeCommunication(true)
@@ -131,63 +182,12 @@ entrypoint Event5:
         run sub_Event131
     return
 
-flow EntryPoint_EditFriend:
-    EventFlowSystemActor.CheckFreeCommunication(true)
-    if EventFlowSystemActor.IsApprovedFreeCommunication():
-        run Event46
-    else:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:311', true)
-    return
-
-flow EntryPoint_SendError:
-    EventFlowSystemActor.MessageSuspend()
-    EventFlowSystemActor.MessageUnlockNext()
-    run Obj_MessageCardRack::EntryPoint_PostProcedure
-    EventFlowSystemActor.UIMoneyAppear()
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:380', true)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run EntryPoint_RetrySendFriend
-    else:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:381', false)
-        EventFlowSystemActor.BellCountDown(200, False)
-        if EventFlowSystemActor.HasAttachedPresent():
-            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:382', true)
-            EventFlowSystemActor.ReturnAttachedPresentToBaggage()
-        EventFlowSystemActor.MessageSuspend()
-        event_flags_system['cPlayer:MessageCardPayment'] = false
-        EventFlowSystemActor.UIMoneyDisappear()
-        run Obj_MessageCardRack::EntryPoint_SaveToMenu
-    return
-
-flow EntryPoint_RetrySendFriend:
-    run Event5
-    return
-
-flow EntryPoint_CheckUnlockFriend:
-    if event_flags_system['cPlayer:FriendMailSendEnable']:
-        run Obj_MessageCardRack::EntryPoint_StartTalk
-    elif (event_flags_system['cPlayer:NetIsRegistHomeLand']) and (EventFlowSystemActor.NetHasAddressData('cFriend')):
-        event_flags_system['cPlayer:FriendMailSendEnable'] = true
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:010', false)
-        if not event_flags_system['cPlayer:FriendMailGuideRetentionPeriod']:
-            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:020', true)
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0335', false)
-            event_flags_system['cPlayer:FriendMailGuideRetentionPeriod'] = true
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:040', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Obj_MessageCardRack::EntryPoint_SelectTo
-        else:
-            run Obj_MessageCardRack::EntryPoint_Cancel
-    else:
-        run sub_Event125
-    return
-
-flow sub_Event131:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:312', true)
-
 flow sub_Event102:
     run EntryPoint_SendError
 
 flow sub_Event125:
     run Obj_MessageCardRack::EntryPoint_StartTalk
+
+flow sub_Event131:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:312', true)
 

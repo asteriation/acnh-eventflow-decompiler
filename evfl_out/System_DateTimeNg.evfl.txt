@@ -1,3 +1,7 @@
+flow NoSave:
+    run Event1
+    return
+
 flow Root:
     EventFlowSystemActor.UISaveIconAppear()
     EventFlowSystemActor.SaveSimpleSave('cAll')
@@ -5,9 +9,5 @@ flow Root:
 entrypoint Event1:
     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1308', false)
     EventFlowSystemActor.WaitFrame(-1)
-    return
-
-flow NoSave:
-    run Event1
     return
 

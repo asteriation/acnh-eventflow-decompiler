@@ -1,3 +1,7 @@
+flow FirstMeeting_FlagProcess:
+    run Event31
+    return
+
 flow Root:
     if not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
         if EventFlowSystemActor.IsMyVillage():
@@ -18,9 +22,5 @@ entrypoint Event31:
             run NNPC_Reaction_First_V::FirstV_Acquaintance
         else:
             run NNPC_Reaction_First_V::FirstV_Stranger
-    return
-
-flow FirstMeeting_FlagProcess:
-    run Event31
     return
 

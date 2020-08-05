@@ -1,6 +1,76 @@
+flow HHA_1st_BuildCelebration:
+    fEvent36 = EventFlowSystemActor.RandomChoice3(3)
+    if fEvent36 == 1:
+        MainNpc.NpcSetRewardRecipe(7133, false)
+    elif fEvent36 == 2:
+        MainNpc.NpcSetRewardRecipe(3438, false)
+    elif fEvent36 == 0:
+        MainNpc.NpcSetRewardRecipe(7134, false)
+    EventFlowSystemActor.SystemMailSend('cHHA', 'MAIL_SP_HHA_BuildCelebration', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
+    return
+
+flow RcoCmnProcessUpgradeMyhome:
+    event_flags_system['cPlayer:RcoOrderedHouseBuilt'] = true
+    event_flags_system['cPlayer:RcoHeardRemodel1'] = false
+    fEvent9 = EventFlowSystemActor.PlayerHouseLevel()
+    if fEvent9 == 1:
+        event_flags_system['cHouse:HouseOrder1'] = true
+        event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
+        run HHA_1st_BuildCelebration
+    elif fEvent9 == 2:
+        event_flags_system['cHouse:HouseOrder2'] = true
+    elif fEvent9 == 4:
+        event_flags_system['cHouse:HouseOrder4'] = true
+    elif fEvent9 == 3:
+        event_flags_system['cHouse:HouseOrder3'] = true
+    elif fEvent9 == 5:
+        event_flags_system['cHouse:HouseOrder5'] = true
+    elif fEvent9 == 7:
+        event_flags_system['cHouse:HouseOrder7'] = true
+    elif fEvent9 == 6:
+        event_flags_system['cHouse:HouseOrder6'] = true
+    return
+
+flow Rco_Cmn_UpgradeHouseSel:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        fEvent19 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent19 in (3, 5, 6, 7):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:103', false)
+            run RcoCmnProcessUpgradeMyhome
+        elif fEvent19 in (2, 4):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:251', false)
+            run SNPC_rco_02_SelRoofColor::Root
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:252', false)
+            run RcoCmnProcessUpgradeMyhome
+        elif fEvent19 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:202', false)
+            run SNPC_rco_02_SelRoofColor::Root
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_02', true)
+            run Demo_Common_PhoneCall::SendingDataOneWay
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_03', false)
+            MainNpc.SmartPhone(1)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_04', false)
+            event_flags_system['cPlayer:MainmenuRndDailyQuest'] = true
+            event_flags_system['cPlayer:PlayerSonkatsuQuestEnable'] = true
+            event_flags_system['cPlayer:Mobile1stBoot_MilageProgram'] = true
+            if (EventFlowSystemActor.TermEventNow('EarthDay', false)) and (not event_flags_system['cPlayer:MailSendFlag_EarthDayNotice']):
+                EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastToday', 'cReward', 'cNone', false, 6)
+                event_flags_system['cPlayer:MailSendFlag_EarthDayNotice'] = true
+            run RcoCmnProcessUpgradeMyhome
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:102', false)
+        if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+            run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
+    return
+
 flow Root:
     fEvent1 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent1 == 1:
+    if fEvent1 == 7:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:216', false)
+        run sub_Event18
+    elif fEvent1 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:201', false)
         run sub_Event18
     elif fEvent1 == 2:
@@ -18,76 +88,6 @@ flow Root:
     elif fEvent1 == 6:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:215', false)
         run sub_Event18
-    elif fEvent1 == 7:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:216', false)
-        run sub_Event18
-    return
-
-flow Rco_Cmn_UpgradeHouseSel:
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        fEvent19 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent19 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:202', false)
-            run SNPC_rco_02_SelRoofColor::Root
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_02', true)
-            run Demo_Common_PhoneCall::SendingDataOneWay
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_03', false)
-            MainNpc.SmartPhone(1)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:209_04', false)
-            event_flags_system['cPlayer:MainmenuRndDailyQuest'] = true
-            event_flags_system['cPlayer:PlayerSonkatsuQuestEnable'] = true
-            event_flags_system['cPlayer:Mobile1stBoot_MilageProgram'] = true
-            if (EventFlowSystemActor.TermEventNow('EarthDay', false)) and (not event_flags_system['cPlayer:MailSendFlag_EarthDayNotice']):
-                EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastToday', 'cReward', 'cNone', false, 6)
-                event_flags_system['cPlayer:MailSendFlag_EarthDayNotice'] = true
-            run RcoCmnProcessUpgradeMyhome
-        elif fEvent19 in (2, 4):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:251', false)
-            run SNPC_rco_02_SelRoofColor::Root
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:252', false)
-            run RcoCmnProcessUpgradeMyhome
-        elif fEvent19 in (3, 5, 6, 7):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:103', false)
-            run RcoCmnProcessUpgradeMyhome
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:102', false)
-        if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
-            run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
-    return
-
-flow RcoCmnProcessUpgradeMyhome:
-    event_flags_system['cPlayer:RcoOrderedHouseBuilt'] = true
-    event_flags_system['cPlayer:RcoHeardRemodel1'] = false
-    fEvent9 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent9 == 1:
-        event_flags_system['cHouse:HouseOrder1'] = true
-        event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
-        run HHA_1st_BuildCelebration
-    elif fEvent9 == 2:
-        event_flags_system['cHouse:HouseOrder2'] = true
-    elif fEvent9 == 3:
-        event_flags_system['cHouse:HouseOrder3'] = true
-    elif fEvent9 == 4:
-        event_flags_system['cHouse:HouseOrder4'] = true
-    elif fEvent9 == 5:
-        event_flags_system['cHouse:HouseOrder5'] = true
-    elif fEvent9 == 6:
-        event_flags_system['cHouse:HouseOrder6'] = true
-    elif fEvent9 == 7:
-        event_flags_system['cHouse:HouseOrder7'] = true
-    return
-
-flow HHA_1st_BuildCelebration:
-    fEvent36 = EventFlowSystemActor.RandomChoice3(3)
-    if fEvent36 == 0:
-        MainNpc.NpcSetRewardRecipe(7134, false)
-    elif fEvent36 == 1:
-        MainNpc.NpcSetRewardRecipe(7133, false)
-    elif fEvent36 == 2:
-        MainNpc.NpcSetRewardRecipe(3438, false)
-    EventFlowSystemActor.SystemMailSend('cHHA', 'MAIL_SP_HHA_BuildCelebration', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
     return
 
 flow sub_Event18:

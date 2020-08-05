@@ -1,3 +1,14 @@
+flow AfterSuccessRecovring:
+    run Event25
+    return
+
+flow EndRecoveringMenu:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:125', false)
+    EventFlowSystemActor.MessageLockNext(3)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:004', false)
+    EventFlowSystemActor.WaitFrame(-1)
+    return
+
 flow SavedataRestoring:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:100_01', false)
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:100_03', false)
@@ -94,19 +105,16 @@ entrypoint Event12:
         run EndRecoveringMenu
     return
 
-flow ShowListAgain:
-    run Event12
-    return
-
-flow EndRecoveringMenu:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:125', false)
-    EventFlowSystemActor.MessageLockNext(3)
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:004', false)
-    EventFlowSystemActor.WaitFrame(-1)
-    return
-
 flow SearchAgain:
     run Event72
+    return
+
+flow Search_InternetError:
+    run Event56
+    return
+
+flow ShowListAgain:
+    run Event12
     return
 
 flow SuccessRecovering:
@@ -115,14 +123,6 @@ flow SuccessRecovering:
 entrypoint Event25:
     EventFlowSystemActor.WaitFrame(30)
     EventFlowSystemActor.SystemRequestChangeStage('cBoot', 'cNormalFader', 'cNormalFader', 'cBlack', 0.800000011920929, 0.800000011920929)
-    return
-
-flow AfterSuccessRecovring:
-    run Event25
-    return
-
-flow Search_InternetError:
-    run Event56
     return
 
 flow sub_grp!Event29:

@@ -1,3 +1,23 @@
+flow QuestGive_Chk:
+    if MainNpc.NpcIsQuestClient('cMyQuest', true, false):
+        fEvent13 = MainNpc.NpcHaveQuestType('')
+        if fEvent13 == 2:
+            if not MainNpc.NpcIsQuestClient('cLost', true, false):
+                run StandingUp_Chk
+            elif MainNpc.HasNpcRequestedItem():
+                run StandingUp_Chk
+        elif fEvent13 == 3:
+            if not quest_flags['cDeliveryEnd']:
+                run StandingUp_Chk
+        elif fEvent13 == 1:
+            if MainNpc.HasNpcRequestedItem():
+                run StandingUp_Chk
+    elif (MainNpc.IsDeliveryQuestReceiver()) and (not quest_flags['cDeliveryEnd']):
+        run sub_Event50
+    else:
+        run sub_grp!Event12
+    return
+
 flow Root:
     if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
         run QuestGive_Chk
@@ -26,34 +46,14 @@ flow Root:
                     EventFlowSystemActor.ExitFlowchart()
     return
 
-flow QuestGive_Chk:
-    if MainNpc.NpcIsQuestClient('cMyQuest', true, false):
-        fEvent13 = MainNpc.NpcHaveQuestType('')
-        if fEvent13 == 1:
-            if MainNpc.HasNpcRequestedItem():
-                run StandingUp_Chk
-        elif fEvent13 == 2:
-            if not MainNpc.NpcIsQuestClient('cLost', true, false):
-                run StandingUp_Chk
-            elif MainNpc.HasNpcRequestedItem():
-                run StandingUp_Chk
-        elif fEvent13 == 3:
-            if not quest_flags['cDeliveryEnd']:
-                run StandingUp_Chk
-    elif (MainNpc.IsDeliveryQuestReceiver()) and (not quest_flags['cDeliveryEnd']):
-        run sub_Event50
-    else:
-        run sub_grp!Event12
-    return
-
 flow StandingUp_Chk:
     fEvent42 = MainNpc.NpcIsSitting()
-    if fEvent42 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/BO_Connect_StandingUp:201', false)
+    if fEvent42 in (1, 2, 3, 5):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/BO_Connect_StandingUp:202', false)
         event_flags_npc['cNpcMemory:StandingUpFlag'] = true
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent42 in (1, 2, 3, 5):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/BO_Connect_StandingUp:202', false)
+    elif fEvent42 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/BO_Connect_StandingUp:201', false)
         event_flags_npc['cNpcMemory:StandingUpFlag'] = true
         EventFlowSystemActor.ExitFlowchart()
     return

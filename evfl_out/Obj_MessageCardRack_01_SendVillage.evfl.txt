@@ -1,3 +1,11 @@
+flow EntryPoint_EditNPC:
+    run Event54
+    return
+
+flow EntryPoint_EditPlayer:
+    run Event54
+    return
+
 flow EntryPoint_SendVillage:
     EventFlowSystemActor.UIMoneyDisappear()
     DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:200', false)
@@ -17,14 +25,6 @@ flow EntryPoint_SendVillage:
         run sub_grp!Event48
     else:
         run Obj_MessageCardRack::EntryPoint_StockFull
-    return
-
-flow EntryPoint_EditPlayer:
-    run Event54
-    return
-
-flow EntryPoint_EditNPC:
-    run Event54
     return
 
 flow sub_grp!Event48:

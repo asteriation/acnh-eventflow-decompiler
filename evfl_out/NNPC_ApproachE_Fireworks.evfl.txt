@@ -1,3 +1,15 @@
+flow FireworksSet_Blue:
+    MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
+    return
+
+flow FireworksSet_Red:
+    MainNpc.SetDeliveryItemAtRandom(5743, true, 'cVillageRemakePattern', 0)
+    return
+
+flow GetFireworksItem:
+    run Event12
+    return
+
 flow Root:
     if MainNpc.IsFirewoksApproachNpc():
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_Fireworks:001', false)
@@ -34,17 +46,5 @@ entrypoint Event12:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_Fireworks:003', false)
                     event_flags_npc['cNpcMemory:FireworksCannotGetNnpcItemFlag'] = true
                     event_flags_system['cPlayer:FireworkCannotGetNnpcItemFlag'] = true
-    return
-
-flow GetFireworksItem:
-    run Event12
-    return
-
-flow FireworksSet_Red:
-    MainNpc.SetDeliveryItemAtRandom(5743, true, 'cVillageRemakePattern', 0)
-    return
-
-flow FireworksSet_Blue:
-    MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
     return
 

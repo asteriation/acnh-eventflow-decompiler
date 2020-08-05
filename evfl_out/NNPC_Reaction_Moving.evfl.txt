@@ -1,3 +1,12 @@
+flow Free_Moveout:
+    run Event32
+    return
+
+flow HaveAcquaintance:
+    event_flags_npc['cNpcMemory:HasAcquaintanceship'] = true
+    MainNpc.SetNpcFeel('cNormal', 120)
+    return
+
 flow MoveIn:
     if MainNpc.NpcIsMovingRoom() == 0:
         fEvent0 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -131,6 +140,14 @@ entrypoint Event63:
             EventFlowSystemActor.ExitFlowchart()
     return
 
+flow MoveOut_Acquaintance:
+    run Event69
+    return
+
+flow Moveout_First:
+    run Event63
+    return
+
 flow Scout:
     if event_flag_npc['cNpcMemory:SameLand']:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:201', true)
@@ -159,22 +176,8 @@ flow Scout2:
     run Event94
     return
 
-flow HaveAcquaintance:
-    event_flags_npc['cNpcMemory:HasAcquaintanceship'] = true
-    MainNpc.SetNpcFeel('cNormal', 120)
-    return
-
-flow Free_Moveout:
-    run Event32
-    return
-
-flow Moveout_First:
-    run Event63
-    return
-
-flow MoveOut_Acquaintance:
-    run Event69
-    return
+flow sub_Event78:
+    event_flags_npc['cNpcMemory:InduceFailFlag'] = true
 
 flow sub_grp!Event79:
     if MainNpc.IsInduceFailedReasonFixUp():
@@ -188,7 +191,4 @@ flow sub_grp!Event79:
         EventFlowSystemActor.ExitFlowchart()
     else:
         EventFlowSystemActor.ExitFlowchart()
-
-flow sub_Event78:
-    event_flags_npc['cNpcMemory:InduceFailFlag'] = true
 

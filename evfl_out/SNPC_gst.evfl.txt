@@ -1,3 +1,105 @@
+flow GstGiveSpirits:
+    run Event36
+    return
+
+flow Gst_Choose_Category:
+    if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+        if EventFlowSystemActor.PercentChoice(75):
+            subflow_results[0] = 0
+        else:
+            subflow_results[0] = 3
+    elif EventFlowSystemActor.PercentChoice(40):
+        subflow_results[0] = 0
+    else:
+        fEvent97 = EventFlowSystemActor.PercentChoice3(40, 40, 20)
+        if fEvent97 == 0:
+            subflow_results[0] = 1
+        elif fEvent97 == 1:
+            subflow_results[0] = 2
+        elif fEvent97 == 2:
+            subflow_results[0] = 3
+    return
+
+flow Gst_Choose_Item_NotHave:
+    fEvent127 = subflow_results[0]
+    if fEvent127 == 0:
+        MainNpc.GstDecideReward(true, Furniture, 300, 3000)
+    elif fEvent127 == 1:
+        MainNpc.GstDecideReward(true, Wallpaper, 300, 2500)
+    elif fEvent127 == 2:
+        MainNpc.GstDecideReward(true, Flooring, 300, 2500)
+    elif fEvent127 == 3:
+        MainNpc.GstDecideReward(true, Clothing, 300, 2000)
+    return
+
+flow Gst_Choose_Item_Rich:
+    if EventFlowSystemActor.PercentChoice(90):
+        fEvent99 = subflow_results[0]
+        if fEvent99 == 1:
+            MainNpc.GstDecideReward(false, Wallpaper, 1850, 10000)
+        elif fEvent99 == 0:
+            MainNpc.GstDecideReward(false, Furniture, 2000, 15000)
+        elif fEvent99 == 2:
+            MainNpc.GstDecideReward(false, Flooring, 1850, 10000)
+        elif fEvent99 == 3:
+            MainNpc.GstDecideReward(false, Clothing, 1800, 10000)
+    else:
+        fEvent122 = subflow_results[0]
+        if fEvent122 == 0:
+            MainNpc.GstDecideReward(false, Furniture, 10, 15000)
+        elif fEvent122 == 1:
+            MainNpc.GstDecideReward(false, Wallpaper, 10, 3000)
+        elif fEvent122 == 2:
+            MainNpc.GstDecideReward(false, Flooring, 10, 3000)
+        elif fEvent122 == 3:
+            MainNpc.GstDecideReward(false, Clothing, 10, 5000)
+    return
+
+flow Gst_ClearProcess:
+    event_flags_system['cPlayer:GstQuestClearFlag'] = true
+    event_flags_system['cPlayer:GstQuestStartFlag'] = false
+    event_flags_system['cLifeSupportAchievement:HelpGst'] += 1
+    return
+
+flow Gst_Hit:
+    fEvent87 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent87 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_01', true)
+    elif fEvent87 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_03', true)
+    elif fEvent87 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_02', true)
+    return
+
+flow Gst_Quest:
+    run Event59
+    return
+
+flow Gst_Share:
+    if event_flags_system['cLandTemp:GstQuestStartLandFlag']:
+        if event_flags_system['cPlayer:GstQuestStartFlag']:
+            run Gst_Quest
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:061', false)
+            EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:GstQuestClearFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:060', false)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        run Gst_Start
+    return
+
+flow Gst_Start:
+    run Event3
+    return
+
+flow Gst_StartProcess:
+    event_flags_system['cLand:GstTalkAnyone'] = true
+    event_flags_system['cPlayer:GstTalkBefore'] = true
+    event_flags_system['cPlayer:GstQuestStartFlag'] = true
+    event_flags_system['cLandTemp:GstQuestStartLandFlag'] = true
+    return
+
 flow Root:
     if EventFlowSystemActor.IsSharePlay(0):
         run Gst_Share
@@ -102,110 +204,8 @@ entrypoint Event3:
         run Gst_StartProcess
     return
 
-flow GstGiveSpirits:
-    run Event36
-    return
-
 flow Root_Init:
     if not EventFlowSystemActor.NetHasVisitor():
         MainNpc.NpcAITalkSubCastEntry(1, 'gstA')
-    return
-
-flow Gst_Share:
-    if event_flags_system['cLandTemp:GstQuestStartLandFlag']:
-        if event_flags_system['cPlayer:GstQuestStartFlag']:
-            run Gst_Quest
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:061', false)
-            EventFlowSystemActor.ExitFlowchart()
-    elif event_flags_system['cPlayer:GstQuestClearFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:060', false)
-        EventFlowSystemActor.ExitFlowchart()
-    else:
-        run Gst_Start
-    return
-
-flow Gst_ClearProcess:
-    event_flags_system['cPlayer:GstQuestClearFlag'] = true
-    event_flags_system['cPlayer:GstQuestStartFlag'] = false
-    event_flags_system['cLifeSupportAchievement:HelpGst'] += 1
-    return
-
-flow Gst_StartProcess:
-    event_flags_system['cLand:GstTalkAnyone'] = true
-    event_flags_system['cPlayer:GstTalkBefore'] = true
-    event_flags_system['cPlayer:GstQuestStartFlag'] = true
-    event_flags_system['cLandTemp:GstQuestStartLandFlag'] = true
-    return
-
-flow Gst_Start:
-    run Event3
-    return
-
-flow Gst_Quest:
-    run Event59
-    return
-
-flow Gst_Hit:
-    fEvent87 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent87 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_01', true)
-    elif fEvent87 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_02', true)
-    elif fEvent87 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_03', true)
-    return
-
-flow Gst_Choose_Category:
-    if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
-        if EventFlowSystemActor.PercentChoice(75):
-            subflow_results[0] = 0
-        else:
-            subflow_results[0] = 3
-    elif EventFlowSystemActor.PercentChoice(40):
-        subflow_results[0] = 0
-    else:
-        fEvent97 = EventFlowSystemActor.PercentChoice3(40, 40, 20)
-        if fEvent97 == 0:
-            subflow_results[0] = 1
-        elif fEvent97 == 1:
-            subflow_results[0] = 2
-        elif fEvent97 == 2:
-            subflow_results[0] = 3
-    return
-
-flow Gst_Choose_Item_Rich:
-    if EventFlowSystemActor.PercentChoice(90):
-        fEvent99 = subflow_results[0]
-        if fEvent99 == 0:
-            MainNpc.GstDecideReward(false, Furniture, 2000, 15000)
-        elif fEvent99 == 1:
-            MainNpc.GstDecideReward(false, Wallpaper, 1850, 10000)
-        elif fEvent99 == 2:
-            MainNpc.GstDecideReward(false, Flooring, 1850, 10000)
-        elif fEvent99 == 3:
-            MainNpc.GstDecideReward(false, Clothing, 1800, 10000)
-    else:
-        fEvent122 = subflow_results[0]
-        if fEvent122 == 0:
-            MainNpc.GstDecideReward(false, Furniture, 10, 15000)
-        elif fEvent122 == 1:
-            MainNpc.GstDecideReward(false, Wallpaper, 10, 3000)
-        elif fEvent122 == 2:
-            MainNpc.GstDecideReward(false, Flooring, 10, 3000)
-        elif fEvent122 == 3:
-            MainNpc.GstDecideReward(false, Clothing, 10, 5000)
-    return
-
-flow Gst_Choose_Item_NotHave:
-    fEvent127 = subflow_results[0]
-    if fEvent127 == 0:
-        MainNpc.GstDecideReward(true, Furniture, 300, 3000)
-    elif fEvent127 == 1:
-        MainNpc.GstDecideReward(true, Wallpaper, 300, 2500)
-    elif fEvent127 == 2:
-        MainNpc.GstDecideReward(true, Flooring, 300, 2500)
-    elif fEvent127 == 3:
-        MainNpc.GstDecideReward(true, Clothing, 300, 2000)
     return
 

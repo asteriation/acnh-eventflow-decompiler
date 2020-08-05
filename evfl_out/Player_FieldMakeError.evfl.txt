@@ -2,44 +2,44 @@ flow ErrorCliffMakeBreak_CliffExistOnItem:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:101', false)
     return
 
-flow ErrorCliffMakeCreate_ExistStructure:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:103', false)
-    return
-
-flow ErrorCliffMakeCreate_ExistNearTree:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:105', false)
-    return
-
-flow ErrorCliffMakeBreak_ExistNearWater:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:104', false)
+flow ErrorCliffMakeBreak_ExistNearOnHill:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:108', false)
     return
 
 flow ErrorCliffMakeBreak_ExistNearTree:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:106', false)
     return
 
-flow ErrorCliffMakeBreak_ExistStructure:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:107', false)
-    return
-
-flow ErrorRiverMake_ExistNearTree:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:121', false)
+flow ErrorCliffMakeBreak_ExistNearWater:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:104', false)
     return
 
 flow ErrorCliffMakeBreak_ExistNextCliff:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:102', false)
     return
 
-flow ErrorCliffMakeBreak_ExistNearOnHill:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:108', false)
+flow ErrorCliffMakeBreak_ExistStructure:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:107', false)
+    return
+
+flow ErrorCliffMakeCreate_ExistFrontFall:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:111', false)
+    return
+
+flow ErrorCliffMakeCreate_ExistNearTree:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:105', false)
+    return
+
+flow ErrorCliffMakeCreate_ExistStructure:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:103', false)
     return
 
 flow ErrorRiverMake_ExistBackFaceFall:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:122', false)
     return
 
-flow ErrorCliffMakeCreate_ExistFrontFall:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:111', false)
+flow ErrorRiverMake_ExistNearTree:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:121', false)
     return
 
 flow ErrorRiverMake_ExistStructure:

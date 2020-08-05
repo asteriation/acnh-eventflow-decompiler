@@ -1,8 +1,7 @@
 Actor DynamicCast_LandReadjustNpc
 actions:
-- DynamicCast_LandReadjustNpc.TurnNeck(TurnTarget: int)
-- DynamicCast_LandReadjustNpc.NpcReservrForErase()
-- DynamicCast_LandReadjustNpc.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
-- DynamicCast_LandReadjustNpc.SetNpcName(ID: int, NpcNameType: int)
+- TurnNeck(TurnTarget: int)
+- NpcReservrForErase()
+- OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- SetNpcName(ID: int, NpcNameType: int)
 queries:
-

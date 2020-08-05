@@ -1,8 +1,3 @@
-flow Root:
-    run EasterGetRecipe
-    run FireworksGetItem
-    return
-
 flow EasterGetRecipe:
     if event_flag_npc['cNpcMemory:EasterCannotGetNnpcRecipeFlag']:
         if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
@@ -112,20 +107,25 @@ flow FireworksGetItem:
                 EventFlowSystemActor.ExitFlowchart()
     run sub_tm!FireworksGetItem
 
+flow FireworksSet_Blue:
+    MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
+    return
+
 flow FireworksSet_Red:
     MainNpc.SetDeliveryItemAtRandom(5743, true, 'cVillageRemakePattern', 0)
     return
 
-flow FireworksSet_Blue:
-    MainNpc.SetDeliveryItemAtRandom(12974, true, 'cVillageRemakePattern', 0)
+flow Root:
+    run EasterGetRecipe
+    run FireworksGetItem
     return
+
+flow sub_Event50:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
 
 flow sub_tm!EasterGetRecipe:
     return
 
 flow sub_tm!FireworksGetItem:
     return
-
-flow sub_Event50:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Receive_Fireworks:011', false)
 

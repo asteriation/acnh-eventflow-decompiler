@@ -20,7 +20,10 @@ flow sub_grp!Event35:
         SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:002', false)
         MainNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:003', false)
         fEvent15 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent15 == 0:
+        if fEvent15 == 2:
+            SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:011', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:012', false)
+        elif fEvent15 == 0:
             SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:004', false)
             MainNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:005', false)
         elif fEvent15 == 1:
@@ -30,9 +33,6 @@ flow sub_grp!Event35:
             SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:008', false)
             MainNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:009', false)
             SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:010', false)
-        elif fEvent15 == 2:
-            SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:011', false)
-            MainNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:012', false)
     else:
         Player.TurnNeck(1)
         SubNpc.OpenMessageWindow('TalkNNpc/G3_Ot/Conv/OT_Conv_FU:101', false)

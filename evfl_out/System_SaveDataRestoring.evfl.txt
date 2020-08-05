@@ -1,12 +1,23 @@
-flow StartRestoring:
-    EventFlowSystemActor.UIBootBGChangeDialog()
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9001', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9015', false)
-    else:
-        EventFlowSystemActor.WaitFrame(30)
-        EventFlowSystemActor.SaveStartRestoreSeq()
-        EventFlowSystemActor.ExitFlowchart()
+flow EndRestoring:
+    if EventFlowSystemActor.NetHasPOPID(false):
+        run UserRegist
+        EventFlowSystemActor.NetReissuePassword()
+        if EventFlowSystemActor.CheckErrorType(2):
+            event_flags_system['cLand:NeedUpdatePassword'] = true
+    elif EventFlowSystemActor.NetHasPOLID():
+        event_flags_system['cLand:NeedUpdatePassword'] = true
+    EventFlowSystemActor.SaveUpdateDeviceID()
+    EventFlowSystemActor.SaveReserveBackupRestoreFlagOff()
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9016', false)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.SaveSimpleSave('cAll')
+            if (EventFlowSystemActor.PlayAccountIsPlayerVillager()) and (not EventFlowSystemActor.SaveCompareBackupAgentNSAID()):
+                EventFlowSystemActor.SaveEnableBackupSetting()
+        branch2:
+            EventFlowSystemActor.WaitFrame(60)
+    EventFlowSystemActor.MessageUnlockNext()
     return
 
 flow RestoringAgain:
@@ -18,6 +29,17 @@ flow RestoringAgain:
         EventFlowSystemActor.NetForceResetUser()
         EventFlowSystemActor.MessageSuspend()
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9013', false)
+    return
+
+flow StartRestoring:
+    EventFlowSystemActor.UIBootBGChangeDialog()
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9015', false)
+    else:
+        EventFlowSystemActor.WaitFrame(30)
+        EventFlowSystemActor.SaveStartRestoreSeq()
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow UserRegist:
@@ -52,27 +74,5 @@ flow UserResistCore:
         EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
         if EventFlowSystemActor.CheckErrorType(2):
             subflow_results[0] = 1
-    return
-
-flow EndRestoring:
-    if EventFlowSystemActor.NetHasPOPID(false):
-        run UserRegist
-        EventFlowSystemActor.NetReissuePassword()
-        if EventFlowSystemActor.CheckErrorType(2):
-            event_flags_system['cLand:NeedUpdatePassword'] = true
-    elif EventFlowSystemActor.NetHasPOLID():
-        event_flags_system['cLand:NeedUpdatePassword'] = true
-    EventFlowSystemActor.SaveUpdateDeviceID()
-    EventFlowSystemActor.SaveReserveBackupRestoreFlagOff()
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9016', false)
-    fork:
-        branch0:
-        branch1:
-            EventFlowSystemActor.SaveSimpleSave('cAll')
-            if (EventFlowSystemActor.PlayAccountIsPlayerVillager()) and (not EventFlowSystemActor.SaveCompareBackupAgentNSAID()):
-                EventFlowSystemActor.SaveEnableBackupSetting()
-        branch2:
-            EventFlowSystemActor.WaitFrame(60)
-    EventFlowSystemActor.MessageUnlockNext()
     return
 

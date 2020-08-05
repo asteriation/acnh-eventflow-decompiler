@@ -6,24 +6,13 @@ flow DIY:
     MainNpc.NpcAddFriendship(1)
     return
 
-flow Useful:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
+flow MobileFireWorks:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
     MainNpc.NpcDelivery('"Default"', 3)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:301', false)
-    MainNpc.NpcAddFriendship(2)
-    return
-
-flow Umbrella:
-    if MainNpc.NpcRace('flg'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:304', false)
-        MainNpc.NpcAddFriendship(1)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:305', false)
-        MainNpc.NpcAddFriendship(2)
+    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
+    MainNpc.RequestNpcSubHandToolAction('cFirework')
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:306', false)
+    MainNpc.NpcAddFriendship(1)
     return
 
 flow Nouse:
@@ -41,12 +30,23 @@ flow Nouse_Plural:
     MainNpc.NpcAddFriendship(1)
     return
 
-flow MobileFireWorks:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
+flow Umbrella:
+    if MainNpc.NpcRace('flg'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:304', false)
+        MainNpc.NpcAddFriendship(1)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:305', false)
+        MainNpc.NpcAddFriendship(2)
+    return
+
+flow Useful:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
     MainNpc.NpcDelivery('"Default"', 3)
-    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
-    MainNpc.RequestNpcSubHandToolAction('cFirework')
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:306', false)
-    MainNpc.NpcAddFriendship(1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:301', false)
+    MainNpc.NpcAddFriendship(2)
     return
 

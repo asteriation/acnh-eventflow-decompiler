@@ -1,74 +1,3 @@
-flow LifeStartHint:
-    event_flags_system['cLand:SpotPrologueTimes'] += 1
-    if event_flags_system['cLand:SpotPrologueTimes'] == 1:
-        if event_flags_system['cPlayer:MainmenuRecipe']:
-            event_flags_system['cLand:SpotPrologueTimes'] += 1
-            if event_flags_system['cLand:SpotPrologueTimes'] == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:003', false)
-            elif event_flags_system['cLand:SpotPrologueTimes'] == 3:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:004', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:005', false)
-                event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:002', false)
-    else:
-        if event_flags_system['cLand:SpotPrologueTimes'] == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:003', false)
-        elif event_flags_system['cLand:SpotPrologueTimes'] == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:004', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:005', false)
-            event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Transition:
-    event_flags_npc['cNpcSave:TalkTransitionTimes'] += 1
-    if event_flags_npc['cNpcSave:TalkTransitionTimes'] != 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:001', false)
-    elif event_flags_npc['cNpcSave:TalkTransitionTimes'] == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:003', false)
-        event_flags_npc['cNpcSave:FinishTalkTransition'] = true
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:002', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Progress_Chk:
-    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
-        run sub_grp!Event49
-    run sub_tm!Progress_Chk
-
-flow Progress_InHouse_Chk:
-    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
-        run sub_grp!Event50
-    run sub_tm!Progress_InHouse_Chk
-
-flow Progress_NpcHouseBuilt:
-    if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.NpcBirthType('cFirst')) and (MainNpc.NpcMoveOutState() in (0, 1, 2, 4)):
-        if not event_flag_npc['cNpcSave:NnpcHouseBuilt']:
-            event_flags_npc['cNpcMemory:FirstNpcEarlyAcquaintanceFlag'] = true
-        elif (event_flags_system['cPlayer:MakeVillagePlayerFlag']) or (event_flag_npc['cNpcMemory:FirstNpcEarlyAcquaintanceFlag']):
-            run sub_grp!Event114
-    run sub_tm!Progress_NpcHouseBuilt
-
-flow HintTalkChk:
-    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst')) and (EventFlowSystemActor.PlayerHouseLevel() in (0, 1)):
-        run ChkReact1stPresent
-        if not event_flags_system['cPlayer:NnpcFinishHintTalk']:
-            run LifeStartHint
-            EventFlowSystemActor.ExitFlowchart()
-        elif not event_flag_npc['cNpcSave:FinishTalkTransition']:
-            run Transition
-            EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!HintTalkChk
-
-flow Progress_FreeBSpot:
-    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
-        run sub_grp!Event51
-    run sub_tm!Progress_FreeBSpot
-
 flow ChkReact1stPresent:
     if (event_flag_npc['cNpcSave:TalkLifeStart1P1st']) and (not event_flag_npc['cNpcSave:React1stNpcPresent']):
         fEvent33 = MainNpc.CheckNpcLook()
@@ -126,15 +55,7 @@ flow ForMarketBuilding_Chk:
     if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.NpcIsSitting() == 4) and (event_flag_npc['cNpcTemp:MarketBuildingTalk']):
         event_flags_npc['cNpcSave:MarketBuildingSupport'] = true
         fEvent55 = MainNpc.CheckNpcLook()
-        if fEvent55 == 3:
-            if event_flags_system['cLand:RcmShopMaterialComplete']:
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:011', false)
-                run NNPC_ApproachE::FromFreeH_AN2
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:001', false)
-                run NNPC_ApproachE::FromFreeH_AN1
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent55 == 5:
+        if fEvent55 == 5:
             if not event_flags_system['cLand:RcmShopMaterialComplete']:
                 MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:001', false)
                 run sub_Event163
@@ -145,25 +66,96 @@ flow ForMarketBuilding_Chk:
                 MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:011', false)
                 run sub_Event163
             EventFlowSystemActor.ExitFlowchart()
+        elif fEvent55 == 3:
+            if event_flags_system['cLand:RcmShopMaterialComplete']:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:011', false)
+                run NNPC_ApproachE::FromFreeH_AN2
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:001', false)
+                run NNPC_ApproachE::FromFreeH_AN1
+            EventFlowSystemActor.ExitFlowchart()
     run sub_tm!ForMarketBuilding_Chk
 
-flow sub_tm!Progress_Chk:
+flow HintTalkChk:
+    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst')) and (EventFlowSystemActor.PlayerHouseLevel() in (0, 1)):
+        run ChkReact1stPresent
+        if not event_flags_system['cPlayer:NnpcFinishHintTalk']:
+            run LifeStartHint
+            EventFlowSystemActor.ExitFlowchart()
+        elif not event_flag_npc['cNpcSave:FinishTalkTransition']:
+            run Transition
+            EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!HintTalkChk
+
+flow LifeStartHint:
+    event_flags_system['cLand:SpotPrologueTimes'] += 1
+    if event_flags_system['cLand:SpotPrologueTimes'] == 1:
+        if event_flags_system['cPlayer:MainmenuRecipe']:
+            event_flags_system['cLand:SpotPrologueTimes'] += 1
+            if event_flags_system['cLand:SpotPrologueTimes'] == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:003', false)
+            elif event_flags_system['cLand:SpotPrologueTimes'] == 3:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:004', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:005', false)
+                event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:002', false)
+    else:
+        if event_flags_system['cLand:SpotPrologueTimes'] == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:003', false)
+        elif event_flags_system['cLand:SpotPrologueTimes'] == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:004', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_LifeStart_Hint:005', false)
+            event_flags_system['cPlayer:NnpcFinishHintTalk'] = true
+    EventFlowSystemActor.ExitFlowchart()
     return
 
-flow sub_tm!Progress_InHouse_Chk:
+flow Progress_Chk:
+    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
+        run sub_grp!Event49
+    run sub_tm!Progress_Chk
+
+flow Progress_FreeBSpot:
+    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
+        run sub_grp!Event51
+    run sub_tm!Progress_FreeBSpot
+
+flow Progress_InHouse_Chk:
+    if (EventFlowSystemActor.IsMyVillage()) and (not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillageToday']) and ((MainNpc.NpcLivingDays(7)) or (MainNpc.NpcBirthType('cFirst'))):
+        run sub_grp!Event50
+    run sub_tm!Progress_InHouse_Chk
+
+flow Progress_NpcHouseBuilt:
+    if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.NpcBirthType('cFirst')) and (MainNpc.NpcMoveOutState() in (0, 1, 2, 4)):
+        if not event_flag_npc['cNpcSave:NnpcHouseBuilt']:
+            event_flags_npc['cNpcMemory:FirstNpcEarlyAcquaintanceFlag'] = true
+        elif (event_flags_system['cPlayer:MakeVillagePlayerFlag']) or (event_flag_npc['cNpcMemory:FirstNpcEarlyAcquaintanceFlag']):
+            run sub_grp!Event114
+    run sub_tm!Progress_NpcHouseBuilt
+
+flow Transition:
+    event_flags_npc['cNpcSave:TalkTransitionTimes'] += 1
+    if event_flags_npc['cNpcSave:TalkTransitionTimes'] != 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:001', false)
+    elif event_flags_npc['cNpcSave:TalkTransitionTimes'] == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:003', false)
+        event_flags_npc['cNpcSave:FinishTalkTransition'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:002', false)
+    EventFlowSystemActor.ExitFlowchart()
     return
 
-flow sub_tm!Progress_NpcHouseBuilt:
-    return
+flow sub_Event163:
+    run NNPC_ApproachE::FromFreeH_HA1
 
-flow sub_tm!HintTalkChk:
-    return
-
-flow sub_tm!Progress_FreeBSpot:
-    return
-
-flow sub_tm!ForMarketBuilding_Chk:
-    return
+flow sub_grp!Event114:
+    if not event_flag_npc['cNpcMemory:TalkProgressNpcHouseBuilt']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:001', false)
+        event_flags_npc['cNpcMemory:TalkProgressNpcHouseBuilt'] = true
+        event_flags_npc['cNpcSave:NnpcHouseBuiltToday'] = false
+        EventFlowSystemActor.ExitFlowchart()
 
 flow sub_grp!Event49:
     if MainNpc.NpcMoveOutState() in (0, 1, 2, 4):
@@ -185,18 +177,26 @@ flow sub_grp!Event50:
     if MainNpc.NpcMoveOutState() in (0, 1, 2, 4):
         run NNPC_FreeH_Progress::Progress_MyHouseBuilt
 
-flow sub_grp!Event114:
-    if not event_flag_npc['cNpcMemory:TalkProgressNpcHouseBuilt']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:001', false)
-        event_flags_npc['cNpcMemory:TalkProgressNpcHouseBuilt'] = true
-        event_flags_npc['cNpcSave:NnpcHouseBuiltToday'] = false
-        EventFlowSystemActor.ExitFlowchart()
-
 flow sub_grp!Event51:
     if MainNpc.NpcMoveOutState() in (0, 1, 2, 4):
         run NNPC_FreeH_Progress::Progress_MyHouseBuilt
         run NNPC_FreeH_Progress::Progress_MyHouseBuilt2
 
-flow sub_Event163:
-    run NNPC_ApproachE::FromFreeH_HA1
+flow sub_tm!ForMarketBuilding_Chk:
+    return
+
+flow sub_tm!HintTalkChk:
+    return
+
+flow sub_tm!Progress_Chk:
+    return
+
+flow sub_tm!Progress_FreeBSpot:
+    return
+
+flow sub_tm!Progress_InHouse_Chk:
+    return
+
+flow sub_tm!Progress_NpcHouseBuilt:
+    return
 

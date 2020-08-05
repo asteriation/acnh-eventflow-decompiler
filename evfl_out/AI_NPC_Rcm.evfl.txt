@@ -1,7 +1,10 @@
-flow Root:
-    run ChkTalkRcoAboutShopMaterial
-    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_rcm', true, false, true, 2, 0.0, '')
-    return
+flow ChkTalkRcoAboutShopMaterial:
+    if (not EventFlowSystemActor.NetIsConnected()) and (not EventFlowSystemActor.IsSharePlay(0)) and (not event_flags_system['cPlayer:PlayerLoanFinish1st']) and (event_flags_system['cPlayer:RcoAfterHouseRemodel']) and (not event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (not event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial']) and (not event_flags_system['cPlayer:RcmTookQuestReq']):
+        MainNpc.NpcAISetting(2, false)
+        MainNpc.NpcAISetting(3, false)
+        MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'rco')
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!ChkTalkRcoAboutShopMaterial
 
 flow Init:
     MainNpc.NpcAISetting(8, true)
@@ -12,13 +15,10 @@ flow Init:
         MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
     return
 
-flow ChkTalkRcoAboutShopMaterial:
-    if (not EventFlowSystemActor.NetIsConnected()) and (not EventFlowSystemActor.IsSharePlay(0)) and (not event_flags_system['cPlayer:PlayerLoanFinish1st']) and (event_flags_system['cPlayer:RcoAfterHouseRemodel']) and (not event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (not event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial']) and (not event_flags_system['cPlayer:RcmTookQuestReq']):
-        MainNpc.NpcAISetting(2, false)
-        MainNpc.NpcAISetting(3, false)
-        MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'rco')
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!ChkTalkRcoAboutShopMaterial
+flow Root:
+    run ChkTalkRcoAboutShopMaterial
+    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_rcm', true, false, true, 2, 0.0, '')
+    return
 
 flow sub_tm!ChkTalkRcoAboutShopMaterial:
     return

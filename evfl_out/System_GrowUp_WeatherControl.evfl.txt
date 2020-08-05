@@ -1,17 +1,17 @@
-flow FirstLive:
-    if (EventFlowSystemActor.EventBranch(true, 0) == 0) and (not event_flags_system['cLand:TkkFirstLive']) and (event_flags_system['cLand:IslandEvaluationClearTkkLive']):
+flow Always:
+    if (EventFlowSystemActor.EventBranch(true, 0) == 5) and (not event_flags_system['cLand:GrowUpAfterPatch1_4']):
         EventFlowSystemActor.SetWeatherPattern('EventDay00')
-    run sub_tm!FirstLive
+    return
 
 flow FirstDay:
     if EventFlowSystemActor.EventBranch(true, 0) in (0, 1, 2, 3, 4, 5, 6, 7):
         EventFlowSystemActor.SetWeatherPattern('EventDay00')
     return
 
-flow Always:
-    if (EventFlowSystemActor.EventBranch(true, 0) == 5) and (not event_flags_system['cLand:GrowUpAfterPatch1_4']):
+flow FirstLive:
+    if (EventFlowSystemActor.EventBranch(true, 0) == 0) and (not event_flags_system['cLand:TkkFirstLive']) and (event_flags_system['cLand:IslandEvaluationClearTkkLive']):
         EventFlowSystemActor.SetWeatherPattern('EventDay00')
-    return
+    run sub_tm!FirstLive
 
 flow sub_tm!FirstLive:
     return

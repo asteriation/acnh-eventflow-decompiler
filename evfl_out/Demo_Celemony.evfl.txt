@@ -1,75 +1,57 @@
-flow Root:
-    EventFlowSystemActor.SleepInsect('cSleep')
-    EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-    EventFlowSystemActor.SoundDuckingOn(38)
-    EventFlowSystemActor.WaitFaderSleep()
-    EventFlowSystemActor.WaitFrame(60)
-    EventFlowSystemActor.SetTagStructureName(0, 'cCeremony')
-    EventFlowSystemActor.CeremonyEmoticon('EmotEnd', -1, 'EmotEnd', 'EmotEnd', 'EmotEnd', 'Smiling', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'Smiling', 'EmotEnd', false)
-    if EventFlowSystemActor.IsBadSightCeremony():
-        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:007', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001', false)
-    fEvent99 = EventFlowSystemActor.CeremonyType()
-    if fEvent99 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_01', true)
-    elif fEvent99 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_02', true)
-    elif fEvent99 == 2:
-        if EventFlowSystemActor.MuseumCeremonyType() == 0:
-            run sub_Event104
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_02', true)
-    elif fEvent99 in (3, 4, 5, 6, 7):
-        run sub_Event104
-    MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+flow Ceremony_Bridge:
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:261', false)
     fork:
         branch0:
         branch1:
             MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
         branch2:
             EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-            EventFlowSystemActor.CeremonyEmoticon('FaintSmile', -1, 'FaintSmile', 'EmotEnd', 'EmotEnd', 'Smiling', 'FaintSmile', 'EmotEnd', 'EmotEnd', 'Smiling', 'FaintSmile', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002', false)
-    EventFlowSystemActor.CeremonyEmoticon('EmotEnd', -1, 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', false)
-    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
-    fEvent17 = EventFlowSystemActor.CeremonyType()
-    if fEvent17 == 7:
-        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_02', false)
-    elif fEvent17 == 2:
-        if EventFlowSystemActor.MuseumCeremonyType() == 0:
-            run sub_Event14
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:008', false)
-    elif fEvent17 == 6:
-        if EventFlowSystemActor.BridgeNum('cNoReserve', 2):
-            run sub_Event105
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_03', false)
-    elif fEvent17 == 0:
-        run sub_Event14
-    elif fEvent17 in (1, 3, 4, 5):
-        run sub_Event105
-    fEvent1 = EventFlowSystemActor.CeremonyType()
-    if fEvent1 == 0:
-        run Ceremony_Market_Small
-    elif fEvent1 == 1:
-        run Ceremony_Market_Large
-    elif fEvent1 == 3:
-        run Ceremony_Office
-    elif fEvent1 == 4:
-        run Ceremony_Tailor
-    elif fEvent1 == 5:
-        run Ceremony_Campsite
-    elif fEvent1 == 6:
-        run Ceremony_Bridge
-    elif fEvent1 == 7:
-        run Ceremony_Slope
-    elif fEvent1 == 2:
-        if EventFlowSystemActor.MuseumCeremonyType() == 0:
-            run Ceremony_Museum
-        else:
-            run Ceremony_Museum_Large
+    if event_flags_system['cPlayer:ContributedTodaysCeremonyBridgeorSlope']:
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:262', false)
+        run Event265
+    else:
+        run Ceremony_Ending
+    return
+
+flow Ceremony_Campsite:
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:251', false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        branch2:
+            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:252', false)
+entrypoint Event265:
+        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
+        Npc_1.TurnNeck(11)
+        Npc_1.TurnBody(12, 0.0)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
+        fEvent269 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent269 == 0:
+            Npc_1.CharacterEmoticonAction('BigSmile', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(30)
+        elif fEvent269 == 2:
+            Npc_1.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        elif fEvent269 == 1:
+            Npc_1.CharacterEmoticonAction('Laughing', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+            branch2:
+                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
+        MainNpc.TurnNeck(11)
+        MainNpc.TurnBody(12, 0.0)
+        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
+        run Ceremony_Ending
+    else:
+        run Ceremony_Ending
     return
 
 flow Ceremony_Ending:
@@ -98,6 +80,74 @@ flow Ceremony_Ending:
     EventFlowSystemActor.ReturnStage('', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     EventFlowSystemActor.SoundDuckingOff(38)
     EventFlowSystemActor.SleepInsect('cAwake')
+    return
+
+flow Ceremony_Market_Large:
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:211', false)
+    MainNpc.TurnNeck(1)
+    MainNpc.TurnBody(12, -10.0)
+    EventFlowSystemActor.CeremonyLookAt('cGuest1', true, true, 0.0, 0.0, 0.0, false)
+    fork:
+        branch0:
+        branch1:
+            Npc_1.TurnNeck(11)
+            Npc_1.TurnBody(12, 0.0)
+        branch2:
+            Npc_2.TurnNeck(1)
+    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:212', false)
+    EventFlowSystemActor.CeremonyLookAt('cGuest2', true, true, 0.0, 0.0, 0.0, false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.TurnNeck(2)
+            MainNpc.TurnBody(12, 10.0)
+        branch2:
+            Npc_1.TurnNeck(2)
+        branch3:
+            Npc_2.TurnNeck(11)
+            Npc_2.TurnBody(12, 0.0)
+    Npc_2.OpenMessageWindow(false, 'TalkSNPC/Event/SP_Ceremony:213')
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        branch2:
+            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Blushing', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
+    MainNpc.TurnNeck(11)
+    MainNpc.TurnBody(12, 0.0)
+    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+    EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:214', false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:215', false)
+        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
+        Npc_3.TurnNeck(11)
+        Npc_3.TurnBody(12, 0.0)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
+        fEvent230 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent230 == 0:
+            Npc_3.CharacterEmoticonAction('BigSmile', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(30)
+        elif fEvent230 == 2:
+            Npc_3.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        elif fEvent230 == 1:
+            Npc_3.CharacterEmoticonAction('Laughing', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        fork:
+            branch0:
+            branch1:
+                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+            branch2:
+                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
+        MainNpc.TurnNeck(11)
+        MainNpc.TurnBody(12, 0.0)
+        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
+        run Ceremony_Ending
+    else:
+        run Ceremony_Ending
     return
 
 flow Ceremony_Market_Small:
@@ -147,79 +197,11 @@ flow Ceremony_Market_Small:
         if fEvent246 == 0:
             Npc_3.CharacterEmoticonAction('BigSmile', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(30)
-        elif fEvent246 == 1:
-            Npc_3.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
         elif fEvent246 == 2:
             Npc_3.CharacterEmoticonAction('SmugFace', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
-        fork:
-            branch0:
-            branch1:
-                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-            branch2:
-                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
-        MainNpc.TurnNeck(11)
-        MainNpc.TurnBody(12, 0.0)
-        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
-        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
-        run Ceremony_Ending
-    else:
-        run Ceremony_Ending
-    return
-
-flow Ceremony_Market_Large:
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:211', false)
-    MainNpc.TurnNeck(1)
-    MainNpc.TurnBody(12, -10.0)
-    EventFlowSystemActor.CeremonyLookAt('cGuest1', true, true, 0.0, 0.0, 0.0, false)
-    fork:
-        branch0:
-        branch1:
-            Npc_1.TurnNeck(11)
-            Npc_1.TurnBody(12, 0.0)
-        branch2:
-            Npc_2.TurnNeck(1)
-    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:212', false)
-    EventFlowSystemActor.CeremonyLookAt('cGuest2', true, true, 0.0, 0.0, 0.0, false)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.TurnNeck(2)
-            MainNpc.TurnBody(12, 10.0)
-        branch2:
-            Npc_1.TurnNeck(2)
-        branch3:
-            Npc_2.TurnNeck(11)
-            Npc_2.TurnBody(12, 0.0)
-    Npc_2.OpenMessageWindow(false, 'TalkSNPC/Event/SP_Ceremony:213')
-    fork:
-        branch0:
-        branch1:
-            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-        branch2:
-            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Blushing', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-    MainNpc.TurnNeck(11)
-    MainNpc.TurnBody(12, 0.0)
-    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
-    EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:214', false)
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:215', false)
-        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
-        Npc_3.TurnNeck(11)
-        Npc_3.TurnBody(12, 0.0)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
-        fEvent230 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent230 == 0:
-            Npc_3.CharacterEmoticonAction('BigSmile', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(30)
-        elif fEvent230 == 1:
+        elif fEvent246 == 1:
             Npc_3.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
-        elif fEvent230 == 2:
-            Npc_3.CharacterEmoticonAction('SmugFace', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
         fork:
             branch0:
@@ -266,11 +248,69 @@ flow Ceremony_Museum:
         if fEvent182 == 0:
             Npc_2.CharacterEmoticonAction('BigSmile', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(30)
+        elif fEvent182 == 2:
+            Npc_2.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
         elif fEvent182 == 1:
             Npc_2.CharacterEmoticonAction('Laughing', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
-        elif fEvent182 == 2:
+        fork:
+            branch0:
+            branch1:
+                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+            branch2:
+                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
+        MainNpc.TurnNeck(11)
+        MainNpc.TurnBody(12, 0.0)
+        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
+        run Ceremony_Ending
+    else:
+        run Ceremony_Ending
+    return
+
+flow Ceremony_Museum_Large:
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:281', false)
+    MainNpc.TurnNeck(1)
+    MainNpc.TurnBody(12, 10.0)
+    EventFlowSystemActor.CeremonyLookAt('cGuest1', true, true, 0.0, 0.0, 0.0, false)
+    Npc_1.TurnNeck(11)
+    Npc_1.TurnBody(12, 0.0)
+    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:282', false)
+    if not EventFlowSystemActor.MuseumDonationNumCheck(80):
+        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:283', false)
+    elif EventFlowSystemActor.MuseumDonationNumCheck(140):
+        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:285', false)
+    else:
+        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:284', false)
+    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:286', false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        branch2:
+            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Blushing', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
+    MainNpc.TurnNeck(11)
+    MainNpc.TurnBody(12, 0.0)
+    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+    EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:287', false)
+    if event_flags_system['cPlayer:OwlShowPaintingMyself']:
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:288', false)
+        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
+        Npc_2.TurnNeck(11)
+        Npc_2.TurnBody(12, 0.0)
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
+        fEvent371 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent371 == 0:
+            Npc_2.CharacterEmoticonAction('BigSmile', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(30)
+        elif fEvent371 == 2:
             Npc_2.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        elif fEvent371 == 1:
+            Npc_2.CharacterEmoticonAction('Laughing', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
         fork:
             branch0:
@@ -317,11 +357,11 @@ flow Ceremony_Office:
         if fEvent199 == 0:
             Npc_1.CharacterEmoticonAction('BigSmile', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(30)
-        elif fEvent199 == 1:
-            Npc_1.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
         elif fEvent199 == 2:
             Npc_1.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+            EventFlowSystemActor.WaitFrame(40)
+        elif fEvent199 == 1:
+            Npc_1.CharacterEmoticonAction('Laughing', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
         fork:
             branch0:
@@ -335,6 +375,21 @@ flow Ceremony_Office:
         EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
         MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
         run Ceremony_Ending
+    else:
+        run Ceremony_Ending
+    return
+
+flow Ceremony_Slope:
+    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:271', false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        branch2:
+            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
+    if event_flags_system['cPlayer:ContributedTodaysCeremonyBridgeorSlope']:
+        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:272', false)
+        run Event265
     else:
         run Ceremony_Ending
     return
@@ -385,52 +440,11 @@ flow Ceremony_Tailor:
         if fEvent214 == 0:
             Npc_3.CharacterEmoticonAction('BigSmile', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(30)
-        elif fEvent214 == 1:
-            Npc_3.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
         elif fEvent214 == 2:
             Npc_3.CharacterEmoticonAction('SmugFace', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
-        fork:
-            branch0:
-            branch1:
-                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-            branch2:
-                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
-        MainNpc.TurnNeck(11)
-        MainNpc.TurnBody(12, 0.0)
-        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
-        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
-        run Ceremony_Ending
-    else:
-        run Ceremony_Ending
-    return
-
-flow Ceremony_Campsite:
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:251', false)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-        branch2:
-            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:252', false)
-entrypoint Event265:
-        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
-        Npc_1.TurnNeck(11)
-        Npc_1.TurnBody(12, 0.0)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
-        fEvent269 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent269 == 0:
-            Npc_1.CharacterEmoticonAction('BigSmile', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(30)
-        elif fEvent269 == 1:
-            Npc_1.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
-        elif fEvent269 == 2:
-            Npc_1.CharacterEmoticonAction('SmugFace', '', 0, true, false)
+        elif fEvent214 == 1:
+            Npc_3.CharacterEmoticonAction('Laughing', '', 0, true, false)
             EventFlowSystemActor.WaitFrame(40)
         fork:
             branch0:
@@ -448,100 +462,86 @@ entrypoint Event265:
         run Ceremony_Ending
     return
 
-flow Ceremony_Bridge:
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:261', false)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-        branch2:
-            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-    if event_flags_system['cPlayer:ContributedTodaysCeremonyBridgeorSlope']:
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:262', false)
-        run Event265
-    else:
-        run Ceremony_Ending
-    return
-
-flow Ceremony_Slope:
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:271', false)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-        branch2:
-            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-    if event_flags_system['cPlayer:ContributedTodaysCeremonyBridgeorSlope']:
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:272', false)
-        run Event265
-    else:
-        run Ceremony_Ending
-    return
-
-flow Ceremony_Museum_Large:
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:281', false)
-    MainNpc.TurnNeck(1)
-    MainNpc.TurnBody(12, 10.0)
-    EventFlowSystemActor.CeremonyLookAt('cGuest1', true, true, 0.0, 0.0, 0.0, false)
-    Npc_1.TurnNeck(11)
-    Npc_1.TurnBody(12, 0.0)
-    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:282', false)
-    if not EventFlowSystemActor.MuseumDonationNumCheck(80):
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:283', false)
-    elif EventFlowSystemActor.MuseumDonationNumCheck(140):
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:285', false)
-    else:
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:284', false)
-    Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:286', false)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-        branch2:
-            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Blushing', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
-    MainNpc.TurnNeck(11)
-    MainNpc.TurnBody(12, 0.0)
-    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+flow Root:
+    EventFlowSystemActor.SleepInsect('cSleep')
     EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-    MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:287', false)
-    if event_flags_system['cPlayer:OwlShowPaintingMyself']:
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:288', false)
-        EventFlowSystemActor.CeremonyLookAt('cMainPlayer', false, false, 0.0, 0.0, 0.0, false)
-        Npc_2.TurnNeck(11)
-        Npc_2.TurnBody(12, 0.0)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:005', false)
-        fEvent371 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent371 == 0:
-            Npc_2.CharacterEmoticonAction('BigSmile', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(30)
-        elif fEvent371 == 1:
-            Npc_2.CharacterEmoticonAction('Laughing', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
-        elif fEvent371 == 2:
-            Npc_2.CharacterEmoticonAction('SmugFace', '', 0, true, false)
-            EventFlowSystemActor.WaitFrame(40)
-        fork:
-            branch0:
-            branch1:
-                MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-            branch2:
-                EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', true)
-        MainNpc.TurnNeck(11)
-        MainNpc.TurnBody(12, 0.0)
-        EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
-        EventFlowSystemActor.CeremonyTurn('cDefault', false, true, false)
-        MainNpc.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:006', false)
-        run Ceremony_Ending
+    EventFlowSystemActor.SoundDuckingOn(38)
+    EventFlowSystemActor.WaitFaderSleep()
+    EventFlowSystemActor.WaitFrame(60)
+    EventFlowSystemActor.SetTagStructureName(0, 'cCeremony')
+    EventFlowSystemActor.CeremonyEmoticon('EmotEnd', -1, 'EmotEnd', 'EmotEnd', 'EmotEnd', 'Smiling', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'Smiling', 'EmotEnd', false)
+    if EventFlowSystemActor.IsBadSightCeremony():
+        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:007', false)
     else:
-        run Ceremony_Ending
+        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001', false)
+    fEvent99 = EventFlowSystemActor.CeremonyType()
+    if fEvent99 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_01', true)
+    elif fEvent99 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_02', true)
+    elif fEvent99 == 2:
+        if EventFlowSystemActor.MuseumCeremonyType() == 0:
+            run sub_Event104
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_02', true)
+    elif fEvent99 in (3, 4, 5, 6, 7):
+        run sub_Event104
+    MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
+        branch2:
+            EventFlowSystemActor.CeremonyEmoticon('Clapping', 75, 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', 'Clapping', false)
+            EventFlowSystemActor.CeremonyEmoticon('FaintSmile', -1, 'FaintSmile', 'EmotEnd', 'EmotEnd', 'Smiling', 'FaintSmile', 'EmotEnd', 'EmotEnd', 'Smiling', 'FaintSmile', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002', false)
+    EventFlowSystemActor.CeremonyEmoticon('EmotEnd', -1, 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', 'EmotEnd', false)
+    EventFlowSystemActor.CeremonyLookAt('cRco', false, true, 0.0, 0.0, 0.0, false)
+    fEvent17 = EventFlowSystemActor.CeremonyType()
+    if fEvent17 == 6:
+        if EventFlowSystemActor.BridgeNum('cNoReserve', 2):
+            run sub_Event105
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_03', false)
+    elif fEvent17 == 7:
+        MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_02', false)
+    elif fEvent17 == 2:
+        if EventFlowSystemActor.MuseumCeremonyType() == 0:
+            run sub_Event14
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:008', false)
+    elif fEvent17 in (1, 3, 4, 5):
+        run sub_Event105
+    elif fEvent17 == 0:
+        run sub_Event14
+    fEvent1 = EventFlowSystemActor.CeremonyType()
+    if fEvent1 == 5:
+        run Ceremony_Campsite
+    elif fEvent1 == 6:
+        run Ceremony_Bridge
+    elif fEvent1 == 7:
+        run Ceremony_Slope
+    elif fEvent1 == 0:
+        run Ceremony_Market_Small
+    elif fEvent1 == 1:
+        run Ceremony_Market_Large
+    elif fEvent1 == 3:
+        run Ceremony_Office
+    elif fEvent1 == 4:
+        run Ceremony_Tailor
+    elif fEvent1 == 2:
+        if EventFlowSystemActor.MuseumCeremonyType() == 0:
+            run Ceremony_Museum
+        else:
+            run Ceremony_Museum_Large
     return
 
-flow sub_Event14:
-    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_01', false)
+flow sub_Event104:
+    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_01', true)
 
 flow sub_Event105:
     MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_02', false)
 
-flow sub_Event104:
-    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:001_01', true)
+flow sub_Event14:
+    MainNpc.OpenMessageWindow('TalkSNpc/Event/SP_Ceremony:002_01', false)
 

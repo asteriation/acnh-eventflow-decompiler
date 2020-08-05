@@ -1,78 +1,8 @@
-flow Root:
-    if event_flags_system['cPlayer:RcoMoveHouseReserved']:
-        run SNPC_rco_10_Common_MoveHouse::MoveMyHouseOngoing
-    elif event_flags_system['cPlayer:RcoChangeHouseDesignReserved']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:010', false)
-    elif event_flags_system['cPlayer:RcoOrderedHouseBuilt']:
-        fEvent22 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent22 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261_01', false)
-        elif fEvent22 in (2, 3, 4, 5, 6, 7, 8):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261', false)
+flow RcoCheckUpgradeMyHome:
+    if event_flags_system['cPlayer:PlayerLoanRepaying']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:262', false)
     else:
-        run RcoChkAboutMyHomeSel
-        fEvent27 = subflow_results[0]
-        if fEvent27 == 0:
-            run RcoCheckUpgradeMyHome
-        elif fEvent27 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:053', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run SNPC_rco_10_Common_ChangeHouseDesign::Root
-            else:
-                run Rco_AboutMyHome_Cancel
-        elif fEvent27 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:052', false)
-            fEvent6 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent6 == 0:
-                run RcoCheckUpgradeMyHome
-            elif fEvent6 == 1:
-                run SNPC_rco_10_Common_ChangeHouseDesign::Root
-            elif fEvent6 == 2:
-                run Rco_AboutMyHome_Cancel
-        elif fEvent27 == 3:
-            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:055', false)
-                fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent31 == 0:
-                    run RcoCheckUpgradeMyHome
-                elif fEvent31 == 1:
-                    run SNPC_rco_10_Common_MoveHouse::Root
-                elif fEvent31 == 2:
-                    run Rco_AboutMyHome_Cancel
-            else:
-                run RcoChkTalkAboutMoveMyHome
-        elif fEvent27 == 4:
-            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:051', false)
-                fEvent7 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent7 == 0:
-                    run SNPC_rco_10_Common_ChangeHouseDesign::Root
-                elif fEvent7 == 1:
-                    run SNPC_rco_10_Common_MoveHouse::Root
-                elif fEvent7 == 2:
-                    run Rco_AboutMyHome_Cancel
-            else:
-                run RcoChkTalkAboutMoveMyHome
-        elif fEvent27 == 5:
-            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:054', false)
-                fEvent36 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent36 == 0:
-                    run RcoCheckUpgradeMyHome
-                elif fEvent36 == 1:
-                    run SNPC_rco_10_Common_ChangeHouseDesign::Root
-                elif fEvent36 == 2:
-                    run SNPC_rco_10_Common_MoveHouse::Root
-                elif fEvent36 == 3:
-                    run Rco_AboutMyHome_Cancel
-            else:
-                run RcoChkTalkAboutMoveMyHome
-    return
-
-flow Rco_AboutMyHome_Cancel:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:101', false)
-    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
-        run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
+        run SNPC_rco_10_Common_UpgradeMyhome::Root
     return
 
 flow RcoChkAboutMyHomeSel:
@@ -99,13 +29,6 @@ flow RcoChkAboutMyHomeSel:
             subflow_results[0] = 4
     return
 
-flow RcoCheckUpgradeMyHome:
-    if event_flags_system['cPlayer:PlayerLoanRepaying']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:262', false)
-    else:
-        run SNPC_rco_10_Common_UpgradeMyhome::Root
-    return
-
 flow RcoChkTalkAboutMoveMyHome:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:012', false)
     event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
@@ -113,12 +36,23 @@ flow RcoChkTalkAboutMoveMyHome:
     if fEvent55 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:056', false)
         fEvent59 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent59 == 0:
-            run RcoCheckUpgradeMyHome
+        if fEvent59 == 2:
+            run Rco_AboutMyHome_Cancel
         elif fEvent59 == 1:
             run SNPC_rco_10_Common_MoveHouse::Root
-        elif fEvent59 == 2:
+        elif fEvent59 == 0:
+            run RcoCheckUpgradeMyHome
+    elif fEvent55 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:057', false)
+        fEvent66 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent66 == 1:
+            run SNPC_rco_10_Common_ChangeHouseDesign::Root
+        elif fEvent66 == 2:
+            run SNPC_rco_10_Common_MoveHouse::Root
+        elif fEvent66 == 3:
             run Rco_AboutMyHome_Cancel
+        elif fEvent66 == 0:
+            run RcoCheckUpgradeMyHome
     elif fEvent55 == 4:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:058', false)
         fEvent63 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -128,16 +62,82 @@ flow RcoChkTalkAboutMoveMyHome:
             run SNPC_rco_10_Common_MoveHouse::Root
         elif fEvent63 == 2:
             run Rco_AboutMyHome_Cancel
-    elif fEvent55 == 5:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:057', false)
-        fEvent66 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent66 == 0:
+    return
+
+flow Rco_AboutMyHome_Cancel:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:101', false)
+    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+        run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
+    return
+
+flow Root:
+    if event_flags_system['cPlayer:RcoMoveHouseReserved']:
+        run SNPC_rco_10_Common_MoveHouse::MoveMyHouseOngoing
+    elif event_flags_system['cPlayer:RcoChangeHouseDesignReserved']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:010', false)
+    elif event_flags_system['cPlayer:RcoOrderedHouseBuilt']:
+        fEvent22 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent22 in (2, 3, 4, 5, 6, 7, 8):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261', false)
+        elif fEvent22 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261_01', false)
+    else:
+        run RcoChkAboutMyHomeSel
+        fEvent27 = subflow_results[0]
+        if fEvent27 == 0:
             run RcoCheckUpgradeMyHome
-        elif fEvent66 == 1:
-            run SNPC_rco_10_Common_ChangeHouseDesign::Root
-        elif fEvent66 == 2:
-            run SNPC_rco_10_Common_MoveHouse::Root
-        elif fEvent66 == 3:
-            run Rco_AboutMyHome_Cancel
+        elif fEvent27 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:053', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run SNPC_rco_10_Common_ChangeHouseDesign::Root
+            else:
+                run Rco_AboutMyHome_Cancel
+        elif fEvent27 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:052', false)
+            fEvent6 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent6 == 1:
+                run SNPC_rco_10_Common_ChangeHouseDesign::Root
+            elif fEvent6 == 2:
+                run Rco_AboutMyHome_Cancel
+            elif fEvent6 == 0:
+                run RcoCheckUpgradeMyHome
+        elif fEvent27 == 3:
+            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:055', false)
+                fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent31 == 2:
+                    run Rco_AboutMyHome_Cancel
+                elif fEvent31 == 1:
+                    run SNPC_rco_10_Common_MoveHouse::Root
+                elif fEvent31 == 0:
+                    run RcoCheckUpgradeMyHome
+            else:
+                run RcoChkTalkAboutMoveMyHome
+        elif fEvent27 == 4:
+            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:051', false)
+                fEvent7 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent7 == 0:
+                    run SNPC_rco_10_Common_ChangeHouseDesign::Root
+                elif fEvent7 == 1:
+                    run SNPC_rco_10_Common_MoveHouse::Root
+                elif fEvent7 == 2:
+                    run Rco_AboutMyHome_Cancel
+            else:
+                run RcoChkTalkAboutMoveMyHome
+        elif fEvent27 == 5:
+            if event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:054', false)
+                fEvent36 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent36 == 3:
+                    run Rco_AboutMyHome_Cancel
+                elif fEvent36 == 0:
+                    run RcoCheckUpgradeMyHome
+                elif fEvent36 == 1:
+                    run SNPC_rco_10_Common_ChangeHouseDesign::Root
+                elif fEvent36 == 2:
+                    run SNPC_rco_10_Common_MoveHouse::Root
+            else:
+                run RcoChkTalkAboutMoveMyHome
     return
 

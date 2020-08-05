@@ -1,3 +1,7 @@
+flow FinishSet:
+    run Event27
+    return
+
 flow Report:
     MainNpc.SetNpcName(0, 8)
     fEvent136 = MainNpc.DeliveryQuestType()
@@ -12,10 +16,6 @@ flow Report:
     elif fEvent136 == 4:
         run ReportE
     MainNpc.NpcAddFriendship(3)
-    return
-
-flow FinishSet:
-    run Event27
     return
 
 flow ReportA:

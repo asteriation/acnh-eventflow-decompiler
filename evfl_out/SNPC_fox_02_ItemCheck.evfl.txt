@@ -70,14 +70,6 @@ flow BuyFtr:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:137', false)
     return
 
-flow LookArtMode:
-    EventFlowSystemActor.UIShopMoneyDisappear()
-    EventFlowSystemActor.MessageSuspend()
-    EventFlowSystemActor.RunCheckArtCamera()
-    EventFlowSystemActor.HoldGalleryCamera()
-    EventFlowSystemActor.UIMoneyAppear()
-    return
-
 flow EndCommon:
     event_flags_system['cPlayerTemp:FoxBuyNowFlag'] = true
     if EventFlowSystemActor.IsMyVillage():
@@ -86,9 +78,19 @@ flow EndCommon:
         event_flags_system['cPlayerVisit:DC_FoxBuyTodayFlag'] = true
     return
 
+flow LookArtMode:
+    EventFlowSystemActor.UIShopMoneyDisappear()
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.RunCheckArtCamera()
+    EventFlowSystemActor.HoldGalleryCamera()
+    EventFlowSystemActor.UIMoneyAppear()
+    return
+
 flow sub_grp!Event24:
     fEvent24 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent24 == 1:
+    if fEvent24 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
+    elif fEvent24 == 1:
         run LookArtMode
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:107', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -109,8 +111,6 @@ flow sub_grp!Event24:
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:110', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:108', false)
-    elif fEvent24 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
     elif fEvent24 == 0:
         if MainNpc.ShopHasBellCount(1.0):
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:111', true)

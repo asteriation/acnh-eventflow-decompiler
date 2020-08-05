@@ -67,6 +67,32 @@ entrypoint Event55:
                 run NotWear
     return
 
+flow NotWear:
+    fEvent53 = MainNpc.DeliveryQuestType()
+    if fEvent53 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:300', false)
+        run NNPC_Quest_Delivery_End::Thanks2
+    elif fEvent53 == 4:
+        fEvent37 = MainNpc.CheckClientNpcLook()
+        if fEvent37 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:301', false)
+        elif fEvent37 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:302', false)
+        elif fEvent37 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:303', false)
+        elif fEvent37 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:304', false)
+        elif fEvent37 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:305', false)
+        elif fEvent37 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:306', false)
+        elif fEvent37 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:307', false)
+        elif fEvent37 == 7:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:308', false)
+        run NNPC_Quest_Delivery_End::Thanks3
+    return
+
 flow Recommend:
     run Event55
     return
@@ -110,32 +136,6 @@ flow Wear:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:215', false)
         elif fEvent28 == 7:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:216', false)
-        run NNPC_Quest_Delivery_End::Thanks3
-    return
-
-flow NotWear:
-    fEvent53 = MainNpc.DeliveryQuestType()
-    if fEvent53 == 3:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:300', false)
-        run NNPC_Quest_Delivery_End::Thanks2
-    elif fEvent53 == 4:
-        fEvent37 = MainNpc.CheckClientNpcLook()
-        if fEvent37 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:301', false)
-        elif fEvent37 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:302', false)
-        elif fEvent37 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:303', false)
-        elif fEvent37 == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:304', false)
-        elif fEvent37 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:305', false)
-        elif fEvent37 == 5:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:306', false)
-        elif fEvent37 == 6:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:307', false)
-        elif fEvent37 == 7:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Cloth:308', false)
         run NNPC_Quest_Delivery_End::Thanks3
     return
 

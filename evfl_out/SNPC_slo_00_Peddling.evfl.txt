@@ -1,50 +1,5 @@
-flow slo_Again:
-    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:029', false)
-    fEvent51 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent51 == 0:
-        run slo_Buy
-    elif fEvent51 == 1:
-        run slo_SellWeed
-    elif fEvent51 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:031', true)
-    return
-
-flow slo_Buy:
-    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:007', false)
-    EventFlowSystemActor.UIMoneyAppear()
-    EventFlowSystemActor.UIShopBuyAppear('cReiji')
-entrypoint Event2:
-    if EventFlowSystemActor.UIResultMenuDecide():
-        run Slo_Purchase_Processing
-    else:
-        fork:
-            branch0:
-            branch1:
-                EventFlowSystemActor.UIMoneyDisappear()
-            branch2:
-                EventFlowSystemActor.UIShopBuyDisappear()
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', false)
-    return
-
-flow slo_SellWeed:
-    MainNpc.SloTagSet('EachWeedPrice', 'TotalWeedPrice', 'WeedNum', 2, 3, 4)
-    if event_flags_system['cPlayer:SloTalkedWeedFirst']:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:020', false)
-        run sub_grp!Event38
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:044', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:045', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:046', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:047', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:059', false)
-        event_flags_system['cPlayer:SloTalkedWeedFirst'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:060', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run sub_grp!Event38
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:023', false)
+flow HedgePresentSlo:
+    run Event20
     return
 
 flow Root:
@@ -80,12 +35,12 @@ entrypoint Event40:
             MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:004', false)
             event_flags_system['cPlayer:SloTalkedToday'] = true
         fEvent35 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent35 == 0:
-            run slo_Buy
+        if fEvent35 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', true)
         elif fEvent35 == 1:
             run slo_SellWeed
-        elif fEvent35 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', true)
+        elif fEvent35 == 0:
+            run slo_Buy
     elif EventFlowSystemActor.TermEventNow('EarthDay', false):
         run slo_Select
     elif not event_flags_system['cPlayer:SloTalkAboutHedge']:
@@ -109,8 +64,49 @@ entrypoint Event20:
         run slo_Select
     return
 
-flow slo_Select:
-    run Event40
+flow Slo_Purchase_Processing:
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cSloItemPrice')
+    EventFlowSystemActor.SetTagFromUIResult(1, 'cSloItem5Price')
+    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:038', false)
+    fEvent101 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent101 == 1:
+        subflow_results[0] = 1
+        run sub_grp!Event108
+    elif fEvent101 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:039', false)
+        run slo_Buy_Again
+    elif fEvent101 == 0:
+        subflow_results[0] = 0
+        run sub_grp!Event108
+    return
+
+flow slo_Again:
+    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:029', false)
+    fEvent51 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent51 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:031', true)
+    elif fEvent51 == 1:
+        run slo_SellWeed
+    elif fEvent51 == 0:
+        run slo_Buy
+    return
+
+flow slo_Buy:
+    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:007', false)
+    EventFlowSystemActor.UIMoneyAppear()
+    EventFlowSystemActor.UIShopBuyAppear('cReiji')
+entrypoint Event2:
+    if EventFlowSystemActor.UIResultMenuDecide():
+        run Slo_Purchase_Processing
+    else:
+        fork:
+            branch0:
+            branch1:
+                EventFlowSystemActor.UIMoneyDisappear()
+            branch2:
+                EventFlowSystemActor.UIShopBuyDisappear()
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', false)
     return
 
 flow slo_Buy_Again:
@@ -118,51 +114,30 @@ flow slo_Buy_Again:
     run Event2
     return
 
-flow HedgePresentSlo:
-    run Event20
+flow slo_Select:
+    run Event40
     return
 
-flow Slo_Purchase_Processing:
-    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-    EventFlowSystemActor.SetTagFromUIResult(0, 'cSloItemPrice')
-    EventFlowSystemActor.SetTagFromUIResult(1, 'cSloItem5Price')
-    MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:038', false)
-    fEvent101 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent101 == 0:
-        subflow_results[0] = 0
-        run sub_grp!Event108
-    elif fEvent101 == 1:
-        subflow_results[0] = 1
-        run sub_grp!Event108
-    elif fEvent101 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:039', false)
-        run slo_Buy_Again
-    return
-
-flow sub_grp!Event38:
-    if EventFlowSystemActor.HasKindItem('cKind', 'Weed', ''):
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:022', false)
+flow slo_SellWeed:
+    MainNpc.SloTagSet('EachWeedPrice', 'TotalWeedPrice', 'WeedNum', 2, 3, 4)
+    if event_flags_system['cPlayer:SloTalkedWeedFirst']:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:020', false)
+        run sub_grp!Event38
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:044', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            EventFlowSystemActor.UIMoneyAppear()
-            MainNpc.ShopSellCalc('SellTotal', false, 2.0, true)
-            run Demo_Common::Demo_Slo_Selling
-            fEvent54 = EventFlowSystemActor.MoneyCapacity(0, 'cShop')
-            if fEvent54 == 0:
-                MainNpc.ShopSellDone(2.0, false)
-                MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:024', false)
-                EventFlowSystemActor.UIMoneyDisappear()
-                run slo_Again
-            elif fEvent54 == 1:
-                MainNpc.ShopSellDone(2.0, false)
-                MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:027', false)
-                EventFlowSystemActor.UIMoneyDisappear()
-                run slo_Again
+            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:045', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:046', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:047', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:059', false)
+        event_flags_system['cPlayer:SloTalkedWeedFirst'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:060', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_grp!Event38
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:023', false)
-            run slo_Again
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:021', false)
-        run slo_Again
+    return
 
 flow sub_grp!Event108:
     if subflow_results[0] == 0:
@@ -306,4 +281,29 @@ flow sub_grp!Event108:
                 EventFlowSystemActor.MessageSuspend()
             branch3:
                 EventFlowSystemActor.UIShopBuyDisappear()
+
+flow sub_grp!Event38:
+    if EventFlowSystemActor.HasKindItem('cKind', 'Weed', ''):
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:022', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            EventFlowSystemActor.UIMoneyAppear()
+            MainNpc.ShopSellCalc('SellTotal', false, 2.0, true)
+            run Demo_Common::Demo_Slo_Selling
+            fEvent54 = EventFlowSystemActor.MoneyCapacity(0, 'cShop')
+            if fEvent54 == 0:
+                MainNpc.ShopSellDone(2.0, false)
+                MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:024', false)
+                EventFlowSystemActor.UIMoneyDisappear()
+                run slo_Again
+            elif fEvent54 == 1:
+                MainNpc.ShopSellDone(2.0, false)
+                MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:027', false)
+                EventFlowSystemActor.UIMoneyDisappear()
+                run slo_Again
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:023', false)
+            run slo_Again
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:021', false)
+        run slo_Again
 

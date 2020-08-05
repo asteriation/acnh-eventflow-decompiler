@@ -1,3 +1,11 @@
+flow Rcm_Tent1stShoppingAgain:
+    run Event10
+    return
+
+flow Rcm_Tent1stShoppingEnd:
+    run Event12
+    return
+
 flow Root:
     event_flags_system['cPlayer:RcmTalked1stAfterPrologue'] = true
     if event_flags_system['cLand:TodayStartTown1P']:
@@ -30,13 +38,5 @@ entrypoint Event12:
 entrypoint Event12:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_01_TentCommon:005', false)
         EventFlowSystemActor.UIMoneyDisappear()
-    return
-
-flow Rcm_Tent1stShoppingEnd:
-    run Event12
-    return
-
-flow Rcm_Tent1stShoppingAgain:
-    run Event10
     return
 

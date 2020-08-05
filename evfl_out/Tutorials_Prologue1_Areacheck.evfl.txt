@@ -1,190 +1,21 @@
-flow Root:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:007', false)
-    if EventFlowSystemActor.NxRegionCode() in (0, 1, 2, 4, 5):
-        fEvent0 = EventFlowSystemActor.CurrentRegionLanguage('cCurrentMachine')
-        if fEvent0 == 0:
-            run Area_Japan
-        elif fEvent0 in (1, 5, 7):
-            run Area_NorthAmerica
-        elif fEvent0 in (2, 3, 4, 6, 8, 9, 10):
-            run Area_EUen
-        elif fEvent0 in (11, 12, 13):
-            run Area_Japan
-    else:
-        run Area_Oceania
+flow AreaSel_ChoiseNorth:
+    run Event114
     return
 
-flow Prologue1_SelSouth:
-    run Event4
+flow AreaSel_ChoiseNorth1st:
+    run Event32
     return
 
-flow Prologue1_AreaAsia:
-    run Event59
+flow AreaSel_ChoiseSouth1st:
+    run Event28
     return
 
-flow Prologue1_AreaNorthAmerica:
-    run Event15
+flow AreaSel_ExpN_Winter:
+    run Event56
     return
 
-flow Prologue1_AreaEurope:
-    run Event18
-    return
-
-flow Prologue1_SelSouth0:
-    run Event43
-    return
-
-flow Area_Japan:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:001', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_01', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:111', false)
-entrypoint Event32:
-        fEvent32 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent32 == 0:
-            EventFlowSystemActor.EnvWeatherArea('cWeatherArea_North')
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:201', false)
-        elif fEvent32 == 1:
-            EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:204', false)
-        elif fEvent32 == 2:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
-            run AreaSel_ExplanationNorth
-    else:
-entrypoint Event2:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:002', false)
-        fEvent3 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent3 == 0:
-            run Prologue1_AreaAsia
-        elif fEvent3 == 1:
-            run Prologue1_AreaNorthAmerica
-        elif fEvent3 == 2:
-            run Prologue1_AreaEurope
-        elif fEvent3 == 3:
-entrypoint Event4:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:003', false)
-            fEvent5 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent5 == 3:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:004', false)
-                fEvent7 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent7 == 3:
-                    run Prologue1_SelSouth
-                elif fEvent7 == 2:
-entrypoint Event18:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_04', false)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:114', false)
-                    run sub_Event89
-                elif fEvent7 == 1:
-entrypoint Event15:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_03', false)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:113', false)
-                    run sub_Event89
-                elif fEvent7 == 0:
-entrypoint Event59:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_02', false)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:112', false)
-                    run sub_Event89
-            elif fEvent5 == 2:
-entrypoint Event27:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_07', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:117', false)
-                run AreaSel_ChoiseNorth
-            elif fEvent5 == 1:
-entrypoint Event20:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_06', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:116', false)
-                run AreaSel_ChoiseSouth1st
-            elif fEvent5 == 0:
-entrypoint Event14:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_05', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:115', false)
-entrypoint Event28:
-                fEvent28 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent28 == 0:
-                    EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:202', false)
-                elif fEvent28 == 1:
-                    EventFlowSystemActor.EnvWeatherArea('cWeatherArea_North')
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:203', false)
-                elif fEvent28 == 2:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
-                    run AreaSel_ExplanationSouth
-    return
-
-flow Area_NorthAmerica:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:011', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Prologue1_AreaNorthAmerica
-    else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:012', false)
-        fEvent42 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent42 == 0:
-            run Prologue1_AreaAsia
-        elif fEvent42 == 1:
-            run Prologue1_AreaEurope
-        elif fEvent42 == 2:
-entrypoint Event43:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:013', false)
-            fEvent44 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent44 == 0:
-                run Prologue1_AreaSouthAmerica
-            elif fEvent44 == 1:
-                run Prologue1_AreaOceania
-            elif fEvent44 == 2:
-                run Prologue1_AreaAfrica
-            elif fEvent44 == 3:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:014', false)
-                fEvent46 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent46 == 0:
-                    run Prologue1_AreaNorthAmerica
-                elif fEvent46 == 1:
-                    run Prologue1_AreaAsia
-                elif fEvent46 == 2:
-                    run Prologue1_AreaEurope
-                elif fEvent46 == 3:
-                    run Prologue1_SelSouth
-    return
-
-flow Prologue1_SelSouth1:
-    run Event79
-    return
-
-flow Area_EUen:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:021', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Prologue1_AreaEurope
-    else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:022', false)
-        fEvent78 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent78 == 0:
-            run Prologue1_AreaAsia
-        elif fEvent78 == 1:
-            run Prologue1_AreaNorthAmerica
-        elif fEvent78 == 2:
-entrypoint Event79:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:023', false)
-            fEvent80 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent80 == 0:
-                run Prologue1_AreaSouthAmerica
-            elif fEvent80 == 1:
-                run Prologue1_AreaOceania
-            elif fEvent80 == 2:
-                run Prologue1_AreaAfrica
-            elif fEvent80 == 3:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:024', false)
-                fEvent82 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent82 == 0:
-                    run Prologue1_AreaEurope
-                elif fEvent82 == 1:
-                    run Prologue1_AreaAsia
-                elif fEvent82 == 2:
-                    run Prologue1_AreaNorthAmerica
-                elif fEvent82 == 3:
-                    run Prologue1_SelSouth1
-    return
-
-flow Prologue1_AreaSouthAmerica:
-    run Event14
+flow AreaSel_ExpS_Winter:
+    run Event68
     return
 
 flow AreaSel_ExplanationNorth:
@@ -235,8 +66,6 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
-    elif fEvent52 == 11:
-        run AreaSel_ExpN_Winter
     elif fEvent52 in (0, 1):
 entrypoint Event56:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_04', false)
@@ -253,12 +82,16 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
+    elif fEvent52 == 11:
+        run AreaSel_ExpN_Winter
     return
 
 flow AreaSel_ExplanationSouth:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:303', false)
     fEvent64 = EventFlowSystemActor.EnvMonth()
-    if fEvent64 in (2, 3, 4):
+    if fEvent64 == 11:
+        run AreaSel_ExpS_Winter
+    elif fEvent64 in (2, 3, 4):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_07', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:317', false)
         run sub_grp!Event103
@@ -270,8 +103,6 @@ flow AreaSel_ExplanationSouth:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_05', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:315', false)
         run sub_grp!Event103
-    elif fEvent64 == 11:
-        run AreaSel_ExpS_Winter
     elif fEvent64 in (0, 1):
 entrypoint Event68:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_06', false)
@@ -279,32 +110,149 @@ entrypoint Event68:
         run sub_grp!Event103
     return
 
-flow AreaSel_ExpN_Winter:
-    run Event56
+flow Area_EUen:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:021', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run Prologue1_AreaEurope
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:022', false)
+        fEvent78 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent78 == 2:
+entrypoint Event79:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:023', false)
+            fEvent80 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent80 == 0:
+                run Prologue1_AreaSouthAmerica
+            elif fEvent80 == 1:
+                run Prologue1_AreaOceania
+            elif fEvent80 == 3:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:024', false)
+                fEvent82 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent82 == 0:
+                    run Prologue1_AreaEurope
+                elif fEvent82 == 1:
+                    run Prologue1_AreaAsia
+                elif fEvent82 == 2:
+                    run Prologue1_AreaNorthAmerica
+                elif fEvent82 == 3:
+                    run Prologue1_SelSouth1
+            elif fEvent80 == 2:
+                run Prologue1_AreaAfrica
+        elif fEvent78 == 0:
+            run Prologue1_AreaAsia
+        elif fEvent78 == 1:
+            run Prologue1_AreaNorthAmerica
     return
 
-flow AreaSel_ChoiseSouth1st:
-    run Event28
+flow Area_Japan:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:001', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_01', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:111', false)
+entrypoint Event32:
+        fEvent32 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent32 == 1:
+            EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:204', false)
+        elif fEvent32 == 0:
+            EventFlowSystemActor.EnvWeatherArea('cWeatherArea_North')
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:201', false)
+        elif fEvent32 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
+            run AreaSel_ExplanationNorth
+    else:
+entrypoint Event2:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:002', false)
+        fEvent3 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent3 == 0:
+            run Prologue1_AreaAsia
+        elif fEvent3 == 1:
+            run Prologue1_AreaNorthAmerica
+        elif fEvent3 == 2:
+            run Prologue1_AreaEurope
+        elif fEvent3 == 3:
+entrypoint Event4:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:003', false)
+            fEvent5 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent5 == 0:
+entrypoint Event14:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_05', false)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:115', false)
+entrypoint Event28:
+                fEvent28 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent28 == 1:
+                    EventFlowSystemActor.EnvWeatherArea('cWeatherArea_North')
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:203', false)
+                elif fEvent28 == 0:
+                    EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:202', false)
+                elif fEvent28 == 2:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
+                    run AreaSel_ExplanationSouth
+            elif fEvent5 == 1:
+entrypoint Event20:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_06', false)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:116', false)
+                run AreaSel_ChoiseSouth1st
+            elif fEvent5 == 2:
+entrypoint Event27:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_07', false)
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:117', false)
+                run AreaSel_ChoiseNorth
+            elif fEvent5 == 3:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:004', false)
+                fEvent7 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent7 == 1:
+entrypoint Event15:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_03', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:113', false)
+                    run sub_Event89
+                elif fEvent7 == 2:
+entrypoint Event18:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_04', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:114', false)
+                    run sub_Event89
+                elif fEvent7 == 0:
+entrypoint Event59:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:101_02', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:112', false)
+                    run sub_Event89
+                elif fEvent7 == 3:
+                    run Prologue1_SelSouth
     return
 
-flow Prologue1_AreaOceania:
-    run Event20
-    return
-
-flow Prologue1_AreaAfrica:
-    run Event27
-    return
-
-flow AreaSel_ChoiseNorth:
-    run Event114
-    return
-
-flow AreaSel_ChoiseNorth1st:
-    run Event32
-    return
-
-flow AreaSel_ExpS_Winter:
-    run Event68
+flow Area_NorthAmerica:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:011', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run Prologue1_AreaNorthAmerica
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:012', false)
+        fEvent42 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent42 == 2:
+entrypoint Event43:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:013', false)
+            fEvent44 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent44 == 0:
+                run Prologue1_AreaSouthAmerica
+            elif fEvent44 == 1:
+                run Prologue1_AreaOceania
+            elif fEvent44 == 2:
+                run Prologue1_AreaAfrica
+            elif fEvent44 == 3:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:014', false)
+                fEvent46 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent46 == 2:
+                    run Prologue1_AreaEurope
+                elif fEvent46 == 1:
+                    run Prologue1_AreaAsia
+                elif fEvent46 == 3:
+                    run Prologue1_SelSouth
+                elif fEvent46 == 0:
+                    run Prologue1_AreaNorthAmerica
+        elif fEvent42 == 0:
+            run Prologue1_AreaAsia
+        elif fEvent42 == 1:
+            run Prologue1_AreaEurope
     return
 
 flow Area_Oceania:
@@ -319,17 +267,69 @@ flow Areasel_Oceania_Oversea:
     run Event2
     return
 
+flow Prologue1_AreaAfrica:
+    run Event27
+    return
+
+flow Prologue1_AreaAsia:
+    run Event59
+    return
+
+flow Prologue1_AreaEurope:
+    run Event18
+    return
+
+flow Prologue1_AreaNorthAmerica:
+    run Event15
+    return
+
+flow Prologue1_AreaOceania:
+    run Event20
+    return
+
+flow Prologue1_AreaSouthAmerica:
+    run Event14
+    return
+
+flow Prologue1_SelSouth:
+    run Event4
+    return
+
+flow Prologue1_SelSouth0:
+    run Event43
+    return
+
+flow Prologue1_SelSouth1:
+    run Event79
+    return
+
+flow Root:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:007', false)
+    if EventFlowSystemActor.NxRegionCode() in (0, 1, 2, 4, 5):
+        fEvent0 = EventFlowSystemActor.CurrentRegionLanguage('cCurrentMachine')
+        if fEvent0 in (11, 12, 13):
+            run Area_Japan
+        elif fEvent0 == 0:
+            run Area_Japan
+        elif fEvent0 in (1, 5, 7):
+            run Area_NorthAmerica
+        elif fEvent0 in (2, 3, 4, 6, 8, 9, 10):
+            run Area_EUen
+    else:
+        run Area_Oceania
+    return
+
 flow sub_Event89:
     run AreaSel_ChoiseNorth1st
 
 flow sub_grp!Event103:
     fEvent103 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent103 == 0:
-        EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:202', false)
-    elif fEvent103 == 1:
+    if fEvent103 == 1:
         EventFlowSystemActor.EnvWeatherArea('cWeatherArea_North')
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:201', false)
+    elif fEvent103 == 0:
+        EventFlowSystemActor.EnvWeatherArea('cWeatherArea_South')
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:202', false)
     elif fEvent103 == 2:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
         run AreaSel_ExplanationSouth

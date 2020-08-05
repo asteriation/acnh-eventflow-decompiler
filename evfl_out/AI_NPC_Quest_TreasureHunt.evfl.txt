@@ -1,3 +1,15 @@
+flow Hit:
+    run AI_NPC_Outdoor::Hit
+    return
+
+flow Init:
+    MainNpc.NpcRegistAIBlackBoard('WeightReset', 0)
+    return
+
+flow Push:
+    run AI_NPC_Outdoor::Push
+    return
+
 flow Root:
     MainNpc.NpcAIDefaultSetting(1)
     if MainNpc.NpcBlackBoard('WeightReset', 1):
@@ -14,17 +26,5 @@ flow Root:
         MainNpc.NpcChangeAIState('cTreasureHunt', 'NNPC_Quest_TreasureHunt_End', 'Root', '', true, false)
     else:
         MainNpc.NpcChangeAIState('cTreasureHunt', 'NNPC_Quest_TreasureHunt_End', 'Talk', '', true, false)
-    return
-
-flow Hit:
-    run AI_NPC_Outdoor::Hit
-    return
-
-flow Push:
-    run AI_NPC_Outdoor::Push
-    return
-
-flow Init:
-    MainNpc.NpcRegistAIBlackBoard('WeightReset', 0)
     return
 

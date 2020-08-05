@@ -1,10 +1,14 @@
-flow Root:
-    if (MainNpc.NpcCheckStateSelectTiming('cInit')) and (MainNpc.HghFreeQuery2('cHghQueryType_HghStayMarket')):
-        MainNpc.NpcAISetting(3, false)
-        MainNpc.NpcAISetting(2, false)
-        MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'hgh')
-    else:
-        run Rct_Wait
+flow Check_Goods:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_rcm_00_Groceries')
+    return
+
+flow Check_rct:
+    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
+        MainNpc.NpcAISetting(9, false)
+        MainNpc.NpcAISetting(5, false)
+        MainNpc.SetNpcSpeakFlow('Check', 'SNPC_rcm')
     return
 
 flow Init:
@@ -21,28 +25,15 @@ flow Init:
             MainNpc.NpcAISetting(8, true)
             MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
             fEvent10 = EventFlowSystemActor.ShopLevel()
-            if fEvent10 == NooksCrannyInitial:
-                MainNpc.NpcAISetPosByRail(6, 1, 0.0, false)
-                run sub_grp!Event24
-            elif fEvent10 == NooksCrannyUpgraded:
+            if fEvent10 == NooksCrannyUpgraded:
                 MainNpc.NpcAISetPosByRail(3, 1, -100.0, true)
+                run sub_grp!Event24
+            elif fEvent10 == NooksCrannyInitial:
+                MainNpc.NpcAISetPosByRail(6, 1, 0.0, false)
                 run sub_grp!Event24
         else:
             MainNpc.NpcAISetting(8, false)
             run sub_grp!Event24
-    return
-
-flow Check_rct:
-    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
-        MainNpc.NpcAISetting(9, false)
-        MainNpc.NpcAISetting(5, false)
-        MainNpc.SetNpcSpeakFlow('Check', 'SNPC_rcm')
-    return
-
-flow Check_Goods:
-    MainNpc.NpcAISetting(9, false)
-    MainNpc.NpcAISetting(5, false)
-    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_rcm_00_Groceries')
     return
 
 flow Rct_Wait:
@@ -50,6 +41,15 @@ flow Rct_Wait:
     MainNpc.NpcAISetting(3, true)
     MainNpc.NpcAISetting(2, true)
     MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
+    return
+
+flow Root:
+    if (MainNpc.NpcCheckStateSelectTiming('cInit')) and (MainNpc.HghFreeQuery2('cHghQueryType_HghStayMarket')):
+        MainNpc.NpcAISetting(3, false)
+        MainNpc.NpcAISetting(2, false)
+        MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'hgh')
+    else:
+        run Rct_Wait
     return
 
 flow sub_grp!Event24:

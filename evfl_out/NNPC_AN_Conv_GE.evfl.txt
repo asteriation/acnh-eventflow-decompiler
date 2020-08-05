@@ -42,14 +42,10 @@ flow sub_grp!Event0:
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:011', false)
             fEvent15 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent15 == 0:
-                Player.TurnBody(1, 0.0)
-                SubNpc.TurnBody(10, 0.0)
-                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:012', false)
-                MainNpc.TurnBody(1, 0.0)
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:013', false)
-                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:014', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:015', false)
+            if fEvent15 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:020', false)
+                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:021', false)
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:022', false)
             elif fEvent15 == 1:
                 Player.TurnBody(1, 0.0)
                 SubNpc.TurnNeck(10)
@@ -59,10 +55,14 @@ flow sub_grp!Event0:
                 SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:018', false)
                 Player.TurnNeck(0)
                 MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:019', false)
-            elif fEvent15 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:020', false)
-                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:021', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:022', false)
+            elif fEvent15 == 0:
+                Player.TurnBody(1, 0.0)
+                SubNpc.TurnBody(10, 0.0)
+                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:012', false)
+                MainNpc.TurnBody(1, 0.0)
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:013', false)
+                SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:014', false)
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:015', false)
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_GE:101', false)
         Player.TurnNeck(1)

@@ -1,6 +1,20 @@
-flow Retype:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:107', true)
+flow Cancell:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:110', true)
     run Event21
+    return
+
+flow CopyName:
+    MainNpc.NpcSetNicknameToTag('cOtherNpc')
+    if MainNpc.CheckNpcApproachType():
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:003', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:006', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.NpcSaveNickname('cOtherNpc')
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:200', false)
+        event_flags_npc['cNpcMemory:InputNickname'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:201', true)
     return
 
 flow NewName:
@@ -53,22 +67,8 @@ entrypoint Event21:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:101', false)
     return
 
-flow CopyName:
-    MainNpc.NpcSetNicknameToTag('cOtherNpc')
-    if MainNpc.CheckNpcApproachType():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:003', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:006', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        MainNpc.NpcSaveNickname('cOtherNpc')
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:200', false)
-        event_flags_npc['cNpcMemory:InputNickname'] = true
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:201', true)
-    return
-
-flow Cancell:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:110', true)
+flow Retype:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_NickName:107', true)
     run Event21
     return
 

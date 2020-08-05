@@ -1,7 +1,6 @@
-flow Root:
-    run CountUp
-    run CountReset
-    run SendChkRoot
+flow CountReset:
+    event_flags_system['cPlayer:DodPresentCounterToday'] = 0
+    event_flags_system['cPlayer:DodSingleFlightToday'] = false
     return
 
 flow CountUp:
@@ -17,11 +16,6 @@ flow CountUp:
         run sub_grp!Event6
     return
 
-flow CountReset:
-    event_flags_system['cPlayer:DodPresentCounterToday'] = 0
-    event_flags_system['cPlayer:DodSingleFlightToday'] = false
-    return
-
 flow NoveltySendChk0:
     if event_flags_system['cPlayer:DodPresentCounter'] >= 5:
         EventFlowSystemActor.SelectRewardItemDirect(12125, 1, 'cVillageRemakePattern', 0)
@@ -33,6 +27,13 @@ flow NoveltySendChk1:
     if event_flags_system['cPlayer:DodPresentCounter'] >= 15:
         EventFlowSystemActor.SelectRewardItemDirect(12128, 1, 'cVillageRemakePattern', 0)
         EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 2)
+        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
+    return
+
+flow NoveltySendChk10:
+    if event_flags_system['cPlayer:DodPresentCounter'] >= 300:
+        EventFlowSystemActor.SelectRewardItemDirect(12140, 1, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 11)
         event_flags_system['cPlayer:DodPresentSendCounter'] += 1
     return
 
@@ -92,6 +93,12 @@ flow NoveltySendChk9:
         event_flags_system['cPlayer:DodPresentSendCounter'] += 1
     return
 
+flow Root:
+    run CountUp
+    run CountReset
+    run SendChkRoot
+    return
+
 flow SendChkRoot:
     if event_flags_system['cPlayer:DodPresentSendCounter'] == 10:
         run NoveltySendChk10
@@ -115,13 +122,6 @@ flow SendChkRoot:
         run NoveltySendChk1
     elif event_flags_system['cPlayer:DodPresentSendCounter'] == 0:
         run NoveltySendChk0
-    return
-
-flow NoveltySendChk10:
-    if event_flags_system['cPlayer:DodPresentCounter'] >= 300:
-        EventFlowSystemActor.SelectRewardItemDirect(12140, 1, 'cVillageRemakePattern', 0)
-        EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 11)
-        event_flags_system['cPlayer:DodPresentSendCounter'] += 1
     return
 
 flow sub_grp!Event6:

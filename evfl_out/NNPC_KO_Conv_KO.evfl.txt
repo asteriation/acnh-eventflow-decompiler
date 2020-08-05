@@ -50,10 +50,7 @@ flow sub_grp!Event0:
         MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:005', false)
         SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:006', false)
         fEvent25 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent25 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:007', false)
-            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:008', false)
-        elif fEvent25 == 1:
+        if fEvent25 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:010', false)
             fork:
                 branch0:
@@ -75,6 +72,9 @@ flow sub_grp!Event0:
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:013', false)
             SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:014', false)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:015', false)
+        elif fEvent25 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:007', false)
+            SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_KO:008', false)
     else:
         fork:
             branch0:

@@ -1,3 +1,16 @@
+flow GoEventPlaza:
+    EventFlowSystemActor.BGMPropertyControl(78)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
+    EventFlowSystemActor.SetupActorPosition(2)
+    EventFlowSystemActor.RequestRecreateFtr()
+    EventFlowSystemActor.EnvSetDemoTime(0, 17, 30)
+    EventFlowSystemActor.WaitFrame(60)
+    EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaPrologue', '', false, false, false, 0)
+    Npc_3.TurnNeck(0)
+    Npc_4.TurnNeck(0)
+    EventFlowSystemActor.FadeIn(true)
+    return
+
 flow Root:
     MainNpc.SetNpcName(0, 14)
     MainNpc.SetNpcName(1, 13)
@@ -18,19 +31,6 @@ flow Root:
     EventFlowSystemActor.WaitFrame(30)
     EventFlowSystemActor.SetNpcAIBlackBoardByLabel('IsForceLife', 1, '-Looks:HA', 0)
     EventFlowSystemActor.SetNpcAIBlackBoardByLabel('IsForceLife', 1, '-Looks:AN', 0)
-    EventFlowSystemActor.FadeIn(true)
-    return
-
-flow GoEventPlaza:
-    EventFlowSystemActor.BGMPropertyControl(78)
-    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.699999988079071, 0.699999988079071, true)
-    EventFlowSystemActor.SetupActorPosition(2)
-    EventFlowSystemActor.RequestRecreateFtr()
-    EventFlowSystemActor.EnvSetDemoTime(0, 17, 30)
-    EventFlowSystemActor.WaitFrame(60)
-    EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaPrologue', '', false, false, false, 0)
-    Npc_3.TurnNeck(0)
-    Npc_4.TurnNeck(0)
     EventFlowSystemActor.FadeIn(true)
     return
 

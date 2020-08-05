@@ -1,3 +1,7 @@
+flow PrologueStep2:
+    run Event10
+    return
+
 flow Root_Common:
     if not MainNpc.NpcBlackBoard('PrologueStep', 1):
         MainNpc.NpcAddBlackBoard('PrologueStep', 1)
@@ -49,10 +53,6 @@ entrypoint Event10:
             MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 180.0, '')
         else:
             MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'TalkEventFlowName', '', false, true, 1, 'OffsetX', 'OffsetZ')
-    return
-
-flow PrologueStep2:
-    run Event10
     return
 
 flow sub_Event1:

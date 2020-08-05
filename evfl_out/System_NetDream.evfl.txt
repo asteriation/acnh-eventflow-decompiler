@@ -1,11 +1,3 @@
-flow Root:
-    fEvent0 = EventFlowSystemActor.NetDemoType()
-    if fEvent0 == 4:
-        run EnterDream
-    elif fEvent0 == 5:
-        run ExitDream
-    return
-
 flow EnterDream:
     EventFlowSystemActor.NetWaitDemo('cEnterDream')
     EventFlowSystemActor.NetEnterDream()
@@ -16,5 +8,13 @@ flow ExitDream:
     if EventFlowSystemActor.NetDreamingTime(20):
         EventFlowSystemActor.NetReplyDream('cHistory')
     EventFlowSystemActor.NetReturnFromDream()
+    return
+
+flow Root:
+    fEvent0 = EventFlowSystemActor.NetDemoType()
+    if fEvent0 == 4:
+        run EnterDream
+    elif fEvent0 == 5:
+        run ExitDream
     return
 

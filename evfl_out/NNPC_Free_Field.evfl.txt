@@ -1,10 +1,23 @@
-flow Root:
-    run NNPC_FreeA::First_Chk
-    run Free_Field1
+flow BestFriend:
+    if EventFlowSystemActor.PercentChoice(5):
+        run NNPC_FreeB::Spot_Chk
+    if EventFlowSystemActor.PercentChoice(11):
+        run NNPC_FreeB::Seasons_Chk
+    if EventFlowSystemActor.PercentChoice(13):
+        run NNPC_FreeA::Week_Chk
+    if EventFlowSystemActor.PercentChoice(21):
+        run NNPC_FreeB::Weather_Chk
+    if EventFlowSystemActor.PercentChoice(27):
+        run NNPC_FreeA::ClothesN2_Chk
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeA::AlwaysAB_Chk
+    if EventFlowSystemActor.PercentChoice(75):
+        run NNPC_FreeA::Always_Chk
+    run NNPC_FreeA::FieldQuestions_Chk
     return
 
-flow ReSelection:
-    run Event42
+flow Fireworks_1.4:
+    run Event6
     return
 
 flow Free_Field1:
@@ -65,12 +78,25 @@ entrypoint Event42:
     else:
         event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] += 1
         fEvent45 = MainNpc.CheckNpcFavorLevel()
-        if fEvent45 in (0, 1):
-            run BestFriend
+        if fEvent45 == 5:
+            run Friend
         elif fEvent45 in (2, 3, 4):
             run GoodFriend
-        elif fEvent45 == 5:
-            run Friend
+        elif fEvent45 in (0, 1):
+            run BestFriend
+    return
+
+flow Free_Filed5:
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeD::RumorO_Favorite_Chk
+    if EventFlowSystemActor.PercentChoice(50):
+        run NNPC_FreeD::RumorP_Favorite_Chk
+    if MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5):
+        if EventFlowSystemActor.PercentChoice(20):
+            run NNPC_FreeA::Want_Chk
+        if (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (EventFlowSystemActor.PercentChoice(20)):
+            run NNPC_FreeI::Present_Chk
+    run Free_Field6
     return
 
 flow Friend:
@@ -103,24 +129,6 @@ flow GoodFriend:
     run NNPC_FreeA::FieldQuestions_Chk
     return
 
-flow BestFriend:
-    if EventFlowSystemActor.PercentChoice(5):
-        run NNPC_FreeB::Spot_Chk
-    if EventFlowSystemActor.PercentChoice(11):
-        run NNPC_FreeB::Seasons_Chk
-    if EventFlowSystemActor.PercentChoice(13):
-        run NNPC_FreeA::Week_Chk
-    if EventFlowSystemActor.PercentChoice(21):
-        run NNPC_FreeB::Weather_Chk
-    if EventFlowSystemActor.PercentChoice(27):
-        run NNPC_FreeA::ClothesN2_Chk
-    if EventFlowSystemActor.PercentChoice(50):
-        run NNPC_FreeA::AlwaysAB_Chk
-    if EventFlowSystemActor.PercentChoice(75):
-        run NNPC_FreeA::Always_Chk
-    run NNPC_FreeA::FieldQuestions_Chk
-    return
-
 flow ReSelect1:
 entrypoint Event87:
     fEvent87 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -145,20 +153,12 @@ flow ReSelect2:
     run Event87
     return
 
-flow Free_Filed5:
-    if EventFlowSystemActor.PercentChoice(50):
-        run NNPC_FreeD::RumorO_Favorite_Chk
-    if EventFlowSystemActor.PercentChoice(50):
-        run NNPC_FreeD::RumorP_Favorite_Chk
-    if MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5):
-        if EventFlowSystemActor.PercentChoice(20):
-            run NNPC_FreeA::Want_Chk
-        if (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (EventFlowSystemActor.PercentChoice(20)):
-            run NNPC_FreeI::Present_Chk
-    run Free_Field6
+flow ReSelection:
+    run Event42
     return
 
-flow Fireworks_1.4:
-    run Event6
+flow Root:
+    run NNPC_FreeA::First_Chk
+    run Free_Field1
     return
 

@@ -1,16 +1,16 @@
-flow Root:
-    MainNpc.NpcAIDefaultSetting(1)
-    MainNpc.NpcChangeAIState('cBlockWander', 'NNPC_Spot_MysteryTour', '', '', false, false)
+flow FallPit:
+    MainNpc.NpcAISetting(2, false)
+    MainNpc.NpcAISetting(3, false)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcChangeAIState('cFallPit', 'NNPC_Reaction_Fall', '', '', false, false)
     return
 
 flow Hit:
     MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
     return
 
-flow FallPit:
-    MainNpc.NpcAISetting(2, false)
-    MainNpc.NpcAISetting(3, false)
-    MainNpc.NpcAISetting(8, true)
-    MainNpc.NpcChangeAIState('cFallPit', 'NNPC_Reaction_Fall', '', '', false, false)
+flow Root:
+    MainNpc.NpcAIDefaultSetting(1)
+    MainNpc.NpcChangeAIState('cBlockWander', 'NNPC_Spot_MysteryTour', '', '', false, false)
     return
 

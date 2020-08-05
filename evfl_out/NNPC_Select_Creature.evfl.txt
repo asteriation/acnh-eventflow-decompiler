@@ -1,69 +1,3 @@
-flow Food:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:402', false)
-    MainNpc.NpcDelivery('"Default"', 3)
-    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:403', false)
-entrypoint Event18:
-    MainNpc.NpcAddFriendship(1)
-    return
-
-flow Plant:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
-    MainNpc.NpcDelivery('"Default"', 3)
-    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:401', false)
-    run Event18
-    return
-
-flow Flower:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:404', false)
-    MainNpc.NpcDelivery('"Default"', 3)
-    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:405', false)
-    run Event17
-    return
-
-flow Fish:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:406', false)
-    if not event_flags_system['cLand:MuseumBuilt']:
-        run Donated_Fish
-    elif MainNpc.OwlIsDonation('cDeliveryItem'):
-entrypoint Event3:
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:407', false)
-entrypoint Event17:
-        MainNpc.NpcAddFriendship(2)
-        MainNpc.NpcSetShowFlag()
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:411', false)
-        MainNpc.NpcDelivery('Default', 10)
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Insect:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:408', false)
-    if not event_flags_system['cLand:MuseumBuilt']:
-        run Donated_Insect
-    elif MainNpc.OwlIsDonation('cDeliveryItem'):
-entrypoint Event4:
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:409', false)
-        MainNpc.NpcAddFriendship(2)
-        MainNpc.NpcSetShowFlag()
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:410', false)
-        MainNpc.NpcDelivery('Default', 10)
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Donated_Insect:
-    run Event4
-    return
-
-flow Donated_Fish:
-    run Event3
-    return
-
 flow DiveFish:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:412', false)
     if event_flags_system['cLand:MuseumBuilt']:
@@ -85,6 +19,72 @@ entrypoint Event15:
 
 flow Donated_DiveFish:
     run Event15
+    return
+
+flow Donated_Fish:
+    run Event3
+    return
+
+flow Donated_Insect:
+    run Event4
+    return
+
+flow Fish:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:406', false)
+    if not event_flags_system['cLand:MuseumBuilt']:
+        run Donated_Fish
+    elif MainNpc.OwlIsDonation('cDeliveryItem'):
+entrypoint Event3:
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:407', false)
+entrypoint Event17:
+        MainNpc.NpcAddFriendship(2)
+        MainNpc.NpcSetShowFlag()
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:411', false)
+        MainNpc.NpcDelivery('Default', 10)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Flower:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:404', false)
+    MainNpc.NpcDelivery('"Default"', 3)
+    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:405', false)
+    run Event17
+    return
+
+flow Food:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:402', false)
+    MainNpc.NpcDelivery('"Default"', 3)
+    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:403', false)
+entrypoint Event18:
+    MainNpc.NpcAddFriendship(1)
+    return
+
+flow Insect:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:408', false)
+    if not event_flags_system['cLand:MuseumBuilt']:
+        run Donated_Insect
+    elif MainNpc.OwlIsDonation('cDeliveryItem'):
+entrypoint Event4:
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:409', false)
+        MainNpc.NpcAddFriendship(2)
+        MainNpc.NpcSetShowFlag()
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:410', false)
+        MainNpc.NpcDelivery('Default', 10)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Plant:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
+    MainNpc.NpcDelivery('"Default"', 3)
+    EventFlowSystemActor.SystemDeletePlayerItem('cItemWindowSub', 1)
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:401', false)
+    run Event18
     return
 
 flow sub_Event22:

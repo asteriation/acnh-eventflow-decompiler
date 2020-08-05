@@ -7,17 +7,17 @@ flow Root:
         event_flags_system['cPlayer:ShizueCmnExplanationTowntune'] = true
     EventFlowSystemActor.UIMelodyEditHandling()
     fEvent6 = EventFlowSystemActor.UIResultMelodyEdit()
-    if fEvent6 == 0:
+    if fEvent6 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:007', true)
+        MainNpc.SzaPlayMelody()
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:008', false)
+    elif fEvent6 == 0:
         EventFlowSystemActor.SaveSetFromUIResult('cMelody')
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:007', true)
         MainNpc.SzaPlayMelody()
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:009', true)
         EventFlowSystemActor.NpcPlayerActivity('cActivityType_ChangeMelody')
         MainNpc.SzaAchievementChangeSymbol('cMelody')
-    elif fEvent6 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:007', true)
-        MainNpc.SzaPlayMelody()
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:008', false)
     elif fEvent6 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:006', false)
     run SNPC_sza_00_Common::Sza_CmnSel_Again

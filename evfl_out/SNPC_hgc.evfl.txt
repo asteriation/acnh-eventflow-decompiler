@@ -1,3 +1,12 @@
+flow Hgc_Chk_Closeness:
+    if event_flags_system['cPlayer:KotonoQuestCount'] < 20:
+        subflow_results[0] = 0
+    elif event_flags_system['cPlayer:KotonoQuestCount'] >= 50:
+        subflow_results[0] = 2
+    else:
+        subflow_results[0] = 1
+    return
+
 flow Root:
     if EventFlowSystemActor.IsMyVillage():
         run Hgc_Chk_Closeness
@@ -16,14 +25,5 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:151', false)
         elif fEvent10 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:152', false)
-    return
-
-flow Hgc_Chk_Closeness:
-    if event_flags_system['cPlayer:KotonoQuestCount'] < 20:
-        subflow_results[0] = 0
-    elif event_flags_system['cPlayer:KotonoQuestCount'] >= 50:
-        subflow_results[0] = 2
-    else:
-        subflow_results[0] = 1
     return
 

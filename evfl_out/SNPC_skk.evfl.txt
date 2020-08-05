@@ -1,3 +1,11 @@
+flow Boc_DC_1st:
+    run Event4
+    return
+
+flow Boc_DC_Buy:
+    run Event33
+    return
+
 flow Root:
     if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) == 0:
         EventFlowSystemActor.UIMoneyAppear()
@@ -73,11 +81,8 @@ entrypoint Event10:
         MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:040', false)
     return
 
-flow skk_Again_Look:
-    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:031', false)
-entrypoint Event128:
-    EventFlowSystemActor.UIShopBuyReselectionAppear()
-    run Event10
+flow Skk_DC_Buy_Again:
+    run Event34
     return
 
 flow skk_Again_Buy:
@@ -85,21 +90,16 @@ flow skk_Again_Buy:
     run Event128
     return
 
+flow skk_Again_Look:
+    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:031', false)
+entrypoint Event128:
+    EventFlowSystemActor.UIShopBuyReselectionAppear()
+    run Event10
+    return
+
 flow skk_Again_NoMoney:
     MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:032', false)
     run Event128
-    return
-
-flow Skk_DC_Buy_Again:
-    run Event34
-    return
-
-flow Boc_DC_1st:
-    run Event4
-    return
-
-flow Boc_DC_Buy:
-    run Event33
     return
 
 flow sub_Event12:

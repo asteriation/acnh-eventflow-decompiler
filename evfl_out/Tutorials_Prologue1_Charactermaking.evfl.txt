@@ -1,47 +1,48 @@
-flow Root:
-    run 0_FlagSettings
-    EventFlowSystemActor.BGMPropertyControl(55)
-    run Cut0
-    EventFlowSystemActor.WaitFrame(20)
-    fEvent65 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent65 in (0, 1):
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_01', false)
-    elif fEvent65 in (2, 3):
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_02', false)
-    elif fEvent65 in (4, 5):
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_03', false)
+flow 0_FlagSettings:
     if event_flags_system['cLand:ValidateVillageSave']:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
-        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
+        event_flags_system['cLandTemp:CalendarEventStop'] = true
+        fEvent123 = EventFlowSystemActor.OfficeLevel()
+        if fEvent123 == ResServiceBuilding:
+            fEvent115 = EventFlowSystemActor.MuseumLevel()
+            if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
+                event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true
+                run sub_grp!Event0
+            elif fEvent115 == BlathersNotMovedIn:
+                run sub_grp!Event0
+        elif fEvent123 in (ResServiceTent0, ResServiceTent1):
+            event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
+            fEvent115 = EventFlowSystemActor.MuseumLevel()
+            if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
+                event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true
+                run sub_grp!Event0
+            elif fEvent115 == BlathersNotMovedIn:
+                run sub_grp!Event0
     else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
-        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
-    run Apply
+        event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
+        run sub_grp!Event0
     return
 
-flow EnteringNameAndBday:
-    EventFlowSystemActor.SoundDuckingOn(41)
-    EventFlowSystemActor.UISoftwareKeyboardHandling('cName', true)
-    EventFlowSystemActor.SoundDuckingOff(41)
-    EventFlowSystemActor.SaveSetFromUIResult('cPlayerName')
-    EventFlowSystemActor.SetTagFromUIResult(0, 'cPlayerNameNoGender')
-    EventFlowSystemActor.UIDateHandling('cOpeningBirthday')
-    EventFlowSystemActor.SaveSetFromUIResult('cBirthDay')
-    EventFlowSystemActor.WaitFrame(10)
-    MainNpc.TurnBody(12, 40.0)
-    MainNpc.LookAtPos(1, 0.0, 1.0, 0.0)
-    SubNpc.LookAtPos(1, 5.0, 4.0, 0.0)
-    EventFlowSystemActor.WaitFrame(30)
-    MainNpc.RequestSimple('NpcSpTyping', false)
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_03', false)
-    EventFlowSystemActor.WaitFrame(20)
+flow Apply:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_02', true)
+entrypoint Event4:
+    EventFlowSystemActor.EntryPlayerVillager()
+    EventFlowSystemActor.NoticeGameStartForPlayReport()
+    run EnteringNameAndBday
+    run Charactermaking
+    if event_flags_system['cLand:ValidateVillageSave']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:103', true)
+        EventFlowSystemActor.ClearAllNpcOtherPlayerMoveInFlag()
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:006', false)
+        run Tutorials_Prologue1_Areacheck::Root
+        run TerrainSelect
+    run EndCharacterMaking
+    return
+
+flow BackCut0:
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0End', 'cDefault', false, false, false, 0)
     MainNpc.LookAtPos(2, 0.0, 0.0, 0.0)
-    MainNpc.TurnBody(12, -5.0)
     SubNpc.LookAtPos(2, 0.0, 0.0, 0.0)
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_05', false)
     return
 
 flow Charactermaking:
@@ -53,13 +54,24 @@ flow Charactermaking:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:005_02', false)
     return
 
-flow TerrainSelect:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:021', true)
-    EventFlowSystemActor.UIMapSelectHandling()
-    EventFlowSystemActor.SaveSetFromUIResult('cVillage')
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:022', false)
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:023', false)
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:024', true)
+flow Cut0:
+    EventFlowSystemActor.UIPrologueBGAppear()
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0Start', '', false, false, false, 0)
+    EventFlowSystemActor.WaitFrame(120)
+    EventFlowSystemActor.UIPrologueBGDisappear()
+    EventFlowSystemActor.SoundDuckingOn(29)
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0End', 'Cut0', false, false, false, 0)
+    EventFlowSystemActor.WaitFrame(60)
+    fork:
+        branch0:
+        branch1:
+            MainNpc.NpcRailMove(0, -1, -1, 1, false, true)
+            MainNpc.TurnBody(12, -5.0)
+        branch2:
+            EventFlowSystemActor.WaitFrame(30)
+            SubNpc.NpcRailMove(1, -1, -1, 1, false, true)
+            SubNpc.TurnBody(12, 5.0)
+    EventFlowSystemActor.WaitFrame(10)
     return
 
 flow EndCharacterMaking:
@@ -88,59 +100,31 @@ flow EndCharacterMaking:
     run PV
     return
 
-flow Cut0:
-    EventFlowSystemActor.UIPrologueBGAppear()
-    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0Start', '', false, false, false, 0)
-    EventFlowSystemActor.WaitFrame(120)
-    EventFlowSystemActor.UIPrologueBGDisappear()
-    EventFlowSystemActor.SoundDuckingOn(29)
-    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0End', 'Cut0', false, false, false, 0)
-    EventFlowSystemActor.WaitFrame(60)
-    fork:
-        branch0:
-        branch1:
-            MainNpc.NpcRailMove(0, -1, -1, 1, false, true)
-            MainNpc.TurnBody(12, -5.0)
-        branch2:
-            EventFlowSystemActor.WaitFrame(30)
-            SubNpc.NpcRailMove(1, -1, -1, 1, false, true)
-            SubNpc.TurnBody(12, 5.0)
+flow EnteringNameAndBday:
+    EventFlowSystemActor.SoundDuckingOn(41)
+    EventFlowSystemActor.UISoftwareKeyboardHandling('cName', true)
+    EventFlowSystemActor.SoundDuckingOff(41)
+    EventFlowSystemActor.SaveSetFromUIResult('cPlayerName')
+    EventFlowSystemActor.SetTagFromUIResult(0, 'cPlayerNameNoGender')
+    EventFlowSystemActor.UIDateHandling('cOpeningBirthday')
+    EventFlowSystemActor.SaveSetFromUIResult('cBirthDay')
     EventFlowSystemActor.WaitFrame(10)
-    return
-
-flow ToCut1:
-    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut1', 'cDefault', false, false, false, 0)
-    EventFlowSystemActor.WaitFrame(40)
-    return
-
-flow BackCut0:
-    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut0End', 'cDefault', false, false, false, 0)
+    MainNpc.TurnBody(12, 40.0)
+    MainNpc.LookAtPos(1, 0.0, 1.0, 0.0)
+    SubNpc.LookAtPos(1, 5.0, 4.0, 0.0)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.RequestSimple('NpcSpTyping', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_03', false)
+    EventFlowSystemActor.WaitFrame(20)
     MainNpc.LookAtPos(2, 0.0, 0.0, 0.0)
+    MainNpc.TurnBody(12, -5.0)
     SubNpc.LookAtPos(2, 0.0, 0.0, 0.0)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_05', false)
     return
 
-flow 0_FlagSettings:
-    if event_flags_system['cLand:ValidateVillageSave']:
-        event_flags_system['cLandTemp:CalendarEventStop'] = true
-        fEvent123 = EventFlowSystemActor.OfficeLevel()
-        if fEvent123 in (ResServiceTent0, ResServiceTent1):
-            event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
-            fEvent115 = EventFlowSystemActor.MuseumLevel()
-            if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
-                event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true
-                run sub_grp!Event0
-            elif fEvent115 == BlathersNotMovedIn:
-                run sub_grp!Event0
-        elif fEvent123 == ResServiceBuilding:
-            fEvent115 = EventFlowSystemActor.MuseumLevel()
-            if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
-                event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true
-                run sub_grp!Event0
-            elif fEvent115 == BlathersNotMovedIn:
-                run sub_grp!Event0
-    else:
-        event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
-        run sub_grp!Event0
+flow Normal_CharacterMaking:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:1003_02_01', false)
+    run Event4
     return
 
 flow PV:
@@ -169,32 +153,48 @@ flow PV:
     EventFlowSystemActor.SystemRequestChangeStage('cOpeningMovie', 'cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0)
     return
 
-flow Apply:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_02', true)
-entrypoint Event4:
-    EventFlowSystemActor.EntryPlayerVillager()
-    EventFlowSystemActor.NoticeGameStartForPlayReport()
-    run EnteringNameAndBday
-    run Charactermaking
+flow Root:
+    run 0_FlagSettings
+    EventFlowSystemActor.BGMPropertyControl(55)
+    run Cut0
+    EventFlowSystemActor.WaitFrame(20)
+    fEvent65 = EventFlowSystemActor.EnvTimeZone()
+    if fEvent65 in (0, 1):
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_01', false)
+    elif fEvent65 in (2, 3):
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_02', false)
+    elif fEvent65 in (4, 5):
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_03', false)
     if event_flags_system['cLand:ValidateVillageSave']:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:103', true)
-        EventFlowSystemActor.ClearAllNpcOtherPlayerMoveInFlag()
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
+        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
     else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:006', false)
-        run Tutorials_Prologue1_Areacheck::Root
-        run TerrainSelect
-    run EndCharacterMaking
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
+        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
+    run Apply
     return
 
-flow Normal_CharacterMaking:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:1003_02_01', false)
-    run Event4
+flow TerrainSelect:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:021', true)
+    EventFlowSystemActor.UIMapSelectHandling()
+    EventFlowSystemActor.SaveSetFromUIResult('cVillage')
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:022', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:023', false)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:024', true)
     return
 
-flow sub_grp-end!Event123:
-    pass
+flow ToCut1:
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Cut1', 'cDefault', false, false, false, 0)
+    EventFlowSystemActor.WaitFrame(40)
+    return
 
 flow sub_grp!Event0:
     if EventFlowSystemActor.ShopLevel() == InResServiceTent:
         event_flags_system['cPlayer:KaburibaConditionFlag'] = false
+
+flow sub_grp-end!Event123:
+    pass
 

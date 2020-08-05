@@ -1,11 +1,3 @@
-flow Root:
-    run SetupTalk
-    if MainNpc.TkkFreeQuery2('cTkkQueryType_PlayReady'):
-        MainNpc.NpcChangeWaitState('cWait', 'Root', 'SNPC_tkk', '', false, true, 0, true, '')
-    else:
-        MainNpc.NpcChangeAIState('cTkkWait', 'SNPC_tkk', 'Root', '', false, true)
-    return
-
 flow Init:
     MainNpc.NpcAISetting(0, true)
     MainNpc.NpcAISetting(1, true)
@@ -17,11 +9,19 @@ flow Init:
     MainNpc.NpcChangeHeadCtrlMode('cNoLook', false)
     return
 
-flow SitDown_tkk:
-    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_tkk_Live')
+flow Root:
+    run SetupTalk
+    if MainNpc.TkkFreeQuery2('cTkkQueryType_PlayReady'):
+        MainNpc.NpcChangeWaitState('cWait', 'Root', 'SNPC_tkk', '', false, true, 0, true, '')
+    else:
+        MainNpc.NpcChangeAIState('cTkkWait', 'SNPC_tkk', 'Root', '', false, true)
     return
 
 flow SetupTalk:
     MainNpc.NpcAISetting(2, false)
+    return
+
+flow SitDown_tkk:
+    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_tkk_Live')
     return
 

@@ -1,3 +1,39 @@
+flow ChkNpcTentStatus:
+    if event_flags_system['cLand:Prologue4BuiltNpcAN']:
+        if event_flags_system['cPlayer:Prologue4HaGetTent']:
+            subflow_results[0] = 7
+        else:
+            subflow_results[0] = 6
+    elif event_flags_system['cLand:Prologue4BuiltNpcHA']:
+        if event_flags_system['cPlayer:Prologue4AnGetTent']:
+            subflow_results[0] = 5
+        else:
+            subflow_results[0] = 4
+    elif event_flags_system['cPlayer:Prologue4AnGetTent']:
+        if event_flags_system['cPlayer:Prologue4HaGetTent']:
+            subflow_results[0] = 3
+        else:
+            subflow_results[0] = 2
+    elif event_flags_system['cPlayer:Prologue4HaGetTent']:
+        subflow_results[0] = 1
+    else:
+        subflow_results[0] = 0
+    return
+
+flow NormalTalk_BeforeTentGet:
+    run sub_Event3
+    return
+
+flow NormalTalk_BeforeTentSet:
+    run sub_Event5
+    return
+
+flow Prologue4_AfterBuiltTent:
+    MainNpc.SetNpcName(0, 14)
+    MainNpc.SetNpcName(1, 13)
+    run Event9
+    return
+
 flow Root:
     MainNpc.SetNpcName(0, 14)
     MainNpc.SetNpcName(1, 13)
@@ -101,42 +137,36 @@ entrypoint Event9:
         run ChkNpcTentStatus
         if event_flags_system['cPlayer:Prologue4AfterBuiltPcTent']:
             fEvent1 = subflow_results[0]
-            if fEvent1 == 0:
+            if fEvent1 == 7:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:017', false)
+            elif fEvent1 == 0:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
             elif fEvent1 in (1, 2):
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:019', false)
-            elif fEvent1 == 3:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:016', false)
             elif fEvent1 == 4:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
-            elif fEvent1 == 5:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:018', false)
+            elif fEvent1 == 3:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:016', false)
             elif fEvent1 == 6:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
-            elif fEvent1 == 7:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:017', false)
+            elif fEvent1 == 5:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:018', false)
         else:
             event_flags_system['cPlayer:Prologue4AfterBuiltPcTent'] = true
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:011', false)
             fEvent12 = subflow_results[0]
-            if fEvent12 == 0:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
-            elif fEvent12 in (1, 2, 3):
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
-            elif fEvent12 == 4:
+            if fEvent12 == 4:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
             elif fEvent12 in (5, 7):
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
+            elif fEvent12 in (1, 2, 3):
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
             elif fEvent12 == 6:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
+            elif fEvent12 == 0:
+                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
     else:
         run sub_Event5
-    return
-
-flow Prologue4_AfterBuiltTent:
-    MainNpc.SetNpcName(0, 14)
-    MainNpc.SetNpcName(1, 13)
-    run Event9
     return
 
 flow TownFruitTypeChk:
@@ -168,47 +198,17 @@ flow TownFruitTypeChk:
             run sub_Event35
     return
 
-flow ChkNpcTentStatus:
-    if event_flags_system['cLand:Prologue4BuiltNpcAN']:
-        if event_flags_system['cPlayer:Prologue4HaGetTent']:
-            subflow_results[0] = 7
-        else:
-            subflow_results[0] = 6
-    elif event_flags_system['cLand:Prologue4BuiltNpcHA']:
-        if event_flags_system['cPlayer:Prologue4AnGetTent']:
-            subflow_results[0] = 5
-        else:
-            subflow_results[0] = 4
-    elif event_flags_system['cPlayer:Prologue4AnGetTent']:
-        if event_flags_system['cPlayer:Prologue4HaGetTent']:
-            subflow_results[0] = 3
-        else:
-            subflow_results[0] = 2
-    elif event_flags_system['cPlayer:Prologue4HaGetTent']:
-        subflow_results[0] = 1
-    else:
-        subflow_results[0] = 0
-    return
-
-flow NormalTalk_BeforeTentSet:
-    run sub_Event5
-    return
-
-flow NormalTalk_BeforeTentGet:
-    run sub_Event3
-    return
+flow sub_Event100:
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
 
 flow sub_Event3:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:001', false)
     return
 
+flow sub_Event35:
+    event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
+
 flow sub_Event5:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:002', false)
     return
-
-flow sub_Event100:
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
-
-flow sub_Event35:
-    event_flags_system['cPlayer:HaveTownFruit4CampFire'] = true
 

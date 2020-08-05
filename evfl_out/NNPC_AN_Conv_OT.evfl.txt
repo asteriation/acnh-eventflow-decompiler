@@ -88,13 +88,6 @@ flow sub_grp!Event0:
             SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:027', false)
             MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:028', false)
             SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:029', false)
-        elif fEvent46 == 1:
-            SubNpc.TurnBody(10, 0.0)
-            SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:030', false)
-            MainNpc.TurnNeck(1)
-            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:031', false)
-            Player.TurnNeck(1)
-            SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:032', false)
         elif fEvent46 == 2:
             SubNpc.TurnBody(10, 0.0)
             SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:033', false)
@@ -102,4 +95,11 @@ flow sub_grp!Event0:
             MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:034', false)
             Player.TurnNeck(1)
             SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:035', false)
+        elif fEvent46 == 1:
+            SubNpc.TurnBody(10, 0.0)
+            SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:030', false)
+            MainNpc.TurnNeck(1)
+            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:031', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/G4_An/Conv/AN_Conv_OT:032', false)
 

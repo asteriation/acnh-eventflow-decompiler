@@ -1,3 +1,28 @@
+flow BackToSelect:
+    run Event17
+    return
+
+flow NextSelect:
+    run Event8
+    return
+
+flow RegistAuthor:
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2421', true)
+    EventFlowSystemActor.UINetConnectWaitAppear()
+    EventFlowSystemActor.NetGetDesignerID(true)
+    EventFlowSystemActor.UINetConnectWaitDisappear()
+    if EventFlowSystemActor.CheckErrorType(2):
+        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+    else:
+        EventFlowSystemActor.MessageLockNext(1)
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+        EventFlowSystemActor.SaveSimpleSave('cAll')
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.MessageUnlockNext()
+        EventFlowSystemActor.SetTagFromSystem(0, 'cOwnDesignerIDD', 'cDegit', '', 0)
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2425', true)
+    return
+
 flow Root:
     if EventFlowSystemActor.HasAbleDisplayMyDesign():
         run Obj_WorldMyDesignGallery_02_SubFlow::PreCheckConnection
@@ -18,15 +43,15 @@ entrypoint Event17:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cMyDesignTitle')
                 EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cUpload')
                 fEvent29 = EventFlowSystemActor.UIMyDesignExchangeUploadResult()
-                if fEvent29 == 0:
-                    run BackToSelect
-                elif fEvent29 == 1:
+                if fEvent29 == 1:
                     event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = false
                     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2427', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                         run Obj_WorldMyDesignGallery_01_MainScene::MainUI
                     else:
                         run NextSelect
+                elif fEvent29 == 0:
+                    run BackToSelect
                 elif fEvent29 == 2:
                     run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:
@@ -34,30 +59,5 @@ entrypoint Event17:
     else:
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2429', true)
         run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    return
-
-flow RegistAuthor:
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2421', true)
-    EventFlowSystemActor.UINetConnectWaitAppear()
-    EventFlowSystemActor.NetGetDesignerID(true)
-    EventFlowSystemActor.UINetConnectWaitDisappear()
-    if EventFlowSystemActor.CheckErrorType(2):
-        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-    else:
-        EventFlowSystemActor.MessageLockNext(1)
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:001', false)
-        EventFlowSystemActor.SaveSimpleSave('cAll')
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.MessageUnlockNext()
-        EventFlowSystemActor.SetTagFromSystem(0, 'cOwnDesignerIDD', 'cDegit', '', 0)
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2425', true)
-    return
-
-flow NextSelect:
-    run Event8
-    return
-
-flow BackToSelect:
-    run Event17
     return
 

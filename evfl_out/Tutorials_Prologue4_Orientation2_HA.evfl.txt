@@ -1,3 +1,7 @@
+flow Prologue_NnpcTentChk:
+    run Event13
+    return
+
 flow Root:
     MainNpc.SetNpcName(0, 14)
     if event_flags_system['cPlayer:PrologueDone1stTalkAtPlaza']:
@@ -40,10 +44,6 @@ flow Root:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue_FreeTalk_HA:000_03', false)
     return
 
-flow Prologue_NnpcTentChk:
-    run Event13
-    return
-
 flow sub_grp!Event59:
     if not event_flags_system['cPlayer:PlayerPocketUIEnable']:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:002', false)
@@ -53,7 +53,18 @@ flow sub_grp!Event59:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:014', false)
         MainNpc.SetDeliveryItem(3, true)
         fEvent3 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent3 == 0:
+        if fEvent3 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
+            MainNpc.SetDeliveryItem(3, true)
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
+            MainNpc.NpcDelivery('"Default"', 2)
+            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
+            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
+            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
+        elif fEvent3 == 0:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:005', true)
             run System_Structure_Common::PreviewStructure
             MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, false, false)
@@ -77,23 +88,23 @@ entrypoint Event13:
             else:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:010', true)
                 run System_Structure_Common::DeletePreviewStructureInNpcTalk
-        elif fEvent3 == 1:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
-            MainNpc.SetDeliveryItem(3, true)
-            MainNpc.NpcDelivery('Keep', 1)
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
-            MainNpc.NpcDelivery('"Default"', 2)
-            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
-            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
-            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
-        elif fEvent3 == 2:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
     else:
         event_flags_system['cPlayer:Prologue4HaNoTent'] = true
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:004', false)
         MainNpc.SetDeliveryItem(3, true)
         fEvent3 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent3 == 0:
+        if fEvent3 == 2:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
+            MainNpc.SetDeliveryItem(3, true)
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
+            MainNpc.NpcDelivery('"Default"', 2)
+            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
+            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
+            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
+        elif fEvent3 == 0:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:005', true)
             run System_Structure_Common::PreviewStructure
             MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, false, false)
@@ -117,15 +128,4 @@ entrypoint Event13:
             else:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:010', true)
                 run System_Structure_Common::DeletePreviewStructureInNpcTalk
-        elif fEvent3 == 1:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:011', true)
-            MainNpc.SetDeliveryItem(3, true)
-            MainNpc.NpcDelivery('Keep', 1)
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:012', false)
-            MainNpc.NpcDelivery('"Default"', 2)
-            event_flags_system['cPlayer:Prologue4HaGetTent'] = true
-            MainNpc.NpcSetAIBlackBoard('HasTent', 0)
-            MainNpc.NpcSetAIBlackBoard('BuildingSiteIndex', -1)
-        elif fEvent3 == 2:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_HA:009', false)
 

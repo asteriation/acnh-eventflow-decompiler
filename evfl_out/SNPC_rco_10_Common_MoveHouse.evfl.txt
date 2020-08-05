@@ -1,3 +1,25 @@
+flow MoveMyHouseOngoing:
+    EventFlowSystemActor.NpcEventItemSet(5358, 0, 'cTalk', 'ItemPrice')
+    if event_flags_system['cLand:RcoMoveReservedAnyone'] == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:023', false)
+    else:
+        EventFlowSystemActor.UIMoneyAppear()
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:020', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:021', false)
+            EventFlowSystemActor.DeleteTargetItem(5358, 1, false)
+            EventFlowSystemActor.BellCountDown(30000, False)
+            event_flags_system['cPlayer:RcoMoveHouseReserved'] = false
+            event_flags_system['cLand:RcoMoveReservedAnyone'] = 0
+            event_flags_system['cLand:RcoMoveReservedKind'] = 0
+            event_flags_system['cPlayer:RcoMoveSomeBuiding'] = false
+            EventFlowSystemActor.StructureMoveSaveIndex(2)
+            EventFlowSystemActor.UIMoneyDisappear()
+        else:
+            EventFlowSystemActor.UIMoneyDisappear()
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:022', false)
+    return
+
 flow Root:
     run SNPC_rco_10_Common_Move::MoveBuildStateChk
     run SNPC_rco_10_Common_Move::MoveBuildKindChk
@@ -29,27 +51,5 @@ flow Root:
             EventFlowSystemActor.UIMoneyDisappear()
     else:
         run SNPC_rco_10_Common_Move::MoveBuildError
-    return
-
-flow MoveMyHouseOngoing:
-    EventFlowSystemActor.NpcEventItemSet(5358, 0, 'cTalk', 'ItemPrice')
-    if event_flags_system['cLand:RcoMoveReservedAnyone'] == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:023', false)
-    else:
-        EventFlowSystemActor.UIMoneyAppear()
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:020', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:021', false)
-            EventFlowSystemActor.DeleteTargetItem(5358, 1, false)
-            EventFlowSystemActor.BellCountDown(30000, False)
-            event_flags_system['cPlayer:RcoMoveHouseReserved'] = false
-            event_flags_system['cLand:RcoMoveReservedAnyone'] = 0
-            event_flags_system['cLand:RcoMoveReservedKind'] = 0
-            event_flags_system['cPlayer:RcoMoveSomeBuiding'] = false
-            EventFlowSystemActor.StructureMoveSaveIndex(2)
-            EventFlowSystemActor.UIMoneyDisappear()
-        else:
-            EventFlowSystemActor.UIMoneyDisappear()
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:022', false)
     return
 

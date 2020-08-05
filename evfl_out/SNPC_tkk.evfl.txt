@@ -20,8 +20,54 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:006', false)
     return
 
-flow Tkk_Request:
-    run Event27
+flow Tkk_BdayMsg:
+    if event_flags_system['cPlayer:TotakekeLiveCount'] >= 1:
+        if not ((MainNpc.TkkFreeQuery2('cTkkQueryType_BirthdayLive')) and (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:TkkLiveToday'])):
+            run sub_grp!Event0
+    elif not EventFlowSystemActor.IsMyVillage():
+        run sub_grp!Event0
+    return
+
+flow Tkk_BirthdayLive:
+    if event_flags_system['cPlayer:TkkLiveToday']:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:053', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            if EventFlowSystemActor.NetHasVisitor():
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
+                run Tkk_Request_Share
+            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Birthday')
+            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:054', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:050', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            if EventFlowSystemActor.NetHasVisitor():
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
+                run Tkk_Request_Share
+            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Birthday')
+            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:051', false)
+    return
+
+flow Tkk_FirstLive:
+    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:042', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+        run Tkk_Refuse
+    elif EventFlowSystemActor.NetIsConnected():
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
+        MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_First')
+        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
+        run Tkk_Request_Share
+        MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_First')
+        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
     return
 
 flow Tkk_FirstLiveToday:
@@ -53,19 +99,21 @@ entrypoint Event27:
         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:026', false)
 entrypoint Event29:
         fEvent29 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent29 == 1:
+        if fEvent29 == 3:
+            run Tkk_Refuse
+        elif fEvent29 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:032', false)
             fEvent88 = EventFlowSystemActor.GeneralTalkChoice5()
-            if fEvent88 == 0:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoGood')
-            elif fEvent88 == 1:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoBad')
-            elif fEvent88 == 2:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Clement')
-            elif fEvent88 == 3:
+            if fEvent88 == 3:
                 MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Blue')
             elif fEvent88 == 4:
                 MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Unsure')
+            elif fEvent88 == 1:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoBad')
+            elif fEvent88 == 0:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoGood')
+            elif fEvent88 == 2:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Clement')
             if EventFlowSystemActor.NetIsConnected():
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:034', false)
             else:
@@ -99,8 +147,6 @@ entrypoint Event29:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:028', false)
                 run Tkk_SelectMusic
-        elif fEvent29 == 3:
-            run Tkk_Refuse
         elif fEvent29 == 0:
             if EventFlowSystemActor.NetIsConnected():
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:037', false)
@@ -113,68 +159,129 @@ entrypoint Event29:
         run Tkk_Refuse
     return
 
-flow Tkk_SelectMusic:
-    run Event29
-    return
-
-flow Tkk_FirstLive:
-    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:042', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-        run Tkk_Refuse
-    elif EventFlowSystemActor.NetIsConnected():
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
-        MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_First')
-        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
-        run Tkk_Request_Share
-        MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_First')
-        MainNpc.TkkFreeAction('cTkkActionType_ToReady')
-    return
-
-flow Tkk_BirthdayLive:
-    if event_flags_system['cPlayer:TkkLiveToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:053', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            if EventFlowSystemActor.NetHasVisitor():
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
-                run Tkk_Request_Share
-            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Birthday')
-            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:054', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:050', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            if EventFlowSystemActor.NetHasVisitor():
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:009', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:008', false)
-                run Tkk_Request_Share
-            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Birthday')
-            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:051', false)
-    return
-
-flow Tkk_BdayMsg:
-    if event_flags_system['cPlayer:TotakekeLiveCount'] >= 1:
-        if not ((MainNpc.TkkFreeQuery2('cTkkQueryType_BirthdayLive')) and (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:TkkLiveToday'])):
-            run sub_grp!Event0
-    elif not EventFlowSystemActor.IsMyVillage():
-        run sub_grp!Event0
-    return
-
 flow Tkk_Refuse:
     MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:010', false)
+    return
+
+flow Tkk_Request:
+    run Event27
     return
 
 flow Tkk_Request_Share:
     if EventFlowSystemActor.IsSharePlay(0):
         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:005', false)
     return
+
+flow Tkk_SelectMusic:
+    run Event29
+    return
+
+flow sub_Event40:
+    MainNpc.TkkFreeAction('cTkkActionType_ToReady')
+
+flow sub_grp!Event0:
+    if EventFlowSystemActor.ExistPlayerAcceptingBirthDayMessage():
+        EventFlowSystemActor.SetBirthDayTag()
+        if EventFlowSystemActor.IsMyVillage():
+            if event_flags_system['cPlayer:TkkTalkToday']:
+                pass
+            else:
+                event_flags_system['cPlayer:TkkTalkToday'] = true
+        elif event_flags_system['cPlayerVisit:TkkVisitorTalk']:
+            pass
+        else:
+            event_flags_system['cPlayerVisit:TkkVisitorTalk'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:060', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:061', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:062', false)
+            EventFlowSystemActor.UIMsgCardEditTextHandling('cBirthday')
+            if EventFlowSystemActor.UIResultMenuDecide():
+                EventFlowSystemActor.EntryBirthDayMessage()
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:065', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:063', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:063', false)
+        if MainNpc.TkkFreeQuery2('cTkkQueryType_BirthdayLive'):
+            if not EventFlowSystemActor.IsMyVillage():
+                EventFlowSystemActor.ExitFlowchart()
+            elif event_flags_system['cPlayer:TkkFirstLiveToday']:
+                if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) != 0:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif EventFlowSystemActor.IsMyVillage():
+                    if event_flags_system['cPlayer:TkkLiveToday']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run Tkk_Request
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            run Tkk_Refuse
+                            EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run Tkk_Request
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            run Tkk_Refuse
+                            EventFlowSystemActor.ExitFlowchart()
+                elif event_flags_system['cPlayerVisit:TkkVisitorLive']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Tkk_Request
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        run Tkk_Refuse
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Tkk_Request
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        run Tkk_Refuse
+                        EventFlowSystemActor.ExitFlowchart()
+        else:
+            if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) != 0:
+                EventFlowSystemActor.ExitFlowchart()
+            elif EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+                EventFlowSystemActor.ExitFlowchart()
+            elif EventFlowSystemActor.IsMyVillage():
+                if event_flags_system['cPlayer:TkkLiveToday']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Tkk_Request
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        run Tkk_Refuse
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Tkk_Request
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        run Tkk_Refuse
+                        EventFlowSystemActor.ExitFlowchart()
+            elif event_flags_system['cPlayerVisit:TkkVisitorLive']:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run Tkk_Request
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    run Tkk_Refuse
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run Tkk_Request
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    run Tkk_Refuse
+                    EventFlowSystemActor.ExitFlowchart()
 
 flow sub_grp!Event2:
     if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) != 0:
@@ -303,111 +410,4 @@ flow sub_grp!Event68:
             run Tkk_Request
         else:
             run Tkk_Refuse
-
-flow sub_Event40:
-    MainNpc.TkkFreeAction('cTkkActionType_ToReady')
-
-flow sub_grp!Event0:
-    if EventFlowSystemActor.ExistPlayerAcceptingBirthDayMessage():
-        EventFlowSystemActor.SetBirthDayTag()
-        if EventFlowSystemActor.IsMyVillage():
-            if event_flags_system['cPlayer:TkkTalkToday']:
-                pass
-            else:
-                event_flags_system['cPlayer:TkkTalkToday'] = true
-        elif event_flags_system['cPlayerVisit:TkkVisitorTalk']:
-            pass
-        else:
-            event_flags_system['cPlayerVisit:TkkVisitorTalk'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:060', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:061', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:062', false)
-            EventFlowSystemActor.UIMsgCardEditTextHandling('cBirthday')
-            if EventFlowSystemActor.UIResultMenuDecide():
-                EventFlowSystemActor.EntryBirthDayMessage()
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:065', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:063', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:063', false)
-        if MainNpc.TkkFreeQuery2('cTkkQueryType_BirthdayLive'):
-            if not EventFlowSystemActor.IsMyVillage():
-                EventFlowSystemActor.ExitFlowchart()
-            elif event_flags_system['cPlayer:TkkFirstLiveToday']:
-                if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) != 0:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif EventFlowSystemActor.IsMyVillage():
-                    if event_flags_system['cPlayer:TkkLiveToday']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run Tkk_Request
-                            EventFlowSystemActor.ExitFlowchart()
-                        else:
-                            run Tkk_Refuse
-                            EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run Tkk_Request
-                            EventFlowSystemActor.ExitFlowchart()
-                        else:
-                            run Tkk_Refuse
-                            EventFlowSystemActor.ExitFlowchart()
-                elif event_flags_system['cPlayerVisit:TkkVisitorLive']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run Tkk_Request
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        run Tkk_Refuse
-                        EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run Tkk_Request
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        run Tkk_Refuse
-                        EventFlowSystemActor.ExitFlowchart()
-        else:
-            if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) != 0:
-                EventFlowSystemActor.ExitFlowchart()
-            elif EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
-                EventFlowSystemActor.ExitFlowchart()
-            elif EventFlowSystemActor.IsMyVillage():
-                if event_flags_system['cPlayer:TkkLiveToday']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run Tkk_Request
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        run Tkk_Refuse
-                        EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run Tkk_Request
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        run Tkk_Refuse
-                        EventFlowSystemActor.ExitFlowchart()
-            elif event_flags_system['cPlayerVisit:TkkVisitorLive']:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:067', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run Tkk_Request
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    run Tkk_Refuse
-                    EventFlowSystemActor.ExitFlowchart()
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:066', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run Tkk_Request
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    run Tkk_Refuse
-                    EventFlowSystemActor.ExitFlowchart()
 

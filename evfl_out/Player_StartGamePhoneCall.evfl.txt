@@ -1,36 +1,39 @@
-flow UnlockAmiiboPosterTell:
-    run Event36
-    return
-
-flow UnlockSharePlayTell:
-    run PhoneIncoming
-    Player.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:101', true)
-    run PhoneUnlock
-entrypoint Event9:
-    EventFlowSystemActor.SwapSpeaker('cRco', true)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:102', false)
-    if event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:103_01', false)
+flow ChkPhoneCall:
+    subflow_results[1] = 0
+    subflow_results[2] = 0
+    subflow_results[3] = 0
+    subflow_results[4] = 0
+    subflow_results[5] = 0
+    subflow_results[6] = 0
+    subflow_results[7] = 0
+    if event_flags_system['cPlayer:StandByPhoneCallPrintService']:
+        subflow_results[2] = 1
+    if event_flags_system['cPlayer:StandByPhoneCallSharePlay']:
+        fEvent140 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent140 == 3:
+            subflow_results[5] = 1
+            if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
+                subflow_results[4] = 1
+            if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
+                subflow_results[6] = 1
+            if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
+                subflow_results[7] = 1
+        elif fEvent140 in (0, 1, 2, 4, 5, 6, 7):
+            subflow_results[3] = 1
+            if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
+                subflow_results[4] = 1
+            if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
+                subflow_results[6] = 1
+            if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
+                subflow_results[7] = 1
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:103', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:104', true)
-    Player.SmartPhone(3)
-    Player.SmartPhone(4)
-    EventFlowSystemActor.WaitFrame(30)
-    Player.SmartPhoneSE('Phone_Recieving', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    event_flags_system['cPlayer:MainmenuCall'] = true
-    EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cCallVillager')
-    EventFlowSystemActor.WaitFrame(15)
-    Player.SmartPhone(5)
-    Player.SmartPhone(2)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:105', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:106', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:107', true)
-    run PhoneTalkEnd1
-    event_flags_system['cPlayer:StandByPhoneCallSharePlay'] = false
-    EventFlowSystemActor.SwapSpeaker('cNone', true)
-    return
+        if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
+            subflow_results[4] = 1
+        if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
+            subflow_results[6] = 1
+        if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
+            subflow_results[7] = 1
+    run sub_tm!ChkPhoneCall
 
 flow DepositPurchaseBoxTell:
     run PhoneIncoming
@@ -67,10 +70,84 @@ entrypoint Event86:
     EventFlowSystemActor.SwapSpeaker('cNone', true)
     return
 
+flow DepositPurchaseBoxTell_Continued:
+    run PhoneIncoming
+    Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
+    run PhoneUnlock_Continue
+    run Event86
+    return
+
+flow GEvent_JuneBrideTell:
+    run PhoneIncoming
+    Player.OpenMessageWindow('TalkSys/SYS_Player:1001', false)
+    run PhoneUnlock
+    EventFlowSystemActor.SwapSpeaker('cSpn', true)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:001', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:014', false)
+    if subflow_results[2] == 0:
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:015', true)
+        run PhoneTalkEnd1
+        event_flags_system['cPlayer:StandByPhoneCallJuneBrideSpn'] = true
+        event_flags_system['cPlayer:StandByPhoneCallJuneBride'] = false
+        EventFlowSystemActor.SwapSpeaker('cNone', true)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:017', false)
+        event_flags_system['cPlayer:StandByPhoneCallJuneBrideSpn'] = true
+        event_flags_system['cPlayer:StandByPhoneCallJuneBride'] = false
+        run UnlockAmiiboPosterTell_JuneBride
+    return
+
+flow IslandCreaterTell:
+    run PhoneIncoming
+    Player.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:301', false)
+    run PhoneUnlock
+entrypoint Event110:
+    EventFlowSystemActor.SwapSpeaker('cRco', true)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:302', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:303', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:304', false)
+    Player.SmartPhone(3)
+    Player.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.SmartPhoneSE('Phone_Recieving', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    event_flags_system['cPlayer:MainmenuConstructLicense'] = true
+    EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cConstructLicense')
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhone(5)
+    Player.SmartPhone(2)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:305', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:306', true)
+    run PhoneTalkEnd1
+    event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = false
+    EventFlowSystemActor.SwapSpeaker('cNone', true)
+    return
+
+flow IslandCreaterTell_Continued:
+    run PhoneIncoming
+    Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
+    run PhoneUnlock_Continue
+    run Event110
+    return
+
 flow PhoneIncoming:
     EventFlowSystemActor.WaitFrame(30)
     Player.SmartPhoneSE('Phone_Incoming', 0)
     EventFlowSystemActor.WaitFrame(30)
+    return
+
+flow PhoneTalkEnd1:
+    Player.SmartPhone(3)
+    EventFlowSystemActor.WaitFrame(1)
+    Player.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhoneSE('Phone_Unlock', 2)
+    return
+
+flow PhoneTalkEnd2:
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhone(5)
+    Player.SmartPhone(1)
     return
 
 flow PhoneUnlock:
@@ -80,6 +157,13 @@ flow PhoneUnlock:
     Player.SmartPhoneSE('Phone_Incoming', 1)
     Player.SmartPhoneSE('Phone_Unlock', 2)
     EventFlowSystemActor.WaitFrame(10)
+    Player.SmartPhone(2)
+    return
+
+flow PhoneUnlock_Continue:
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhoneSE('Phone_Incoming', 1)
+    Player.SmartPhoneSE('Phone_Unlock', 2)
     Player.SmartPhone(2)
     return
 
@@ -120,32 +204,8 @@ flow Root:
         run sub_Event46
     return
 
-flow PhoneTalkEnd1:
-    Player.SmartPhone(3)
-    EventFlowSystemActor.WaitFrame(1)
-    Player.SmartPhone(4)
-    EventFlowSystemActor.WaitFrame(15)
-    Player.SmartPhoneSE('Phone_Unlock', 2)
-    return
-
-flow PhoneTalkEnd2:
-    EventFlowSystemActor.WaitFrame(15)
-    Player.SmartPhone(5)
-    Player.SmartPhone(1)
-    return
-
-flow UnlockSharePlayTell_Continued:
-    run PhoneIncoming
-    Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
-    run PhoneUnlock_Continue
-    run Event9
-    return
-
-flow DepositPurchaseBoxTell_Continued:
-    run PhoneIncoming
-    Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
-    run PhoneUnlock_Continue
-    run Event86
+flow UnlockAmiiboPosterTell:
+    run Event36
     return
 
 flow UnlockAmiiboPosterTell_Airport:
@@ -184,11 +244,11 @@ entrypoint Event63:
         run PhoneTalkEnd2
     return
 
-flow PhoneUnlock_Continue:
-    EventFlowSystemActor.WaitFrame(15)
-    Player.SmartPhoneSE('Phone_Incoming', 1)
-    Player.SmartPhoneSE('Phone_Unlock', 2)
-    Player.SmartPhone(2)
+flow UnlockAmiiboPosterTell_JuneBride:
+    if event_flags_system['cPlayer:TanuportAmiiboBromideUnlock']:
+        run Event167
+    else:
+        run Event63
     return
 
 flow UnlockSharePlayOn1231:
@@ -208,104 +268,41 @@ flow UnlockSharePlayOn1231_Continued:
     run Event122
     return
 
-flow ChkPhoneCall:
-    subflow_results[1] = 0
-    subflow_results[2] = 0
-    subflow_results[3] = 0
-    subflow_results[4] = 0
-    subflow_results[5] = 0
-    subflow_results[6] = 0
-    subflow_results[7] = 0
-    if event_flags_system['cPlayer:StandByPhoneCallPrintService']:
-        subflow_results[2] = 1
-    if event_flags_system['cPlayer:StandByPhoneCallSharePlay']:
-        fEvent140 = EventFlowSystemActor.EventBranch(false, 0)
-        if fEvent140 in (0, 1, 2, 4, 5, 6, 7):
-            subflow_results[3] = 1
-            if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
-                subflow_results[4] = 1
-            if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
-                subflow_results[6] = 1
-            if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
-                subflow_results[7] = 1
-        elif fEvent140 == 3:
-            subflow_results[5] = 1
-            if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
-                subflow_results[4] = 1
-            if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
-                subflow_results[6] = 1
-            if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
-                subflow_results[7] = 1
-    else:
-        if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
-            subflow_results[4] = 1
-        if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
-            subflow_results[6] = 1
-        if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
-            subflow_results[7] = 1
-    run sub_tm!ChkPhoneCall
-
-flow IslandCreaterTell:
+flow UnlockSharePlayTell:
     run PhoneIncoming
-    Player.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:301', false)
+    Player.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:101', true)
     run PhoneUnlock
-entrypoint Event110:
+entrypoint Event9:
     EventFlowSystemActor.SwapSpeaker('cRco', true)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:302', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:303', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:304', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:102', false)
+    if event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:103_01', false)
+    else:
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:103', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:104', true)
     Player.SmartPhone(3)
     Player.SmartPhone(4)
     EventFlowSystemActor.WaitFrame(30)
     Player.SmartPhoneSE('Phone_Recieving', 2)
     EventFlowSystemActor.WaitFrame(30)
-    event_flags_system['cPlayer:MainmenuConstructLicense'] = true
-    EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cConstructLicense')
+    event_flags_system['cPlayer:MainmenuCall'] = true
+    EventFlowSystemActor.UIMenuDeviceAppear('cInstall', 'cCallVillager')
     EventFlowSystemActor.WaitFrame(15)
     Player.SmartPhone(5)
     Player.SmartPhone(2)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:305', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:306', true)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:105', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:106', false)
+    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rco/SP_rco_20_PhoneCall:107', true)
     run PhoneTalkEnd1
-    event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = false
+    event_flags_system['cPlayer:StandByPhoneCallSharePlay'] = false
     EventFlowSystemActor.SwapSpeaker('cNone', true)
     return
 
-flow IslandCreaterTell_Continued:
+flow UnlockSharePlayTell_Continued:
     run PhoneIncoming
     Player.OpenMessageWindow('TalkSys/SYS_Player:1002', false)
     run PhoneUnlock_Continue
-    run Event110
-    return
-
-flow GEvent_JuneBrideTell:
-    run PhoneIncoming
-    Player.OpenMessageWindow('TalkSys/SYS_Player:1001', false)
-    run PhoneUnlock
-    EventFlowSystemActor.SwapSpeaker('cSpn', true)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:001', false)
-    EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:014', false)
-    if subflow_results[2] == 0:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:015', true)
-        run PhoneTalkEnd1
-        event_flags_system['cPlayer:StandByPhoneCallJuneBrideSpn'] = true
-        event_flags_system['cPlayer:StandByPhoneCallJuneBride'] = false
-        EventFlowSystemActor.SwapSpeaker('cNone', true)
-    else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/spn/SP_spn_80_PhoneCall:017', false)
-        event_flags_system['cPlayer:StandByPhoneCallJuneBrideSpn'] = true
-        event_flags_system['cPlayer:StandByPhoneCallJuneBride'] = false
-        run UnlockAmiiboPosterTell_JuneBride
-    return
-
-flow UnlockAmiiboPosterTell_JuneBride:
-    if event_flags_system['cPlayer:TanuportAmiiboBromideUnlock']:
-        run Event167
-    else:
-        run Event63
-    return
-
-flow sub_tm!ChkPhoneCall:
+    run Event9
     return
 
 flow sub_Event180:
@@ -313,4 +310,7 @@ flow sub_Event180:
 
 flow sub_Event46:
     run PhoneTalkEnd2
+
+flow sub_tm!ChkPhoneCall:
+    return
 

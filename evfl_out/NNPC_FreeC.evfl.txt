@@ -1,10 +1,3 @@
-flow Furniture_Chk:
-    if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
-        run FunitureN_Chk
-    elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run FunitureP_Chk
-    return
-
 flow FunitureN_Chk:
     if (not MainNpc.IsNnpcTent()) and (EventFlowSystemActor.NowRoomFtrNum(1)):
         MainNpc.SelectFreeCFurnitureFurniture(0)
@@ -32,26 +25,22 @@ flow FunitureP_Chk:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Room_Chk:
+flow Furniture_Chk:
     if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
-        run RoomN_Chk
-        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 4
-        EventFlowSystemActor.ExitFlowchart()
+        run FunitureN_Chk
     elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run RoomP
-    else:
-        run NNPC_FreeA::HouseQuestions_Chk
+        run FunitureP_Chk
     return
 
 flow RoomN_Chk:
     if EventFlowSystemActor.SystemCountPlayerNum(2):
         fEvent53 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent53 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:011', false)
+        if fEvent53 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:009', false)
         elif fEvent53 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:010', false)
-        elif fEvent53 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:009', false)
+        elif fEvent53 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:011', false)
     elif MainNpc.NpcIsExistOtherNpc():
 entrypoint Event4:
         MainNpc.SetNpcName(1, 16)
@@ -75,6 +64,17 @@ flow RoomP:
     MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeC_RoomG', '', '', '', true)
     event_flags_npc['cNpcMemory:TalkReSelectLast'] = 4
     EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Room_Chk:
+    if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+        run RoomN_Chk
+        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 4
+        EventFlowSystemActor.ExitFlowchart()
+    elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+        run RoomP
+    else:
+        run NNPC_FreeA::HouseQuestions_Chk
     return
 
 flow sub_Event0:

@@ -1,3 +1,142 @@
+flow EntryPoint_Cancel:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:801', true)
+    EventFlowSystemActor.UIMoneyDisappear()
+    return
+
+flow EntryPoint_CancelNega:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:802', true)
+    EventFlowSystemActor.UIMoneyDisappear()
+    return
+
+flow EntryPoint_ConfirmEndOdekake:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:053', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:054', true)
+        run EntryPoint_PreProcedure
+        EventFlowSystemActor.WaitFrame(40)
+        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+        run EntryPoint_PostProcedure
+        EventFlowSystemActor.WaitFrame(30)
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:052', false)
+        subflow_results[1] = 1
+        run StartCardEditing
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:055', false)
+        EventFlowSystemActor.UIMoneyDisappear()
+    return
+
+flow EntryPoint_ConfirmGateClose:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:050', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:051', true)
+        run EntryPoint_PreProcedure
+        EventFlowSystemActor.WaitFrame(40)
+        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+        run EntryPoint_PostProcedure
+        EventFlowSystemActor.CloseVillageGate()
+        EventFlowSystemActor.WaitFrame(30)
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:052', false)
+        subflow_results[1] = 1
+        run StartCardEditing
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:804', false)
+        EventFlowSystemActor.UIMoneyDisappear()
+    return
+
+flow EntryPoint_EditCancel:
+    fEvent111 = EventFlowSystemActor.UIGetMessageCardEditCancelStatus()
+    if fEvent111 == 0:
+        run EntryPoint_EditKeep
+    elif fEvent111 == 1:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:522', false)
+        if EventFlowSystemActor.HasAttachedPresent():
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:550', false)
+            EventFlowSystemActor.ReturnAttachedPresentToBaggage()
+        EventFlowSystemActor.DeleteUnfinishMail()
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:800', true)
+    elif fEvent111 == 2:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:523', false)
+    return
+
+flow EntryPoint_EditKeep:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:520', false)
+entrypoint Event38:
+    if EventFlowSystemActor.HasAttachedPresent():
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:551', false)
+        EventFlowSystemActor.ReturnAttachedPresentToBaggage()
+    run EntryPoint_SaveToMenu
+    return
+
+flow EntryPoint_EditKeepByNoMoney:
+    run Event38
+    return
+
+flow EntryPoint_PostProcedure:
+    DynamicCast_dod.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_dod.TurnBody(12, 0.0)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_dod.TurnNeck(10)
+    return
+
+flow EntryPoint_PreProcedure:
+    DynamicCast_dod.TurnNeck(11)
+    DynamicCast_dod.TurnBody(12, -90.0)
+    DynamicCast_dod.NpcWaitTurn()
+    DynamicCast_dod.NpcStartAS('DodProcedure', false, 'ContinueAS')
+    return
+
+flow EntryPoint_SaveToMenu:
+    EventFlowSystemActor.MessageLockNext(1)
+    DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Save:001', false)
+    EventFlowSystemActor.SaveSimpleSave('cAll')
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.MessageUnlockNext()
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:800', true)
+    return
+
+flow EntryPoint_SelectTo:
+    EventFlowSystemActor.CreateChoiceMailDestination(false)
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:081', false)
+    fEvent26 = EventFlowSystemActor.GeneralTalkChoice5()
+    if fEvent26 == 3:
+        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
+    elif fEvent26 == 0:
+        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
+    elif fEvent26 == 1:
+        run Obj_MessageCardRack_02_SendFuture::EntryPoint_SendFuture
+    elif fEvent26 == 4:
+        run EntryPoint_CancelNega
+    elif fEvent26 == 2:
+        run Obj_MessageCardRack_03_SendFriend::EntryPoint_SendFriend
+    return
+
+flow EntryPoint_StartTalk:
+entrypoint Event81:
+    if EventFlowSystemActor.ExistUnfinishMail():
+        run Obj_MessageCardRack_05_EditingCardResume::Root
+    else:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:070', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run EntryPoint_SelectTo
+        else:
+            run EntryPoint_Cancel
+    return
+
+flow EntryPoint_StockFull:
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:290', false)
+    return
+
+flow InDreamSeq:
+    DynamicCast_dod.NpcWaitTalkPrepare()
+    DynamicCast_dod.TurnBody(10, 0.0)
+    Player.TurnBody(0, 0.0)
+    if not event_flags_system['cPlayerTemp:DodDreamTalk']:
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:1001', false)
+        event_flags_system['cPlayerTemp:DodDreamTalk'] = true
+    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:1002', false)
+    return
+
 flow Root:
     if event_flags_system['cLand:VillageDaysCount'] < 1:
         Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:001', false)
@@ -33,146 +172,7 @@ flow Root:
             EventFlowSystemActor.UIMoneyDisappear()
     return
 
-flow EntryPoint_SaveToMenu:
-    EventFlowSystemActor.MessageLockNext(1)
-    DynamicCast_dod.OpenMessageWindow('TalkSys/SYS_Save:001', false)
-    EventFlowSystemActor.SaveSimpleSave('cAll')
-    EventFlowSystemActor.MessageSuspend()
-    EventFlowSystemActor.MessageUnlockNext()
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:800', true)
-    return
-
-flow EntryPoint_EditKeep:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:520', false)
-entrypoint Event38:
-    if EventFlowSystemActor.HasAttachedPresent():
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:551', false)
-        EventFlowSystemActor.ReturnAttachedPresentToBaggage()
-    run EntryPoint_SaveToMenu
-    return
-
-flow EntryPoint_Cancel:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:801', true)
-    EventFlowSystemActor.UIMoneyDisappear()
-    return
-
-flow EntryPoint_CancelNega:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:802', true)
-    EventFlowSystemActor.UIMoneyDisappear()
-    return
-
-flow EntryPoint_SelectTo:
-    EventFlowSystemActor.CreateChoiceMailDestination(false)
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:081', false)
-    fEvent26 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent26 == 0:
-        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
-    elif fEvent26 == 1:
-        run Obj_MessageCardRack_02_SendFuture::EntryPoint_SendFuture
-    elif fEvent26 == 2:
-        run Obj_MessageCardRack_03_SendFriend::EntryPoint_SendFriend
-    elif fEvent26 == 3:
-        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
-    elif fEvent26 == 4:
-        run EntryPoint_CancelNega
-    return
-
-flow EntryPoint_StartTalk:
-entrypoint Event81:
-    if EventFlowSystemActor.ExistUnfinishMail():
-        run Obj_MessageCardRack_05_EditingCardResume::Root
-    else:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:070', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run EntryPoint_SelectTo
-        else:
-            run EntryPoint_Cancel
-    return
-
 flow StartCardEditing:
     run Event81
-    return
-
-flow EntryPoint_PreProcedure:
-    DynamicCast_dod.TurnNeck(11)
-    DynamicCast_dod.TurnBody(12, -90.0)
-    DynamicCast_dod.NpcWaitTurn()
-    DynamicCast_dod.NpcStartAS('DodProcedure', false, 'ContinueAS')
-    return
-
-flow EntryPoint_PostProcedure:
-    DynamicCast_dod.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-    EventFlowSystemActor.WaitFrame(30)
-    DynamicCast_dod.TurnBody(12, 0.0)
-    EventFlowSystemActor.WaitFrame(30)
-    DynamicCast_dod.TurnNeck(10)
-    return
-
-flow EntryPoint_EditCancel:
-    fEvent111 = EventFlowSystemActor.UIGetMessageCardEditCancelStatus()
-    if fEvent111 == 0:
-        run EntryPoint_EditKeep
-    elif fEvent111 == 1:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:522', false)
-        if EventFlowSystemActor.HasAttachedPresent():
-            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:550', false)
-            EventFlowSystemActor.ReturnAttachedPresentToBaggage()
-        EventFlowSystemActor.DeleteUnfinishMail()
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:800', true)
-    elif fEvent111 == 2:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:523', false)
-    return
-
-flow EntryPoint_EditKeepByNoMoney:
-    run Event38
-    return
-
-flow EntryPoint_StockFull:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:290', false)
-    return
-
-flow EntryPoint_ConfirmGateClose:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:050', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:051', true)
-        run EntryPoint_PreProcedure
-        EventFlowSystemActor.WaitFrame(40)
-        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-        run EntryPoint_PostProcedure
-        EventFlowSystemActor.CloseVillageGate()
-        EventFlowSystemActor.WaitFrame(30)
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:052', false)
-        subflow_results[1] = 1
-        run StartCardEditing
-    else:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:804', false)
-        EventFlowSystemActor.UIMoneyDisappear()
-    return
-
-flow EntryPoint_ConfirmEndOdekake:
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:053', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:054', true)
-        run EntryPoint_PreProcedure
-        EventFlowSystemActor.WaitFrame(40)
-        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-        run EntryPoint_PostProcedure
-        EventFlowSystemActor.WaitFrame(30)
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:052', false)
-        subflow_results[1] = 1
-        run StartCardEditing
-    else:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:055', false)
-        EventFlowSystemActor.UIMoneyDisappear()
-    return
-
-flow InDreamSeq:
-    DynamicCast_dod.NpcWaitTalkPrepare()
-    DynamicCast_dod.TurnBody(10, 0.0)
-    Player.TurnBody(0, 0.0)
-    if not event_flags_system['cPlayerTemp:DodDreamTalk']:
-        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:1001', false)
-        event_flags_system['cPlayerTemp:DodDreamTalk'] = true
-    DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:1002', false)
     return
 

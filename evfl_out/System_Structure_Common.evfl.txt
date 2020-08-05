@@ -1,14 +1,8 @@
-flow PreviewStructure:
-    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cWhite', 0.5, 0.5, true)
+flow BuildStructure:
+    EventFlowSystemActor.FadeOut('cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0, true)
     Player.PlayerChangeDemoState('cSharePlaySubHideUntilDemoEnd')
-    EventFlowSystemActor.StructureDeletePreviewGuide(false)
-    EventFlowSystemActor.PreviewStructure('StructureType', 'StructurePosType', 'BuildTiming')
-    EventFlowSystemActor.FadeIn(true)
-    return
-
-flow DeletePreviewStructure:
-    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cWhite', 0.5, 0.5, true)
-    EventFlowSystemActor.DeletePreviewStructure('StructureType', 'StructurePosType')
+    EventFlowSystemActor.StructureDeletePreviewGuide(true)
+    EventFlowSystemActor.BuildStructure('StructureType', 'StructurePosType', 'BuildTiming')
     EventFlowSystemActor.FadeIn(true)
     return
 
@@ -19,11 +13,17 @@ flow DeletePreviewAndBuildStructure:
     EventFlowSystemActor.FadeIn(true)
     return
 
-flow BuildStructure:
+flow DeletePreviewAndBuildStructureInNpcTalk:
     EventFlowSystemActor.FadeOut('cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0, true)
-    Player.PlayerChangeDemoState('cSharePlaySubHideUntilDemoEnd')
-    EventFlowSystemActor.StructureDeletePreviewGuide(true)
+    EventFlowSystemActor.DeletePreviewStructure('StructureType', 'StructurePosType')
     EventFlowSystemActor.BuildStructure('StructureType', 'StructurePosType', 'BuildTiming')
+    MainNpc.TalkCamera(false, 0)
+    EventFlowSystemActor.FadeIn(true)
+    return
+
+flow DeletePreviewStructure:
+    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cWhite', 0.5, 0.5, true)
+    EventFlowSystemActor.DeletePreviewStructure('StructureType', 'StructurePosType')
     EventFlowSystemActor.FadeIn(true)
     return
 
@@ -34,11 +34,11 @@ flow DeletePreviewStructureInNpcTalk:
     EventFlowSystemActor.FadeIn(true)
     return
 
-flow DeletePreviewAndBuildStructureInNpcTalk:
-    EventFlowSystemActor.FadeOut('cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0, true)
-    EventFlowSystemActor.DeletePreviewStructure('StructureType', 'StructurePosType')
-    EventFlowSystemActor.BuildStructure('StructureType', 'StructurePosType', 'BuildTiming')
-    MainNpc.TalkCamera(false, 0)
+flow PreviewStructure:
+    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cWhite', 0.5, 0.5, true)
+    Player.PlayerChangeDemoState('cSharePlaySubHideUntilDemoEnd')
+    EventFlowSystemActor.StructureDeletePreviewGuide(false)
+    EventFlowSystemActor.PreviewStructure('StructureType', 'StructurePosType', 'BuildTiming')
     EventFlowSystemActor.FadeIn(true)
     return
 

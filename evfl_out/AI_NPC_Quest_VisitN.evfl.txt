@@ -1,5 +1,5 @@
-flow VisitNWelcome:
-    run AI_NPC_Common::ContinueSpeak
+flow Init:
+    run AI_NPC_Indoor::BBRegist
     return
 
 flow Root:
@@ -19,21 +19,21 @@ flow Root:
             run sub_Event3
     return
 
-flow VisitNGoHome:
-    MainNpc.NpcAISetting(4, false)
-    run AI_NPC_Common::ContinueSpeak
+flow TouchedFurniture:
+    run AI_NPC_Indoor::TouchedFurniture
     return
 
 flow VisitNFurniture:
     run AI_NPC_Common::ContinueSpeak
     return
 
-flow Init:
-    run AI_NPC_Indoor::BBRegist
+flow VisitNGoHome:
+    MainNpc.NpcAISetting(4, false)
+    run AI_NPC_Common::ContinueSpeak
     return
 
-flow TouchedFurniture:
-    run AI_NPC_Indoor::TouchedFurniture
+flow VisitNWelcome:
+    run AI_NPC_Common::ContinueSpeak
     return
 
 flow sub_Event3:

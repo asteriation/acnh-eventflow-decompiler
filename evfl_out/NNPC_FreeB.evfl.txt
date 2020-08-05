@@ -1,65 +1,127 @@
-flow WeatherSP_Chk:
-    if not event_flag_npc['cNpcMemory:TalkWeatherSPNow']:
-        fEvent23 = EventFlowSystemActor.EnvSpecialWeather()
-        if fEvent23 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:101', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+flow Furniture_Chk:
+    MainNpc.SelectFreeBFurnitureFurniture()
+    if MainNpc.NpcHasFreeMessage('cFreeBFurniture'):
+        MainNpc.SetItemName(0, 17, 0)
+        MainNpc.NpcOpenFreeMessage('cFreeBFurniture')
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow ItemN_Chk:
+    if not event_flag_npc['cNpcMemory:TalkItemNNow']:
+        fEvent88 = MainNpc.CheckNpcTool()
+        if fEvent88 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:001', false)
+            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:102', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+        elif fEvent88 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:002', false)
+            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:103', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+        elif fEvent88 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:003', false)
+            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:104', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+        elif fEvent88 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:004', false)
+            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 5:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:105', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 6:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:106', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 7:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:107', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 8:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:108', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 9:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:109', false)
-            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+        elif fEvent88 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:005', false)
+            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
             EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Weather_Chk:
-    if not event_flag_npc['cNpcMemory:TalkWeatherNow']:
-entrypoint Event54:
-        fEvent54 = MainNpc.EnvWeatherNNpcTalkCustom()
-        if fEvent54 == 0:
-            MainNpc.NpcSelectFreeTalk('cFineWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 1:
-            MainNpc.NpcSelectFreeTalk('cCloudWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 2:
-            MainNpc.NpcSelectFreeTalk('cRainWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 3:
-            MainNpc.NpcSelectFreeTalk('cRainWeather', 'cHardRainWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 4:
-            MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 5:
-            MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cHardSnowWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 6:
-            MainNpc.NpcSelectFreeTalk('cFineWeather', 'cBlossomShower', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
-        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
-        EventFlowSystemActor.ExitFlowchart()
+flow ItemP_Chk:
+    if not event_flag_npc['cNpcMemory:TalkItemPNow']:
+        fEvent97 = EventFlowSystemActor.SystemCheckPlayerTool()
+        if fEvent97 == 8:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:015', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:003', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:004', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:005', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:006', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 9:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:016', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 16:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:017', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 17:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:018', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 18:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:019', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 19:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:020', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 20:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:021', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 21:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:022', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 10:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:007', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 11:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:008', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 12:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:009', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 13:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:010', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 14:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:012', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 15:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:014', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:001', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent97 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:002', false)
+            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Reselection_Seasons:
+    run Event69
+    return
+
+flow Reselection_Weather:
+    run Event54
     return
 
 flow Seasons_Chk:
@@ -103,124 +165,6 @@ entrypoint Event69:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow ItemN_Chk:
-    if not event_flag_npc['cNpcMemory:TalkItemNNow']:
-        fEvent88 = MainNpc.CheckNpcTool()
-        if fEvent88 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:001', false)
-            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent88 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:002', false)
-            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent88 == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:003', false)
-            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent88 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:004', false)
-            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent88 == 5:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemN:005', false)
-            event_flags_npc['cNpcMemory:TalkItemNNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Furniture_Chk:
-    MainNpc.SelectFreeBFurnitureFurniture()
-    if MainNpc.NpcHasFreeMessage('cFreeBFurniture'):
-        MainNpc.SetItemName(0, 17, 0)
-        MainNpc.NpcOpenFreeMessage('cFreeBFurniture')
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow ItemP_Chk:
-    if not event_flag_npc['cNpcMemory:TalkItemPNow']:
-        fEvent97 = EventFlowSystemActor.SystemCheckPlayerTool()
-        if fEvent97 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:001', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:002', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:003', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:004', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 5:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:005', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 6:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:006', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 8:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:015', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 9:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:016', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 10:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:007', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 11:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:008', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 12:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:009', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 13:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:010', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 14:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:012', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 15:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:014', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 16:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:017', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 17:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:018', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 18:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:019', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 19:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:020', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 20:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:021', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent97 == 21:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_ItemP:022', false)
-            event_flags_npc['cNpcMemory:TalkItemPNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
-    return
-
 flow SpotSP_Chk:
     if (not event_flag_npc['cNpcMemory:TalkSpotSPNow']) and (MainNpc.NpcHasFreeMessage('cFreeBSpot')):
         run NNPC_FreeH::Progress_FreeBSpot
@@ -236,11 +180,67 @@ flow Spot_Chk:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Reselection_Weather:
-    run Event54
+flow WeatherSP_Chk:
+    if not event_flag_npc['cNpcMemory:TalkWeatherSPNow']:
+        fEvent23 = EventFlowSystemActor.EnvSpecialWeather()
+        if fEvent23 == 8:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:108', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 9:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:109', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:101', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 7:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:107', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 6:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:106', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 5:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:105', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:104', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:103', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent23 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:102', false)
+            event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
+            EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Reselection_Seasons:
-    run Event69
+flow Weather_Chk:
+    if not event_flag_npc['cNpcMemory:TalkWeatherNow']:
+entrypoint Event54:
+        fEvent54 = MainNpc.EnvWeatherNNpcTalkCustom()
+        if fEvent54 == 0:
+            MainNpc.NpcSelectFreeTalk('cFineWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 2:
+            MainNpc.NpcSelectFreeTalk('cRainWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 4:
+            MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 1:
+            MainNpc.NpcSelectFreeTalk('cCloudWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 6:
+            MainNpc.NpcSelectFreeTalk('cFineWeather', 'cBlossomShower', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 3:
+            MainNpc.NpcSelectFreeTalk('cRainWeather', 'cHardRainWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        elif fEvent54 == 5:
+            MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cHardSnowWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
+        event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+        EventFlowSystemActor.ExitFlowchart()
     return
 

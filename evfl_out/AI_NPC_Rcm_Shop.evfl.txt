@@ -1,3 +1,63 @@
+flow Check_Goods:
+    MainNpc.NpcAISetting(9, false)
+    MainNpc.NpcAISetting(5, false)
+    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_rcm_00_Groceries')
+    return
+
+flow Check_rcm:
+    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
+        MainNpc.NpcAISetting(9, false)
+        MainNpc.NpcAISetting(5, false)
+        MainNpc.SetNpcSpeakFlow('Check', 'SNPC_rcm')
+    return
+
+flow Close_rcm:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Enter_rcm:
+    MainNpc.NpcAISetting(13, true)
+    MainNpc.NpcAISetting(18, true)
+    run AI_NPC_Common::Speak
+    event_flags_system['cLandTemp:RcmEnterBalloon'] = true
+    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
+    return
+
+flow Init:
+    MainNpc.SetSightRange(64, 0)
+    MainNpc.NpcRegistAIBlackBoard('CheckItemIndex', -1)
+    MainNpc.NpcRegistAIBlackBoard('DemoSpeak', 0)
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetRequestSpeakFunc('cItemCheck', true)
+    MainNpc.NpcRegistAIBlackBoard('GoodsRail', 2)
+    MainNpc.NpcAISetRequestSpeakFunc('cLeaveRcm', true)
+    MainNpc.NpcAISetRequestSpeakFunc('cEnterRcm', true)
+    if EventFlowSystemActor.NetIsConnected():
+        MainNpc.NpcAISetting(8, true)
+        MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
+        fEvent14 = EventFlowSystemActor.ShopLevel()
+        if fEvent14 == NooksCrannyUpgraded:
+            MainNpc.NpcAISetPosByRail(3, 0, 0.0, true)
+            run sub_grp!Event24
+        elif fEvent14 == NooksCrannyInitial:
+            MainNpc.NpcAISetPosByRail(6, 0, -80.0, true)
+            run sub_grp!Event24
+    else:
+        MainNpc.NpcAISetRequestSpeakFunc('cShopClose', false)
+        MainNpc.NpcAISetting(8, false)
+        run sub_grp!Event24
+    return
+
+flow Leave_rcm:
+    run AI_NPC_Common::ContinueSpeak
+    return
+
+flow Rcm_Wait:
+    MainNpc.NpcChangeAIState('cRcm', 'SNPC_rcm', 'Root', '', false, true)
+    MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
+    return
+
 flow Root:
     if MainNpc.NpcCheckStateSelectTiming('cInit'):
         fEvent30 = EventFlowSystemActor.ShopLevel()
@@ -18,66 +78,6 @@ flow Root:
         MainNpc.NpcAISetting(4, true)
         MainNpc.NpcChangeAIState('cRcm', 'SNPC_rcm', 'Root', '', false, true)
         MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
-    return
-
-flow Init:
-    MainNpc.SetSightRange(64, 0)
-    MainNpc.NpcRegistAIBlackBoard('CheckItemIndex', -1)
-    MainNpc.NpcRegistAIBlackBoard('DemoSpeak', 0)
-    MainNpc.NpcAISetting(0, true)
-    MainNpc.NpcAISetting(1, true)
-    MainNpc.NpcAISetRequestSpeakFunc('cItemCheck', true)
-    MainNpc.NpcRegistAIBlackBoard('GoodsRail', 2)
-    MainNpc.NpcAISetRequestSpeakFunc('cLeaveRcm', true)
-    MainNpc.NpcAISetRequestSpeakFunc('cEnterRcm', true)
-    if EventFlowSystemActor.NetIsConnected():
-        MainNpc.NpcAISetting(8, true)
-        MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
-        fEvent14 = EventFlowSystemActor.ShopLevel()
-        if fEvent14 == NooksCrannyInitial:
-            MainNpc.NpcAISetPosByRail(6, 0, -80.0, true)
-            run sub_grp!Event24
-        elif fEvent14 == NooksCrannyUpgraded:
-            MainNpc.NpcAISetPosByRail(3, 0, 0.0, true)
-            run sub_grp!Event24
-    else:
-        MainNpc.NpcAISetRequestSpeakFunc('cShopClose', false)
-        MainNpc.NpcAISetting(8, false)
-        run sub_grp!Event24
-    return
-
-flow Check_rcm:
-    if MainNpc.NpcBlackBoard('CheckItemIndex', 0):
-        MainNpc.NpcAISetting(9, false)
-        MainNpc.NpcAISetting(5, false)
-        MainNpc.SetNpcSpeakFlow('Check', 'SNPC_rcm')
-    return
-
-flow Check_Goods:
-    MainNpc.NpcAISetting(9, false)
-    MainNpc.NpcAISetting(5, false)
-    MainNpc.SetNpcSpeakFlow('Root', 'SNPC_rcm_00_Groceries')
-    return
-
-flow Rcm_Wait:
-    MainNpc.NpcChangeAIState('cRcm', 'SNPC_rcm', 'Root', '', false, true)
-    MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
-    return
-
-flow Leave_rcm:
-    run AI_NPC_Common::ContinueSpeak
-    return
-
-flow Enter_rcm:
-    MainNpc.NpcAISetting(13, true)
-    MainNpc.NpcAISetting(18, true)
-    run AI_NPC_Common::Speak
-    event_flags_system['cLandTemp:RcmEnterBalloon'] = true
-    event_flags_system['cLandTemp:ShopEnterMessageFlag'] = true
-    return
-
-flow Close_rcm:
-    run AI_NPC_Common::ContinueSpeak
     return
 
 flow sub_grp!Event24:

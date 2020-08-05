@@ -1,10 +1,10 @@
-flow Root:
-    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_bey_daily', '', true, true, false, 0, 4, 31, 31)
-    return
-
 flow Init:
     MainNpc.NpcAISetting(0, true)
     MainNpc.NpcAISetting(1, true)
     MainNpc.SetSpecialPos('cSetPosType_SavePos')
+    return
+
+flow Root:
+    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_bey_daily', '', true, true, false, 0, 4, 31, 31)
     return
 

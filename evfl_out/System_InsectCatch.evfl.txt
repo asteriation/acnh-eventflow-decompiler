@@ -7,14 +7,14 @@ flow BgmStop:
         event_flags_system['cPlayerVisit:DC_ChmQuestFinish'] = true
     return
 
-flow StartTimer:
-    EventFlowSystemActor.BGMPropertyControl(5)
-    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cInsectFes')
-    return
-
 flow FinishTimer:
     EventFlowSystemActor.BGMPropertyControl(3)
     if EventFlowSystemActor.IsSharePlay(0):
         EventFlowSystemActor.SetSharePlayChangeCondition(false)
+    return
+
+flow StartTimer:
+    EventFlowSystemActor.BGMPropertyControl(5)
+    EventFlowSystemActor.UIMiniGameTimerAppear(180, 'cInsectFes')
     return
 

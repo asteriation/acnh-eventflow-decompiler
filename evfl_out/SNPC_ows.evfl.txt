@@ -1,3 +1,145 @@
+flow AfterSetZociacRecipe:
+    event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = true
+    run Event33
+    return
+
+flow Chat:
+    MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:010', false)
+    return
+
+flow ChkHaveZodiacPiece:
+    run Event200
+    return
+
+flow ChkZodiacRecipe:
+    fEvent34 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
+    if fEvent34 == 2:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5963, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5963, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 3:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5954, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5954, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 4:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5961, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5961, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 5:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5960, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5960, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 6:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5959, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5959, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 7:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5964, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5964, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 8:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5955, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5955, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 9:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(3774, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(3774, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 10:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5962, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5962, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 11:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5958, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5958, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 0:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5957, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5957, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == 1:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5956, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5956, false)
+            run AfterSetZociacRecipe
+    return
+
+flow GetStarPiece:
+    MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:014', false)
+    fEvent145 = EventFlowSystemActor.PercentChoice3(60, 20, 20)
+    if fEvent145 == 0:
+        MainNpc.SetDeliveryItemAtRandom(5983, false, 'cVillageRemakePattern', 0)
+        EventFlowSystemActor.SetItemToPocket(5983, 5)
+        run Event36
+    elif fEvent145 == 1:
+        MainNpc.SetDeliveryItemAtRandom(5984, true, 'cVillageRemakePattern', 0)
+        run Event36
+    elif fEvent145 == 2:
+        run SetZodiacStarPiece
+        run Event36
+    return
+
+flow HaveZodiacChk:
+    subflow_results[2] = 1
+    if (not EventFlowSystemActor.HasTargetItem(5985, 1)) and (not EventFlowSystemActor.HasTargetItem(5957, 1)) and (not EventFlowSystemActor.HasTargetItem(5986, 1)) and (not EventFlowSystemActor.HasTargetItem(5956, 1)) and (not EventFlowSystemActor.HasTargetItem(5987, 1)) and (not EventFlowSystemActor.HasTargetItem(5963, 1)) and (not EventFlowSystemActor.HasTargetItem(5988, 1)) and (not EventFlowSystemActor.HasTargetItem(5954, 1)) and (not EventFlowSystemActor.HasTargetItem(5989, 1)) and (not EventFlowSystemActor.HasTargetItem(5961, 1)) and (not EventFlowSystemActor.HasTargetItem(5990, 1)) and (not EventFlowSystemActor.HasTargetItem(5960, 1)) and (not EventFlowSystemActor.HasTargetItem(5991, 1)) and (not EventFlowSystemActor.HasTargetItem(5959, 1)) and (not EventFlowSystemActor.HasTargetItem(5992, 1)) and (not EventFlowSystemActor.HasTargetItem(5964, 1)) and (not EventFlowSystemActor.HasTargetItem(5993, 1)) and (not EventFlowSystemActor.HasTargetItem(5955, 1)) and (not EventFlowSystemActor.HasTargetItem(5994, 1)) and (not EventFlowSystemActor.HasTargetItem(3774, 1)) and (not EventFlowSystemActor.HasTargetItem(5995, 1)) and (not EventFlowSystemActor.HasTargetItem(5962, 1)) and (not EventFlowSystemActor.HasTargetItem(5996, 1)) and (not EventFlowSystemActor.HasTargetItem(5958, 1)):
+        subflow_results[2] = 0
+    run sub_tm!HaveZodiacChk
+
+flow NotSetZodiacRecipe:
+    run Event39
+    return
+
+flow PresentRecipe:
+    if not event_flags_system['cPlayer:OwsPresentFirstRecipe']:
+        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:108', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:109', false)
+        MainNpc.NpcSetRewardRecipe(2544, false)
+        MainNpc.SetDeliveryItem(1, true)
+        MainNpc.NpcDelivery('Default', 1)
+        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:110', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:111', false)
+        event_flags_system['cPlayer:OwsPresentFirstRecipe'] = true
+        run sub_Event23
+    elif event_flags_system['cPlayer:OwsPresentThisZodiacRecipe']:
+entrypoint Event39:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'Ows01'):
+            run GetStarPiece
+        else:
+            MainNpc.DecideEventRewardDIYRecipe('Ows01')
+entrypoint Event33:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:003', false)
+            MainNpc.SetDeliveryItem(1, true)
+entrypoint Event36:
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:004', false)
+            run sub_Event23
+    else:
+        run ChkZodiacRecipe
+    return
+
 flow Root:
     if not event_flags_system['cPlayer:OwsFirstTalk']:
         event_flags_system['cPlayer:OwsTalkedToday'] = true
@@ -58,180 +200,14 @@ entrypoint Event200:
         run ChkHaveZodiacPiece
     return
 
-flow PresentRecipe:
-    if not event_flags_system['cPlayer:OwsPresentFirstRecipe']:
-        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:108', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:109', false)
-        MainNpc.NpcSetRewardRecipe(2544, false)
-        MainNpc.SetDeliveryItem(1, true)
-        MainNpc.NpcDelivery('Default', 1)
-        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:110', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:111', false)
-        event_flags_system['cPlayer:OwsPresentFirstRecipe'] = true
-        run sub_Event23
-    elif event_flags_system['cPlayer:OwsPresentThisZodiacRecipe']:
-entrypoint Event39:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'Ows01'):
-            run GetStarPiece
-        else:
-            MainNpc.DecideEventRewardDIYRecipe('Ows01')
-entrypoint Event33:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:003', false)
-            MainNpc.SetDeliveryItem(1, true)
-entrypoint Event36:
-            MainNpc.NpcDelivery('Default', 1)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:004', false)
-            run sub_Event23
-    else:
-        run ChkZodiacRecipe
-    return
-
-flow Chat:
-    MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:010', false)
-    return
-
-flow TalkAboutZodiac:
-    run ShowZodiacChk
-    if subflow_results[1] == 0:
-        fEvent174 = subflow_results[0]
-        if fEvent174 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:051', false)
-        elif fEvent174 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:052', false)
-        elif fEvent174 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:053', false)
-        elif fEvent174 == 4:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:054', false)
-        elif fEvent174 == 5:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:055', false)
-        elif fEvent174 == 6:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:056', false)
-        elif fEvent174 == 7:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:057', false)
-        elif fEvent174 == 8:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:058', false)
-        elif fEvent174 == 9:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:059', false)
-    else:
-        fEvent175 = subflow_results[0]
-        if fEvent175 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:060', false)
-        elif fEvent175 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:061', false)
-        elif fEvent175 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:062', false)
-    return
-
-flow ChkHaveZodiacPiece:
-    run Event200
-    return
-
-flow ChkZodiacRecipe:
-    fEvent34 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
-    if fEvent34 == 0:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5957, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5957, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 1:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5956, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5956, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 2:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5963, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5963, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 3:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5954, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5954, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 4:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5961, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5961, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 5:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5960, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5960, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 6:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5959, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5959, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 7:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5964, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5964, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 8:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5955, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5955, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 9:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(3774, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(3774, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 10:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5962, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5962, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == 11:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5958, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5958, false)
-            run AfterSetZociacRecipe
-    return
-
-flow AfterSetZociacRecipe:
-    event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = true
-    run Event33
-    return
-
-flow NotSetZodiacRecipe:
-    run Event39
-    return
-
-flow GetStarPiece:
-    MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:014', false)
-    fEvent145 = EventFlowSystemActor.PercentChoice3(60, 20, 20)
-    if fEvent145 == 0:
-        MainNpc.SetDeliveryItemAtRandom(5983, false, 'cVillageRemakePattern', 0)
-        EventFlowSystemActor.SetItemToPocket(5983, 5)
-        run Event36
-    elif fEvent145 == 1:
-        MainNpc.SetDeliveryItemAtRandom(5984, true, 'cVillageRemakePattern', 0)
-        run Event36
-    elif fEvent145 == 2:
-        run SetZodiacStarPiece
-        run Event36
-    return
-
 flow SetZodiacStarPiece:
     fEvent161 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
     if fEvent161 == 0:
         MainNpc.SetDeliveryItemAtRandom(5985, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == 1:
         MainNpc.SetDeliveryItemAtRandom(5986, true, 'cVillageRemakePattern', 0)
+    elif fEvent161 == 11:
+        MainNpc.SetDeliveryItemAtRandom(5996, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == 2:
         MainNpc.SetDeliveryItemAtRandom(5987, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == 3:
@@ -250,8 +226,6 @@ flow SetZodiacStarPiece:
         MainNpc.SetDeliveryItemAtRandom(5994, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == 10:
         MainNpc.SetDeliveryItemAtRandom(5995, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 11:
-        MainNpc.SetDeliveryItemAtRandom(5996, true, 'cVillageRemakePattern', 0)
     return
 
 flow ShowZodiacChk:
@@ -288,26 +262,58 @@ flow ShowZodiacChk:
         run sub_Event188
     return
 
-flow HaveZodiacChk:
-    subflow_results[2] = 1
-    if (not EventFlowSystemActor.HasTargetItem(5985, 1)) and (not EventFlowSystemActor.HasTargetItem(5957, 1)) and (not EventFlowSystemActor.HasTargetItem(5986, 1)) and (not EventFlowSystemActor.HasTargetItem(5956, 1)) and (not EventFlowSystemActor.HasTargetItem(5987, 1)) and (not EventFlowSystemActor.HasTargetItem(5963, 1)) and (not EventFlowSystemActor.HasTargetItem(5988, 1)) and (not EventFlowSystemActor.HasTargetItem(5954, 1)) and (not EventFlowSystemActor.HasTargetItem(5989, 1)) and (not EventFlowSystemActor.HasTargetItem(5961, 1)) and (not EventFlowSystemActor.HasTargetItem(5990, 1)) and (not EventFlowSystemActor.HasTargetItem(5960, 1)) and (not EventFlowSystemActor.HasTargetItem(5991, 1)) and (not EventFlowSystemActor.HasTargetItem(5959, 1)) and (not EventFlowSystemActor.HasTargetItem(5992, 1)) and (not EventFlowSystemActor.HasTargetItem(5964, 1)) and (not EventFlowSystemActor.HasTargetItem(5993, 1)) and (not EventFlowSystemActor.HasTargetItem(5955, 1)) and (not EventFlowSystemActor.HasTargetItem(5994, 1)) and (not EventFlowSystemActor.HasTargetItem(3774, 1)) and (not EventFlowSystemActor.HasTargetItem(5995, 1)) and (not EventFlowSystemActor.HasTargetItem(5962, 1)) and (not EventFlowSystemActor.HasTargetItem(5996, 1)) and (not EventFlowSystemActor.HasTargetItem(5958, 1)):
-        subflow_results[2] = 0
-    run sub_tm!HaveZodiacChk
-
-flow sub_tm!HaveZodiacChk:
+flow TalkAboutZodiac:
+    run ShowZodiacChk
+    if subflow_results[1] == 0:
+        fEvent174 = subflow_results[0]
+        if fEvent174 == 9:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:059', false)
+        elif fEvent174 == 8:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:058', false)
+        elif fEvent174 == 7:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:057', false)
+        elif fEvent174 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:056', false)
+        elif fEvent174 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:055', false)
+        elif fEvent174 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:054', false)
+        elif fEvent174 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:053', false)
+        elif fEvent174 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:052', false)
+        elif fEvent174 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:051', false)
+    else:
+        fEvent175 = subflow_results[0]
+        if fEvent175 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:062', false)
+        elif fEvent175 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:061', false)
+        elif fEvent175 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:060', false)
     return
 
-flow sub_Event23:
-    event_flags_system['cPlayer:OwsPresentTodayRecipe'] = true
+flow sub_Event181:
+    subflow_results[0] = 2
+
+flow sub_Event182:
+    subflow_results[0] = 3
+
+flow sub_Event183:
+    subflow_results[0] = 4
+
+flow sub_Event184:
+    subflow_results[0] = 5
+
+flow sub_Event185:
+    subflow_results[0] = 6
 
 flow sub_Event186:
     subflow_results[0] = 7
 
 flow sub_Event187:
     subflow_results[0] = 8
-
-flow sub_Event43:
-    subflow_results[0] = 1
 
 flow sub_Event188:
     subflow_results[0] = 9
@@ -321,18 +327,12 @@ flow sub_Event191:
 flow sub_Event192:
     subflow_results[0] = 2
 
-flow sub_Event181:
-    subflow_results[0] = 2
+flow sub_Event23:
+    event_flags_system['cPlayer:OwsPresentTodayRecipe'] = true
 
-flow sub_Event182:
-    subflow_results[0] = 3
+flow sub_Event43:
+    subflow_results[0] = 1
 
-flow sub_Event183:
-    subflow_results[0] = 4
-
-flow sub_Event185:
-    subflow_results[0] = 6
-
-flow sub_Event184:
-    subflow_results[0] = 5
+flow sub_tm!HaveZodiacChk:
+    return
 

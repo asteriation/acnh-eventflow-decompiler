@@ -23,12 +23,12 @@ flow Root:
                     EventFlowSystemActor.ExitFlowchart()
             else:
                 fEvent84 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent84 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_DIY:001', false)
-                elif fEvent84 == 1:
+                if fEvent84 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_DIY:015', false)
                 elif fEvent84 == 2:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_DIY:016', false)
+                elif fEvent84 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_DIY:001', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_DIY:002', false)
                     if MainNpc.IsNpcDIYRecipeCollected():

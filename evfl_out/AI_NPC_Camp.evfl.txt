@@ -1,3 +1,7 @@
+flow ExitStrc:
+    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
+    return
+
 flow Root:
     if not ((EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cLand:CampFirstCamperVisit'])):
         run sub_Event0
@@ -12,13 +16,9 @@ flow Root:
         MainNpc.NpcChangeAIState('cCampWander', 'NNPC_Spot_Camp', 'Root', '', false, false)
     return
 
-flow ExitStrc:
-    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
-    return
-
-flow sub_Event5:
+flow sub_Event0:
     MainNpc.NpcChangeAIState('cCampWander', 'NNPC_Spot_Camp', 'Root', '', false, false)
 
-flow sub_Event0:
+flow sub_Event5:
     MainNpc.NpcChangeAIState('cCampWander', 'NNPC_Spot_Camp', 'Root', '', false, false)
 

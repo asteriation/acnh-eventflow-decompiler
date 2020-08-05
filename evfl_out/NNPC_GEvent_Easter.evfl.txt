@@ -1,3 +1,21 @@
+flow EarthEgg:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:101', false)
+    run Event6
+    return
+
+flow GeneralTalk1:
+    run Event29
+    return
+
+flow GeneralTalk2:
+    run Event0
+    return
+
+flow LeafEgg:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:105', false)
+    run Event6
+    return
+
 flow Root:
     if (EventFlowSystemActor.SystemCheckNowStage('cField')) and (EventFlowSystemActor.EventCheck('Easter') == 1):
         if MainNpc.CheckNpcTool() in (0, 1, 2, 4, 5):
@@ -8,12 +26,12 @@ entrypoint Event29:
                 elif (EventFlowSystemActor.NetIsConnected()) or (event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']) or (EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3) == 0):
 entrypoint Event0:
                     fEvent0 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                    if fEvent0 == 0:
+                    if fEvent0 == 2:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:003', false)
+                    elif fEvent0 == 0:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:001', false)
                     elif fEvent0 == 1:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:002', false)
-                    elif fEvent0 == 2:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:003', false)
                     EventFlowSystemActor.ExitFlowchart()
                 elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:011', false)
@@ -25,12 +43,7 @@ entrypoint Event0:
                 run WaterEgg
             else:
                 fEvent11 = MainNpc.CheckNpcLook()
-                if fEvent11 == 0:
-                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        run EarthEgg
-                    else:
-                        run SkyEgg
-                elif fEvent11 == 1:
+                if fEvent11 == 1:
                     if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                         run WoodEgg
                     else:
@@ -50,47 +63,30 @@ entrypoint Event0:
                         run EarthEgg
                     else:
                         run WoodEgg
-                elif fEvent11 == 5:
-                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        run StoneEgg
-                    else:
-                        run WoodEgg
                 elif fEvent11 == 6:
                     if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                         run EarthEgg
                     else:
                         run StoneEgg
+                elif fEvent11 == 5:
+                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                        run StoneEgg
+                    else:
+                        run WoodEgg
                 elif fEvent11 == 7:
                     if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                         run SkyEgg
                     else:
                         run LeafEgg
+                elif fEvent11 == 0:
+                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                        run EarthEgg
+                    else:
+                        run SkyEgg
         elif EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3) in (0, 1):
             run GeneralTalk1
         else:
             run WaterEgg
-    return
-
-flow GeneralTalk2:
-    run Event0
-    return
-
-flow EarthEgg:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:101', false)
-    run Event6
-    return
-
-flow StoneEgg:
-    if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:102', false)
-        run Event6
-    else:
-        run WaterEgg
-    return
-
-flow WoodEgg:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:103', false)
-    run Event6
     return
 
 flow SkyEgg:
@@ -102,17 +98,21 @@ entrypoint Event6:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow LeafEgg:
-    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:105', false)
-    run Event6
-    return
-
-flow GeneralTalk1:
-    run Event29
+flow StoneEgg:
+    if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:102', false)
+        run Event6
+    else:
+        run WaterEgg
     return
 
 flow WaterEgg:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:106', false)
+    run Event6
+    return
+
+flow WoodEgg:
+    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:103', false)
     run Event6
     return
 

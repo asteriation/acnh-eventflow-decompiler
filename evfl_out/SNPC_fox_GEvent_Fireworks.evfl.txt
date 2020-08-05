@@ -1,69 +1,3 @@
-flow Root:
-    run FirstTalkFireworks_Setting
-    fEvent7 = EventFlowSystemActor.EventCheck('Fireworks')
-    if fEvent7 == 0:
-        run TalkBeforeEvent
-    elif fEvent7 == 2:
-        run TalkAfterEvent
-    elif fEvent7 == 1:
-        fEvent45 = subflow_results[1]
-        if fEvent45 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:092', false)
-        elif fEvent45 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_01', false)
-        elif fEvent45 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_02', false)
-        elif fEvent45 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_03', false)
-    return
-
-flow PlayAgain:
-    run Event30
-    return
-
-flow FirstTalkFireworks_Setting:
-    if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:FoxFirstTalkFireworksFlag']):
-        event_flags_system['cPlayer:FoxFirstTalkFireworksFlag'] = true
-        if not event_flags_system['cPlayer:TunekichiTalkBefore']:
-            event_flags_system['cPlayer:TunekichiTalkBefore'] = true
-            event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag'] = true
-            subflow_results[1] = 1
-        elif (not event_flags_system['cLand:Museum2ConstructionToday']) and (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']) and (event_flags_system['cPlayer:FoxPreVisitWantSellFlag']):
-            subflow_results[1] = 3
-        else:
-            run sub_Event78
-    return
-
-flow PrizeComment:
-    if MainNpc.EventRewardItem(5743):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:010', false)
-    elif MainNpc.EventRewardItem(12974):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:011', false)
-    elif MainNpc.EventRewardItem(13106):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:012', false)
-    elif MainNpc.EventRewardItem(4386):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:013', false)
-    elif MainNpc.EventRewardItem(5319):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:014', false)
-    elif MainNpc.EventRewardItem(5744):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:015', false)
-    elif MainNpc.EventRewardItem(5742):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:016', false)
-    elif MainNpc.EventRewardItem(7869):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:017', false)
-    elif MainNpc.EventRewardItem(13123):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:018', false)
-    elif MainNpc.EventRewardItem(13124):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:019', false)
-    elif MainNpc.EventRewardItem(13125):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:020', false)
-    elif MainNpc.EventRewardItem(13126):
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:021', false)
-    return
-
 flow BoxCheck:
     run FirstTalkFireworks_Setting
     Player.TurnBody(0, 0.0)
@@ -116,12 +50,12 @@ entrypoint Event30:
                 MainNpc.NpcDelivery('Default', 1)
                 MainNpc.SetEventRewardToPlayerBaggage('cFree')
                 fEvent116 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent116 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:031', false)
+                if fEvent116 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:033', false)
                 elif fEvent116 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:032', false)
-                elif fEvent116 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:033', false)
+                elif fEvent116 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:031', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                     run PlayAgain
                 else:
@@ -133,6 +67,87 @@ entrypoint Event30:
             MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:004', true)
     elif fEvent1 == 2:
         run TalkAfterEvent
+    return
+
+flow FirstTalkFireworks_Setting:
+    if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:FoxFirstTalkFireworksFlag']):
+        event_flags_system['cPlayer:FoxFirstTalkFireworksFlag'] = true
+        if not event_flags_system['cPlayer:TunekichiTalkBefore']:
+            event_flags_system['cPlayer:TunekichiTalkBefore'] = true
+            event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag'] = true
+            subflow_results[1] = 1
+        elif (not event_flags_system['cLand:Museum2ConstructionToday']) and (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']) and (event_flags_system['cPlayer:FoxPreVisitWantSellFlag']):
+            subflow_results[1] = 3
+        else:
+            run sub_Event78
+    return
+
+flow PlayAgain:
+    run Event30
+    return
+
+flow PrizeComment:
+    if MainNpc.EventRewardItem(5743):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:010', false)
+    elif MainNpc.EventRewardItem(12974):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:011', false)
+    elif MainNpc.EventRewardItem(13106):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:012', false)
+    elif MainNpc.EventRewardItem(4386):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:013', false)
+    elif MainNpc.EventRewardItem(5319):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:014', false)
+    elif MainNpc.EventRewardItem(5744):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:015', false)
+    elif MainNpc.EventRewardItem(5742):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:016', false)
+    elif MainNpc.EventRewardItem(7869):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:017', false)
+    elif MainNpc.EventRewardItem(13123):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:018', false)
+    elif MainNpc.EventRewardItem(13124):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:019', false)
+    elif MainNpc.EventRewardItem(13125):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:020', false)
+    elif MainNpc.EventRewardItem(13126):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:021', false)
+    return
+
+flow Root:
+    run FirstTalkFireworks_Setting
+    fEvent7 = EventFlowSystemActor.EventCheck('Fireworks')
+    if fEvent7 == 0:
+        run TalkBeforeEvent
+    elif fEvent7 == 2:
+        run TalkAfterEvent
+    elif fEvent7 == 1:
+        fEvent45 = subflow_results[1]
+        if fEvent45 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_02', false)
+        elif fEvent45 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:092', false)
+        elif fEvent45 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_03', false)
+        elif fEvent45 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:091', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_01', false)
+    return
+
+flow TalkAfterEvent:
+    fEvent80 = subflow_results[1]
+    if fEvent80 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:204', true)
+    elif fEvent80 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:205', true)
+    elif fEvent80 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:203', true)
+    elif fEvent80 == 0:
+        if EventFlowSystemActor.FinalFireworksFes():
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:202', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:201', false)
     return
 
 flow TalkBeforeEvent:
@@ -147,27 +162,12 @@ flow TalkBeforeEvent:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:104', true)
     return
 
-flow TalkAfterEvent:
-    fEvent80 = subflow_results[1]
-    if fEvent80 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:203', true)
-    elif fEvent80 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:204', true)
-    elif fEvent80 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:205', true)
-    elif fEvent80 == 0:
-        if EventFlowSystemActor.FinalFireworksFes():
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:202', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:201', false)
-    return
-
-flow sub_Event78:
-    subflow_results[1] = 2
-
 flow sub_Event15:
     MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:002_04', false)
 
 flow sub_Event43:
     MainNpc.DecideEventReward('cFireWorksFox')
+
+flow sub_Event78:
+    subflow_results[1] = 2
 

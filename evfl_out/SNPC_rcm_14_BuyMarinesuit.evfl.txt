@@ -1,3 +1,7 @@
+flow Again:
+    run Event7
+    return
+
 flow Root:
     event_flags_system['cPlayer:RcmTalkAboutMarinesuitFlag'] = true
     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:141_01', false)
@@ -5,16 +9,12 @@ entrypoint Event7:
     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:141_02', false)
     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:142', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent1 == 0:
+    if fEvent1 == 2:
+        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Cancel
+    elif fEvent1 == 0:
         run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Process
     elif fEvent1 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:143', false)
         run Again
-    elif fEvent1 == 2:
-        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Cancel
-    return
-
-flow Again:
-    run Event7
     return
 

@@ -1,8 +1,9 @@
-flow Root:
-    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_ows', '', true, true, false, 0, 1, 0, 0)
+flow AI_owl_changeawake:
+    run Event17
     return
 
-flow Init:
+flow AI_owl_changesleep:
+    run Event16
     return
 
 flow AI_owl_day:
@@ -39,11 +40,10 @@ entrypoint Event17:
     MainNpc.NpcAISetting(2, true)
     return
 
-flow AI_owl_changeawake:
-    run Event17
+flow Init:
     return
 
-flow AI_owl_changesleep:
-    run Event16
+flow Root:
+    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_ows', '', true, true, false, 0, 1, 0, 0)
     return
 

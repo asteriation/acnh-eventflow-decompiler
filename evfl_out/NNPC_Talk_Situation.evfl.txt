@@ -1,3 +1,14 @@
+flow Check_ConvReaction:
+    EventFlowSystemActor.SetCheckResultConvReaction(1)
+    if (not EventFlowSystemActor.IsInsectChasingPlayer(0)) and (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (not MainNpc.NpcCheckPastDays('cLastTalk', 30)) and (not SubNpc.NpcCheckPastDays('cLastTalk', 30)) and (not MainNpc.NpcIsFleaHolder()) and (not SubNpc.NpcIsFleaHolder()):
+        EventFlowSystemActor.SetCheckResultConvReaction(0)
+    run sub_tm!Check_ConvReaction
+
+flow Facility_Chk:
+    if (EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect')) or (EventFlowSystemActor.SystemCheckNowStage('cMuseumFish')) or (EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil')) or (EventFlowSystemActor.SystemCheckNowStage('cMametubu')) or (EventFlowSystemActor.SystemCheckNowStage('cTailor')):
+        run sub_Event35
+    return
+
 flow Root:
     run NNPC_Reaction_GEvent_Quest::Root
     run NNPC_Reaction_Run::Root
@@ -19,12 +30,6 @@ flow Root:
     run NNPC_Reaction_EarlyLate::Root
     return
 
-flow Check_ConvReaction:
-    EventFlowSystemActor.SetCheckResultConvReaction(1)
-    if (not EventFlowSystemActor.IsInsectChasingPlayer(0)) and (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (not MainNpc.NpcCheckPastDays('cLastTalk', 30)) and (not SubNpc.NpcCheckPastDays('cLastTalk', 30)) and (not MainNpc.NpcIsFleaHolder()) and (not SubNpc.NpcIsFleaHolder()):
-        EventFlowSystemActor.SetCheckResultConvReaction(0)
-    run sub_tm!Check_ConvReaction
-
 flow Situation_Spot:
     run NNPC_Reaction_First_Root::Root
     run NNPC_Reaction_Missing::Root
@@ -32,14 +37,9 @@ flow Situation_Spot:
     run NNPC_Reaction_Quest::Root
     return
 
-flow Facility_Chk:
-    if (EventFlowSystemActor.SystemCheckNowStage('cMuseumInsect')) or (EventFlowSystemActor.SystemCheckNowStage('cMuseumFish')) or (EventFlowSystemActor.SystemCheckNowStage('cMuseumFossil')) or (EventFlowSystemActor.SystemCheckNowStage('cMametubu')) or (EventFlowSystemActor.SystemCheckNowStage('cTailor')):
-        run sub_Event35
-    return
+flow sub_Event35:
+    event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] += 1
 
 flow sub_tm!Check_ConvReaction:
     return
-
-flow sub_Event35:
-    event_flags_npc['cNpcMemory:TalkCountInFacilityToday'] += 1
 

@@ -1,9 +1,28 @@
+flow Broken:
+    if not entry_variables['BGUIOn']:
+        EventFlowSystemActor.UIBootBGChangeDialog()
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1310', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.MessageLockNext(1)
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1300', false)
+        EventFlowSystemActor.SaveRemove('cAll')
+        EventFlowSystemActor.WaitFrame(90)
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1312', false)
+    else:
+        run UnexpectedError
+    return
+
 flow Core:
     run PreProcess
     EventFlowSystemActor.SaveVersionCheck()
     fEvent28 = EventFlowSystemActor.SaveVersionCheck()
     if fEvent28 == 0:
         run SaveDataLoad
+    elif fEvent28 == 3:
+        run Broken
+    elif fEvent28 == 4:
+        run UnexpectedError
     elif fEvent28 == 1:
         EventFlowSystemActor.UIBootBGChangeDialog()
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1372', false)
@@ -12,10 +31,23 @@ flow Core:
         EventFlowSystemActor.MessageSuspend()
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1374', false)
         run SaveDataLoad
-    elif fEvent28 == 3:
-        run Broken
-    elif fEvent28 == 4:
-        run UnexpectedError
+    return
+
+flow PreProcess:
+    if not EventFlowSystemActor.ControllerIsConnected():
+        EventFlowSystemActor.RequetCtrlConnectSupport(1)
+    if not EventFlowSystemActor.IsGamePlayTime():
+        EventFlowSystemActor.UIBootBGChangeDialog()
+        run System_DateTimeNg::NoSave
+    elif EventFlowSystemActor.SaveIsExist():
+entrypoint Event64:
+        if EventFlowSystemActor.SaveRestoreSeqStartCheck():
+            entry_variables['BackupInputWait'] += -1
+            if entry_variables['BackupInputWait'] <= 0:
+                EventFlowSystemActor.WaitFrame(0)
+                run Event64
+        else:
+            run System_SaveDataRestoring::StartRestoring
     return
 
 flow Root:
@@ -39,42 +71,10 @@ flow SaveDataLoad:
             run UnexpectedError
     return
 
-flow Broken:
-    if not entry_variables['BGUIOn']:
-        EventFlowSystemActor.UIBootBGChangeDialog()
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1310', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        EventFlowSystemActor.MessageLockNext(1)
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1300', false)
-        EventFlowSystemActor.SaveRemove('cAll')
-        EventFlowSystemActor.WaitFrame(90)
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1312', false)
-    else:
-        run UnexpectedError
-    return
-
 flow UnexpectedError:
     if not entry_variables['BGUIOn']:
         EventFlowSystemActor.UIBootBGChangeDialog()
     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1311', false)
     EventFlowSystemActor.WaitFrame(-1)
-    return
-
-flow PreProcess:
-    if not EventFlowSystemActor.ControllerIsConnected():
-        EventFlowSystemActor.RequetCtrlConnectSupport(1)
-    if not EventFlowSystemActor.IsGamePlayTime():
-        EventFlowSystemActor.UIBootBGChangeDialog()
-        run System_DateTimeNg::NoSave
-    elif EventFlowSystemActor.SaveIsExist():
-entrypoint Event64:
-        if EventFlowSystemActor.SaveRestoreSeqStartCheck():
-            entry_variables['BackupInputWait'] += -1
-            if entry_variables['BackupInputWait'] <= 0:
-                EventFlowSystemActor.WaitFrame(0)
-                run Event64
-        else:
-            run System_SaveDataRestoring::StartRestoring
     return
 

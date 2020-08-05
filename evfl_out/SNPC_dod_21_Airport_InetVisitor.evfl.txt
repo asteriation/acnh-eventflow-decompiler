@@ -1,23 +1,3 @@
-flow EntryPoint_ResearchInet:
-    if EventFlowSystemActor.NetIsNeedPassword('cNeedPassword'):
-        run EntryPoint_Reinput_Keyword
-    else:
-        EventFlowSystemActor.MessageLockNext(1)
-        run SNPC_dod_AirPort::EntryPoint_PreProcedure
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
-        EventFlowSystemActor.NetFindSessionVillage('cRetry')
-        EventFlowSystemActor.MessageSuspend()
-        EventFlowSystemActor.MessageUnlockNext()
-        run Event94
-    return
-
-flow EntryPoint_RockRetryInet:
-    run SNPC_dod_AirPort::EntryPoint_PreProcedure
-    EventFlowSystemActor.MessageLockNext(1)
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
-    run Event48
-    return
-
 flow EntryPoint_InetVisitor:
     if not event_flags_system['cPlayer:OdekakeFirstInternet']:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:092', true)
@@ -52,14 +32,7 @@ entrypoint Event24:
 entrypoint Event94:
                     run SNPC_dod_AirPort::EntryPoint_PostProcedure
                     fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
-                    if fEvent35 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run EntryPoint_ResearchInet
-                        else:
-                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent35 == 2:
+                    if fEvent35 == 2:
                         EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
                         event_flags_system['cPlayerTemp:AirportTripListError'] = false
@@ -70,11 +43,11 @@ entrypoint Event94:
                         else:
                             EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
                             fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
-                            if fEvent61 == 1:
-                                run EntryPoint_ResearchInet
-                            elif fEvent61 == 2:
+                            if fEvent61 == 2:
                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                 run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 1:
+                                run EntryPoint_ResearchInet
                             elif fEvent61 == 0:
                                 if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
                                     run SNPC_dod_22_Airport_InstallFriendList::Root
@@ -89,7 +62,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -104,22 +93,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -127,6 +100,13 @@ entrypoint Event48:
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
                                     run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
                     elif fEvent35 == 1:
                         if EventFlowSystemActor.NetAllSessionIsFull():
                             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
@@ -157,7 +137,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -172,22 +168,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -216,14 +196,7 @@ entrypoint Event48:
 entrypoint Event94:
                     run SNPC_dod_AirPort::EntryPoint_PostProcedure
                     fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
-                    if fEvent35 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run EntryPoint_ResearchInet
-                        else:
-                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent35 == 2:
+                    if fEvent35 == 2:
                         EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
                         event_flags_system['cPlayerTemp:AirportTripListError'] = false
@@ -234,11 +207,11 @@ entrypoint Event94:
                         else:
                             EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
                             fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
-                            if fEvent61 == 1:
-                                run EntryPoint_ResearchInet
-                            elif fEvent61 == 2:
+                            if fEvent61 == 2:
                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                 run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 1:
+                                run EntryPoint_ResearchInet
                             elif fEvent61 == 0:
                                 if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
                                     run SNPC_dod_22_Airport_InstallFriendList::Root
@@ -253,7 +226,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -268,22 +257,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -291,6 +264,13 @@ entrypoint Event48:
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
                                     run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
                     elif fEvent35 == 1:
                         if EventFlowSystemActor.NetAllSessionIsFull():
                             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
@@ -321,7 +301,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -336,22 +332,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -370,14 +350,7 @@ entrypoint Event48:
 entrypoint Event94:
                     run SNPC_dod_AirPort::EntryPoint_PostProcedure
                     fEvent35 = EventFlowSystemActor.NetFoundVillageNum()
-                    if fEvent35 == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run EntryPoint_ResearchInet
-                        else:
-                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent35 == 2:
+                    if fEvent35 == 2:
                         EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
                         event_flags_system['cPlayerTemp:AirportTripListError'] = false
@@ -388,11 +361,11 @@ entrypoint Event94:
                         else:
                             EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
                             fEvent61 = EventFlowSystemActor.NetIsDecidedVillage()
-                            if fEvent61 == 1:
-                                run EntryPoint_ResearchInet
-                            elif fEvent61 == 2:
+                            if fEvent61 == 2:
                                 EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                                 run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                            elif fEvent61 == 1:
+                                run EntryPoint_ResearchInet
                             elif fEvent61 == 0:
                                 if (EventFlowSystemActor.NetIsFriendOnlySession('cFriendOnly')) and (not event_flags_system['cPlayer:MainmenuFriendList']):
                                     run SNPC_dod_22_Airport_InstallFriendList::Root
@@ -407,7 +380,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -422,22 +411,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -445,6 +418,13 @@ entrypoint Event48:
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:109', true)
                                     run SNPC_dod_30_Airport_DepartVisitor::EntryPoint_Depart
+                    elif fEvent35 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:102', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            run EntryPoint_ResearchInet
+                        else:
+                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                            run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
                     elif fEvent35 == 1:
                         if EventFlowSystemActor.NetAllSessionIsFull():
                             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
@@ -475,7 +455,23 @@ entrypoint Event48:
                                 run SNPC_dod_AirPort::EntryPoint_PostProcedure
                                 if EventFlowSystemActor.CheckErrorType(2):
                                     fEvent12 = EventFlowSystemActor.NetLockFailReason()
-                                    if fEvent12 == 0:
+                                    if fEvent12 == 2:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 1:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            run EntryPoint_Reselect
+                                        else:
+                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                                            run SNPC_dod_AirPort::EntryPoint_Cancel
+                                    elif fEvent12 == 0:
                                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108', true)
                                         fEvent53 = EventFlowSystemActor.GeneralTalkChoice3()
                                         if fEvent53 == 1:
@@ -490,22 +486,6 @@ entrypoint Event48:
                                             run SNPC_dod_AirPort::EntryPoint_Cancel
                                         elif fEvent53 == 0:
                                             run sub_Event57
-                                    elif fEvent12 == 1:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:140', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
-                                    elif fEvent12 == 2:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:550', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:150', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            run EntryPoint_Reselect
-                                        else:
-                                            EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                                            run SNPC_dod_AirPort::EntryPoint_Cancel
                                 else:
                                     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
                                     if event_flags_system['cPlayer:EquipLicenseHelmet']:
@@ -523,8 +503,28 @@ flow EntryPoint_Reinput_Keyword:
     run Event24
     return
 
+flow EntryPoint_ResearchInet:
+    if EventFlowSystemActor.NetIsNeedPassword('cNeedPassword'):
+        run EntryPoint_Reinput_Keyword
+    else:
+        EventFlowSystemActor.MessageLockNext(1)
+        run SNPC_dod_AirPort::EntryPoint_PreProcedure
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+        EventFlowSystemActor.NetFindSessionVillage('cRetry')
+        EventFlowSystemActor.MessageSuspend()
+        EventFlowSystemActor.MessageUnlockNext()
+        run Event94
+    return
+
 flow EntryPoint_Reselect:
     run Event18
+    return
+
+flow EntryPoint_RockRetryInet:
+    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+    run Event48
     return
 
 flow sub_Event57:

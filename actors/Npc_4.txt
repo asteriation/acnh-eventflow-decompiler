@@ -1,12 +1,11 @@
 Actor Npc_4
 actions:
-- Npc_4.CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
-- Npc_4.SetNpcName(ID: int, NpcNameType: int)
-- Npc_4.TurnNeck(TurnTarget: int)
-- Npc_4.ChangeNpcPlace(NpcPlace: str)
-- Npc_4.NpcChangeHandTool(IsImmediately: bool, SpecificToolKindString: str, HandToolItemID: int)
-- Npc_4.RequestSimple(AsCommand: str, WaitFinish: bool)
-- Npc_4.NpcRequestAction(ActionIdx: int)
-- Npc_4.SetDefaultWaitAs(NpcWaitAsType: str)
+- CharacterEmoticonAction(Reaction: str, MessageID: str, Frame: int, PlayerAutoEnd: bool, Continue: bool)
+- SetNpcName(ID: int, NpcNameType: int)
+- TurnNeck(TurnTarget: int)
+- ChangeNpcPlace(NpcPlace: str)
+- NpcChangeHandTool(IsImmediately: bool, SpecificToolKindString: str, HandToolItemID: int)
+- RequestSimple(AsCommand: str, WaitFinish: bool)
+- NpcRequestAction(ActionIdx: int)
+- SetDefaultWaitAs(NpcWaitAsType: str)
 queries:
-

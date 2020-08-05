@@ -1,9 +1,9 @@
-flow TipsMyHouse:
-    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5202', false)
-    return
-
 flow TipsChat:
     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5203', false)
     event_flags_system['cPlayer:MainmenuChatLog'] = true
+    return
+
+flow TipsMyHouse:
+    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:5202', false)
     return
 

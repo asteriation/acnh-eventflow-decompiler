@@ -1,3 +1,7 @@
+flow FenceBuildError_PlayingNet:
+    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:023', true)
+    return
+
 flow FtrIndoorOperateError_ExistsVisitor:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:005', true)
     return
@@ -8,9 +12,5 @@ flow FtrOperateError_ExistsVisitor:
 
 flow FtrPickupError_ExistsVisitor:
     Player.OpenMessageWindow('TalkSys/SYS_Telepathy:014', true)
-    return
-
-flow FenceBuildError_PlayingNet:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:023', true)
     return
 

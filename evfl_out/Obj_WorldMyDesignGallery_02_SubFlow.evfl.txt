@@ -9,10 +9,6 @@ flow GetMyIdList:
             event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = true
     return
 
-flow WaitForPreview:
-    EventFlowSystemActor.WaitDownloadMyDesignDataForPreview()
-    return
-
 flow PreCheckConnection:
     EventFlowSystemActor.MyDesignExchangeResetError()
     EventFlowSystemActor.NetConnectInit('cConnectInet', true)
@@ -26,5 +22,9 @@ flow PreCheckConnection:
         EventFlowSystemActor.NetCheckNSA('cCheckNSA', true)
         if EventFlowSystemActor.CheckErrorType(2):
             run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+    return
+
+flow WaitForPreview:
+    EventFlowSystemActor.WaitDownloadMyDesignDataForPreview()
     return
 

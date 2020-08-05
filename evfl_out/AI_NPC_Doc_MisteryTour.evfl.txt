@@ -1,3 +1,8 @@
+flow Init:
+    MainNpc.NpcRegistAIBlackBoard('CheckForceTalk', 0)
+    MainNpc.NpcAISetting(8, true)
+    return
+
 flow Root:
     if EventFlowSystemActor.SystemCheckNowStage('cCheckStageSymbol01'):
         if MainNpc.NpcBlackBoard('CheckForceTalk', 1):
@@ -13,10 +18,5 @@ flow Root:
             run AI_NPC_Common::ContinueSpeak
         else:
             run AI_NPC_Common::ContinueSpeak
-    return
-
-flow Init:
-    MainNpc.NpcRegistAIBlackBoard('CheckForceTalk', 0)
-    MainNpc.NpcAISetting(8, true)
     return
 

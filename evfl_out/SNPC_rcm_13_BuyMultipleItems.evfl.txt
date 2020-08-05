@@ -1,11 +1,11 @@
 flow Root:
     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:131', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent1 == 1:
+    if fEvent1 == 2:
+        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Cancel
+    elif fEvent1 == 1:
         subflow_results[0] = 1
         run sub_Event3
-    elif fEvent1 == 2:
-        run SNPC_rcm_00_Common::Rcm_Groceries_Buy_Cancel
     elif fEvent1 == 0:
         run sub_Event3
     return

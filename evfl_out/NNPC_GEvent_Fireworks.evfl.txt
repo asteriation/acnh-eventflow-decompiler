@@ -1,3 +1,40 @@
+flow Fireworks_19_20:
+    fEvent2 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent2 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:001', false)
+    elif fEvent2 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:002', false)
+    elif fEvent2 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:003', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Fireworks_20_23:
+    fEvent24 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
+    if fEvent24 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:004', false)
+    elif fEvent24 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:005', false)
+    elif fEvent24 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:006', false)
+    elif fEvent24 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:007', false)
+    elif fEvent24 == 4:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:008', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Fireworks_23_24:
+    fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent7 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:009', false)
+    elif fEvent7 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:010', false)
+    elif fEvent7 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:011', false)
+    EventFlowSystemActor.ExitFlowchart()
+    return
+
 flow Root:
     if (EventFlowSystemActor.SystemCheckNowStage('cField')) and (EventFlowSystemActor.EventCheck('Fireworks') == 1):
         fEvent0 = EventFlowSystemActor.EnvHourCompare(19, -1, true, true)
@@ -20,49 +57,12 @@ flow Root:
             run sub_Event48
     return
 
-flow Fireworks_19_20:
-    fEvent2 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent2 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:001', false)
-    elif fEvent2 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:002', false)
-    elif fEvent2 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:003', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Fireworks_23_24:
-    fEvent7 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent7 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:009', false)
-    elif fEvent7 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:010', false)
-    elif fEvent7 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:011', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Fireworks_20_23:
-    fEvent24 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-    if fEvent24 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:004', false)
-    elif fEvent24 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:005', false)
-    elif fEvent24 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:006', false)
-    elif fEvent24 == 3:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:007', false)
-    elif fEvent24 == 4:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Fireworks:008', false)
-    EventFlowSystemActor.ExitFlowchart()
-    return
-
 flow sub_Event10:
     run Fireworks_20_23
 
-flow sub_Event48:
-    run Fireworks_19_20
-
 flow sub_Event3:
     run Fireworks_23_24
+
+flow sub_Event48:
+    run Fireworks_19_20
 

@@ -1,3 +1,8 @@
+flow ItemAdd_Chk:
+    if (EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Flower', '', '') in (1, 2, 3)) or (any ('Ftr', 'DoorDeco', 'Music', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Net', 'Watering', 'FishingRod', 'FierworkHand', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Tops', 'OnePiece', 'Cap', 'Accessory', 'Umbrella', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or ((any ('Helmet', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (MainNpc.NpcIsAbleEquipSelectItem())):
+        run sub_Event78
+    run sub_tm!ItemAdd_Chk
+
 flow Root:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:003', true)
     EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cGiftToNpc', true)
@@ -29,30 +34,18 @@ flow Root:
             event_flags_system['cLifeSupportDaily:EDSendFlower'] = true
         else:
             fEvent9 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'PitFallSeed', 'PartyPopper', 'Medicine', 'FishBait')
-            if fEvent9 == 1:
+            if fEvent9 in (3, 4):
                 run NNPC_Select_Etc::Etc_Plural
                 run sub_Event62
             elif fEvent9 == 2:
                 run NNPC_Select_Tool::Nouse_Plural
                 run sub_Event62
-            elif fEvent9 in (3, 4):
+            elif fEvent9 == 1:
                 run NNPC_Select_Etc::Etc_Plural
                 run sub_Event62
             elif fEvent9 == 0:
                 fEvent50 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'LoveCrystal', 'BlowBubble', 'EasterEgg', 'FierworkHand')
-                if fEvent50 == 1:
-                    run NNPC_Select_Etc::Love
-                    run sub_Event62
-                elif fEvent50 == 2:
-                    run NNPC_Select_Tool::Nouse_Plural
-                    run sub_Event62
-                elif fEvent50 == 3:
-                    run NNPC_Select_Etc::Etc_Plural
-                    run sub_Event62
-                elif fEvent50 == 4:
-                    run NNPC_Select_Tool::MobileFireWorks
-                    run Select_Finish
-                elif fEvent50 == 0:
+                if fEvent50 == 0:
                     MainNpc.SetDeliveryItemApplySave()
                     fEvent65 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Fish', 'Insect', 'DiveFish')
                     if fEvent65 == 1:
@@ -89,19 +82,31 @@ flow Root:
                             run sub_Event14
                         elif (not any ('Tops', 'OnePiece', 'Cap', 'Accessory', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (not any ('Helmet', 'Bottoms', 'Socks', 'Shoes', 'Bag', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')):
                             fEvent12 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Money', 'Trash', 'TurnipExpired', 'Music')
-                            if fEvent12 == 1:
-                                run NNPC_Select_Etc::Money
-                            elif fEvent12 in (2, 3):
-                                run NNPC_Select_Etc::Garbage
-                            elif fEvent12 == 4:
+                            if fEvent12 == 4:
                                 run NNPC_Select_Etc::Music
                                 run Select_Finish
                             elif fEvent12 == 0:
                                 run NNPC_Select_Etc::Etc
                                 run Select_Finish_Disappear
+                            elif fEvent12 in (2, 3):
+                                run NNPC_Select_Etc::Garbage
+                            elif fEvent12 == 1:
+                                run NNPC_Select_Etc::Money
                         else:
                             run NNPC_Select_Equipment::Root
                             run sub_Event14
+                elif fEvent50 == 1:
+                    run NNPC_Select_Etc::Love
+                    run sub_Event62
+                elif fEvent50 == 4:
+                    run NNPC_Select_Tool::MobileFireWorks
+                    run Select_Finish
+                elif fEvent50 == 2:
+                    run NNPC_Select_Tool::Nouse_Plural
+                    run sub_Event62
+                elif fEvent50 == 3:
+                    run NNPC_Select_Etc::Etc_Plural
+                    run sub_Event62
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:005', true)
     return
@@ -135,13 +140,11 @@ flow Select_Finish_Disappear:
         run Event20
     return
 
-flow ItemAdd_Chk:
-    if (EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Flower', '', '') in (1, 2, 3)) or (any ('Ftr', 'DoorDeco', 'Music', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Net', 'Watering', 'FishingRod', 'FierworkHand', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or (any ('Tops', 'OnePiece', 'Cap', 'Accessory', 'Umbrella', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) or ((any ('Helmet', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (MainNpc.NpcIsAbleEquipSelectItem())):
-        run sub_Event78
-    run sub_tm!ItemAdd_Chk
+flow sub_Event14:
+    run Select_Finish
 
-flow sub_tm!ItemAdd_Chk:
-    return
+flow sub_Event46:
+    run Select_Finish
 
 flow sub_Event48:
     run Select_Finish_Disappear
@@ -149,12 +152,9 @@ flow sub_Event48:
 flow sub_Event62:
     run Select_Finish_Disappear
 
-flow sub_Event46:
-    run Select_Finish
-
-flow sub_Event14:
-    run Select_Finish
-
 flow sub_Event78:
     MainNpc.SetItemToNpcStockList(0, 1)
+
+flow sub_tm!ItemAdd_Chk:
+    return
 

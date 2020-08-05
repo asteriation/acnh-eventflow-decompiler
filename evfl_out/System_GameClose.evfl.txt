@@ -1,13 +1,15 @@
-flow Root:
-    if EventFlowSystemActor.NetIsConnected():
-        if not EventFlowSystemActor.IsMyVillage():
-            run NetClose
-        elif EventFlowSystemActor.NetHasVisitor():
-            run NetClose
-        else:
-            run sub_grp!Event24
-    else:
-        run sub_grp!Event24
+flow DreamClose:
+    EventFlowSystemActor.NetCaptureScreenshot()
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:025', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        EventFlowSystemActor.UIIllegalReportHandling(8)
+        if EventFlowSystemActor.UIIllegalReportResult():
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:026', true)
+            EventFlowSystemActor.MiniGameSilentCancel()
+            EventFlowSystemActor.StopMeasurePlayTime('cDreaming')
+            EventFlowSystemActor.FadeOut('', '', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.NetExitDream(true)
+            EventFlowSystemActor.SystemRequestChangeStage('cDreamDemo', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
     return
 
 flow LocalClose:
@@ -60,10 +62,6 @@ entrypoint Event11:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:007', false)
     return
 
-flow RetryLock:
-    run Event11
-    return
-
 flow NetClose:
     if EventFlowSystemActor.NetMode() in (0, 1):
         run LocalClose
@@ -71,18 +69,20 @@ flow NetClose:
         run System_InetClose::InetClose
     return
 
-flow DreamClose:
-    EventFlowSystemActor.NetCaptureScreenshot()
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:025', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        EventFlowSystemActor.UIIllegalReportHandling(8)
-        if EventFlowSystemActor.UIIllegalReportResult():
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:026', true)
-            EventFlowSystemActor.MiniGameSilentCancel()
-            EventFlowSystemActor.StopMeasurePlayTime('cDreaming')
-            EventFlowSystemActor.FadeOut('', '', 'cBlack', 1.0, 1.0, true)
-            EventFlowSystemActor.NetExitDream(true)
-            EventFlowSystemActor.SystemRequestChangeStage('cDreamDemo', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
+flow RetryLock:
+    run Event11
+    return
+
+flow Root:
+    if EventFlowSystemActor.NetIsConnected():
+        if not EventFlowSystemActor.IsMyVillage():
+            run NetClose
+        elif EventFlowSystemActor.NetHasVisitor():
+            run NetClose
+        else:
+            run sub_grp!Event24
+    else:
+        run sub_grp!Event24
     return
 
 flow sub_grp!Event24:

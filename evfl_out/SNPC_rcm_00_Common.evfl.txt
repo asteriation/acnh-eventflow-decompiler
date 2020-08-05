@@ -1,37 +1,44 @@
-flow Root:
-    EventFlowSystemActor.UIMoneyAppear()
-    fEvent2 = EventFlowSystemActor.ShopLevel()
-    if fEvent2 == InResServiceTent:
-        if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:003', false)
-        elif EventFlowSystemActor.IsMyVillage():
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:001', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:002', false)
-        fEvent12 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent12 == 0:
-            run SNPC_rcm_00_Common_Sell::Root
-        elif fEvent12 == 1:
-            run Rcm_Common_Buy
-        elif fEvent12 == 2:
-            run rcm_Common_End
-    elif fEvent2 in (NooksCrannyInitial, NooksCrannyUpgraded):
-        if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:013', false)
-        elif EventFlowSystemActor.IsMyVillage():
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:011', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:012', false)
-entrypoint Event0:
-        fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent0 == 0:
-            run SNPC_rcm_00_Common_Sell::Root
-        elif fEvent0 == 1:
-            run Rcm_Common_TurnipChk
-        elif fEvent0 == 2:
-            run rcm_Common_TodaysFurniture
-        elif fEvent0 == 3:
-            run rcm_Common_End
+flow AfterNewServiceExlpain:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:014', false)
+    run Event0
+    return
+
+flow BuyCancelNoAsk:
+    run Event43
+    return
+
+flow CmnCloseShoppingUI:
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.MessageSuspend()
+        branch2:
+            EventFlowSystemActor.UIShopBuyDisappear()
+    EventFlowSystemActor.WaitFrame(5)
+    return
+
+flow FishingRodBuy:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:096', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        run Event42
+    else:
+        run BuyCancelNoAsk
+    return
+
+flow ItemFullBuyRecipecard:
+    run Event1
+    return
+
+flow ItemFullBuySolo:
+    run Event1
+    return
+
+flow NotEnoughMoneySolo:
+    run Event33
+    return
+
+flow Rcm_Cmn_BuySel_Cancel:
+    run Event21
     return
 
 flow Rcm_Common_Buy:
@@ -39,23 +46,13 @@ flow Rcm_Common_Buy:
     run Event57
     return
 
-flow Rcm_Common_TurnipChk:
-    if EventFlowSystemActor.EnvDayOfWeek() == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:082', false)
-        run Event6
-    else:
-        EventFlowSystemActor.SetTagFromSystem(0, 'cKabuka', '"cDegit"', '""', 0)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:081', false)
-        run Event6
-    return
-
-flow rcm_Common_End:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:905', false)
-    return
-
 flow Rcm_Common_BuyAgain:
     EventFlowSystemActor.UIShopBuyReselectionAppear()
     run Event39
+    return
+
+flow Rcm_Common_BuyAgain2:
+    run Event57
     return
 
 flow Rcm_Common_BuyCheck:
@@ -76,6 +73,28 @@ entrypoint Event33:
 entrypoint Event21:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:902_01', false)
         run sub_grp!Event82
+    return
+
+flow Rcm_Common_BuyCheckUI:
+    run Event71
+    return
+
+flow Rcm_Common_TurnipChk:
+    if EventFlowSystemActor.EnvDayOfWeek() == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:082', false)
+        run Event6
+    else:
+        EventFlowSystemActor.SetTagFromSystem(0, 'cKabuka', '"cDegit"', '""', 0)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:081', false)
+        run Event6
+    return
+
+flow Rcm_Groceries_Buy_Cancel:
+    run Event46
+    return
+
+flow Rcm_Groceries_Buy_Process:
+    run Event42
     return
 
 flow Rcm_OpenShoppingUI:
@@ -151,28 +170,56 @@ entrypoint Event46:
                 run SNPC_rcm::Rcm_SeqClose
     return
 
-flow Rcm_Common_BuyCheckUI:
-    run Event71
+flow Rcm_OpenShoppingUI_EX:
+    EventFlowSystemActor.MarketShowcase('cOpen')
+    EventFlowSystemActor.WaitFrame(5)
+    run Event57
+    return
+
+flow Root:
+    EventFlowSystemActor.UIMoneyAppear()
+    fEvent2 = EventFlowSystemActor.ShopLevel()
+    if fEvent2 == InResServiceTent:
+        if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:003', false)
+        elif EventFlowSystemActor.IsMyVillage():
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:002', false)
+        fEvent12 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent12 == 1:
+            run Rcm_Common_Buy
+        elif fEvent12 == 0:
+            run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent12 == 2:
+            run rcm_Common_End
+    elif fEvent2 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:013', false)
+        elif EventFlowSystemActor.IsMyVillage():
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:011', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:012', false)
+entrypoint Event0:
+        fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent0 == 3:
+            run rcm_Common_End
+        elif fEvent0 == 0:
+            run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent0 == 1:
+            run Rcm_Common_TurnipChk
+        elif fEvent0 == 2:
+            run rcm_Common_TodaysFurniture
+    return
+
+flow rcm_Common_End:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:905', false)
     return
 
 flow rcm_Common_TodaysFurniture:
     EventFlowSystemActor.SetTagFromSystem(0, 'cExpensivePurchase1', 'cDegit', '', 0)
     fEvent68 = EventFlowSystemActor.ShopLevel()
-    if fEvent68 == NooksCrannyInitial:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
-entrypoint Event6:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:019', false)
-        fEvent148 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent148 == 0:
-            run SNPC_rcm_00_Common_Sell::Root
-        elif fEvent148 == 1:
-            run Rcm_Common_TurnipChk
-        elif fEvent148 == 2:
-            run rcm_Common_TodaysFurniture
-        elif fEvent148 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
-    elif fEvent68 == NooksCrannyUpgraded:
+    if fEvent68 == NooksCrannyUpgraded:
         EventFlowSystemActor.SetTagFromSystem(1, 'cExpensivePurchase2', 'cDegit', '', 0)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
@@ -183,71 +230,24 @@ entrypoint Event6:
             run SNPC_rcm_00_Common_Sell::Root
         elif fEvent148 == 1:
             run Rcm_Common_TurnipChk
-        elif fEvent148 == 2:
-            run rcm_Common_TodaysFurniture
         elif fEvent148 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
-    return
-
-flow FishingRodBuy:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:096', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Event42
-    else:
-        run BuyCancelNoAsk
-    return
-
-flow BuyCancelNoAsk:
-    run Event43
-    return
-
-flow ItemFullBuyRecipecard:
-    run Event1
-    return
-
-flow AfterNewServiceExlpain:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:014', false)
-    run Event0
-    return
-
-flow Rcm_Groceries_Buy_Cancel:
-    run Event46
-    return
-
-flow Rcm_Groceries_Buy_Process:
-    run Event42
-    return
-
-flow Rcm_Cmn_BuySel_Cancel:
-    run Event21
-    return
-
-flow ItemFullBuySolo:
-    run Event1
-    return
-
-flow NotEnoughMoneySolo:
-    run Event33
-    return
-
-flow Rcm_Common_BuyAgain2:
-    run Event57
-    return
-
-flow CmnCloseShoppingUI:
-    fork:
-        branch0:
-        branch1:
-            EventFlowSystemActor.MessageSuspend()
-        branch2:
-            EventFlowSystemActor.UIShopBuyDisappear()
-    EventFlowSystemActor.WaitFrame(5)
-    return
-
-flow Rcm_OpenShoppingUI_EX:
-    EventFlowSystemActor.MarketShowcase('cOpen')
-    EventFlowSystemActor.WaitFrame(5)
-    run Event57
+        elif fEvent148 == 2:
+            run rcm_Common_TodaysFurniture
+    elif fEvent68 == NooksCrannyInitial:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
+entrypoint Event6:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:019', false)
+        fEvent148 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent148 == 0:
+            run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent148 == 1:
+            run Rcm_Common_TurnipChk
+        elif fEvent148 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
+        elif fEvent148 == 2:
+            run rcm_Common_TodaysFurniture
     return
 
 flow sub_grp!Event82:

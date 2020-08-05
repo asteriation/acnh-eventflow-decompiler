@@ -1,10 +1,3 @@
-flow Root:
-    if EventFlowSystemActor.NetIsConnected():
-        run FreeV_Chk
-    else:
-        run Free_Chk
-    return
-
 flow FreeV_Chk:
     if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
         run NNPC_Free_HouseV::Root
@@ -26,6 +19,13 @@ flow Free_Chk:
         run sub_Event18
     else:
         run NNPC_Free_Field::Root
+    return
+
+flow Root:
+    if EventFlowSystemActor.NetIsConnected():
+        run FreeV_Chk
+    else:
+        run Free_Chk
     return
 
 flow sub_Event18:

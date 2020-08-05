@@ -1,25 +1,6 @@
-flow EntryPoint_ResearchLocal:
-    EventFlowSystemActor.MessageSuspend()
-    run SNPC_dod_AirPort::EntryPoint_PreProcedure
-    EventFlowSystemActor.MessageLockNext(1)
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
-    EventFlowSystemActor.NetFindSessionVillage('cLocal')
-    EventFlowSystemActor.MessageSuspend()
-    run SNPC_dod_AirPort::EntryPoint_PostProcedure
-    EventFlowSystemActor.MessageUnlockNext()
-    run Event23
-    return
-
-flow EntryPoint_RockRetryLocal:
-    run SNPC_dod_AirPort::EntryPoint_PreProcedure
-    EventFlowSystemActor.MessageLockNext(1)
-    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
-    run Event46
-    return
-
-flow EntryPoint_PasswordRetryLocal:
-    EventFlowSystemActor.UISoftwareKeyboardHandling('cPasswordLocal', false)
-    run Event71
+flow Cmn_Hint_Going:
+    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:117_01', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:117_02', false)
     return
 
 flow EntryPoint_LocalVisitor:
@@ -59,11 +40,11 @@ entrypoint Event23:
                     EventFlowSystemActor.ExitFlowchart()
                 else:
                     fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
-                    if fEvent41 == 1:
-                        run EntryPoint_ResearchLocal
-                    elif fEvent41 == 2:
+                    if fEvent41 == 2:
                         EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                         run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                    elif fEvent41 == 1:
+                        run EntryPoint_ResearchLocal
                     elif fEvent41 == 0:
                         run sub_grp!Event68
             elif fEvent23 == 1:
@@ -125,11 +106,11 @@ entrypoint Event23:
                     EventFlowSystemActor.ExitFlowchart()
                 else:
                     fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
-                    if fEvent41 == 1:
-                        run EntryPoint_ResearchLocal
-                    elif fEvent41 == 2:
+                    if fEvent41 == 2:
                         EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                         run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
+                    elif fEvent41 == 1:
+                        run EntryPoint_ResearchLocal
                     elif fEvent41 == 0:
                         run sub_grp!Event68
             elif fEvent23 == 1:
@@ -154,10 +135,32 @@ entrypoint Event23:
             run SNPC_dod_AirPort::EntryPoint_Cancel
     return
 
-flow Cmn_Hint_Going:
-    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:117_01', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:117_02', false)
+flow EntryPoint_PasswordRetryLocal:
+    EventFlowSystemActor.UISoftwareKeyboardHandling('cPasswordLocal', false)
+    run Event71
     return
+
+flow EntryPoint_ResearchLocal:
+    EventFlowSystemActor.MessageSuspend()
+    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:003', false)
+    EventFlowSystemActor.NetFindSessionVillage('cLocal')
+    EventFlowSystemActor.MessageSuspend()
+    run SNPC_dod_AirPort::EntryPoint_PostProcedure
+    EventFlowSystemActor.MessageUnlockNext()
+    run Event23
+    return
+
+flow EntryPoint_RockRetryLocal:
+    run SNPC_dod_AirPort::EntryPoint_PreProcedure
+    EventFlowSystemActor.MessageLockNext(1)
+    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Network:004', false)
+    run Event46
+    return
+
+flow sub_Event105:
+    run EntryPoint_RockRetryLocal
 
 flow sub_grp!Event68:
     if EventFlowSystemActor.NetIsNeedPassword('cNeedPassword'):
@@ -269,7 +272,4 @@ entrypoint Event46:
                 else:
                     EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                     run SNPC_dod_AirPort::EntryPoint_Cancel
-
-flow sub_Event105:
-    run EntryPoint_RockRetryLocal
 

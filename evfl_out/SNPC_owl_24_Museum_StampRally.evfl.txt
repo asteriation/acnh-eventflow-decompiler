@@ -1,19 +1,19 @@
-flow Root:
-    if not ((not EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) or (event_flags_system['cLand:Museum2BuiltToday']) or (event_flags_system['cLand:Museum3BuiltToday'])):
-        if event_flags_system['cPlayer:OwlStampPlayed']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:005', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:006', false)
+flow Cmn_Present:
+    MainNpc.SetDeliveryItemAtRandom(12484, false, 'cVillageRemakePattern', 0)
+    MainNpc.NpcDelivery('Default', 1)
+    return
+
+flow CompCheck:
+    if EventFlowSystemActor.IsMyVillage():
+        if (event_flags_system['cPlayer:OwlStampGotInsect']) and (event_flags_system['cPlayer:OwlStampGotFish']) and (event_flags_system['cPlayer:OwlStampGotFossil']):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:032', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:002', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
-entrypoint Event142:
-        if EventFlowSystemActor.IsMyVillage():
-            event_flags_system['cPlayer:StampRallyRunningForPlayer'] = true
-            event_flags_system['cPlayer:OwlStampPlayed'] = true
-        else:
-            event_flags_system['cPlayerVisit:StampRallyRunningForPlayer'] = true
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Root
+            run sub_Event47
+    elif (event_flags_system['cPlayerVisit:OwlStampGotInsect']) and (event_flags_system['cPlayerVisit:OwlStampGotFish']) and (event_flags_system['cPlayerVisit:OwlStampGotFossil']):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:032', false)
+    else:
+        run sub_Event49
+    return
 
 flow From2ndTime:
     if not ((not EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) or (event_flags_system['cLand:Museum2BuiltToday']) or (event_flags_system['cLand:Museum3BuiltToday'])):
@@ -43,11 +43,62 @@ flow From2ndTime:
             run QuestJoin
     run sub_tm!From2ndTime
 
+flow GotReward:
+    if EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:OwlStampGotRewardExplain']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:026', false)
+        else:
+            event_flags_system['cPlayer:OwlStampGotRewardExplain'] = true
+            run sub_Event118
+    elif event_flags_system['cPlayerVisit:OwlStampGotRewardExplain']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:026', false)
+    else:
+        event_flags_system['cPlayerVisit:OwlStampGotRewardExplain'] = true
+        run sub_Event118
+    return
+
 flow Judge:
     run Stamp1
     run Stamp2
     run Stamp3
     return
+
+flow PocketChk:
+    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        if EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:OwlStampPocketWasFull'] = false
+        else:
+            event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = false
+    elif EventFlowSystemActor.IsMyVillage():
+        event_flags_system['cPlayer:OwlStampPocketWasFull'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
+        EventFlowSystemActor.ExitFlowchart()
+    else:
+        event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
+        EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow QuestJoin:
+    run Event142
+    return
+
+flow Root:
+    if not ((not EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) or (event_flags_system['cLand:Museum2BuiltToday']) or (event_flags_system['cLand:Museum3BuiltToday'])):
+        if event_flags_system['cPlayer:OwlStampPlayed']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:005', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:006', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:002', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
+entrypoint Event142:
+        if EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:StampRallyRunningForPlayer'] = true
+            event_flags_system['cPlayer:OwlStampPlayed'] = true
+        else:
+            event_flags_system['cPlayerVisit:StampRallyRunningForPlayer'] = true
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Root
 
 flow Stamp1:
     if EventFlowSystemActor.IsMyVillage():
@@ -79,73 +130,6 @@ flow Stamp1:
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Stamp1
 
-flow Stamp3:
-    if EventFlowSystemActor.IsMyVillage():
-        if (not event_flags_system['cPlayer:OwlStampGotFossil']) and (event_flags_system['cPlayer:OwlFossilStampRally1']) and (event_flags_system['cPlayer:OwlFossilStampRally2']) and (event_flags_system['cPlayer:OwlFossilStampRally3']):
-            if event_flags_system['cPlayer:OwlStampPocketWasFull']:
-                run sub_Event88
-            else:
-                run sub_Event115
-    elif (not event_flags_system['cPlayerVisit:OwlStampGotFossil']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally1']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally2']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally3']):
-        if event_flags_system['cPlayerVisit:OwlStampPocketWasFull']:
-            run sub_Event88
-        else:
-            run sub_Event115
-        if event_flags_system['cPlayer:OwlStampGotFossilReward']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:024', false)
-            run GotReward
-        else:
-            run PocketChk
-            run Cmn_Present
-            EventFlowSystemActor.SetItemToPocket(12484, 1)
-            event_flags_system['cPlayer:OwlStampGotFossilReward'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:021', false)
-        EventFlowSystemActor.UIStampRallyMuseumFromOwlHandling('cFossil')
-        if EventFlowSystemActor.IsMyVillage():
-            event_flags_system['cPlayer:OwlStampGotFossil'] = true
-        else:
-            event_flags_system['cPlayerVisit:OwlStampGotFossil'] = true
-        run CompCheck
-        EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!Stamp3
-
-flow PocketChk:
-    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-        if EventFlowSystemActor.IsMyVillage():
-            event_flags_system['cPlayer:OwlStampPocketWasFull'] = false
-        else:
-            event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = false
-    elif EventFlowSystemActor.IsMyVillage():
-        event_flags_system['cPlayer:OwlStampPocketWasFull'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
-        EventFlowSystemActor.ExitFlowchart()
-    else:
-        event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
-        EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow Cmn_Present:
-    MainNpc.SetDeliveryItemAtRandom(12484, false, 'cVillageRemakePattern', 0)
-    MainNpc.NpcDelivery('Default', 1)
-    return
-
-flow CompCheck:
-    if EventFlowSystemActor.IsMyVillage():
-        if (event_flags_system['cPlayer:OwlStampGotInsect']) and (event_flags_system['cPlayer:OwlStampGotFish']) and (event_flags_system['cPlayer:OwlStampGotFossil']):
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:032', false)
-        else:
-            run sub_Event47
-    elif (event_flags_system['cPlayerVisit:OwlStampGotInsect']) and (event_flags_system['cPlayerVisit:OwlStampGotFish']) and (event_flags_system['cPlayerVisit:OwlStampGotFossil']):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:032', false)
-    else:
-        run sub_Event49
-    return
-
-flow QuestJoin:
-    run Event142
-    return
-
 flow Stamp2:
     if EventFlowSystemActor.IsMyVillage():
         if (not event_flags_system['cPlayer:OwlStampGotFish']) and (event_flags_system['cPlayer:OwlFishStampRally1']) and (event_flags_system['cPlayer:OwlFishStampRally2']) and (event_flags_system['cPlayer:OwlFishStampRally3']):
@@ -176,55 +160,56 @@ flow Stamp2:
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Stamp2
 
-flow GotReward:
+flow Stamp3:
     if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:OwlStampGotRewardExplain']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:026', false)
+        if (not event_flags_system['cPlayer:OwlStampGotFossil']) and (event_flags_system['cPlayer:OwlFossilStampRally1']) and (event_flags_system['cPlayer:OwlFossilStampRally2']) and (event_flags_system['cPlayer:OwlFossilStampRally3']):
+            if event_flags_system['cPlayer:OwlStampPocketWasFull']:
+                run sub_Event88
+            else:
+                run sub_Event115
+    elif (not event_flags_system['cPlayerVisit:OwlStampGotFossil']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally1']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally2']) and (event_flags_system['cPlayerVisit:OwlFossilStampRally3']):
+        if event_flags_system['cPlayerVisit:OwlStampPocketWasFull']:
+            run sub_Event88
         else:
-            event_flags_system['cPlayer:OwlStampGotRewardExplain'] = true
-            run sub_Event118
-    elif event_flags_system['cPlayerVisit:OwlStampGotRewardExplain']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:026', false)
-    else:
-        event_flags_system['cPlayerVisit:OwlStampGotRewardExplain'] = true
-        run sub_Event118
-    return
+            run sub_Event115
+        if event_flags_system['cPlayer:OwlStampGotFossilReward']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:024', false)
+            run GotReward
+        else:
+            run PocketChk
+            run Cmn_Present
+            EventFlowSystemActor.SetItemToPocket(12484, 1)
+            event_flags_system['cPlayer:OwlStampGotFossilReward'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:021', false)
+        EventFlowSystemActor.UIStampRallyMuseumFromOwlHandling('cFossil')
+        if EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:OwlStampGotFossil'] = true
+        else:
+            event_flags_system['cPlayerVisit:OwlStampGotFossil'] = true
+        run CompCheck
+        EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!Stamp3
 
-flow sub_tm!Root:
-    return
+flow sub_Event114:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:012', false)
 
-flow sub_tm!From2ndTime:
-    return
+flow sub_Event115:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:013', false)
 
-flow sub_tm!Stamp1:
-    return
-
-flow sub_tm!Stamp3:
-    return
-
-flow sub_tm!Stamp2:
-    return
-
-flow sub_Event64:
-    run QuestJoin
-
-flow sub_Event18:
-    run Judge
+flow sub_Event118:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:025', false)
 
 flow sub_Event144:
     run Judge
 
-flow sub_Event41:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:015', false)
+flow sub_Event18:
+    run Judge
 
 flow sub_Event20:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:011', false)
 
-flow sub_Event88:
+flow sub_Event41:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:015', false)
-
-flow sub_Event115:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:013', false)
 
 flow sub_Event47:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:031', false)
@@ -232,12 +217,27 @@ flow sub_Event47:
 flow sub_Event49:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:031', false)
 
+flow sub_Event64:
+    run QuestJoin
+
 flow sub_Event87:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:015', false)
 
-flow sub_Event114:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:012', false)
+flow sub_Event88:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:015', false)
 
-flow sub_Event118:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:025', false)
+flow sub_tm!From2ndTime:
+    return
+
+flow sub_tm!Root:
+    return
+
+flow sub_tm!Stamp1:
+    return
+
+flow sub_tm!Stamp2:
+    return
+
+flow sub_tm!Stamp3:
+    return
 

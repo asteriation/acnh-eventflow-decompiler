@@ -1,12 +1,10 @@
-flow Root:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:002', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:003', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:004_01', true)
-    run Rco_GetSmartPhone
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:007', true)
-    run Rco_TutorialGetBill
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:013', true)
-    run Rco_OrientationEnd
+flow InvisibleNpc:
+    MainNpc.NpcRequestAction(3)
+    Npc_1.NpcRequestAction(3)
+    Npc_2.NpcRequestAction(3)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rco', 0)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rct', 0)
+    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rcm', 0)
     return
 
 flow RcoTentCall:
@@ -53,6 +51,20 @@ flow Rco_GetSmartPhone:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:006_03', false)
     return
 
+flow Rco_OrientationEnd:
+    EventFlowSystemActor.WaitFrame(10)
+    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+    EventFlowSystemActor.WaitFrame(30)
+    MainNpc.NpcAISetting(12, false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        event_flags_system['cLand:FinishiPC1Prologue'] = true
+        event_flags_system['cLand:TodayStartTown1P'] = true
+    else:
+        run InvisibleNpc
+    EventFlowSystemActor.FadeIn(true)
+    EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
+    return
+
 flow Rco_TutorialGetBill:
     MainNpc.SetDeliveryItemAtRandom(3077, false, 'cVillageRemakePattern', 0)
     MainNpc.NpcDelivery('Keep', 1)
@@ -79,27 +91,15 @@ flow Rco_TutorialGetBill:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:012', false)
     return
 
-flow Rco_OrientationEnd:
-    EventFlowSystemActor.WaitFrame(10)
-    EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
-    EventFlowSystemActor.WaitFrame(30)
-    MainNpc.NpcAISetting(12, false)
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        event_flags_system['cLand:FinishiPC1Prologue'] = true
-        event_flags_system['cLand:TodayStartTown1P'] = true
-    else:
-        run InvisibleNpc
-    EventFlowSystemActor.FadeIn(true)
-    EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
-    return
-
-flow InvisibleNpc:
-    MainNpc.NpcRequestAction(3)
-    Npc_1.NpcRequestAction(3)
-    Npc_2.NpcRequestAction(3)
-    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rco', 0)
-    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rct', 0)
-    EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Visible', 0, 'rcm', 0)
+flow Root:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:002', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:003', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:004_01', true)
+    run Rco_GetSmartPhone
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:007', true)
+    run Rco_TutorialGetBill
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:013', true)
+    run Rco_OrientationEnd
     return
 
 flow sub_Event70:

@@ -1,38 +1,9 @@
-flow Root:
-    if MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-        MainNpc.NpcAISetting(14, false)
-        MainNpc.NpcChangeOwlPostTalkState('cOwlPostTalk', 'Root', 'SNPC_owl', '', false, true, 30)
-        MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
-    elif MainNpc.CheckCurrentNpcAIState('cOwlPostTalk') == 0:
-        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_owl', true, true, false, 2, 0.0, '')
-        MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
-    elif (not EventFlowSystemActor.NetIsDreaming()) and (not EventFlowSystemActor.NetIsConnected()) and (MainNpc.CheckCurrentNpcAIState('cTurn') != 0):
-        fEvent48 = EventFlowSystemActor.MuseumLevel()
-        if fEvent48 in (BlathersMuseumNoArt, BlathersMuseumArt):
-            if MainNpc.CheckCurrentNpcAIState('cOwlSleepy') == 0:
-                run AI_owl_changesleep
-            elif MainNpc.CheckCurrentNpcAIState('cOwlAwake') == 0:
-                run AI_owl_changeawake
-            else:
-                fEvent0 = EventFlowSystemActor.EnvHourTwentyFour()
-                if fEvent0 in (0, 1, 2, 3, 4):
-                    run AI_owl_night
-                elif fEvent0 in (5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
-                    run AI_owl_day
-                elif fEvent0 in (18, 19, 20, 21, 22, 23):
-                    run AI_owl_night
-        elif fEvent48 == BlathersTent:
-            run sub_Event40
-    else:
-        run sub_Event40
+flow AI_owl_changeawake:
+    run Event24
     return
 
-flow Init:
-    MainNpc.NpcRegistAIBlackBoard('IsSleep', 0)
-    MainNpc.NpcAISetting(0, true)
-    MainNpc.NpcAISetting(1, true)
-    MainNpc.NpcAISetting(8, true)
-    MainNpc.NpcAISetting(2, false)
+flow AI_owl_changesleep:
+    run Event12
     return
 
 flow AI_owl_day:
@@ -69,12 +40,41 @@ entrypoint Event24:
         run Event41
     return
 
-flow AI_owl_changeawake:
-    run Event24
+flow Init:
+    MainNpc.NpcRegistAIBlackBoard('IsSleep', 0)
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcAISetting(2, false)
     return
 
-flow AI_owl_changesleep:
-    run Event12
+flow Root:
+    if MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+        MainNpc.NpcAISetting(14, false)
+        MainNpc.NpcChangeOwlPostTalkState('cOwlPostTalk', 'Root', 'SNPC_owl', '', false, true, 30)
+        MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
+    elif MainNpc.CheckCurrentNpcAIState('cOwlPostTalk') == 0:
+        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_owl', true, true, false, 2, 0.0, '')
+        MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)
+    elif (not EventFlowSystemActor.NetIsDreaming()) and (not EventFlowSystemActor.NetIsConnected()) and (MainNpc.CheckCurrentNpcAIState('cTurn') != 0):
+        fEvent48 = EventFlowSystemActor.MuseumLevel()
+        if fEvent48 == BlathersTent:
+            run sub_Event40
+        elif fEvent48 in (BlathersMuseumNoArt, BlathersMuseumArt):
+            if MainNpc.CheckCurrentNpcAIState('cOwlSleepy') == 0:
+                run AI_owl_changesleep
+            elif MainNpc.CheckCurrentNpcAIState('cOwlAwake') == 0:
+                run AI_owl_changeawake
+            else:
+                fEvent0 = EventFlowSystemActor.EnvHourTwentyFour()
+                if fEvent0 in (0, 1, 2, 3, 4):
+                    run AI_owl_night
+                elif fEvent0 in (18, 19, 20, 21, 22, 23):
+                    run AI_owl_night
+                elif fEvent0 in (5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
+                    run AI_owl_day
+    else:
+        run sub_Event40
     return
 
 flow sub_Event40:

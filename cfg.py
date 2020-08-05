@@ -59,14 +59,17 @@ class Action:
         return conversion
 
     def __str__(self) -> str:
+        name = self.name
+        if '.' in name:
+            name = name[name.index('.') + 1:]
         if self.default:
             auto_s = ' (auto)' if self.auto else ''
-            conv = self.conversion.replace('<.name>', self.name)
+            conv = self.conversion.replace('<.name>', name)
             for p in self.params:
                 conv = conv.replace(f'<{p.name}>', f'{p.name}: {p.type}')
             return conv + auto_s
         else:
-            return f'{self.name}: {self.conversion}'
+            return f'{name}: {self.conversion}'
 
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
@@ -128,16 +131,21 @@ class Query:
         return conversion
 
     def __str__(self) -> str:
+        name = self.name
+        if '.' in name:
+            name = name[name.index('.') + 1:]
         if self.default:
             assert isinstance(self.conversion, str)
+            inv_s = ' (inverted)' if self.inverted else ''
             auto_s = ' (auto)' if self.auto else ''
-            conv = self.conversion.replace('<.name>', self.name)
+            conv = self.conversion.replace('<.name>', name)
             for p in self.params:
                 conv = conv.replace(f'<{p.name}>', f'{p.name}: {p.type}')
             rv_s = f' -> {self.rv}'
-            return conv + rv_s + auto_s
+            return conv + rv_s + inv_s + auto_s
         else:
-            return f'{self.name}: {self.conversion}'
+            inv_s = ' (inverted)' if self.inverted else ''
+            return f'{name}: {self.conversion}{inv_s}'
 
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
@@ -517,7 +525,7 @@ class SwitchNode(Node):
             vname = f'f{self.name}'
 
             cases: List[str] = []
-            for event, values in self.cases.items():
+            for event, values in sorted(self.cases.items(), key=lambda x: x[0]):
                 try:
                     else_s = 'el' if cases else ''
                     op_s = f'== {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(_format_type(self.query.rv, v)  for v in values) + ')'
@@ -1136,7 +1144,7 @@ class CFG:
         dom = self.__find_dominator_tree(entry)
         end = self.__find_block_end(root, dom)
 
-        print(entry.name, root.name, end)
+        # print(entry.name, root.name, end)
 
         if end is None: # no end found, do not collapse
             return root
@@ -1148,7 +1156,7 @@ class CFG:
         if end in root.out_edges:
             self.__detach_nodes_with_noop(root, end)
 
-        print('Collapsing', root.name, 'to', end.name)
+        # print('Collapsing', root.name, 'to', end.name)
 
         sw = GroupNode(root)
         for in_node in root.in_edges:
@@ -1201,7 +1209,7 @@ class CFG:
         # if a node has two different node parents and is the root of a DAG, extract to subflow
         for node in nodes:
             if len(set(node.in_edges)) >= 2 and self.__is_cut([node]):
-                print('detaching', node.name, [n.name for n in node.in_edges])
+                # print('detaching', node.name, [n.name for n in node.in_edges])
                 self.__detach_node_as_sub(node)
             elif isinstance(node, GroupNode):
                 l = node.nodes[:]
@@ -1214,6 +1222,7 @@ class CFG:
             node.simplify()
 
     def generate_code(self) -> str:
+        self.roots.sort(key=lambda x: x.name)
         code = '\n'.join(root.generate_code() for root in self.roots).split('\n')
 
         # strip ununsed labels
@@ -1372,25 +1381,5 @@ class CFG:
 
             cfg.__simplify_all()
 
-        # for a in cfg.actors.values():
-            # print(a)
-
         return cfg
 
-import sys
-import json
-
-with open(sys.argv[1] if len(sys.argv) >= 2 else 'bfevfl/System_GrowUp.bfevfl', 'rb') as f:
-    with open('actors.json', 'rt') as af:
-        actor_data = json.load(af)
-    try:
-        cfg = CFG.read(f.read(), actor_data)
-        # cfg.generate_code()
-    except:
-        raise
-        # sys.exit(1)
-
-    print(cfg.generate_code())
-    # print(json.dumps(cfg.export_actors(), indent=4))
-# inverted MultiKindItemSelectInclude - like strcmp?.. check functions, border, etc.
-# lol: NNPC_Talk_General(continuousnpctalkcount)

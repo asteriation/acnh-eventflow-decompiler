@@ -25,6 +25,52 @@ flow FinishCall:
     MainNpc.SmartPhone(1)
     return
 
+flow FinishingPhoneCall:
+    EventFlowSystemActor.WaitFrame(5)
+    DynamicCast_rco.SmartPhone(3)
+    EventFlowSystemActor.WaitFrame(1)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    return
+
+flow MakingPhoneCall:
+    EventFlowSystemActor.WaitFrame(5)
+    DynamicCast_rco.SmartPhone(0)
+    DynamicCast_rco.SmartPhone(4)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhone(2)
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 0)
+    EventFlowSystemActor.WaitFrame(120)
+    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 1)
+    EventFlowSystemActor.WaitFrame(1)
+    DynamicCast_rco.SmartPhoneSE('Phone_Unlock', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    return
+
+flow PuttingMobileAwayWithP:
+    fork:
+        branch0:
+        branch1:
+            MainNpc.SmartPhone(1)
+        branch2:
+            EventFlowSystemActor.WaitFrame(15)
+            Player.SmartPhone(1)
+    return
+
+flow PuttingMobileAwayWithP_DynamicJoin:
+    fork:
+        branch0:
+        branch1:
+            DynamicCast_rco.SmartPhone(1)
+        branch2:
+            EventFlowSystemActor.WaitFrame(15)
+            Player.SmartPhone(1)
+    return
+
 flow SendingDataOneWay:
     EventFlowSystemActor.WaitFrame(15)
     MainNpc.SmartPhone(0)
@@ -35,6 +81,18 @@ flow SendingDataOneWay:
     MainNpc.SmartPhoneSE('Phone_Sending', 2)
     EventFlowSystemActor.WaitFrame(40)
     MainNpc.SmartPhone(5)
+    return
+
+flow SendingDataOneWay_DynamicJoin:
+    EventFlowSystemActor.WaitFrame(15)
+    DynamicCast_rco.SmartPhone(0)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(40)
+    DynamicCast_rco.SmartPhone(5)
     return
 
 flow SendingDataWithP:
@@ -49,14 +107,27 @@ flow SendingDataWithP:
     run Event23
     return
 
-flow PuttingMobileAwayWithP:
+flow SendingDataWithP_DynamicJoin:
+    EventFlowSystemActor.WaitFrame(15)
+    Player.SmartPhone(0)
     fork:
         branch0:
         branch1:
-            MainNpc.SmartPhone(1)
+            Player.SmartPhone(4)
         branch2:
-            EventFlowSystemActor.WaitFrame(15)
-            Player.SmartPhone(1)
+            DynamicCast_rco.CharacterEmoticonAction('Smiling', '', 30, true, false)
+    EventFlowSystemActor.WaitFrame(20)
+    DynamicCast_rco.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
+    DynamicCast_rco.SmartPhone(4)
+    EventFlowSystemActor.WaitFrame(10)
+    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    Player.SmartPhoneSE('Phone_Recieving', 2)
+    EventFlowSystemActor.WaitFrame(30)
+    DynamicCast_rco.SmartPhone(5)
+    Player.SmartPhone(5)
     return
 
 flow SendingDataWithP_Owl:
@@ -83,76 +154,5 @@ entrypoint Event23:
     EventFlowSystemActor.WaitFrame(30)
     MainNpc.SmartPhone(5)
     Player.SmartPhone(5)
-    return
-
-flow MakingPhoneCall:
-    EventFlowSystemActor.WaitFrame(5)
-    DynamicCast_rco.SmartPhone(0)
-    DynamicCast_rco.SmartPhone(4)
-    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
-    EventFlowSystemActor.WaitFrame(15)
-    DynamicCast_rco.SmartPhone(2)
-    EventFlowSystemActor.WaitFrame(15)
-    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 0)
-    EventFlowSystemActor.WaitFrame(120)
-    DynamicCast_rco.SmartPhoneSE('Phone_Calling', 1)
-    EventFlowSystemActor.WaitFrame(1)
-    DynamicCast_rco.SmartPhoneSE('Phone_Unlock', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    return
-
-flow FinishingPhoneCall:
-    EventFlowSystemActor.WaitFrame(5)
-    DynamicCast_rco.SmartPhone(3)
-    EventFlowSystemActor.WaitFrame(1)
-    DynamicCast_rco.SmartPhone(4)
-    EventFlowSystemActor.WaitFrame(15)
-    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
-    EventFlowSystemActor.WaitFrame(15)
-    return
-
-flow SendingDataOneWay_DynamicJoin:
-    EventFlowSystemActor.WaitFrame(15)
-    DynamicCast_rco.SmartPhone(0)
-    DynamicCast_rco.SmartPhone(4)
-    EventFlowSystemActor.WaitFrame(10)
-    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
-    EventFlowSystemActor.WaitFrame(40)
-    DynamicCast_rco.SmartPhone(5)
-    return
-
-flow SendingDataWithP_DynamicJoin:
-    EventFlowSystemActor.WaitFrame(15)
-    Player.SmartPhone(0)
-    fork:
-        branch0:
-        branch1:
-            Player.SmartPhone(4)
-        branch2:
-            DynamicCast_rco.CharacterEmoticonAction('Smiling', '', 30, true, false)
-    EventFlowSystemActor.WaitFrame(20)
-    DynamicCast_rco.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
-    DynamicCast_rco.SmartPhone(4)
-    EventFlowSystemActor.WaitFrame(10)
-    DynamicCast_rco.SmartPhoneSE('Phone_Control', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    DynamicCast_rco.SmartPhoneSE('Phone_Sending', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    Player.SmartPhoneSE('Phone_Recieving', 2)
-    EventFlowSystemActor.WaitFrame(30)
-    DynamicCast_rco.SmartPhone(5)
-    Player.SmartPhone(5)
-    return
-
-flow PuttingMobileAwayWithP_DynamicJoin:
-    fork:
-        branch0:
-        branch1:
-            DynamicCast_rco.SmartPhone(1)
-        branch2:
-            EventFlowSystemActor.WaitFrame(15)
-            Player.SmartPhone(1)
     return
 

@@ -1,73 +1,3 @@
-flow Root:
-    event_flags_system['cPlayerTemp:CampCurrentSceneTalkDone'] = true
-    if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cLand:AmiiboCampSiteCall']:
-            run Flow_Amiibo
-        else:
-            run Flow_Normal
-    elif MainNpc.CheckNpcMoveIn('cDefault'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:003', false)
-    elif event_flags_system['cLand:AmiiboCampSiteCall']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:002', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:001', false)
-    return
-
-flow Flow_Normal:
-    if event_flags_system['cLand:CampFirstCamperVisit']:
-        run Flow_FirstCamperZK
-    elif not event_flags_system['cPlayer:CampFirstTalk']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:101', false)
-        event_flags_system['cPlayer:CampFirstTalk'] = true
-    elif MainNpc.CheckNpcMoveIn('cDefault'):
-        if (EventFlowSystemActor.PercentChoice(30)) and (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
-            run sub_Event23
-        else:
-            run sub_grp!Event24
-    elif (EventFlowSystemActor.CheckMoveOutNpcIsMoveKitVillager()) or (MainNpc.IsSameNpcLiving()):
-        run sub_grp!Event173
-    elif event_flags_system['cPlayer:Camp_InduceFailFlag']:
-        fEvent10 = EventFlowSystemActor.PercentChoice3(50, 20, 30)
-        if fEvent10 == 0:
-            if EventFlowSystemActor.NetIsConnected():
-                run sub_Event26
-            else:
-                run NNPC_Spot_Camp_Invite::Flow_ReInvite
-        elif fEvent10 == 2:
-            if (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
-                run sub_Event19
-            else:
-                if EventFlowSystemActor.PercentChoice(70):
-                    if EventFlowSystemActor.NetIsConnected():
-                        run sub_Event26
-                    else:
-                        run NNPC_Spot_Camp_Invite::Flow_ReInvite
-                else:
-                    run sub_Event26
-        elif fEvent10 == 1:
-            run sub_Event26
-    else:
-        fEvent9 = EventFlowSystemActor.PercentChoice3(20, 50, 30)
-        if fEvent9 == 0:
-            if EventFlowSystemActor.NetIsConnected():
-                run sub_Event11
-            else:
-                run Talk_Invite_Normal
-        elif fEvent9 == 2:
-            if (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
-                run sub_Event12
-            else:
-                if EventFlowSystemActor.PercentChoice(30):
-                    if EventFlowSystemActor.NetIsConnected():
-                        run sub_Event11
-                    else:
-                        run Talk_Invite_Normal
-                else:
-                    run sub_Event11
-        elif fEvent9 == 1:
-            run sub_Event11
-    return
-
 flow Flow_Amiibo:
     if event_flags_system['cPlayer:CampFirstTalk']:
         if MainNpc.CheckNpcMoveIn('cDefault'):
@@ -115,83 +45,6 @@ flow Flow_Amiibo:
         EventFlowSystemActor.SetPlayerNameCallCamperNpc()
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:202', false)
         event_flags_system['cPlayer:CampFirstTalk'] = true
-    return
-
-flow Talk_Free:
-    if event_flags_system['cLand:AmiiboCampSiteCall']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:302', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:301', false)
-    return
-
-flow Talk_Invite_Normal:
-    fEvent15 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent15 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_01', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run sub_Event202
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_01', false)
-    elif fEvent15 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_02', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run sub_Event202
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_02', false)
-    elif fEvent15 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_03', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run sub_Event202
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_03', false)
-    return
-
-flow Talk_Move:
-    if MainNpc.CheckNpcMoveIn('cMainPlayer'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:401', false)
-    elif MainNpc.InducePlayerExist():
-        MainNpc.SetInvitePlayerName()
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:402', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:403', false)
-    return
-
-flow Talk_Invite_Amiibo:
-    fEvent34 = MainNpc.CheckCamperNpcMovePoint()
-    if fEvent34 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:504', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:505', false)
-            event_flags_system['cPlayer:Camp_InduceFailFlag'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:506', false)
-    elif fEvent34 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:507', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:508', false)
-            event_flags_system['cPlayer:Camp_InduceFailFlag'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:509', false)
-    elif fEvent34 == 3:
-        fEvent41 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent41 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_01', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run sub_Event44
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_01', false)
-        elif fEvent41 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_02', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run sub_Event44
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_02', false)
-        elif fEvent41 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_03', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run sub_Event44
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_03', false)
     return
 
 flow Flow_FirstCamperZK:
@@ -255,6 +108,153 @@ flow Flow_FirstCamperZK_2P:
         event_flags_system['cPlayer:TalkFirstCamperAfterSetHousing'] = true
     return
 
+flow Flow_Normal:
+    if event_flags_system['cLand:CampFirstCamperVisit']:
+        run Flow_FirstCamperZK
+    elif not event_flags_system['cPlayer:CampFirstTalk']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:101', false)
+        event_flags_system['cPlayer:CampFirstTalk'] = true
+    elif MainNpc.CheckNpcMoveIn('cDefault'):
+        if (EventFlowSystemActor.PercentChoice(30)) and (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
+            run sub_Event23
+        else:
+            run sub_grp!Event24
+    elif (EventFlowSystemActor.CheckMoveOutNpcIsMoveKitVillager()) or (MainNpc.IsSameNpcLiving()):
+        run sub_grp!Event173
+    elif event_flags_system['cPlayer:Camp_InduceFailFlag']:
+        fEvent10 = EventFlowSystemActor.PercentChoice3(50, 20, 30)
+        if fEvent10 == 0:
+            if EventFlowSystemActor.NetIsConnected():
+                run sub_Event26
+            else:
+                run NNPC_Spot_Camp_Invite::Flow_ReInvite
+        elif fEvent10 == 1:
+            run sub_Event26
+        elif fEvent10 == 2:
+            if (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
+                run sub_Event19
+            else:
+                if EventFlowSystemActor.PercentChoice(70):
+                    if EventFlowSystemActor.NetIsConnected():
+                        run sub_Event26
+                    else:
+                        run NNPC_Spot_Camp_Invite::Flow_ReInvite
+                else:
+                    run sub_Event26
+    else:
+        fEvent9 = EventFlowSystemActor.PercentChoice3(20, 50, 30)
+        if fEvent9 == 0:
+            if EventFlowSystemActor.NetIsConnected():
+                run sub_Event11
+            else:
+                run Talk_Invite_Normal
+        elif fEvent9 == 1:
+            run sub_Event11
+        elif fEvent9 == 2:
+            if (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
+                run sub_Event12
+            else:
+                if EventFlowSystemActor.PercentChoice(30):
+                    if EventFlowSystemActor.NetIsConnected():
+                        run sub_Event11
+                    else:
+                        run Talk_Invite_Normal
+                else:
+                    run sub_Event11
+    return
+
+flow Root:
+    event_flags_system['cPlayerTemp:CampCurrentSceneTalkDone'] = true
+    if EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cLand:AmiiboCampSiteCall']:
+            run Flow_Amiibo
+        else:
+            run Flow_Normal
+    elif MainNpc.CheckNpcMoveIn('cDefault'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:003', false)
+    elif event_flags_system['cLand:AmiiboCampSiteCall']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:002', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:001', false)
+    return
+
+flow Talk_Free:
+    if event_flags_system['cLand:AmiiboCampSiteCall']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:302', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:301', false)
+    return
+
+flow Talk_Invite_Amiibo:
+    fEvent34 = MainNpc.CheckCamperNpcMovePoint()
+    if fEvent34 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:504', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:505', false)
+            event_flags_system['cPlayer:Camp_InduceFailFlag'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:506', false)
+    elif fEvent34 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:507', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:508', false)
+            event_flags_system['cPlayer:Camp_InduceFailFlag'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:509', false)
+    elif fEvent34 == 3:
+        fEvent41 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent41 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_02', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run sub_Event44
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_02', false)
+        elif fEvent41 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_03', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run sub_Event44
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_03', false)
+        elif fEvent41 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:601_01', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run sub_Event44
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:602_01', false)
+    return
+
+flow Talk_Invite_Normal:
+    fEvent15 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+    if fEvent15 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_01', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_Event202
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_01', false)
+    elif fEvent15 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_02', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_Event202
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_02', false)
+    elif fEvent15 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:501_03', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_Event202
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:502_03', false)
+    return
+
+flow Talk_Move:
+    if MainNpc.CheckNpcMoveIn('cMainPlayer'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:401', false)
+    elif MainNpc.InducePlayerExist():
+        MainNpc.SetInvitePlayerName()
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:402', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:403', false)
+    return
+
 flow sub_Event11:
     run Talk_Free
 
@@ -264,17 +264,20 @@ flow sub_Event12:
 flow sub_Event19:
     run NNPC_Spot_Camp_Game::Root
 
-flow sub_Event26:
-    run Talk_Free
+flow sub_Event202:
+    run NNPC_Spot_Camp_Invite::Flow_Invite
 
 flow sub_Event23:
     run NNPC_Spot_Camp_Game::Root
 
-flow sub_grp!Event24:
-    if EventFlowSystemActor.PercentChoice(30):
-        run Talk_Move
-    else:
-        run Talk_Free
+flow sub_Event26:
+    run Talk_Free
+
+flow sub_Event40:
+    run Talk_Free
+
+flow sub_Event44:
+    run NNPC_Spot_Camp_Invite::Flow_Invite
 
 flow sub_grp!Event173:
     if (EventFlowSystemActor.PercentChoice(38)) and (event_flags_system['cPlayer:CampGameClear'] != 3) and ((not event_flags_system['cPlayerTemp:CampGameStartFailed']) or (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
@@ -282,12 +285,9 @@ flow sub_grp!Event173:
     else:
         run Talk_Free
 
-flow sub_Event40:
-    run Talk_Free
-
-flow sub_Event202:
-    run NNPC_Spot_Camp_Invite::Flow_Invite
-
-flow sub_Event44:
-    run NNPC_Spot_Camp_Invite::Flow_Invite
+flow sub_grp!Event24:
+    if EventFlowSystemActor.PercentChoice(30):
+        run Talk_Move
+    else:
+        run Talk_Free
 

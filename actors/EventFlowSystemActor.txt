@@ -1,713 +1,711 @@
 Actor EventFlowSystemActor
 actions:
-- EventFlowSystemActor.EventFlagSystemAdd: event_flags[<AccessKey>] += <AddNum>
-- EventFlowSystemActor.EventFlagSystemSet: event_flags[<AccessKey>] = <SetNum>
-- EventFlowSystemActor.EventFlagSystemOn: event_flags[<AccessKey>] = 1
-- EventFlowSystemActor.EventFlagSystemOff: event_flags[<AccessKey>] = 0
-- EventFlowSystemActor.StructureMoveSaveIndex(IndexType: int)
-- EventFlowSystemActor.EventFlagOffAllLiver(AccessKey: str)
-- EventFlowSystemActor.EventFlaResetAllLiver(AccessKey: str)
-- EventFlowSystemActor.SetWeatherPattern(PatternName: str)
-- EventFlowSystemActor.SetSubflowResult: subflow_results[<SetIndex>] = <ResultValue>
-- EventFlowSystemActor.ReservePlayerMutterDemo(EntryPointName: str, MutterStartTiming: str, EventFileName: str, IsResistNpcCast: bool)
-- EventFlowSystemActor.ExitFlowchart()
-- EventFlowSystemActor.CameraSetDemoParam(CameraTargetKey: str, CameraParamKey: str, CameraInterpolateKey: str, UseNearCulling: bool, AdjustAngleYOnEnter: bool, AdjustAngleYOnLeave: bool, Arg: int)
-- EventFlowSystemActor.WaitFrame(WaitFrame: int)
-- EventFlowSystemActor.SetBirthdayVillagerName(Target: int, TagID: int)
-- EventFlowSystemActor.PlayerSetCraftRecipe(ItemUniqueId: int, UnlockType: str)
-- EventFlowSystemActor.SystemMailSend(FromType: str, FileIndex: str, Route: str, Present: str, TagType: str, ToSharePlayer: bool, LabelIndex: int)
-- EventFlowSystemActor.SystemRequestChangeStage(TargetStage: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.SoundDuckingOn(Id: int)
-- EventFlowSystemActor.SoundDuckingOff(Id: int)
-- EventFlowSystemActor.BGMPropertyControl(BGMProperty: int)
-- EventFlowSystemActor.FadeIn(IsWait: bool)
-- EventFlowSystemActor.SetupActorPosition(Type: any)
-- EventFlowSystemActor.UIDemoClock(DisplayFrame: int)
-- EventFlowSystemActor.WaitFaderSleep()
-- EventFlowSystemActor.MessageSuspend()
-- EventFlowSystemActor.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
-- EventFlowSystemActor.StoreNormalCamera(IsImmediately: bool)
-- EventFlowSystemActor.FadeOut(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float, IsUseDucking: bool)
-- EventFlowSystemActor.SetCountDownCamera(CameraActionKindString: str)
-- EventFlowSystemActor.SwapSpeaker(SwapSpeaker: str, DispNameTag: bool)
-- EventFlowSystemActor.RequestRecreateFtr()
-- EventFlowSystemActor.RequestStartPeriodicalFireworks()
-- EventFlowSystemActor.CompleteSettlerQuestSubject(SettlerType: int)
-- EventFlowSystemActor.DecideSettlerNpc(SettlerType: int)
-- EventFlowSystemActor.NpcSetRewardRecipe(ItemUniqueId: int, DIYNpcItem: bool)
-- EventFlowSystemActor.SelectRewardItemDirect(ItemUniqueId: int, SetNum: int, ItemRemakeDecideType: str, RemakePatternIndex: int)
-- EventFlowSystemActor.UIAudioHandling()
-- EventFlowSystemActor.SetTagFromSystem(TagID: int, TagType: str, SetTagType: str, AccessKey: str, Value: any)
-- EventFlowSystemActor.NpcSelectMessage(StartType0: str, StartType1: str, StartType2: str, StartType3: str, MessageID0: str, MessageID1: str, MessageID2: str, MessageID3: str)
-- EventFlowSystemActor.SoundTriggerEmit(AssetKeyName: str, FadeHandleId: int)
-- EventFlowSystemActor.TurnOffTempAudioMusic()
-- EventFlowSystemActor.TurnOffEventPlazaDuckingJudge()
-- EventFlowSystemActor.TurnOffForceMaxVolumeForAudioMusic()
-- EventFlowSystemActor.UIClosetLotteryHandling()
-- EventFlowSystemActor.UICoordinateEditHandling()
-- EventFlowSystemActor.UIClosetHandling()
-- EventFlowSystemActor.UIClosetBalloonDisappear()
-- EventFlowSystemActor.UIClosetCreate()
-- EventFlowSystemActor.UIClosetBalloonAppearHandling()
-- EventFlowSystemActor.UICharactermakingHandling(CharctermakingFilterType: str)
-- EventFlowSystemActor.SaveSetFromUIResult(SaveType: str)
-- EventFlowSystemActor.UICharactermakingCreate()
-- EventFlowSystemActor.UIPostHandling()
-- EventFlowSystemActor.UIWaitReceivingMailAppear()
-- EventFlowSystemActor.CheckFreeCommunication(isShowUI: bool)
-- EventFlowSystemActor.UIPostCreate()
-- EventFlowSystemActor.NetFriendMailCheck()
-- EventFlowSystemActor.SystemSetTagRadioPlayMusic()
-- EventFlowSystemActor.UIStampRallyMuseumFromStampRackHandling()
-- EventFlowSystemActor.UIItemSelectWindowHandling(ItemUniqueID: int, ItemKindType: str, Mode: str, ItemFilterType: str, FilterType: str, IsSingleSelect: bool)
-- EventFlowSystemActor.SystemDeletePlayerItem(DeleteType: str, DeleteNum: int)
-- EventFlowSystemActor.UISoftwareKeyboardHandling(FormType: str, IsClearString: bool)
-- EventFlowSystemActor.SetTagFromUIResult(TagID: int, TagType: str)
-- EventFlowSystemActor.UIMoneyDisappear()
-- EventFlowSystemActor.BellCountDown(Money: any, Reverse: any)
-- EventFlowSystemActor.UIMoneyAppear()
-- EventFlowSystemActor.SetItemToPocket(ItemUniqueId: int, SetNum: int)
-- EventFlowSystemActor.SetCalcPriceBySolo()
-- EventFlowSystemActor.UIMiniGameTimerAppear(Time: int, CounterUIType: str)
-- EventFlowSystemActor.SetSharePlayChangeCondition(Lock: bool)
-- EventFlowSystemActor.SetSharePlaySubToolCondition(IsEnable: bool)
-- EventFlowSystemActor.SetBirthdayPToldlPartySharePlayFlag()
-- EventFlowSystemActor.SetPlayerNameCallCamperNpc()
-- EventFlowSystemActor.Set6thVillager(Step: int)
-- EventFlowSystemActor.SystemDecideFaceCard(GameType: str)
-- EventFlowSystemActor.UIMiniGameHighAndLowHandling(Command: str)
-- EventFlowSystemActor.SelectRewardItemCampGame(CamperRewardType: str)
-- EventFlowSystemActor.UISelectNpcMoveOut(MoveOutNpcType: str)
-- EventFlowSystemActor.UIMsgCardAdrHandling(MsgCardAdrType: str)
-- EventFlowSystemActor.SelectMoveOutNpcRandom()
-- EventFlowSystemActor.SetCheckResultConvReaction(CheckResult: int)
-- EventFlowSystemActor.CameraReserveFirstStateCommand(Command: str)
-- EventFlowSystemActor.MiniGameSilentCancel()
-- EventFlowSystemActor.NextLPFadeTime(FadeSec: float)
-- EventFlowSystemActor.RevokeTreasureQuest()
-- EventFlowSystemActor.UIBoardHandling()
-- EventFlowSystemActor.UICreatureHarvestBoxHandling(mMode: int)
-- EventFlowSystemActor.PublicWorksSetName(TagID: int)
-- EventFlowSystemActor.PublicWorksSetBell(TagID: int, MoneyType: str)
-- EventFlowSystemActor.PublicWorksUpdate()
-- EventFlowSystemActor.UITenKeyHandling(Type: str)
-- EventFlowSystemActor.UILostListHandling()
-- EventFlowSystemActor.UIMsgCardSelectHandling()
-- EventFlowSystemActor.UIMsgCardEditTextHandling(TempFormType: str)
-- EventFlowSystemActor.DropIntoPostOffice(TmpMailInstance: str)
-- EventFlowSystemActor.ChangeAddressUnfinishMail()
-- EventFlowSystemActor.UIDateHandling(DateInputType: str)
-- EventFlowSystemActor.ReserveFutureMail()
-- EventFlowSystemActor.UIFutureMsgCardHandling()
-- EventFlowSystemActor.UIDateCreate(CreateDateType: str)
-- EventFlowSystemActor.DeleteFutureMail()
-- EventFlowSystemActor.ReturnToPocketFutureMailPresent()
-- EventFlowSystemActor.MessageLockNext(WaitIconType: int)
-- EventFlowSystemActor.NetConnectInit(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetCheckNSA(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.MessageUnlockNext()
-- EventFlowSystemActor.NetSendMail()
-- EventFlowSystemActor.ReturnAttachedPresentToBaggage()
-- EventFlowSystemActor.NetUpdateFriendList(Type: str)
-- EventFlowSystemActor.UIAddresseeFriendHandling()
-- EventFlowSystemActor.NetSendMailPreProc(FlowType: str)
-- EventFlowSystemActor.SaveSimpleSave(Process: str)
-- EventFlowSystemActor.NetSendMailAfterFailProc()
-- EventFlowSystemActor.UISaveIconAppear()
-- EventFlowSystemActor.UISaveIconDisappear()
-- EventFlowSystemActor.SuspendSharePlayCtrlCheck()
-- EventFlowSystemActor.ResumeSharePlayCtrlCheck()
-- EventFlowSystemActor.UITempMsgCardHandling()
-- EventFlowSystemActor.SetTagNameUnfinishMail(ID: int, TagType: str)
-- EventFlowSystemActor.CreateChoiceMailDestination(IsNoCancel: bool)
-- EventFlowSystemActor.DeleteUnfinishMail()
-- EventFlowSystemActor.NetEndSessionVillage(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.CloseVillageGate()
-- EventFlowSystemActor.StartAmiiboPhone(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.ReadAmiibo(EntryVariableKeyInt_ReadPadId: str)
-- EventFlowSystemActor.ChangeAmiiboNPC(Kind: str)
-- EventFlowSystemActor.AmiiboNpcOpenMessage(MessageID: str)
-- EventFlowSystemActor.CheckNfpController(EntryVariableKeyInt_NpadId: str)
-- EventFlowSystemActor.EntryVariableSet: entry_variables[<Key>] = <SetValue>
-- EventFlowSystemActor.SetAmiiboCamperNPC()
-- EventFlowSystemActor.ReturnStage(NextInfoKey: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.SystemFaderRelease()
-- EventFlowSystemActor.NpcEventItemSet(ItemUniqueId: int, TagID: int, InsertTarget: str, EntryVariableKeyInt_ItemPrice: str)
-- EventFlowSystemActor.DeleteSelectedSettlerQuestInsideMaterial(SettlerType: int, InsideMaterialType: int)
-- EventFlowSystemActor.DecideOpenCraftRecipe(CraftRecipeOpenType: str)
-- EventFlowSystemActor.OpenSelectedSequenceCraftRecipe()
-- EventFlowSystemActor.DecideEventRewardDIYRecipe(UnlockType: str)
-- EventFlowSystemActor.UIMyDesignExchangeMenuHandling()
-- EventFlowSystemActor.MyDesignExchangeResetError()
-- EventFlowSystemActor.UINetConnectWaitDisappear()
-- EventFlowSystemActor.UINetConnectWaitAppear()
-- EventFlowSystemActor.NetSearchMyDesign(Type: str)
-- EventFlowSystemActor.WaitDownloadMyDesignDataForPreview()
-- EventFlowSystemActor.UIMyDesignSelectHandling(Mode: int, Category: int, Author: int, Holder: int, UsageType: int)
-- EventFlowSystemActor.UIMyDesignExchangeInfoHandling(Type: str)
-- EventFlowSystemActor.NetGetDesignerID(IsErrorHandling: bool)
-- EventFlowSystemActor.UIMyDesignExchangeListHandling()
-- EventFlowSystemActor.NetDeleteMyDesign()
-- EventFlowSystemActor.UIMyDesignExchangeSearchHandling()
-- EventFlowSystemActor.UIMyDesignExchangeFavoriteHandling()
-- EventFlowSystemActor.UIMessageWindowForPocket()
-- EventFlowSystemActor.ItemRemove()
-- EventFlowSystemActor.PlayerBirthdayScheduleEnd()
-- EventFlowSystemActor.PlayerBirthdayRestoreBGM()
-- EventFlowSystemActor.SetNpcAIBlackBoardByLabel(Key: str, Value: int, NpcLabel: str, Option: int)
-- EventFlowSystemActor.UIMiniGameFinishAppear()
-- EventFlowSystemActor.NpcQuestFlagOn(QuestFlag: str)
-- EventFlowSystemActor.SetTreasureFindState()
-- EventFlowSystemActor.PlayerDrawEasterEggRecipe(EggType: str)
-- EventFlowSystemActor.NpcPlayerActivity(ActivityType: str)
-- EventFlowSystemActor.SystemReenterStage(Type: int, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.NpcInitializeActivity(VillagerIndex: int)
-- EventFlowSystemActor.SystemMailSendDirect(FromType: str, FileIndex: str, Present: str, LabelIndex: int)
-- EventFlowSystemActor.StartupMailSend(VersionUp: bool, BundledEdition: bool, AoC: bool)
-- EventFlowSystemActor.CalendarEventStartFor2P()
-- EventFlowSystemActor.ResetNpcScheduleForStart()
-- EventFlowSystemActor.SaveUpdateBackupCustomData()
-- EventFlowSystemActor.BuildStructureErrorMsg(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
-- EventFlowSystemActor.BuildStructurePlayReport(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
-- EventFlowSystemActor.StructureStartPreviewGuide(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
-- EventFlowSystemActor.StructureDeletePreviewGuide(IsImmediately: bool)
-- EventFlowSystemActor.UIMenuDeviceAppear(EventType: str, Application: str)
-- EventFlowSystemActor.ClearBoxTransfer()
-- EventFlowSystemActor.DeleteSelectUIItem(DeleteNum: int)
-- EventFlowSystemActor.PlayReport(Num0: int, PlayReportKind: str)
-- EventFlowSystemActor.DeleteTargetItem(ItemUniqueId: int, DeleteNum: any, IsPriorityFewItems: bool)
-- EventFlowSystemActor.ShopSellCalc(EntryVariableKeyInt_SellTotal: str, Rate: float, ExpensivePurchase: bool, IsBox: bool)
-- EventFlowSystemActor.ShopSellDone(Rate: float, IsBox: bool)
-- EventFlowSystemActor.UISelectedItemMoveChest()
-- EventFlowSystemActor.PlayerBaggageOperationForEvent(OperationType: str)
-- EventFlowSystemActor.NetCloseSession(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetOpenSession(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.OpenVillageGate(IsColDisable: bool)
-- EventFlowSystemActor.UIVersionGuideDisappear(OutType: str)
-- EventFlowSystemActor.NetInitLocal(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetCreateSessionVillage(Type: str)
-- EventFlowSystemActor.NetShutdown(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetFindSessionVillage(Type: str)
-- EventFlowSystemActor.OpenVillageList()
-- EventFlowSystemActor.NetJoinSessionVillage()
-- EventFlowSystemActor.NetDemoLock(Situation: int)
-- EventFlowSystemActor.UIVersionGuideAppear(InType: str, Mount: str)
-- EventFlowSystemActor.UISoftwareKeyboardPasswordHandling(IsClearString: bool)
-- EventFlowSystemActor.NetLeaveSessionVillage(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetDestroySessionVillage(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.RunCheckArtCamera()
-- EventFlowSystemActor.HoldGalleryCamera()
-- EventFlowSystemActor.UIShopMoneyDisappear()
-- EventFlowSystemActor.NextGoTo(NextInfoKey: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.UIIllegalReportHandling(ReportTarget: int)
-- EventFlowSystemActor.NetCaptureScreenshot()
-- EventFlowSystemActor.UIShopBuyHandling(ItemBitType: str)
-- EventFlowSystemActor.UIShopBuyTailorCreate()
-- EventFlowSystemActor.UnlockRandomItemRemakeCommonPattern()
-- EventFlowSystemActor.UIStampRallyMuseumFromOwlHandling(CardType: str)
-- EventFlowSystemActor.UIShopBuyAppear(ItemBitType: str)
-- EventFlowSystemActor.EntryVariableAdd: entry_variables[<Key>] += <AddValue>
-- EventFlowSystemActor.ReserveNpcCommand(Command: str)
-- EventFlowSystemActor.PlayerHouseSetRoofColor(RoofColor: str)
-- EventFlowSystemActor.UIMapRemoveHandling()
-- EventFlowSystemActor.StructureOrderRemoveBridgeSlope()
-- EventFlowSystemActor.UIMapRemoveCreate()
-- EventFlowSystemActor.UICustomHomeHandling(SelectType: str)
-- EventFlowSystemActor.StructureMoveSetTag(Type: int, TagID: int)
-- EventFlowSystemActor.SetHideObjectVisible()
-- EventFlowSystemActor.NetGetPOPID(IsErrorHandling: bool)
-- EventFlowSystemActor.UploadProfile(IsSkipError: any)
-- EventFlowSystemActor.NotifyUseNSOAppli(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.UIMelodyEditHandling()
-- EventFlowSystemActor.UIMelodyEditCreate()
-- EventFlowSystemActor.NetExitDream(IsErrorExit: bool)
-- EventFlowSystemActor.StartMeasurePlayTime(Type: str)
-- EventFlowSystemActor.StopMeasurePlayTime(Type: str)
-- EventFlowSystemActor.TapSmoke(SmokeTypeString: str)
-- EventFlowSystemActor.ChangeSwitchIdrDreamAromaPot(IsOn: bool)
-- EventFlowSystemActor.SetEnableDofFadeForDream()
-- EventFlowSystemActor.SoundSceneChangeFadeOutDucking(Id: int)
-- EventFlowSystemActor.EntryBirthDayMessage()
-- EventFlowSystemActor.SetBirthDayTag()
-- EventFlowSystemActor.SaveOnBackupRestoringSettingNotice()
-- EventFlowSystemActor.RequetCtrlConnectSupport(RequestCount: int)
-- EventFlowSystemActor.SetControllerStyle(ControllerStyle: int)
-- EventFlowSystemActor.TimeLock(TimeLockType: str)
-- EventFlowSystemActor.OverWriteFadeSetting(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
-- EventFlowSystemActor.SetCheckResultStructureDoor(CheckResult: int)
-- EventFlowSystemActor.DisappearChatBaloon(BaloonType: str)
-- EventFlowSystemActor.ReserveSystemFlowDemo(EntryName: str, FlowFile: str)
-- EventFlowSystemActor.NetBreakUpSessionVillage(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetForceQuitSession()
-- EventFlowSystemActor.UIMenuProfileOthersHandling()
-- EventFlowSystemActor.SaveGrowUp(GrowUpSituation: str)
-- EventFlowSystemActor.SaveAfterGrowUp()
-- EventFlowSystemActor.NetReceiveMail()
-- EventFlowSystemActor.DemoSetShareStartFlag()
-- EventFlowSystemActor.SaveSimpleLoad(Process: str)
-- EventFlowSystemActor.SetupSharePlay(IsAfterRollback: bool)
-- EventFlowSystemActor.SpecialDemoStart(Kind: str)
-- EventFlowSystemActor.NetUpdateFriendLandWithInterval(Interval: int)
-- EventFlowSystemActor.NetReceiveBcat()
-- EventFlowSystemActor.SetBcatProcess()
-- EventFlowSystemActor.EventFlagResetAllLiver(AccessKey: str)
-- EventFlowSystemActor.VillageScoreNaturalReflectLandSave()
-- EventFlowSystemActor.VillageScoreLifeReflectLandSave()
-- EventFlowSystemActor.CalcJuneBrideScore()
-- EventFlowSystemActor.UIGuideBalloonWeddingParty(GuideType: int)
-- EventFlowSystemActor.NextLPFadeOff()
-- EventFlowSystemActor.SystemBGMVolumeFadeOut(FadeCurveType: int, FadeSec: float, DelaySec: float)
-- EventFlowSystemActor.WeddingBGMStart()
-- EventFlowSystemActor.AfterWeddingBGMEnd()
-- EventFlowSystemActor.MuseumNameBoardFossilCamera(EntryVariableKeyInt_LoopNum: str)
-- EventFlowSystemActor.MuseumNameBoardCamera(EntryVariableKeyInt_LoopNum: str)
-- EventFlowSystemActor.MuseumNameBoardArtCamera(EntryVariableKeyInt_LoopNum: str)
-- EventFlowSystemActor.OpenMessageNameBoardArtExplain(EntryVariableKeyInt_LoopNum: str, DisplayNum: int)
-- EventFlowSystemActor.NetWaitDemo(Kind: str)
-- EventFlowSystemActor.NetEnterDream()
-- EventFlowSystemActor.NetReturnFromDream()
-- EventFlowSystemActor.NetReplyDream(Kind: str)
-- EventFlowSystemActor.NetDemoNextStep(Step: str)
-- EventFlowSystemActor.UISonkatsuPointAppear()
-- EventFlowSystemActor.LifeSupportPointCountDown(Point: int, Reverse: bool)
-- EventFlowSystemActor.UISonkatsuPointDisappear()
-- EventFlowSystemActor.WaitSpecialDemoEnter(Type: str)
-- EventFlowSystemActor.SpecialDemoEnd(Kind: str)
-- EventFlowSystemActor.CreateSelectNpc(IsAmiibo: bool)
-- EventFlowSystemActor.UIPhotoIslandInteriorEditGuideOff()
-- EventFlowSystemActor.SetAmiiboReadOn()
-- EventFlowSystemActor.UIAmiiboPreviousNoticeGuideCreate()
-- EventFlowSystemActor.EventFlagTempAllClear()
-- EventFlowSystemActor.NetLoginNEX(Command: str, IsErrorHandling: bool)
-- EventFlowSystemActor.NetCheckProfileBan(IsSkipError: str)
-- EventFlowSystemActor.ControllerConnect(EntryVariableKeyInt_PlayerIndex: str)
-- EventFlowSystemActor.ControllerConnectBegin()
-- EventFlowSystemActor.ControllerConnectEnd(IsNormalEnd: bool)
-- EventFlowSystemActor.DemoShareStartEnd()
-- EventFlowSystemActor.StartSharePlay()
-- EventFlowSystemActor.ControllerConnectTimerStart(Second: int)
-- EventFlowSystemActor.EventFlagAllSharePlayPlayer(AccessKey: str)
-- EventFlowSystemActor.ControllerConnectTimerClose()
-- EventFlowSystemActor.PrepareSharePlayEntry()
-- EventFlowSystemActor.CancelSharePlayEntry()
-- EventFlowSystemActor.QuitSharePlay()
-- EventFlowSystemActor.UIMsgCardAdrCreate(MsgCardAdrType: str)
-- EventFlowSystemActor.PreviewStructure(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
-- EventFlowSystemActor.DeletePreviewStructure(StructureType: str, StructureBuildPosType: str)
-- EventFlowSystemActor.BuildStructure(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
-- EventFlowSystemActor.UITitleHandling()
-- EventFlowSystemActor.NoticeGameStartForPlayReport()
-- EventFlowSystemActor.EnvWeatherArea(WeatherAreaLand: str)
-- EventFlowSystemActor.EnvSetDemoTime(Second: int, Hour: int, Minute: int)
-- EventFlowSystemActor.UILogoAppear(SelectKind: str)
-- EventFlowSystemActor.UICatalogGiftHandling()
-- EventFlowSystemActor.CommuneMailSend(FromType: str, FileIndex: str, Route: str, LabelIndex: int, Present: str, TagType: str)
-- EventFlowSystemActor.DeleteRequireExchangeItem()
-- EventFlowSystemActor.SelectMysteryTour(TourSelectType: int)
-- EventFlowSystemActor.UIMyDesignFireworksHandling()
-- EventFlowSystemActor.UIMyDesignFireworksCreate()
-- EventFlowSystemActor.SaveVersionCheck()
-- EventFlowSystemActor.UIBootBGChangeDialog()
-- EventFlowSystemActor.SaveVersionConvert()
-- EventFlowSystemActor.SaveCopyToEnv()
-- EventFlowSystemActor.CreateStaticField()
-- EventFlowSystemActor.SaveRemove(Process: str)
-- EventFlowSystemActor.SavePlayerRegionLanguageUpdate()
-- EventFlowSystemActor.NetEnsureNSA()
-- EventFlowSystemActor.SetTagStructureName(TagID: int, TagType: str)
-- EventFlowSystemActor.CeremonyUseCracker()
-- EventFlowSystemActor.CeremonyEmoticon(Reaction: str, Frame: int, ReactionGuest: str, ReactionAN: str, ReactionOT: str, ReactionGE: str, ReactionFU: str, ReactionZK: str, ReactionKO: str, ReactionHA: str, ReactionBO: str, ExcludeMainPlayer: bool)
-- EventFlowSystemActor.CeremonyLookAt(Target: str, IsExcludeGuest: bool, IsExcludeRco: bool, OffsetX: float, OffsetY: float, OffsetZ: float, IsExcludeFacilitator: bool)
-- EventFlowSystemActor.CeremonyTurn(Target: str, IsExcludeGuest: bool, IsExcludeRco: bool, IsExcludeFacilitator: bool)
-- EventFlowSystemActor.CeremonyEquipCracker(DelayMaxFrame: int, DelayMinFrame: int)
-- EventFlowSystemActor.CameraSetDemoExtraParam(InterpolateKey: str, ExtraParamKey: str)
-- EventFlowSystemActor.SleepInsect(SleepInsectType: str)
-- EventFlowSystemActor.SetEventFlagAttendJuneBrideDemo()
-- EventFlowSystemActor.CeremonyStandup()
-- EventFlowSystemActor.AfterWeddingBGMStart()
-- EventFlowSystemActor.NetMeasureBitRate()
-- EventFlowSystemActor.UIWorkingHandling(DisplayType: str)
-- EventFlowSystemActor.PlayerResetCraftRecipe(UnlockType: str)
-- EventFlowSystemActor.CandNicknamePattern()
-- EventFlowSystemActor.MilagePackageSend()
-- EventFlowSystemActor.SonkatsuBuyDone(SetBaggage: bool)
-- EventFlowSystemActor.ReservePlayerTicketGetDemo(EventFileName: str, EntryPointName: str)
-- EventFlowSystemActor.ReflectFinishedJuneBrideTheme()
-- EventFlowSystemActor.DecideNextJuneBrideTheme()
-- EventFlowSystemActor.UpdateJuneBrideDayAlreadyCount()
-- EventFlowSystemActor.UIShopBuyDisappear()
-- EventFlowSystemActor.NetEnterVillage()
-- EventFlowSystemActor.UIShopBuyReselectionAppear()
-- EventFlowSystemActor.PlayerSetLoan(Bells: int)
-- EventFlowSystemActor.SetMovingItemNNPCToPokect()
-- EventFlowSystemActor.NpcQuitMoveOutProposal()
-- EventFlowSystemActor.SaveVerifyBackupLicense()
-- EventFlowSystemActor.SaveEnableBackupSetting()
-- EventFlowSystemActor.SaveRegisterBackupAgent()
-- EventFlowSystemActor.SaveDisableBackupSetting()
-- EventFlowSystemActor.UIRecoverySaveDataHandling()
-- EventFlowSystemActor.SaveDownloadBackup()
-- EventFlowSystemActor.SaveListDownloadableBackupInfo()
-- EventFlowSystemActor.DecideRecoverySaveSingle()
-- EventFlowSystemActor.DecideRecoverySaveChoice()
-- EventFlowSystemActor.SetRecoverySaveChoice()
-- EventFlowSystemActor.SetCatalogFlagPhotoStudioPreset()
-- EventFlowSystemActor.EmitDoorSound(DoorSoundType: str)
-- EventFlowSystemActor.NetGoToDream()
-- EventFlowSystemActor.ReturnStageForDreamEnd(FadeInSpeed: float, FadeOutSpeed: float, FadeColorString: str, FadeInKindString: str, FadeOutKindString: str)
-- EventFlowSystemActor.GetDreamID()
-- EventFlowSystemActor.NetUploadDream()
-- EventFlowSystemActor.NetDownloadDream()
-- EventFlowSystemActor.NetDeleteDream()
-- EventFlowSystemActor.NetSearchDream(Type: str)
-- EventFlowSystemActor.NetCancelDownloadDream()
-- EventFlowSystemActor.DreamUploadEffect(UploadEffectString: str)
-- EventFlowSystemActor.SaveStartRestoreSeq()
-- EventFlowSystemActor.NetReissuePassword()
-- EventFlowSystemActor.SaveUpdateDeviceID()
-- EventFlowSystemActor.SaveReserveBackupRestoreFlagOff()
-- EventFlowSystemActor.NetForceSetUser()
-- EventFlowSystemActor.NetForceResetUser()
-- EventFlowSystemActor.UIMapSelectHandling()
-- EventFlowSystemActor.UIPrologueBGAppear()
-- EventFlowSystemActor.UIPrologueBGDisappear()
-- EventFlowSystemActor.ClearAllNpcOtherPlayerMoveInFlag()
-- EventFlowSystemActor.SoundFade(FadeHandleId: int)
-- EventFlowSystemActor.EntryPlayerVillager()
-- EventFlowSystemActor.PlayerBirthdayStartBGM()
-- EventFlowSystemActor.PlayerBirthdayStopOriginalBGM()
-- EventFlowSystemActor.BirthdaySwitchLight(Type: int)
-- EventFlowSystemActor.BirthdaySwitchCurtain(Type: int)
-- EventFlowSystemActor.UIAtmHandling()
-- EventFlowSystemActor.UICatalogHandling()
-- EventFlowSystemActor.CatalogMailSend()
-- EventFlowSystemActor.UICatalogRestartHandling(IsSent: bool)
-- EventFlowSystemActor.ClearCatalogShoppingMsgCardSetting()
-- EventFlowSystemActor.CountDownCatalogItemPrice(Reverse: int)
-- EventFlowSystemActor.MarketShowcase(ShowcaseAction: str)
-- EventFlowSystemActor.CloseMarketShowcase()
-- EventFlowSystemActor.TkkLiveNpcStandUp()
-- EventFlowSystemActor.TotakekeLiveNpcRhythm()
-- EventFlowSystemActor.TkkLiveNpcSitDown()
-- EventFlowSystemActor.SetTkkLiveRequestPlayerName()
-- EventFlowSystemActor.SendBirthDayMessage()
-- EventFlowSystemActor.TkkFirstLiveEmoticcon(Reaction: str, Frame: int)
-- EventFlowSystemActor.ReserveTownNews()
-- EventFlowSystemActor.ReconnectPlayerVIllager(ReconnectPlayerVillager: str)
-- EventFlowSystemActor.ResetNA()
-- EventFlowSystemActor.NpcBalloonTalkAll(Type: int)
-- EventFlowSystemActor.SetIslandRubyType(IslandRubyType: str)
-- EventFlowSystemActor.TurnOnTempAudioMusic(MusicName: int)
-- EventFlowSystemActor.TurnOnEventPlazaDuckingJudge()
-- EventFlowSystemActor.TurnOnForceMaxVolumeForAudioMusic()
-- EventFlowSystemActor.EventCstmAction(Type: int)
+- EventFlagSystemAdd: event_flags_system[<AccessKey>] += <AddNum>
+- EventFlagSystemSet: event_flags_system[<AccessKey>] = <SetNum>
+- EventFlagSystemOn: event_flags_system[<AccessKey>] = true
+- EventFlagSystemOff: event_flags_system[<AccessKey>] = false
+- StructureMoveSaveIndex(IndexType: int)
+- EventFlagOffAllLiver(AccessKey: str)
+- EventFlaResetAllLiver(AccessKey: str)
+- SetWeatherPattern(PatternName: str)
+- SetSubflowResult: subflow_results[<SetIndex>] = <ResultValue>
+- ReservePlayerMutterDemo(EntryPointName: str, MutterStartTiming: str, EventFileName: str, IsResistNpcCast: bool)
+- ExitFlowchart()
+- CameraSetDemoParam(CameraTargetKey: str, CameraParamKey: str, CameraInterpolateKey: str, UseNearCulling: bool, AdjustAngleYOnEnter: bool, AdjustAngleYOnLeave: bool, Arg: int)
+- WaitFrame(WaitFrame: int)
+- SetBirthdayVillagerName(Target: int, TagID: int)
+- PlayerSetCraftRecipe(ItemUniqueId: int, UnlockType: str)
+- SystemMailSend(FromType: str, FileIndex: str, Route: str, Present: str, TagType: str, ToSharePlayer: bool, LabelIndex: int)
+- SystemRequestChangeStage(TargetStage: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- SoundDuckingOn(Id: int)
+- SoundDuckingOff(Id: int)
+- BGMPropertyControl(BGMProperty: int)
+- FadeIn(IsWait: bool)
+- SetupActorPosition(Type: any)
+- UIDemoClock(DisplayFrame: int)
+- WaitFaderSleep()
+- MessageSuspend()
+- OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- StoreNormalCamera(IsImmediately: bool)
+- FadeOut(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float, IsUseDucking: bool)
+- SetCountDownCamera(CameraActionKindString: str)
+- SwapSpeaker(SwapSpeaker: str, DispNameTag: bool)
+- RequestRecreateFtr()
+- RequestStartPeriodicalFireworks()
+- CompleteSettlerQuestSubject(SettlerType: int)
+- DecideSettlerNpc(SettlerType: int)
+- NpcSetRewardRecipe(ItemUniqueId: int, DIYNpcItem: bool)
+- SelectRewardItemDirect(ItemUniqueId: int, SetNum: int, ItemRemakeDecideType: str, RemakePatternIndex: int)
+- UIAudioHandling()
+- SetTagFromSystem(TagID: int, TagType: str, SetTagType: str, AccessKey: str, Value: any)
+- NpcSelectMessage(StartType0: str, StartType1: str, StartType2: str, StartType3: str, MessageID0: str, MessageID1: str, MessageID2: str, MessageID3: str)
+- SoundTriggerEmit(AssetKeyName: str, FadeHandleId: int)
+- TurnOffTempAudioMusic()
+- TurnOffEventPlazaDuckingJudge()
+- TurnOffForceMaxVolumeForAudioMusic()
+- UIClosetLotteryHandling()
+- UICoordinateEditHandling()
+- UIClosetHandling()
+- UIClosetBalloonDisappear()
+- UIClosetCreate()
+- UIClosetBalloonAppearHandling()
+- UICharactermakingHandling(CharctermakingFilterType: str)
+- SaveSetFromUIResult(SaveType: str)
+- UICharactermakingCreate()
+- UIPostHandling()
+- UIWaitReceivingMailAppear()
+- CheckFreeCommunication(isShowUI: bool)
+- UIPostCreate()
+- NetFriendMailCheck()
+- SystemSetTagRadioPlayMusic()
+- UIStampRallyMuseumFromStampRackHandling()
+- UIItemSelectWindowHandling(ItemUniqueID: int, ItemKindType: str, Mode: str, ItemFilterType: str, FilterType: str, IsSingleSelect: bool)
+- SystemDeletePlayerItem(DeleteType: str, DeleteNum: int)
+- UISoftwareKeyboardHandling(FormType: str, IsClearString: bool)
+- SetTagFromUIResult(TagID: int, TagType: str)
+- UIMoneyDisappear()
+- BellCountDown(Money: any, Reverse: any)
+- UIMoneyAppear()
+- SetItemToPocket(ItemUniqueId: int, SetNum: int)
+- SetCalcPriceBySolo()
+- UIMiniGameTimerAppear(Time: int, CounterUIType: str)
+- SetSharePlayChangeCondition(Lock: bool)
+- SetSharePlaySubToolCondition(IsEnable: bool)
+- SetBirthdayPToldlPartySharePlayFlag()
+- SetPlayerNameCallCamperNpc()
+- Set6thVillager(Step: int)
+- SystemDecideFaceCard(GameType: str)
+- UIMiniGameHighAndLowHandling(Command: str)
+- SelectRewardItemCampGame(CamperRewardType: str)
+- UISelectNpcMoveOut(MoveOutNpcType: str)
+- UIMsgCardAdrHandling(MsgCardAdrType: str)
+- SelectMoveOutNpcRandom()
+- SetCheckResultConvReaction(CheckResult: int)
+- CameraReserveFirstStateCommand(Command: str)
+- MiniGameSilentCancel()
+- NextLPFadeTime(FadeSec: float)
+- RevokeTreasureQuest()
+- UIBoardHandling()
+- UICreatureHarvestBoxHandling(mMode: int)
+- PublicWorksSetName(TagID: int)
+- PublicWorksSetBell(TagID: int, MoneyType: str)
+- PublicWorksUpdate()
+- UITenKeyHandling(Type: str)
+- UILostListHandling()
+- UIMsgCardSelectHandling()
+- UIMsgCardEditTextHandling(TempFormType: str)
+- DropIntoPostOffice(TmpMailInstance: str)
+- ChangeAddressUnfinishMail()
+- UIDateHandling(DateInputType: str)
+- ReserveFutureMail()
+- UIFutureMsgCardHandling()
+- UIDateCreate(CreateDateType: str)
+- DeleteFutureMail()
+- ReturnToPocketFutureMailPresent()
+- MessageLockNext(WaitIconType: int)
+- NetConnectInit(Command: str, IsErrorHandling: bool)
+- NetCheckNSA(Command: str, IsErrorHandling: bool)
+- MessageUnlockNext()
+- NetSendMail()
+- ReturnAttachedPresentToBaggage()
+- NetUpdateFriendList(Type: str)
+- UIAddresseeFriendHandling()
+- NetSendMailPreProc(FlowType: str)
+- SaveSimpleSave(Process: str)
+- NetSendMailAfterFailProc()
+- UISaveIconAppear()
+- UISaveIconDisappear()
+- SuspendSharePlayCtrlCheck()
+- ResumeSharePlayCtrlCheck()
+- UITempMsgCardHandling()
+- SetTagNameUnfinishMail(ID: int, TagType: str)
+- CreateChoiceMailDestination(IsNoCancel: bool)
+- DeleteUnfinishMail()
+- NetEndSessionVillage(Command: str, IsErrorHandling: bool)
+- CloseVillageGate()
+- StartAmiiboPhone(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- ReadAmiibo(EntryVariableKeyInt_ReadPadId: str)
+- ChangeAmiiboNPC(Kind: str)
+- AmiiboNpcOpenMessage(MessageID: str)
+- CheckNfpController(EntryVariableKeyInt_NpadId: str)
+- EntryVariableSet: entry_variables[<Key>] = <SetValue>
+- SetAmiiboCamperNPC()
+- ReturnStage(NextInfoKey: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- SystemFaderRelease()
+- NpcEventItemSet(ItemUniqueId: int, TagID: int, InsertTarget: str, EntryVariableKeyInt_ItemPrice: str)
+- DeleteSelectedSettlerQuestInsideMaterial(SettlerType: int, InsideMaterialType: int)
+- DecideOpenCraftRecipe(CraftRecipeOpenType: str)
+- OpenSelectedSequenceCraftRecipe()
+- DecideEventRewardDIYRecipe(UnlockType: str)
+- UIMyDesignExchangeMenuHandling()
+- MyDesignExchangeResetError()
+- UINetConnectWaitDisappear()
+- UINetConnectWaitAppear()
+- NetSearchMyDesign(Type: str)
+- WaitDownloadMyDesignDataForPreview()
+- UIMyDesignSelectHandling(Mode: int, Category: int, Author: int, Holder: int, UsageType: int)
+- UIMyDesignExchangeInfoHandling(Type: str)
+- NetGetDesignerID(IsErrorHandling: bool)
+- UIMyDesignExchangeListHandling()
+- NetDeleteMyDesign()
+- UIMyDesignExchangeSearchHandling()
+- UIMyDesignExchangeFavoriteHandling()
+- UIMessageWindowForPocket()
+- ItemRemove()
+- PlayerBirthdayScheduleEnd()
+- PlayerBirthdayRestoreBGM()
+- SetNpcAIBlackBoardByLabel(Key: str, Value: int, NpcLabel: str, Option: int)
+- UIMiniGameFinishAppear()
+- NpcQuestFlagOn: quest_flags[<QuestFlag>] = true
+- SetTreasureFindState()
+- PlayerDrawEasterEggRecipe(EggType: str)
+- NpcPlayerActivity(ActivityType: str)
+- SystemReenterStage(Type: int, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- NpcInitializeActivity(VillagerIndex: int)
+- SystemMailSendDirect(FromType: str, FileIndex: str, Present: str, LabelIndex: int)
+- StartupMailSend(VersionUp: bool, BundledEdition: bool, AoC: bool)
+- CalendarEventStartFor2P()
+- ResetNpcScheduleForStart()
+- SaveUpdateBackupCustomData()
+- BuildStructureErrorMsg(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
+- BuildStructurePlayReport(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
+- StructureStartPreviewGuide(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
+- StructureDeletePreviewGuide(IsImmediately: bool)
+- UIMenuDeviceAppear(EventType: str, Application: str)
+- ClearBoxTransfer()
+- DeleteSelectUIItem(DeleteNum: int)
+- PlayReport(Num0: int, PlayReportKind: str)
+- DeleteTargetItem(ItemUniqueId: int, DeleteNum: any, IsPriorityFewItems: bool)
+- ShopSellCalc(EntryVariableKeyInt_SellTotal: str, Rate: float, ExpensivePurchase: bool, IsBox: bool)
+- ShopSellDone(Rate: float, IsBox: bool)
+- UISelectedItemMoveChest()
+- PlayerBaggageOperationForEvent(OperationType: str)
+- NetCloseSession(Command: str, IsErrorHandling: bool)
+- NetOpenSession(Command: str, IsErrorHandling: bool)
+- OpenVillageGate(IsColDisable: bool)
+- UIVersionGuideDisappear(OutType: str)
+- NetInitLocal(Command: str, IsErrorHandling: bool)
+- NetCreateSessionVillage(Type: str)
+- NetShutdown(Command: str, IsErrorHandling: bool)
+- NetFindSessionVillage(Type: str)
+- OpenVillageList()
+- NetJoinSessionVillage()
+- NetDemoLock(Situation: int)
+- UIVersionGuideAppear(InType: str, Mount: str)
+- UISoftwareKeyboardPasswordHandling(IsClearString: bool)
+- NetLeaveSessionVillage(Command: str, IsErrorHandling: bool)
+- NetDestroySessionVillage(Command: str, IsErrorHandling: bool)
+- RunCheckArtCamera()
+- HoldGalleryCamera()
+- UIShopMoneyDisappear()
+- NextGoTo(NextInfoKey: str, FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- UIIllegalReportHandling(ReportTarget: int)
+- NetCaptureScreenshot()
+- UIShopBuyHandling(ItemBitType: str)
+- UIShopBuyTailorCreate()
+- UnlockRandomItemRemakeCommonPattern()
+- UIStampRallyMuseumFromOwlHandling(CardType: str)
+- UIShopBuyAppear(ItemBitType: str)
+- EntryVariableAdd: entry_variables[<Key>] += <AddValue>
+- ReserveNpcCommand(Command: str)
+- PlayerHouseSetRoofColor(RoofColor: str)
+- UIMapRemoveHandling()
+- StructureOrderRemoveBridgeSlope()
+- UIMapRemoveCreate()
+- UICustomHomeHandling(SelectType: str)
+- StructureMoveSetTag(Type: int, TagID: int)
+- SetHideObjectVisible()
+- NetGetPOPID(IsErrorHandling: bool)
+- UploadProfile(IsSkipError: any)
+- NotifyUseNSOAppli(Command: str, IsErrorHandling: bool)
+- UIMelodyEditHandling()
+- UIMelodyEditCreate()
+- NetExitDream(IsErrorExit: bool)
+- StartMeasurePlayTime(Type: str)
+- StopMeasurePlayTime(Type: str)
+- TapSmoke(SmokeTypeString: str)
+- ChangeSwitchIdrDreamAromaPot(IsOn: bool)
+- SetEnableDofFadeForDream()
+- SoundSceneChangeFadeOutDucking(Id: int)
+- EntryBirthDayMessage()
+- SetBirthDayTag()
+- SaveOnBackupRestoringSettingNotice()
+- RequetCtrlConnectSupport(RequestCount: int)
+- SetControllerStyle(ControllerStyle: int)
+- TimeLock(TimeLockType: str)
+- OverWriteFadeSetting(FadeInKindString: str, FadeOutKindString: str, FadeColorString: str, FadeInSpeed: float, FadeOutSpeed: float)
+- SetCheckResultStructureDoor(CheckResult: int)
+- DisappearChatBaloon(BaloonType: str)
+- ReserveSystemFlowDemo(EntryName: str, FlowFile: str)
+- NetBreakUpSessionVillage(Command: str, IsErrorHandling: bool)
+- NetForceQuitSession()
+- UIMenuProfileOthersHandling()
+- SaveGrowUp(GrowUpSituation: str)
+- SaveAfterGrowUp()
+- NetReceiveMail()
+- DemoSetShareStartFlag()
+- SaveSimpleLoad(Process: str)
+- SetupSharePlay(IsAfterRollback: bool)
+- SpecialDemoStart(Kind: str)
+- NetUpdateFriendLandWithInterval(Interval: int)
+- NetReceiveBcat()
+- SetBcatProcess()
+- EventFlagResetAllLiver(AccessKey: str)
+- VillageScoreNaturalReflectLandSave()
+- VillageScoreLifeReflectLandSave()
+- CalcJuneBrideScore()
+- UIGuideBalloonWeddingParty(GuideType: int)
+- NextLPFadeOff()
+- SystemBGMVolumeFadeOut(FadeCurveType: int, FadeSec: float, DelaySec: float)
+- WeddingBGMStart()
+- AfterWeddingBGMEnd()
+- MuseumNameBoardFossilCamera(EntryVariableKeyInt_LoopNum: str)
+- MuseumNameBoardCamera(EntryVariableKeyInt_LoopNum: str)
+- MuseumNameBoardArtCamera(EntryVariableKeyInt_LoopNum: str)
+- OpenMessageNameBoardArtExplain(EntryVariableKeyInt_LoopNum: str, DisplayNum: int)
+- NetWaitDemo(Kind: str)
+- NetEnterDream()
+- NetReturnFromDream()
+- NetReplyDream(Kind: str)
+- NetDemoNextStep(Step: str)
+- UISonkatsuPointAppear()
+- LifeSupportPointCountDown(Point: int, Reverse: bool)
+- UISonkatsuPointDisappear()
+- WaitSpecialDemoEnter(Type: str)
+- SpecialDemoEnd(Kind: str)
+- CreateSelectNpc(IsAmiibo: bool)
+- UIPhotoIslandInteriorEditGuideOff()
+- SetAmiiboReadOn()
+- UIAmiiboPreviousNoticeGuideCreate()
+- EventFlagTempAllClear()
+- NetLoginNEX(Command: str, IsErrorHandling: bool)
+- NetCheckProfileBan(IsSkipError: str)
+- ControllerConnect(EntryVariableKeyInt_PlayerIndex: str)
+- ControllerConnectBegin()
+- ControllerConnectEnd(IsNormalEnd: bool)
+- DemoShareStartEnd()
+- StartSharePlay()
+- ControllerConnectTimerStart(Second: int)
+- EventFlagAllSharePlayPlayer(AccessKey: str)
+- ControllerConnectTimerClose()
+- PrepareSharePlayEntry()
+- CancelSharePlayEntry()
+- QuitSharePlay()
+- UIMsgCardAdrCreate(MsgCardAdrType: str)
+- PreviewStructure(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
+- DeletePreviewStructure(StructureType: str, StructureBuildPosType: str)
+- BuildStructure(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str)
+- UITitleHandling()
+- NoticeGameStartForPlayReport()
+- EnvWeatherArea(WeatherAreaLand: str)
+- EnvSetDemoTime(Second: int, Hour: int, Minute: int)
+- UILogoAppear(SelectKind: str)
+- UICatalogGiftHandling()
+- CommuneMailSend(FromType: str, FileIndex: str, Route: str, LabelIndex: int, Present: str, TagType: str)
+- DeleteRequireExchangeItem()
+- SelectMysteryTour(TourSelectType: int)
+- UIMyDesignFireworksHandling()
+- UIMyDesignFireworksCreate()
+- SaveVersionCheck()
+- UIBootBGChangeDialog()
+- SaveVersionConvert()
+- SaveCopyToEnv()
+- CreateStaticField()
+- SaveRemove(Process: str)
+- SavePlayerRegionLanguageUpdate()
+- NetEnsureNSA()
+- SetTagStructureName(TagID: int, TagType: str)
+- CeremonyUseCracker()
+- CeremonyEmoticon(Reaction: str, Frame: int, ReactionGuest: str, ReactionAN: str, ReactionOT: str, ReactionGE: str, ReactionFU: str, ReactionZK: str, ReactionKO: str, ReactionHA: str, ReactionBO: str, ExcludeMainPlayer: bool)
+- CeremonyLookAt(Target: str, IsExcludeGuest: bool, IsExcludeRco: bool, OffsetX: float, OffsetY: float, OffsetZ: float, IsExcludeFacilitator: bool)
+- CeremonyTurn(Target: str, IsExcludeGuest: bool, IsExcludeRco: bool, IsExcludeFacilitator: bool)
+- CeremonyEquipCracker(DelayMaxFrame: int, DelayMinFrame: int)
+- CameraSetDemoExtraParam(InterpolateKey: str, ExtraParamKey: str)
+- SleepInsect(SleepInsectType: str)
+- SetEventFlagAttendJuneBrideDemo()
+- CeremonyStandup()
+- AfterWeddingBGMStart()
+- NetMeasureBitRate()
+- UIWorkingHandling(DisplayType: str)
+- PlayerResetCraftRecipe(UnlockType: str)
+- CandNicknamePattern()
+- MilagePackageSend()
+- SonkatsuBuyDone(SetBaggage: bool)
+- ReservePlayerTicketGetDemo(EventFileName: str, EntryPointName: str)
+- ReflectFinishedJuneBrideTheme()
+- DecideNextJuneBrideTheme()
+- UpdateJuneBrideDayAlreadyCount()
+- UIShopBuyDisappear()
+- NetEnterVillage()
+- UIShopBuyReselectionAppear()
+- PlayerSetLoan(Bells: int)
+- SetMovingItemNNPCToPokect()
+- NpcQuitMoveOutProposal()
+- SaveVerifyBackupLicense()
+- SaveEnableBackupSetting()
+- SaveRegisterBackupAgent()
+- SaveDisableBackupSetting()
+- UIRecoverySaveDataHandling()
+- SaveDownloadBackup()
+- SaveListDownloadableBackupInfo()
+- DecideRecoverySaveSingle()
+- DecideRecoverySaveChoice()
+- SetRecoverySaveChoice()
+- SetCatalogFlagPhotoStudioPreset()
+- EmitDoorSound(DoorSoundType: str)
+- NetGoToDream()
+- ReturnStageForDreamEnd(FadeInSpeed: float, FadeOutSpeed: float, FadeColorString: str, FadeInKindString: str, FadeOutKindString: str)
+- GetDreamID()
+- NetUploadDream()
+- NetDownloadDream()
+- NetDeleteDream()
+- NetSearchDream(Type: str)
+- NetCancelDownloadDream()
+- DreamUploadEffect(UploadEffectString: str)
+- SaveStartRestoreSeq()
+- NetReissuePassword()
+- SaveUpdateDeviceID()
+- SaveReserveBackupRestoreFlagOff()
+- NetForceSetUser()
+- NetForceResetUser()
+- UIMapSelectHandling()
+- UIPrologueBGAppear()
+- UIPrologueBGDisappear()
+- ClearAllNpcOtherPlayerMoveInFlag()
+- SoundFade(FadeHandleId: int)
+- EntryPlayerVillager()
+- PlayerBirthdayStartBGM()
+- PlayerBirthdayStopOriginalBGM()
+- BirthdaySwitchLight(Type: int)
+- BirthdaySwitchCurtain(Type: int)
+- UIAtmHandling()
+- UICatalogHandling()
+- CatalogMailSend()
+- UICatalogRestartHandling(IsSent: bool)
+- ClearCatalogShoppingMsgCardSetting()
+- CountDownCatalogItemPrice(Reverse: int)
+- MarketShowcase(ShowcaseAction: str)
+- CloseMarketShowcase()
+- TkkLiveNpcStandUp()
+- TotakekeLiveNpcRhythm()
+- TkkLiveNpcSitDown()
+- SetTkkLiveRequestPlayerName()
+- SendBirthDayMessage()
+- TkkFirstLiveEmoticcon(Reaction: str, Frame: int)
+- ReserveTownNews()
+- ReconnectPlayerVIllager(ReconnectPlayerVillager: str)
+- ResetNA()
+- NpcBalloonTalkAll(Type: int)
+- SetIslandRubyType(IslandRubyType: str)
+- TurnOnTempAudioMusic(MusicName: int)
+- TurnOnEventPlazaDuckingJudge()
+- TurnOnForceMaxVolumeForAudioMusic()
+- EventCstmAction(Type: int)
 queries:
-- EventFlowSystemActor.EventFlagSystemBool: event_flags[<AccessKey>]
-- EventFlowSystemActor.EventFlagSystemInt(AccessKey: str, FlagCheckType: int, Border: int) -> bool
-- EventFlowSystemActor.IsDoneBcatProcess() -> bool
-- EventFlowSystemActor.PlayAccountIsPlayerVillager() -> bool
-- EventFlowSystemActor.PassDaysSincePreviousGrowUp() -> bool
-- EventFlowSystemActor.IsGamePlayTime() -> bool
-- EventFlowSystemActor.IsSharePlay(TargetMode: int) -> bool
-- EventFlowSystemActor.BackDaysSincePreviousGrowUp() -> bool
-- EventFlowSystemActor.CheckErrorType(ErrorType: int) -> bool
-- EventFlowSystemActor.IsRawDataCheck(IsRawDataCheck: bool) -> bool
-- EventFlowSystemActor.GrowUpInterval(Interval: int) -> bool
-- EventFlowSystemActor.NetIsDreaming() -> bool
-- EventFlowSystemActor.PlayerHasCraftRecipe(ItemUniqueId: int, UnlockType: str) -> bool
-- EventFlowSystemActor.RandomChoice2(ChoiceNumber: int) -> int2
-- EventFlowSystemActor.SubflowResultChoice4: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice5: subflow_results[<SetIndex>]
-- EventFlowSystemActor.NpcHouseNum: <.name>(<NpcHouseType>) >= <Num>
-- EventFlowSystemActor.GlobalEventStart(EventLabelString: str) -> bool
-- EventFlowSystemActor.EventBranch(CheckNowTime: bool, AddDay: int) -> int
-- EventFlowSystemActor.VillageScoreCheckNatural: EventFlowSystemActor.VillageScoreNatural >= <BorderValue>
-- EventFlowSystemActor.VillageScoreCheckLife: EventFlowSystemActor.VillageScoreLife >= <BorderValue>
-- EventFlowSystemActor.VillageScoreVeryMessy(BorderHalfUnit: int, BorderBlockNum: int) -> bool
-- EventFlowSystemActor.VillageScorePutUnitIconNum: <.name> >= <BorderValue>
-- EventFlowSystemActor.VillageScoreCheckTreeNum: EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>
-- EventFlowSystemActor.VillageScoreCheckLifeDeltaBeforeDay: EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>
-- EventFlowSystemActor.VillageScoreCheckNaturalDeltaBeforeDay: EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>
-- EventFlowSystemActor.GeneralTalkChoice2() -> int2
-- EventFlowSystemActor.RandomChoiceExcludePrevious3(IsSetSpeakerChoiceResult: bool, ChoiceNumber: int) -> int3
-- EventFlowSystemActor.CatalogItemFrom(ItemFromType: str) -> bool
-- EventFlowSystemActor.PercentChoice(Percent: int) -> int2
-- EventFlowSystemActor.EventCheck(EventLabelString: str) -> int
-- EventFlowSystemActor.HasBellCount(Money: any) -> bool
-- EventFlowSystemActor.SystemHasBaggageSpace(CheckNum: int, CheckTargrt: str) -> bool
-- EventFlowSystemActor.FinalFireworksFes() -> bool
-- EventFlowSystemActor.IsMyVillage() -> bool
-- EventFlowSystemActor.TermEventNow(EventLabelString: str, CheckNowTime: bool) -> bool
-- EventFlowSystemActor.SystemCheckNowStage(CheckStage: str) -> bool
-- EventFlowSystemActor.EventNpcSet(EventLabelString: str) -> bool
-- EventFlowSystemActor.EnvHourCompare(Hour: int, Minute: int, IsMidNight: bool, IsOverGrowUpTime: bool) -> int3
-- EventFlowSystemActor.NetHasVisitor() -> bool
-- EventFlowSystemActor.CheckFirstEnterPlayerCreateParam(Param: str) -> bool
-- EventFlowSystemActor.NetIsConnected() -> bool
-- EventFlowSystemActor.IsUnlockedAllItemRemakeCommonPattern() -> bool
-- EventFlowSystemActor.RandomChoiceExcludePrevious2(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int2
-- EventFlowSystemActor.EnvHourTwentyFour() -> int24
-- EventFlowSystemActor.MuseumLevel() -> int4
-- EventFlowSystemActor.CheckEntryVariableInt(Value: str, CheckType: int, CheckValue: int) -> bool
-- EventFlowSystemActor.ShopLevel() -> int3
-- EventFlowSystemActor.OfficeLevel() -> int3
-- EventFlowSystemActor.IsReturnJuneBridePhotoStudio() -> bool
-- EventFlowSystemActor.SubflowResultChoice2: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice6: subflow_results[<SetIndex>]
-- EventFlowSystemActor.EnvTimeZone() -> int6
-- EventFlowSystemActor.EnvSameDate(CheckDateType: str, TimeType: str) -> bool
-- EventFlowSystemActor.EnvMonth() -> int12
-- EventFlowSystemActor.EnvWeatherArea() -> int2
-- EventFlowSystemActor.CountBirthdayVillager() -> int10
-- EventFlowSystemActor.MainPlayerIsBirthday(IsCheckNpcReservePlayerBirthday: bool) -> bool
-- EventFlowSystemActor.FacilityOpenPastDays(CountFacilityType: str, Days: int) -> bool
-- EventFlowSystemActor.IsCampSiteOccupied() -> bool
-- EventFlowSystemActor.EnvWeather() -> int8
-- EventFlowSystemActor.SubflowResultChoice9: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice8: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice10: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice7: subflow_results[<SetIndex>]
-- EventFlowSystemActor.SubflowResultChoice3: subflow_results[<SetIndex>]
-- EventFlowSystemActor.LandFruit() -> int5
-- EventFlowSystemActor.EnvSpecialWeather() -> int10
-- EventFlowSystemActor.EnvDayOfWeek() -> int7
-- EventFlowSystemActor.GlobalEventNow(EventLabelString: str, DayType: str, CheckNowTime: bool) -> bool
-- EventFlowSystemActor.EnvCheckBetweenDate(Month0: int, Day0: int, Month1: int, Day1: int, TimeType: str) -> bool
-- EventFlowSystemActor.RandomChoice7(ChoiceNumber: int) -> int7
-- EventFlowSystemActor.EnvSeason() -> int4
-- EventFlowSystemActor.EnvConstellation(ConstellationCheckType: str) -> int12
-- EventFlowSystemActor.IsSettlerQuestOutsideComplete(SettlerType: int, OutsideCheckType: int) -> bool
-- EventFlowSystemActor.PlayerHouseLevel() -> int9
-- EventFlowSystemActor.PlayerVillagerCount(Count: int) -> bool
-- EventFlowSystemActor.PlayerPastDaysFromLastPlay(Border: int) -> bool
-- EventFlowSystemActor.UIResultMenuDecide() -> bool
-- EventFlowSystemActor.IsPlayingAudioMusic() -> bool
-- EventFlowSystemActor.IsLastControlAudioMusic() -> bool
-- EventFlowSystemActor.VillagerNpcNum(Num: int, IncludeNotLiving: bool) -> bool
-- EventFlowSystemActor.RandomChoiceExcludePrevious9(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int9
-- EventFlowSystemActor.UIIsExistCoordinateSet() -> bool
-- EventFlowSystemActor.UIClosetItemNum() -> int5
-- EventFlowSystemActor.GeneralTalkChoice3() -> int3
-- EventFlowSystemActor.SystemRadioPlayMusic() -> bool
-- EventFlowSystemActor.RandomChoiceExcludePrevious7(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int7
-- EventFlowSystemActor.RandomChoiceExcludePrevious4(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int4
-- EventFlowSystemActor.RandomChoiceExcludePrevious5(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int5
-- EventFlowSystemActor.ShoppingCapacity(ItemUniqueId: int, CapacityCheckType: str) -> bool
-- EventFlowSystemActor.RandomChoiceExcludePrevious8(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int8
-- EventFlowSystemActor.SystemCheckPlayerTool() -> int22
-- EventFlowSystemActor.NowRoomFtrNum(Count: int) -> bool
-- EventFlowSystemActor.SystemCountPlayerNum(Border: int) -> bool
-- EventFlowSystemActor.CurrentRegionLanguage(SettingType: str) -> int14
-- EventFlowSystemActor.EnvHourOverGrowUp() -> bool
-- EventFlowSystemActor.PlayerIsEquipItem(EquipRequireType: str, PutawayType: bool, ReferenceLook: bool, ItemUniqueID1: int, ItemUniqueID2: int, ItemUniqueID3: int, ItemUniqueID4: int, ItemUniqueID5: int, ItemUniqueID6: int, ItemUniqueID7: int, ItemUniqueID8: int) -> bool
-- EventFlowSystemActor.ComparePlayerCreateTime(Border: int) -> bool
-- EventFlowSystemActor.BridgeNum(BridgeJudgeType: str, Num: int) -> bool
-- EventFlowSystemActor.SlopeNum(SlopeJudgeType: str, Num: int) -> bool
-- EventFlowSystemActor.RandomChoice3(ChoiceNumber: int) -> int3
-- EventFlowSystemActor.UISelectedItemIsWrapping(JudgeTarget: str) -> bool
-- EventFlowSystemActor.ItemIsDecoratedAtTalkNpcHouse(JudgeTarget: str) -> bool
-- EventFlowSystemActor.UISelectedItemIsEquiped(TargetCharacter: int, JudgeTarget: str, ReferenceLook: bool) -> bool
-- EventFlowSystemActor.KindBitParamItemSelectInclude(BitParamType: str, JudgeTarget: str) -> bool
-- EventFlowSystemActor.UICheckSelectedItemPrice(JudgeTarget: str, Border: int) -> bool
-- EventFlowSystemActor.MultiKindItemSelectInclude(JudgeTarget: str, ItemKindType1: str, ItemKindType2: str, ItemKindType3: str, ItemKindType4: str, ItemKindType5: str, ItemKindType6: str, ItemKindType7: str, ItemKindType8: str) -> bool
-- EventFlowSystemActor.MultiItemSelectInclude(JudgeTarget: str, ItemUniqueID1: int, ItemUniqueID2: int, ItemUniqueID3: int, ItemUniqueID4: int, ItemUniqueID5: int, ItemUniqueID6: int, ItemUniqueID7: int, ItemUniqueID8: int) -> bool
-- EventFlowSystemActor.HasKindItem(CheckItemKindType: str, ItemKindType: str, ItemFilterType: str) -> bool
-- EventFlowSystemActor.IsHoldPlayerBirthdayThisYear() -> bool
-- EventFlowSystemActor.PlayerBirthdayIsSpecialDay() -> int7
-- EventFlowSystemActor.PlayerGender() -> int2
-- EventFlowSystemActor.PercentChoice3(PercentA: int, PercentB: int, PercentC: int) -> int3
-- EventFlowSystemActor.HasTargetItem(ItemUniqueId: int, NeedNum: int) -> bool
-- EventFlowSystemActor.NpcQuestIsLimitOver(QuestType: str) -> bool
-- EventFlowSystemActor.RandomChoice6(ChoiceNumber: int) -> int6
-- EventFlowSystemActor.SystemIsCanNotLookFace() -> bool
-- EventFlowSystemActor.SystemCheckPastDaysFromPlayerMade(CheckDays: int) -> bool
-- EventFlowSystemActor.IsExistBirthdayPlayerInSub() -> bool
-- EventFlowSystemActor.CanScheduleNowPlayerBirthdayParty() -> bool
-- EventFlowSystemActor.IsInsectChasingPlayer(CheckInsect: int) -> bool
-- EventFlowSystemActor.MultiKindItemSelectIncludeChoice5(JudgeTarget: str, ChoiceNumber: int, ItemKindTypeA: str, ItemKindTypeB: str, ItemKindTypeC: str, ItemKindTypeD: str) -> int5
-- EventFlowSystemActor.MultiMessageCategoryItemSelectInclude(JudgeTarget: str, ItemCategoryType1: str, ItemCategoryType2: str, ItemCategoryType3: str, ItemCategoryType4: str, ItemCategoryType5: str, ItemCategoryType6: str, ItemCategoryType7: str, ItemCategoryType8: str) -> bool
-- EventFlowSystemActor.MultiKindItemSelectIncludeChoice4(JudgeTarget: str, ChoiceNumber: int, ItemKindTypeA: str, ItemKindTypeB: str, ItemKindTypeC: str) -> int4
-- EventFlowSystemActor.CheckMoveOutNpcIsMoveKitVillager() -> bool
-- EventFlowSystemActor.GeneralTalkChoice4() -> int4
-- EventFlowSystemActor.SystemIsCorrectFaceCard() -> bool
-- EventFlowSystemActor.IsAbandonedHouseNpc(MoveOutNpcType: str) -> bool
-- EventFlowSystemActor.PlayerHasCampCraftRecipe() -> bool
-- EventFlowSystemActor.NpcGeneralTalkChoice() -> int5
-- EventFlowSystemActor.MuseumRoomDonateRate(Rate: int) -> bool
-- EventFlowSystemActor.IsTheDayAfterTalkPlayerBithday() -> bool
-- EventFlowSystemActor.IsVillageGateOpened() -> bool
-- EventFlowSystemActor.InsectFishBoxIsEmpty() -> bool
-- EventFlowSystemActor.DonationDone() -> bool
-- EventFlowSystemActor.UIIsAdrSelect() -> bool
-- EventFlowSystemActor.HasFreeInPostOffice(Type: str) -> bool
-- EventFlowSystemActor.ExistUnfinishMail() -> bool
-- EventFlowSystemActor.ReservedFutureMail() -> bool
-- EventFlowSystemActor.UIManageFutureMessage() -> bool
-- EventFlowSystemActor.ReservedFutureMailWithPresent() -> bool
-- EventFlowSystemActor.CanReturnToPocketFutureMailPresent() -> bool
-- EventFlowSystemActor.NetHasPOPID(IsRawDataCheck: bool) -> bool
-- EventFlowSystemActor.IsApprovedFreeCommunication() -> bool
-- EventFlowSystemActor.LimitSendMailToFriend() -> bool
-- EventFlowSystemActor.HasAttachedPresent() -> bool
-- EventFlowSystemActor.NetHasAddressData(Type: str) -> bool
-- EventFlowSystemActor.UnfinishMailToType() -> int5
-- EventFlowSystemActor.UIManageUnfinishedMessage() -> int4
-- EventFlowSystemActor.IsValidUnfinishMailTo() -> int4
-- EventFlowSystemActor.GeneralTalkChoice5() -> int5
-- EventFlowSystemActor.UIGetMessageCardEditCancelStatus() -> int3
-- EventFlowSystemActor.CheckAmiiboNPC(Kind: str) -> bool
-- EventFlowSystemActor.IsAmiiboNpcMigrated() -> bool
-- EventFlowSystemActor.IsCallableAmiiboNpc(Purpose: str) -> bool
-- EventFlowSystemActor.IsAlreadyCalledAmiiboNpc(Purpose: str) -> bool
-- EventFlowSystemActor.IsAcceptableAmiibo() -> bool
-- EventFlowSystemActor.IsAcquaintanceAmiiboNPC() -> bool
-- EventFlowSystemActor.NfpErrorType() -> int3
-- EventFlowSystemActor.NfcDisabled() -> bool
-- EventFlowSystemActor.IsAmiiboNpcLiving() -> bool
-- EventFlowSystemActor.IsAmiiboNpcSick() -> bool
-- EventFlowSystemActor.IsAmiiboNpcVisiting() -> bool
-- EventFlowSystemActor.AmiiboNameWithTitle() -> int2
-- EventFlowSystemActor.IsAmiiboNpcMoveOut() -> int3
-- EventFlowSystemActor.AmiiboNpcIsIncludedCamperList() -> bool
-- EventFlowSystemActor.VillageFlower(VillageFlowerType: str) -> int8
-- EventFlowSystemActor.IsSettlerQuestInsideMaterialSelect(SettlerType: int, InsideMaterialType: int) -> bool
-- EventFlowSystemActor.IsDuringBusinessHours(Type: str) -> bool
-- EventFlowSystemActor.IsMadeCraftUnlockRecipe(UnlockType: str, CheckUnlockMode: str) -> bool
-- EventFlowSystemActor.RandomChoice5(ChoiceNumber: int) -> int5
-- EventFlowSystemActor.MyDesignExchangeMenuResult() -> int7
-- EventFlowSystemActor.NetHasDesignerID() -> bool
-- EventFlowSystemActor.HasAbleDisplayMyDesign() -> bool
-- EventFlowSystemActor.IsReachedUploadCountMax() -> bool
-- EventFlowSystemActor.UIMyDesignExchangeUploadResult() -> int3
-- EventFlowSystemActor.IsMatchedOwnDesignerIdAndInputDesignerId() -> bool
-- EventFlowSystemActor.NetIsFoundMyDesign(Type: str) -> bool
-- EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult() -> int3
-- EventFlowSystemActor.IsSpecifiedMyDesignPosted() -> bool
-- EventFlowSystemActor.IsMyDesignProInMyDesignExchange() -> bool
-- EventFlowSystemActor.MyDesignExchangeNetworkError() -> bool
-- EventFlowSystemActor.NetIsValidID(Kind: str) -> bool
-- EventFlowSystemActor.GeneralTalkChoice6() -> int6
-- EventFlowSystemActor.IsSoloPlayController() -> bool
-- EventFlowSystemActor.ItemRemove() -> bool
-- EventFlowSystemActor.UIPocketMenuItemSelected(ItemUniqueID: int) -> bool
-- EventFlowSystemActor.PlayerGetEasterEggRecipe() -> bool
-- EventFlowSystemActor.CatchFesFreeQuery2(CatchFesQueryType: str) -> bool
-- EventFlowSystemActor.IncludeHorizontalController() -> bool
-- EventFlowSystemActor.HasObstacle(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str) -> bool
-- EventFlowSystemActor.CanBuildHere(StructureBuildPosType: str, StructureType: str, StructureBuildTiming: str) -> bool
-- EventFlowSystemActor.UIResultHousingKitNpcType() -> int2
-- EventFlowSystemActor.IsRunningMiniGame(MiniGameType: str) -> bool
-- EventFlowSystemActor.UIResultItemWindowNumCheck(JudgeTarget: str, Num: int) -> bool
-- EventFlowSystemActor.BeyWeekEndEvent() -> int3
-- EventFlowSystemActor.MoneyCapacity(AddMoney: any, SellType: str) -> int3
-- EventFlowSystemActor.UIMiniGameCanStart() -> bool
-- EventFlowSystemActor.ChyWeekEndEvent() -> int3
-- EventFlowSystemActor.UISelectedItemCanMoveChest() -> bool
-- EventFlowSystemActor.PurchaseBoxFreeQuery2(PurchaseBoxQueryType: str, SellTotal: any) -> bool
-- EventFlowSystemActor.YMD(Year: int, Month: int, Day: int, TimeType: str) -> int3
-- EventFlowSystemActor.NetMode() -> int3
-- EventFlowSystemActor.NetFoundVillageNum() -> int3
-- EventFlowSystemActor.NetIsDecidedVillage() -> int3
-- EventFlowSystemActor.NetIsNeedPassword(Type: str) -> bool
-- EventFlowSystemActor.NetAllSessionIsFull() -> bool
-- EventFlowSystemActor.NetLockFailReason() -> int3
-- EventFlowSystemActor.NetHasFriend() -> bool
-- EventFlowSystemActor.NetIsFriendOnlySession(Type: str) -> bool
-- EventFlowSystemActor.NetIsInviteFriend() -> bool
-- EventFlowSystemActor.NetSessionCreateSetting() -> int3
-- EventFlowSystemActor.RandomChoice4(ChoiceNumber: int) -> int4
-- EventFlowSystemActor.RandomChoiceExcludePrevious10(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int10
-- EventFlowSystemActor.UIIllegalReportResult() -> bool
-- EventFlowSystemActor.OverwriteEquipedMyDesign() -> bool
-- EventFlowSystemActor.UIShopBuyTailorResult() -> int5
-- EventFlowSystemActor.UIShopBuyTailorIsWear() -> bool
-- EventFlowSystemActor.MuseumComplete() -> bool
-- EventFlowSystemActor.MuseumDonationNumCheck(Border: int) -> bool
-- EventFlowSystemActor.ExpensivePurchase() -> bool
-- EventFlowSystemActor.ItemValuables() -> bool
-- EventFlowSystemActor.SelectCeremony() -> int8
-- EventFlowSystemActor.UIRemoveStructureType() -> int2
-- EventFlowSystemActor.IsFirstNpcLiveInTent() -> bool
-- EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(Count: int) -> bool
-- EventFlowSystemActor.IsUnconnectedVillageLeader() -> bool
-- EventFlowSystemActor.SaveIsExist() -> bool
-- EventFlowSystemActor.NetIsAppError(Process: str) -> bool
-- EventFlowSystemActor.UIResultMelodyEdit() -> int3
-- EventFlowSystemActor.MultiFromItemSelectInclude(JudgeTarget: str, ItemFromType1: str, ItemFromType2: str, ItemFromType3: str, ItemFromType4: str, ItemFromType5: str, ItemFromType6: str, ItemFromType7: str, ItemFromType8: str) -> bool
-- EventFlowSystemActor.ExistPlayerAcceptingBirthDayMessage() -> bool
-- EventFlowSystemActor.SaveLastBackupElapsedDaysGreaterThan(Days: int) -> bool
-- EventFlowSystemActor.SaveIsOnBackupRestoringSettingNotice() -> bool
-- EventFlowSystemActor.ControllerIsConnected() -> bool
-- EventFlowSystemActor.MessageUseBCancel() -> bool
-- EventFlowSystemActor.IsPlayerBirthdayRoom() -> bool
-- EventFlowSystemActor.NetCanRequestLeave() -> bool
-- EventFlowSystemActor.JuneBrideScoreCheck(ScoreTypeString: str, Num: int) -> bool
-- EventFlowSystemActor.CheckCalledNpcNumNormal(NpcNum: int) -> bool
-- EventFlowSystemActor.AlwAlpIsOnBedJuneBride() -> bool
-- EventFlowSystemActor.MuseumNameboardIsStillHaveDonateItem(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.MuseumNameboardIsNeedCameraTargetKind(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind(EntryVariableKeyInt_LoopNum: str) -> int6
-- EventFlowSystemActor.MuseumNameBoardIsExistVillageDonatePlayer(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.MuseumNameBoardIsCompleteFossilItem(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.MuseumNameBoardIsDonateFossilItemSomeOne(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.MuseumNameBoardIsSingleFossilSet(EntryVariableKeyInt_LoopNum: str) -> bool
-- EventFlowSystemActor.NetDemoType() -> int6
-- EventFlowSystemActor.NetDreamingTime(CheckValue: int) -> bool
-- EventFlowSystemActor.NetIsDemoPlayer() -> bool
-- EventFlowSystemActor.IsDifferentAreaVisit() -> bool
-- EventFlowSystemActor.HasSpaceCreateNpc() -> bool
-- EventFlowSystemActor.CalledNpcNum(CalledNpcNum: int) -> bool
-- EventFlowSystemActor.CheckEntryVariableBool: entry_variables[<Value>]
-- EventFlowSystemActor.ControllerConnectNum() -> int2
-- EventFlowSystemActor.CountSharePlayerNum(Border: int) -> bool
-- EventFlowSystemActor.EventFlagAllSharePlayPlayer(AccessKey: str) -> bool
-- EventFlowSystemActor.ControllerConnectResult() -> int3
-- EventFlowSystemActor.CountWaitingPlayerNum(Border: int) -> bool
-- EventFlowSystemActor.GeneralTalkChoice7() -> int7
-- EventFlowSystemActor.UITitleResult() -> int3
-- EventFlowSystemActor.NxRegionCode() -> int6
-- EventFlowSystemActor.HasFreeInCommuneMail() -> bool
-- EventFlowSystemActor.PlayerIsMadeCraftRecipe(CheckMode: str, MadeItemID0: int, MadeItemID1: int, MadeItemID2: int, MadeItemID3: int, MadeItemID4: int, MadeItemID5: int, MadeItemID6: int, MadeItemID7: int) -> bool
-- EventFlowSystemActor.IsEnableToGetEggBasket(NeedNum: int) -> bool
-- EventFlowSystemActor.UIIsRegisteredMyDesignFireworks() -> bool
-- EventFlowSystemActor.SaveVersionCheck() -> int
-- EventFlowSystemActor.SaveProcIsSuccess() -> bool
-- EventFlowSystemActor.SaveIsNotFound() -> bool
-- EventFlowSystemActor.SaveIsBroken() -> bool
-- EventFlowSystemActor.SaveRestoreSeqStartCheck() -> bool
-- EventFlowSystemActor.IsRequiredLanguageChangeAnnounce() -> bool
-- EventFlowSystemActor.PreviousRegionLanguage() -> int14
-- EventFlowSystemActor.IsFullPlayerVillager() -> bool
-- EventFlowSystemActor.NetIsRegisteredSameNA() -> bool
-- EventFlowSystemActor.NetIsAvailableNA() -> bool
-- EventFlowSystemActor.CeremonyType() -> int8
-- EventFlowSystemActor.IsBadSightCeremony() -> bool
-- EventFlowSystemActor.MuseumCeremonyType() -> bool
-- EventFlowSystemActor.CanHearAudioMusicAtFocusPoint() -> bool
-- EventFlowSystemActor.HasCraftRecipeSelectFlow(JudgeTarget: str) -> bool
-- EventFlowSystemActor.HasLifeSupportPoint(LifeSupportPointCheckType: str, Point: int) -> bool
-- EventFlowSystemActor.IsSpeakerResetOrRacket() -> bool
-- EventFlowSystemActor.CheckJuneBrideStudioTakePicture() -> int3
-- EventFlowSystemActor.CurrentJuneBrideTheme() -> int3
-- EventFlowSystemActor.IsSelectedNpcMoveInToday() -> bool
-- EventFlowSystemActor.IsSelectedNpcMoveOutDecided() -> bool
-- EventFlowSystemActor.SaveBackupLicenseEnabled() -> bool
-- EventFlowSystemActor.BackupAgentIsMainPlayer() -> bool
-- EventFlowSystemActor.BackupAgentExist() -> bool
-- EventFlowSystemActor.SaveIsEnabledBackupSetting() -> bool
-- EventFlowSystemActor.SaveIsDownloadedBackup() -> bool
-- EventFlowSystemActor.SaveIsSucceededDownloadableBackupInfoListup() -> bool
-- EventFlowSystemActor.SaveIsDownloadableBackupInfoGreaterThan(Count: int) -> bool
-- EventFlowSystemActor.HasDreamID() -> bool
-- EventFlowSystemActor.IsMatchedOwnDreamIdAndInputDreamId() -> bool
-- EventFlowSystemActor.NetIsFoundDreamLand(Type: str) -> bool
-- EventFlowSystemActor.RestoreFlagCheck() -> bool
-- EventFlowSystemActor.SaveCompareBackupAgentNSAID() -> bool
-- EventFlowSystemActor.NetHasPOLID() -> bool
-- EventFlowSystemActor.PlayerHasLoan() -> bool
-- EventFlowSystemActor.IsDeliveryToOthers() -> int3
-- EventFlowSystemActor.UIIsCatalogBootSmartPhone() -> bool
-- EventFlowSystemActor.IsExistPHouseVisitNpcYet() -> bool
-- EventFlowSystemActor.DisplayedNewBirthDayMessage() -> bool
-- EventFlowSystemActor.IsSelectedVillageLeader() -> bool
-
+- EventFlagSystemBool: event_flags_system[<AccessKey>] (inverted)
+- EventFlagSystemInt: {'key': 'FlagCheckType', 'values': ['event_flags_system[<AccessKey>] == <Border>', 'event_flags_system[<AccessKey>] != <Border>', 'event_flags_system[<AccessKey>] > <Border>', 'event_flags_system[<AccessKey>] >= <Border>', 'event_flags_system[<AccessKey>] < <Border>', 'event_flags_system[<AccessKey>] <= <Border>']} (inverted)
+- IsDoneBcatProcess() -> bool (inverted)
+- PlayAccountIsPlayerVillager() -> bool (inverted)
+- PassDaysSincePreviousGrowUp() -> bool (inverted)
+- IsGamePlayTime() -> bool (inverted)
+- IsSharePlay(TargetMode: int) -> bool (inverted)
+- BackDaysSincePreviousGrowUp() -> bool (inverted)
+- CheckErrorType(ErrorType: int) -> bool (inverted)
+- GrowUpInterval(Interval: int) -> bool (inverted)
+- NetIsDreaming() -> bool (inverted)
+- PlayerHasCraftRecipe(ItemUniqueId: int, UnlockType: str) -> bool (inverted)
+- RandomChoice2(ChoiceNumber: int) -> int2
+- SubflowResultChoice4: subflow_results[<SetIndex>]
+- SubflowResultChoice5: subflow_results[<SetIndex>]
+- NpcHouseNum: <.name>(<NpcHouseType>) < <Num> (inverted)
+- GlobalEventStart(EventLabelString: str) -> bool (inverted)
+- EventBranch(CheckNowTime: bool, AddDay: int) -> int
+- VillageScoreCheckNatural: EventFlowSystemActor.VillageScoreNatural >= <BorderValue>
+- VillageScoreCheckLife: EventFlowSystemActor.VillageScoreLife >= <BorderValue>
+- VillageScoreVeryMessy(BorderHalfUnit: int, BorderBlockNum: int) -> bool
+- VillageScorePutUnitIconNum: <.name> >= <BorderValue>
+- VillageScoreCheckTreeNum: EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>
+- VillageScoreCheckLifeDeltaBeforeDay: EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>
+- VillageScoreCheckNaturalDeltaBeforeDay: EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>
+- GeneralTalkChoice2() -> int2
+- RandomChoiceExcludePrevious3(IsSetSpeakerChoiceResult: bool, ChoiceNumber: int) -> int3
+- CatalogItemFrom(ItemFromType: str) -> bool (inverted)
+- PercentChoice(Percent: int) -> bool (inverted)
+- EventCheck(EventLabelString: str) -> int
+- HasBellCount(Money: any) -> bool (inverted)
+- SystemHasBaggageSpace(CheckNum: int, CheckTargrt: str) -> bool (inverted)
+- FinalFireworksFes() -> bool (inverted)
+- IsMyVillage() -> bool (inverted)
+- TermEventNow(EventLabelString: str, CheckNowTime: bool) -> bool (inverted)
+- SystemCheckNowStage(CheckStage: str) -> bool (inverted)
+- EventNpcSet(EventLabelString: str) -> bool (inverted)
+- EnvHourCompare(Hour: int, Minute: int, IsMidNight: bool, IsOverGrowUpTime: bool) -> int3
+- NetHasVisitor() -> bool (inverted)
+- CheckFirstEnterPlayerCreateParam(Param: str) -> bool (inverted)
+- NetIsConnected() -> bool (inverted)
+- IsUnlockedAllItemRemakeCommonPattern() -> bool (inverted)
+- RandomChoiceExcludePrevious2(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int2
+- EnvHourTwentyFour() -> int24
+- MuseumLevel() -> enum[BlathersTent,BlathersMuseumNoArt,BlathersMuseumArt,BlathersNotMovedIn]
+- CheckEntryVariableInt: {'key': 'CheckType', 'values': ['entry_variables[<Value>] == <CheckValue>', 'entry_variables[<Value>] != <CheckValue>', 'entry_variables[<Value>] > <CheckValue>', 'entry_variables[<Value>] >= <CheckValue>', 'entry_variables[<Value>] < <CheckValue>', 'entry_variables[<Value>] <= CheckValue>>']}
+- ShopLevel() -> enum[InResServiceTent,NooksCrannyInitial,NooksCrannyUpgraded]
+- OfficeLevel() -> enum[ResServiceTent0,ResServiceTent1,ResServiceBuilding]
+- IsReturnJuneBridePhotoStudio() -> bool (inverted)
+- SubflowResultChoice2: subflow_results[<SetIndex>]
+- SubflowResultChoice6: subflow_results[<SetIndex>]
+- EnvTimeZone() -> int6
+- EnvSameDate(CheckDateType: str, TimeType: str) -> bool (inverted)
+- EnvMonth() -> int12
+- EnvWeatherArea() -> int2
+- CountBirthdayVillager() -> int10
+- MainPlayerIsBirthday(IsCheckNpcReservePlayerBirthday: bool) -> bool (inverted)
+- FacilityOpenPastDays(CountFacilityType: str, Days: int) -> bool (inverted)
+- IsCampSiteOccupied() -> bool (inverted)
+- EnvWeather() -> int8
+- SubflowResultChoice9: subflow_results[<SetIndex>]
+- SubflowResultChoice8: subflow_results[<SetIndex>]
+- SubflowResultChoice10: subflow_results[<SetIndex>]
+- SubflowResultChoice7: subflow_results[<SetIndex>]
+- SubflowResultChoice3: subflow_results[<SetIndex>]
+- LandFruit() -> int5
+- EnvSpecialWeather() -> int10
+- EnvDayOfWeek() -> int7
+- GlobalEventNow(EventLabelString: str, DayType: str, CheckNowTime: bool) -> bool (inverted)
+- EnvCheckBetweenDate(Month0: int, Day0: int, Month1: int, Day1: int, TimeType: str) -> bool (inverted)
+- RandomChoice7(ChoiceNumber: int) -> int7
+- EnvSeason() -> int4
+- EnvConstellation(ConstellationCheckType: str) -> int12
+- IsSettlerQuestOutsideComplete(SettlerType: int, OutsideCheckType: int) -> bool (inverted)
+- PlayerHouseLevel() -> int9
+- PlayerVillagerCount(Count: int) -> bool (inverted)
+- PlayerPastDaysFromLastPlay(Border: int) -> bool (inverted)
+- UIResultMenuDecide() -> bool (inverted)
+- IsPlayingAudioMusic() -> bool (inverted)
+- IsLastControlAudioMusic() -> bool (inverted)
+- VillagerNpcNum: <.name>(<IncludeNotLiving>) >= <Num> (inverted)
+- RandomChoiceExcludePrevious9(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int9
+- UIIsExistCoordinateSet() -> bool (inverted)
+- UIClosetItemNum() -> int5
+- GeneralTalkChoice3() -> int3
+- SystemRadioPlayMusic() -> bool (inverted)
+- RandomChoiceExcludePrevious7(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int7
+- RandomChoiceExcludePrevious4(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int4
+- RandomChoiceExcludePrevious5(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int5
+- ShoppingCapacity(ItemUniqueId: int, CapacityCheckType: str) -> bool (inverted)
+- RandomChoiceExcludePrevious8(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int8
+- SystemCheckPlayerTool() -> int22
+- NowRoomFtrNum(Count: int) -> bool (inverted)
+- SystemCountPlayerNum(Border: int) -> bool (inverted)
+- CurrentRegionLanguage(SettingType: str) -> int14
+- EnvHourOverGrowUp() -> bool (inverted)
+- PlayerIsEquipItem(EquipRequireType: str, PutawayType: bool, ReferenceLook: bool, ItemUniqueID1: int, ItemUniqueID2: int, ItemUniqueID3: int, ItemUniqueID4: int, ItemUniqueID5: int, ItemUniqueID6: int, ItemUniqueID7: int, ItemUniqueID8: int) -> bool (inverted)
+- ComparePlayerCreateTime(Border: int) -> bool (inverted)
+- BridgeNum(BridgeJudgeType: str, Num: int) -> bool (inverted)
+- SlopeNum(SlopeJudgeType: str, Num: int) -> bool (inverted)
+- RandomChoice3(ChoiceNumber: int) -> int3
+- UISelectedItemIsWrapping(JudgeTarget: str) -> bool (inverted)
+- ItemIsDecoratedAtTalkNpcHouse(JudgeTarget: str) -> bool (inverted)
+- UISelectedItemIsEquiped(TargetCharacter: int, JudgeTarget: str, ReferenceLook: bool) -> bool (inverted)
+- KindBitParamItemSelectInclude(BitParamType: str, JudgeTarget: str) -> bool (inverted)
+- UICheckSelectedItemPrice(JudgeTarget: str, Border: int) -> bool (inverted)
+- MultiKindItemSelectInclude: any (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>) (inverted)
+- MultiItemSelectInclude: any (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>) (inverted)
+- HasKindItem(CheckItemKindType: str, ItemKindType: str, ItemFilterType: str) -> bool (inverted)
+- IsHoldPlayerBirthdayThisYear() -> bool (inverted)
+- PlayerBirthdayIsSpecialDay() -> int7
+- PlayerGender() -> int2
+- PercentChoice3(PercentA: int, PercentB: int, PercentC: int) -> int3
+- HasTargetItem(ItemUniqueId: int, NeedNum: int) -> bool (inverted)
+- NpcQuestIsLimitOver(QuestType: str) -> bool (inverted)
+- RandomChoice6(ChoiceNumber: int) -> int6
+- SystemIsCanNotLookFace() -> bool (inverted)
+- SystemCheckPastDaysFromPlayerMade(CheckDays: int) -> bool (inverted)
+- IsExistBirthdayPlayerInSub() -> bool (inverted)
+- CanScheduleNowPlayerBirthdayParty() -> bool (inverted)
+- IsInsectChasingPlayer(CheckInsect: int) -> bool (inverted)
+- MultiKindItemSelectIncludeChoice5(JudgeTarget: str, ChoiceNumber: int, ItemKindTypeA: str, ItemKindTypeB: str, ItemKindTypeC: str, ItemKindTypeD: str) -> int5
+- MultiMessageCategoryItemSelectInclude: any (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>) in EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>) (inverted)
+- MultiKindItemSelectIncludeChoice4(JudgeTarget: str, ChoiceNumber: int, ItemKindTypeA: str, ItemKindTypeB: str, ItemKindTypeC: str) -> int4
+- CheckMoveOutNpcIsMoveKitVillager() -> bool (inverted)
+- GeneralTalkChoice4() -> int4
+- SystemIsCorrectFaceCard() -> bool (inverted)
+- IsAbandonedHouseNpc(MoveOutNpcType: str) -> bool (inverted)
+- PlayerHasCampCraftRecipe() -> bool (inverted)
+- NpcGeneralTalkChoice() -> int5
+- MuseumRoomDonateRate(Rate: int) -> bool (inverted)
+- IsTheDayAfterTalkPlayerBithday() -> bool (inverted)
+- IsVillageGateOpened() -> bool (inverted)
+- InsectFishBoxIsEmpty() -> bool (inverted)
+- DonationDone() -> bool (inverted)
+- UIIsAdrSelect() -> bool (inverted)
+- HasFreeInPostOffice(Type: str) -> bool (inverted)
+- ExistUnfinishMail() -> bool (inverted)
+- ReservedFutureMail() -> bool (inverted)
+- UIManageFutureMessage() -> bool (inverted)
+- ReservedFutureMailWithPresent() -> bool (inverted)
+- CanReturnToPocketFutureMailPresent() -> bool (inverted)
+- NetHasPOPID(IsRawDataCheck: bool) -> bool (inverted)
+- IsApprovedFreeCommunication() -> bool (inverted)
+- LimitSendMailToFriend() -> bool (inverted)
+- HasAttachedPresent() -> bool (inverted)
+- NetHasAddressData(Type: str) -> bool (inverted)
+- UnfinishMailToType() -> int5
+- UIManageUnfinishedMessage() -> int4
+- IsValidUnfinishMailTo() -> int4
+- GeneralTalkChoice5() -> int5
+- UIGetMessageCardEditCancelStatus() -> int3
+- CheckAmiiboNPC(Kind: str) -> bool (inverted)
+- IsAmiiboNpcMigrated() -> bool (inverted)
+- IsCallableAmiiboNpc(Purpose: str) -> bool (inverted)
+- IsAlreadyCalledAmiiboNpc(Purpose: str) -> bool (inverted)
+- IsAcceptableAmiibo() -> bool (inverted)
+- IsAcquaintanceAmiiboNPC() -> bool (inverted)
+- NfpErrorType() -> int3
+- NfcDisabled() -> bool (inverted)
+- IsAmiiboNpcLiving() -> bool (inverted)
+- IsAmiiboNpcSick() -> bool (inverted)
+- IsAmiiboNpcVisiting() -> bool (inverted)
+- AmiiboNameWithTitle() -> int2
+- IsAmiiboNpcMoveOut() -> int3
+- AmiiboNpcIsIncludedCamperList() -> bool (inverted)
+- VillageFlower(VillageFlowerType: str) -> int8
+- IsSettlerQuestInsideMaterialSelect(SettlerType: int, InsideMaterialType: int) -> bool (inverted)
+- IsDuringBusinessHours(Type: str) -> bool (inverted)
+- IsMadeCraftUnlockRecipe(UnlockType: str, CheckUnlockMode: str) -> bool (inverted)
+- RandomChoice5(ChoiceNumber: int) -> int5
+- MyDesignExchangeMenuResult() -> int7
+- NetHasDesignerID() -> bool (inverted)
+- HasAbleDisplayMyDesign() -> bool (inverted)
+- IsReachedUploadCountMax() -> bool (inverted)
+- UIMyDesignExchangeUploadResult() -> int3
+- IsMatchedOwnDesignerIdAndInputDesignerId() -> bool (inverted)
+- NetIsFoundMyDesign(Type: str) -> bool (inverted)
+- UIMyDesignDownloadWindowChoiceResult() -> int3
+- IsSpecifiedMyDesignPosted() -> bool (inverted)
+- IsMyDesignProInMyDesignExchange() -> bool (inverted)
+- MyDesignExchangeNetworkError() -> bool (inverted)
+- NetIsValidID(Kind: str) -> bool (inverted)
+- GeneralTalkChoice6() -> int6
+- IsSoloPlayController() -> bool (inverted)
+- ItemRemove() -> bool (inverted)
+- UIPocketMenuItemSelected(ItemUniqueID: int) -> bool (inverted)
+- PlayerGetEasterEggRecipe() -> bool (inverted)
+- CatchFesFreeQuery2(CatchFesQueryType: str) -> bool (inverted)
+- IncludeHorizontalController() -> bool (inverted)
+- HasObstacle(StructureType: str, StructureBuildPosType: str, StructureBuildTiming: str) -> bool (inverted)
+- CanBuildHere(StructureBuildPosType: str, StructureType: str, StructureBuildTiming: str) -> bool (inverted)
+- UIResultHousingKitNpcType() -> int2
+- IsRunningMiniGame(MiniGameType: str) -> bool (inverted)
+- UIResultItemWindowNumCheck(JudgeTarget: str, Num: int) -> bool (inverted)
+- BeyWeekEndEvent() -> int3
+- MoneyCapacity(AddMoney: any, SellType: str) -> int3
+- UIMiniGameCanStart() -> bool (inverted)
+- ChyWeekEndEvent() -> int3
+- UISelectedItemCanMoveChest() -> bool (inverted)
+- PurchaseBoxFreeQuery2(PurchaseBoxQueryType: str, SellTotal: any) -> bool (inverted)
+- YMD(Year: int, Month: int, Day: int, TimeType: str) -> int3
+- NetMode() -> int3
+- NetFoundVillageNum() -> int3
+- NetIsDecidedVillage() -> int3
+- NetIsNeedPassword(Type: str) -> bool (inverted)
+- NetAllSessionIsFull() -> bool (inverted)
+- NetLockFailReason() -> int3
+- NetHasFriend() -> bool (inverted)
+- NetIsFriendOnlySession(Type: str) -> bool (inverted)
+- NetIsInviteFriend() -> bool (inverted)
+- NetSessionCreateSetting() -> int3
+- RandomChoice4(ChoiceNumber: int) -> int4
+- RandomChoiceExcludePrevious10(ChoiceNumber: int, IsSetSpeakerChoiceResult: bool) -> int10
+- UIIllegalReportResult() -> bool (inverted)
+- OverwriteEquipedMyDesign() -> bool (inverted)
+- UIShopBuyTailorResult() -> int5
+- UIShopBuyTailorIsWear() -> bool (inverted)
+- MuseumComplete() -> bool (inverted)
+- MuseumDonationNumCheck(Border: int) -> bool (inverted)
+- ExpensivePurchase() -> bool (inverted)
+- ItemValuables() -> bool (inverted)
+- SelectCeremony() -> int8
+- UIRemoveStructureType() -> int2
+- IsFirstNpcLiveInTent() -> bool (inverted)
+- IsUnconnectedPlayerVillagerGreaterThan(Count: int) -> bool (inverted)
+- IsUnconnectedVillageLeader() -> bool (inverted)
+- SaveIsExist() -> bool
+- NetIsAppError(Process: str) -> bool (inverted)
+- UIResultMelodyEdit() -> int3
+- MultiFromItemSelectInclude: any (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>) in EventFlowSystemActor.FromItemSelect(<JudgeTarget>) (inverted)
+- ExistPlayerAcceptingBirthDayMessage() -> bool (inverted)
+- SaveLastBackupElapsedDaysGreaterThan(Days: int) -> bool
+- SaveIsOnBackupRestoringSettingNotice() -> bool
+- ControllerIsConnected() -> bool (inverted)
+- MessageUseBCancel() -> bool (inverted)
+- IsPlayerBirthdayRoom() -> bool (inverted)
+- NetCanRequestLeave() -> bool (inverted)
+- JuneBrideScoreCheck(ScoreTypeString: str, Num: int) -> bool (inverted)
+- CheckCalledNpcNumNormal(NpcNum: int) -> bool (inverted)
+- AlwAlpIsOnBedJuneBride() -> bool (inverted)
+- MuseumNameboardIsStillHaveDonateItem(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- MuseumNameboardIsNeedCameraTargetKind(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- MuseumNameboardCheckDonateBoardItemKind(EntryVariableKeyInt_LoopNum: str) -> int6 (inverted)
+- MuseumNameBoardIsExistVillageDonatePlayer(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- MuseumNameBoardIsCompleteFossilItem(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- MuseumNameBoardIsDonateFossilItemSomeOne(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- MuseumNameBoardIsSingleFossilSet(EntryVariableKeyInt_LoopNum: str) -> bool (inverted)
+- NetDemoType() -> int6
+- NetDreamingTime(CheckValue: int) -> bool (inverted)
+- NetIsDemoPlayer() -> bool (inverted)
+- IsDifferentAreaVisit() -> bool (inverted)
+- HasSpaceCreateNpc() -> bool (inverted)
+- CalledNpcNum(CalledNpcNum: int) -> bool (inverted)
+- CheckEntryVariableBool: entry_variables[<Value>] (inverted)
+- ControllerConnectNum() -> int2
+- CountSharePlayerNum(Border: int) -> bool (inverted)
+- EventFlagAllSharePlayPlayer(AccessKey: str) -> bool (inverted)
+- ControllerConnectResult() -> int3
+- CountWaitingPlayerNum(Border: int) -> bool (inverted)
+- GeneralTalkChoice7() -> int7
+- UITitleResult() -> int3
+- NxRegionCode() -> int6
+- HasFreeInCommuneMail() -> bool (inverted)
+- PlayerIsMadeCraftRecipe(CheckMode: str, MadeItemID0: int, MadeItemID1: int, MadeItemID2: int, MadeItemID3: int, MadeItemID4: int, MadeItemID5: int, MadeItemID6: int, MadeItemID7: int) -> bool (inverted)
+- IsEnableToGetEggBasket(NeedNum: int) -> bool (inverted)
+- UIIsRegisteredMyDesignFireworks() -> bool (inverted)
+- SaveVersionCheck() -> int
+- SaveProcIsSuccess() -> bool
+- SaveIsNotFound() -> bool
+- SaveIsBroken() -> bool
+- SaveRestoreSeqStartCheck() -> bool
+- IsRequiredLanguageChangeAnnounce() -> bool (inverted)
+- PreviousRegionLanguage() -> int14
+- IsFullPlayerVillager() -> bool (inverted)
+- NetIsRegisteredSameNA() -> bool (inverted)
+- NetIsAvailableNA() -> bool (inverted)
+- CeremonyType() -> int8
+- IsBadSightCeremony() -> bool (inverted)
+- MuseumCeremonyType() -> int2
+- CanHearAudioMusicAtFocusPoint() -> bool (inverted)
+- HasCraftRecipeSelectFlow(JudgeTarget: str) -> bool (inverted)
+- HasLifeSupportPoint(LifeSupportPointCheckType: str, Point: int) -> bool (inverted)
+- IsSpeakerResetOrRacket() -> bool (inverted)
+- CheckJuneBrideStudioTakePicture() -> int3
+- CurrentJuneBrideTheme() -> int3
+- IsSelectedNpcMoveInToday() -> bool (inverted)
+- IsSelectedNpcMoveOutDecided() -> bool (inverted)
+- SaveBackupLicenseEnabled() -> bool
+- BackupAgentIsMainPlayer() -> bool (inverted)
+- BackupAgentExist() -> bool (inverted)
+- SaveIsEnabledBackupSetting() -> bool
+- SaveIsDownloadedBackup() -> bool
+- SaveIsSucceededDownloadableBackupInfoListup() -> bool
+- SaveIsDownloadableBackupInfoGreaterThan(Count: int) -> bool
+- HasDreamID() -> bool (inverted)
+- IsMatchedOwnDreamIdAndInputDreamId() -> bool (inverted)
+- NetIsFoundDreamLand(Type: str) -> bool (inverted)
+- RestoreFlagCheck() -> bool (inverted)
+- SaveCompareBackupAgentNSAID() -> bool
+- NetHasPOLID() -> bool (inverted)
+- PlayerHasLoan() -> bool
+- IsDeliveryToOthers() -> int3
+- UIIsCatalogBootSmartPhone() -> bool (inverted)
+- IsExistPHouseVisitNpcYet() -> bool (inverted)
+- DisplayedNewBirthDayMessage() -> bool (inverted)
+- IsSelectedVillageLeader() -> bool (inverted)

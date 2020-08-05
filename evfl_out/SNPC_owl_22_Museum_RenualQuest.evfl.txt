@@ -1,30 +1,3 @@
-flow Root:
-    fEvent32 = EventFlowSystemActor.MuseumLevel()
-    if fEvent32 == BlathersMuseumNoArt:
-        run QuestCheck
-        run sub_Event14
-    elif fEvent32 == BlathersMuseumArt:
-        run sub_Event14
-    return
-
-flow BeforeRenualQuest:
-    if (EventFlowSystemActor.MuseumLevel() == BlathersMuseumNoArt) and (not event_flags_system['cPlayer:OwlShowPaintingBeforeQuest']) and (not EventFlowSystemActor.MuseumDonationNumCheck(60)) and (EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5')):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:201', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:202', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:203', false)
-        fEvent1 = EventFlowSystemActor.MuseumLevel()
-        if fEvent1 == BlathersTent:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:204', false)
-            event_flags_system['cPlayer:OwlShowPaintingBeforeQuest'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent1 == BlathersMuseumNoArt:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:205', false)
-            event_flags_system['cPlayer:OwlShowPaintingBeforeQuest'] = true
-            EventFlowSystemActor.ExitFlowchart()
-    run sub_tm!BeforeRenualQuest
-
 flow AfterRenualQuest:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:001', false)
     if event_flags_system['cLand:Museum3BuiltToday']:
@@ -64,22 +37,26 @@ flow AfterRenualQuest:
     EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Select5_Painting:
-    if EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:101', false)
-        fEvent15 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent15 == 0:
-            run DonatePainting
-        elif fEvent15 == 1:
-            run SNPC_owl_01_Museum_Donation::Root
-        elif fEvent15 == 2:
-            run SNPC_owl_02_Museum_Judgment::Root
-        elif fEvent15 == 3:
-            run SNPC_owl_03_Museum_Commentary::Root
-        elif fEvent15 == 4:
-            run SNPC_owl_00_Common::End
-    else:
-        run SNPC_owl_00_Common::Select4
+flow BeforeRenualQuest:
+    if (EventFlowSystemActor.MuseumLevel() == BlathersMuseumNoArt) and (not event_flags_system['cPlayer:OwlShowPaintingBeforeQuest']) and (not EventFlowSystemActor.MuseumDonationNumCheck(60)) and (EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5')):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:201', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:202', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:203', false)
+        fEvent1 = EventFlowSystemActor.MuseumLevel()
+        if fEvent1 == BlathersMuseumNoArt:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:205', false)
+            event_flags_system['cPlayer:OwlShowPaintingBeforeQuest'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent1 == BlathersTent:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:204', false)
+            event_flags_system['cPlayer:OwlShowPaintingBeforeQuest'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    run sub_tm!BeforeRenualQuest
+
+flow DiveFish_nothing:
+    run Event33
     return
 
 flow DonatePainting:
@@ -152,52 +129,27 @@ flow QuestCheck:
             run sub_Event35
     return
 
-flow Select5_Painting_Again:
-    if not EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
-        run SNPC_owl_00_Common::Select4_Again
-    elif (not event_flags_system['cLand:OwlFoundDiveFish']) and (event_flags_system['cPlayer:OwlPaintingDiveFish']) and (EventFlowSystemActor.HasKindItem('cKind', 'DiveFish', '')):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:105', false)
-        fEvent122 = EventFlowSystemActor.GeneralTalkChoice6()
-        if fEvent122 == 0:
-            run SNPC_owl_23_Museum_DiveFish::DonateDiveFish
-        elif fEvent122 == 1:
-            run DonatePainting
-        elif fEvent122 == 2:
-            run SNPC_owl_01_Museum_Donation::Root
-        elif fEvent122 == 3:
-            run SNPC_owl_02_Museum_Judgment::Root
-        elif fEvent122 == 4:
-            run SNPC_owl_03_Museum_Commentary::Root
-        elif fEvent122 == 5:
-            run SNPC_owl_00_Common::End
-    else:
-entrypoint Event33:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:102', false)
-        fEvent28 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent28 == 0:
-            run DonatePainting
-        elif fEvent28 == 1:
-            run SNPC_owl_01_Museum_Donation::Root
-        elif fEvent28 == 2:
-            run SNPC_owl_02_Museum_Judgment::Root
-        elif fEvent28 == 3:
-            run SNPC_owl_03_Museum_Commentary::Root
-        elif fEvent28 == 4:
-            run SNPC_owl_00_Common::End
+flow Root:
+    fEvent32 = EventFlowSystemActor.MuseumLevel()
+    if fEvent32 == BlathersMuseumNoArt:
+        run QuestCheck
+        run sub_Event14
+    elif fEvent32 == BlathersMuseumArt:
+        run sub_Event14
     return
 
 flow Select4_Painting:
     if EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:103', false)
         fEvent99 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent99 == 0:
-            run DonatePainting
-        elif fEvent99 == 1:
+        if fEvent99 == 1:
             run SNPC_owl_02_Museum_Judgment::Root
         elif fEvent99 == 2:
             run SNPC_owl_03_Museum_Commentary::Root
         elif fEvent99 == 3:
             run SNPC_owl_00_Common::End
+        elif fEvent99 == 0:
+            run DonatePainting
     else:
         run SNPC_owl_00_Common::Select3_Comp
     return
@@ -206,16 +158,68 @@ flow Select4_Painting_Again:
     if EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:104', false)
         fEvent107 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent107 == 0:
-            run DonatePainting
-        elif fEvent107 == 1:
+        if fEvent107 == 1:
             run SNPC_owl_02_Museum_Judgment::Root
         elif fEvent107 == 2:
             run SNPC_owl_03_Museum_Commentary::Root
         elif fEvent107 == 3:
             run SNPC_owl_00_Common::End
+        elif fEvent107 == 0:
+            run DonatePainting
     else:
         run SNPC_owl_00_Common::Comp_Again
+    return
+
+flow Select5_Painting:
+    if EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:101', false)
+        fEvent15 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent15 == 1:
+            run SNPC_owl_01_Museum_Donation::Root
+        elif fEvent15 == 2:
+            run SNPC_owl_02_Museum_Judgment::Root
+        elif fEvent15 == 3:
+            run SNPC_owl_03_Museum_Commentary::Root
+        elif fEvent15 == 4:
+            run SNPC_owl_00_Common::End
+        elif fEvent15 == 0:
+            run DonatePainting
+    else:
+        run SNPC_owl_00_Common::Select4
+    return
+
+flow Select5_Painting_Again:
+    if not EventFlowSystemActor.HasKindItem('cFilter', 'Picture', 'OwlDonation1_5'):
+        run SNPC_owl_00_Common::Select4_Again
+    elif (not event_flags_system['cLand:OwlFoundDiveFish']) and (event_flags_system['cPlayer:OwlPaintingDiveFish']) and (EventFlowSystemActor.HasKindItem('cKind', 'DiveFish', '')):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:105', false)
+        fEvent122 = EventFlowSystemActor.GeneralTalkChoice6()
+        if fEvent122 == 2:
+            run SNPC_owl_01_Museum_Donation::Root
+        elif fEvent122 == 3:
+            run SNPC_owl_02_Museum_Judgment::Root
+        elif fEvent122 == 4:
+            run SNPC_owl_03_Museum_Commentary::Root
+        elif fEvent122 == 5:
+            run SNPC_owl_00_Common::End
+        elif fEvent122 == 1:
+            run DonatePainting
+        elif fEvent122 == 0:
+            run SNPC_owl_23_Museum_DiveFish::DonateDiveFish
+    else:
+entrypoint Event33:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:102', false)
+        fEvent28 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent28 == 1:
+            run SNPC_owl_01_Museum_Donation::Root
+        elif fEvent28 == 2:
+            run SNPC_owl_02_Museum_Judgment::Root
+        elif fEvent28 == 3:
+            run SNPC_owl_03_Museum_Commentary::Root
+        elif fEvent28 == 4:
+            run SNPC_owl_00_Common::End
+        elif fEvent28 == 0:
+            run DonatePainting
     return
 
 flow TodayTalk1st:
@@ -223,16 +227,12 @@ flow TodayTalk1st:
         run QuestCheck
     return
 
-flow DiveFish_nothing:
-    run Event33
-    return
-
-flow sub_tm!BeforeRenualQuest:
-    return
-
 flow sub_Event14:
     run SNPC_owl::NoTopic
 
 flow sub_Event35:
     EventFlowSystemActor.ExitFlowchart()
+
+flow sub_tm!BeforeRenualQuest:
+    return
 

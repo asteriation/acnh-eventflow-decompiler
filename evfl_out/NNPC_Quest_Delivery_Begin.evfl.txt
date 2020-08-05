@@ -3,7 +3,9 @@ flow Begin:
     MainNpc.SetDeliveryItem(0, true)
     MainNpc.SetNpcName(0, 8)
     fEvent44 = MainNpc.DeliveryQuestType()
-    if fEvent44 == 0:
+    if fEvent44 == 3:
+        run TypeD
+    elif fEvent44 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:001', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:004', false)
@@ -34,8 +36,6 @@ entrypoint Event26:
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:009', false)
             MainNpc.NpcQuestControl('cFinish')
-    elif fEvent44 == 3:
-        run TypeD
     elif fEvent44 == 4:
         run TypeE
     return
@@ -45,8 +45,15 @@ flow Begin_Ap:
     MainNpc.SetDeliveryItem(0, true)
     MainNpc.SetNpcName(0, 8)
     fEvent46 = MainNpc.DeliveryQuestType()
-    if fEvent46 in (0, 1, 2):
-        run NNPC_Approach::Reselection
+    if fEvent46 == 3:
+entrypoint Event17:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:101', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:103', false)
+            run Yes
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:105', false)
+            MainNpc.NpcQuestControl('cFinish')
     elif fEvent46 == 4:
 entrypoint Event18:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:102', false)
@@ -56,15 +63,8 @@ entrypoint Event18:
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:106', false)
             MainNpc.NpcQuestControl('cFinish')
-    elif fEvent46 == 3:
-entrypoint Event17:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:101', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:103', false)
-            run Yes
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:105', false)
-            MainNpc.NpcQuestControl('cFinish')
+    elif fEvent46 in (0, 1, 2):
+        run NNPC_Approach::Reselection
     return
 
 flow Confirm:
@@ -82,15 +82,15 @@ flow Confirm:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_Begin:205', false)
     return
 
-flow Yes:
-    run Event26
-    return
-
 flow TypeD:
     run Event17
     return
 
 flow TypeE:
     run Event18
+    return
+
+flow Yes:
+    run Event26
     return
 

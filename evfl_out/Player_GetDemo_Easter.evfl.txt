@@ -1,13 +1,21 @@
-flow Root:
-    if EventFlowSystemActor.PlayerGetEasterEggRecipe():
-entrypoint Event1:
-        Player.OpenMessageWindow('TalkSys/SYS_Player:515', false)
-        event_flags_system['cPlayer:PynInventRecipeFlag'] = true
-        if (not EventFlowSystemActor.PlayerHasCraftRecipe(12446, 'EasterCapHat')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12439, 'EasterGround')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12440, 'EasterRock')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12441, 'EasterLeaf')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12442, 'EasterForest')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12443, 'EasterSky')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12444, 'EasterFish')):
-            EventFlowSystemActor.PlayerSetCraftRecipe(12446, 'EasterCapHat')
-            EventFlowSystemActor.PlayerSetCraftRecipe(12448, 'EasterTops')
-            Player.OpenMessageWindow('TalkSys/SYS_Player:518', false)
-    run sub_tm!Root
+flow GetDemo_Normal:
+    run Event1
+    return
+
+flow GetEarthEgg:
+    if Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
+        if Player.PlayerHasExchaneableItem(false, true, true, true):
+            Player.OpenMessageWindow('TalkSys/SYS_Player:003', true)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                Player.PlayerPlayPutawayWaitAnimation()
+                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByScoop', '', 'cScoopDigFull', false)
+                if EventFlowSystemActor.UIResultMenuDecide():
+                    run sub_grp!Event10
+        else:
+            Player.OpenMessageWindow('TalkSys/SYS_Player:016', true)
+    else:
+        run sub_grp!Event10
+    return
 
 flow GetWaterEgg:
     if EventFlowSystemActor.NetIsDreaming():
@@ -33,27 +41,22 @@ flow GetWaterEgg:
         run sub_grp!Event5
     return
 
-flow GetEarthEgg:
-    if Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
-        if Player.PlayerHasExchaneableItem(false, true, true, true):
-            Player.OpenMessageWindow('TalkSys/SYS_Player:003', true)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                Player.PlayerPlayPutawayWaitAnimation()
-                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByScoop', '', 'cScoopDigFull', false)
-                if EventFlowSystemActor.UIResultMenuDecide():
-                    run sub_grp!Event10
-        else:
-            Player.OpenMessageWindow('TalkSys/SYS_Player:016', true)
-    else:
-        run sub_grp!Event10
-    return
+flow Root:
+    if EventFlowSystemActor.PlayerGetEasterEggRecipe():
+entrypoint Event1:
+        Player.OpenMessageWindow('TalkSys/SYS_Player:515', false)
+        event_flags_system['cPlayer:PynInventRecipeFlag'] = true
+        if (not EventFlowSystemActor.PlayerHasCraftRecipe(12446, 'EasterCapHat')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12439, 'EasterGround')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12440, 'EasterRock')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12441, 'EasterLeaf')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12442, 'EasterForest')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12443, 'EasterSky')) and (EventFlowSystemActor.PlayerHasCraftRecipe(12444, 'EasterFish')):
+            EventFlowSystemActor.PlayerSetCraftRecipe(12446, 'EasterCapHat')
+            EventFlowSystemActor.PlayerSetCraftRecipe(12448, 'EasterTops')
+            Player.OpenMessageWindow('TalkSys/SYS_Player:518', false)
+    run sub_tm!Root
 
-flow GetDemo_Normal:
-    run Event1
-    return
-
-flow sub_tm!Root:
-    return
+flow sub_grp!Event10:
+    if not EventFlowSystemActor.NetIsDreaming():
+        EventFlowSystemActor.PlayerDrawEasterEggRecipe('cGround')
+        if event_flags_system['cPlayer:MainmenuRecipe']:
+            run Event7
 
 flow sub_grp!Event5:
     if not EventFlowSystemActor.NetIsDreaming():
@@ -63,9 +66,6 @@ entrypoint Event7:
             if EventFlowSystemActor.PlayerGetEasterEggRecipe():
                 EventFlowSystemActor.ReservePlayerMutterDemo('GetDemo_Normal', 'cNextDemoEnd_Simple', 'Player_GetDemo_Easter', false)
 
-flow sub_grp!Event10:
-    if not EventFlowSystemActor.NetIsDreaming():
-        EventFlowSystemActor.PlayerDrawEasterEggRecipe('cGround')
-        if event_flags_system['cPlayer:MainmenuRecipe']:
-            run Event7
+flow sub_tm!Root:
+    return
 

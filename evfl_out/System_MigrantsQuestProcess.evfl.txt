@@ -10,6 +10,10 @@ entrypoint Event15:
             event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = true
     run sub_tm!ChkRcoImmQClearChkA
 
+flow ChkRcoImmQClearChkASub:
+    run Event16
+    return
+
 flow ChkRcoImmQClearChkB:
     if event_flags_system['cLand:ImmQ_B_Complete']:
         run ChkRcoImmQClearChkBSub
@@ -20,6 +24,10 @@ entrypoint Event17:
         if not event_flags_system['cPlayer:ImmQHeardClearInfoB']:
             run Event15
     run sub_tm!ChkRcoImmQClearChkB
+
+flow ChkRcoImmQClearChkBSub:
+    run Event17
+    return
 
 flow ChkRcoImmQClearChkC:
     if event_flags_system['cLand:ImmQ_C_Complete']:
@@ -32,32 +40,8 @@ entrypoint Event18:
             run Event15
     run sub_tm!ChkRcoImmQClearChkC
 
-flow ChkRcoImmQClearChkASub:
-    run Event16
-    return
-
-flow ChkRcoImmQClearChkBSub:
-    run Event17
-    return
-
 flow ChkRcoImmQClearChkCSub:
     run Event18
-    return
-
-flow ImmQClearChk:
-    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:ImmQRunningForPlayer']):
-        run ChkRcoImmQClearChkA
-        run ChkRcoImmQClearChkB
-        run ChkRcoImmQClearChkC
-        run RcoChkClearReportSkip
-    return
-
-flow RcoChkClearReportSkip:
-    run CountClearNum
-    if subflow_results[0] == 1:
-        run CountReportNum
-        if subflow_results[1] == 1:
-            event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = false
     return
 
 flow CountClearNum:
@@ -84,6 +68,22 @@ flow CountReportNum:
         subflow_results[1] = 0
     else:
         subflow_results[1] = 1
+    return
+
+flow ImmQClearChk:
+    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:ImmQRunningForPlayer']):
+        run ChkRcoImmQClearChkA
+        run ChkRcoImmQClearChkB
+        run ChkRcoImmQClearChkC
+        run RcoChkClearReportSkip
+    return
+
+flow RcoChkClearReportSkip:
+    run CountClearNum
+    if subflow_results[0] == 1:
+        run CountReportNum
+        if subflow_results[1] == 1:
+            event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = false
     return
 
 flow sub_tm!ChkRcoImmQClearChkA:

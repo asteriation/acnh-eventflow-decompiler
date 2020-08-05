@@ -13,17 +13,6 @@ flow React_Quest_Sick:
         EventFlowSystemActor.ExitFlowchart()
     return
 
-flow Root:
-    if (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (EventFlowSystemActor.IsMyVillage()):
-        fEvent0 = MainNpc.NpcCanStartReactQuestTalk()
-        if fEvent0 == 2:
-            if event_flags_npc['cNpcMemory:TalkCountToday'] < 1:
-                run React_Quest_Sick
-        elif fEvent0 == 3:
-            if (event_flag_npc['cNpcMemory:UncollectedFishishTreasureHunt']) and (EventFlowSystemActor.HasTargetItem(2545, 1)):
-                run React_Quest_TreasureHunt
-    return
-
 flow React_Quest_TreasureHunt:
     run NNPC_Reaction_Sitting::StandingUp_Chk
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Quest_TreasureHunt:001', true)
@@ -35,5 +24,16 @@ flow React_Quest_TreasureHunt:
     MainNpc.NpcAddFriendship(1)
     run NNPC_Talk_Situation::Facility_Chk
     EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Root:
+    if (event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']) and (EventFlowSystemActor.IsMyVillage()):
+        fEvent0 = MainNpc.NpcCanStartReactQuestTalk()
+        if fEvent0 == 2:
+            if event_flags_npc['cNpcMemory:TalkCountToday'] < 1:
+                run React_Quest_Sick
+        elif fEvent0 == 3:
+            if (event_flag_npc['cNpcMemory:UncollectedFishishTreasureHunt']) and (EventFlowSystemActor.HasTargetItem(2545, 1)):
+                run React_Quest_TreasureHunt
     return
 

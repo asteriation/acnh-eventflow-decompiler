@@ -1,5 +1,4 @@
 Actor HaniwaKun
 actions:
-- HaniwaKun.OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
+- OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
 queries:
-

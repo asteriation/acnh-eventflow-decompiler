@@ -8,13 +8,7 @@ flow ToolBreak_Axe:
             EventFlowSystemActor.ReservePlayerMutterDemo('GetRecipe_GoldenAxe', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', false)
     return
 
-flow ToolBreak_Scoop:
-entrypoint Event6:
-    EventFlowSystemActor.SetTagFromSystem(0, 'cPlayerGetItemName', 'cDegit', '', 0)
-    Player.OpenMessageWindow('TalkSys/SYS_Player:290', false)
-    return
-
-flow ToolBreak_Watering:
+flow ToolBreak_FishingRod:
     run Event6
     return
 
@@ -22,11 +16,17 @@ flow ToolBreak_Net:
     run Event6
     return
 
+flow ToolBreak_Scoop:
+entrypoint Event6:
+    EventFlowSystemActor.SetTagFromSystem(0, 'cPlayerGetItemName', 'cDegit', '', 0)
+    Player.OpenMessageWindow('TalkSys/SYS_Player:290', false)
+    return
+
 flow ToolBreak_Slingshot:
     run Event6
     return
 
-flow ToolBreak_FishingRod:
+flow ToolBreak_Watering:
     run Event6
     return
 

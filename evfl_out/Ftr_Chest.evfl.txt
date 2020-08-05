@@ -1,30 +1,22 @@
-flow Root:
-    if EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run sub_Event57
+flow Chest_NPC:
+    run Chest_OtherCheck1st
+    EventFlowSystemActor.UIClosetLotteryHandling()
+    if EventFlowSystemActor.UIClosetItemNum() == 0:
+        Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
     else:
-        if EventFlowSystemActor.SystemCheckNowStage('cField'):
-            if EventFlowSystemActor.IsMyVillage():
-                run sub_Event57
-            else:
-                run Chest_PC_Other
-        elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
-            run Chest_NPC
-        elif EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse'):
-            run Chest_PC_Other
-        else:
-            run Chest_Naruhodo
+        EventFlowSystemActor.UIClosetBalloonAppearHandling()
+        Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
+        EventFlowSystemActor.UIClosetBalloonDisappear()
     return
 
-flow ClosetUI:
-    event_flags_system['cPlayer:UseCloset'] = true
-    if Player.PlayerIsUseCoordinate():
-        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:013', false)
-    elif event_flags_system['cPlayer:EquipLicenseHelmet']:
-        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:018', false)
-    elif Player.PlayerOutfitMarinesuit():
-        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:019', false)
-    else:
-        EventFlowSystemActor.UIClosetHandling()
+flow Chest_Naruhodo:
+    Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
+    return
+
+flow Chest_OtherCheck1st:
+    if not event_flags_system['cPlayerTemp:FtrChestCheck']:
+        Player.OpenMessageWindow('TalkFtr/FTR_Chest:001', false)
+        event_flags_system['cPlayerTemp:FtrChestCheck'] = true
     return
 
 flow Chest_PC_Current:
@@ -57,23 +49,6 @@ flow Chest_PC_Current:
             run ClosetUI
     return
 
-flow Chest_NPC:
-    run Chest_OtherCheck1st
-    EventFlowSystemActor.UIClosetLotteryHandling()
-    if EventFlowSystemActor.UIClosetItemNum() == 0:
-        Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
-    else:
-        EventFlowSystemActor.UIClosetBalloonAppearHandling()
-        Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
-        EventFlowSystemActor.UIClosetBalloonDisappear()
-    return
-
-flow Chest_OtherCheck1st:
-    if not event_flags_system['cPlayerTemp:FtrChestCheck']:
-        Player.OpenMessageWindow('TalkFtr/FTR_Chest:001', false)
-        event_flags_system['cPlayerTemp:FtrChestCheck'] = true
-    return
-
 flow Chest_PC_Other:
     run Chest_OtherCheck1st
     EventFlowSystemActor.UIClosetLotteryHandling()
@@ -83,22 +58,47 @@ flow Chest_PC_Other:
         EventFlowSystemActor.UIClosetBalloonDisappear()
     elif EventFlowSystemActor.IsMyVillage():
         fEvent19 = EventFlowSystemActor.UIClosetItemNum()
-        if fEvent19 == 0:
-            Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
-        elif fEvent19 == 1:
-            Player.OpenMessageWindow('TalkFtr/FTR_Chest:003', false)
-        elif fEvent19 == 2:
+        if fEvent19 == 2:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:004', false)
         elif fEvent19 == 3:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:005', false)
         elif fEvent19 == 4:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:006', false)
+        elif fEvent19 == 0:
+            Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
+        elif fEvent19 == 1:
+            Player.OpenMessageWindow('TalkFtr/FTR_Chest:003', false)
     else:
         Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
     return
 
-flow Chest_Naruhodo:
-    Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
+flow ClosetUI:
+    event_flags_system['cPlayer:UseCloset'] = true
+    if Player.PlayerIsUseCoordinate():
+        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:013', false)
+    elif event_flags_system['cPlayer:EquipLicenseHelmet']:
+        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:018', false)
+    elif Player.PlayerOutfitMarinesuit():
+        EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_Chest:019', false)
+    else:
+        EventFlowSystemActor.UIClosetHandling()
+    return
+
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+        run sub_Event57
+    else:
+        if EventFlowSystemActor.SystemCheckNowStage('cField'):
+            if EventFlowSystemActor.IsMyVillage():
+                run sub_Event57
+            else:
+                run Chest_PC_Other
+        elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
+            run Chest_NPC
+        elif EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse'):
+            run Chest_PC_Other
+        else:
+            run Chest_Naruhodo
     return
 
 flow sub_Event57:

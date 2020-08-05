@@ -11,16 +11,16 @@ flow Root:
     else:
         run NNPC_Talk_Greet_Spot::Root
     fEvent12 = EventFlowSystemActor.NpcGeneralTalkChoice()
-    if fEvent12 == 0:
-        run Spot_Gstore
-    elif fEvent12 == 1:
-        run NNPC_Talk_General::End_Root
-    elif fEvent12 == 2:
-        run NNPC_Talk_General::Quest_ConfirmGive
-    elif fEvent12 == 3:
+    if fEvent12 == 3:
         run NNPC_Select_Present::Root
     elif fEvent12 == 4:
         run NNPC_GEvent_BirthdayP::Give_Capcake
+    elif fEvent12 == 2:
+        run NNPC_Talk_General::Quest_ConfirmGive
+    elif fEvent12 == 0:
+        run Spot_Gstore
+    elif fEvent12 == 1:
+        run NNPC_Talk_General::End_Root
     return
 
 flow Spot_Gstore:

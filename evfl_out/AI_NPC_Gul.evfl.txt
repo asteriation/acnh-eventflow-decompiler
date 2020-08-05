@@ -1,3 +1,37 @@
+flow Hit:
+    MainNpc.NpcChangeAIState('cHit', 'SNPC_gul', 'Root', '', false, false)
+    return
+
+flow Init:
+    run InitCommon
+    if event_flags_system['cLand:JohnnySitUpFlag']:
+        run InitWakeup
+    else:
+        run InitSleep
+    return
+
+flow InitCommon:
+    MainNpc.NpcAISetting(0, true)
+    MainNpc.NpcAISetting(1, true)
+    MainNpc.SetSpecialPos('cSetPosType_SavePos')
+    return
+
+flow InitSleep:
+    MainNpc.GulFreeAction('cGulActionType_SetAngle')
+    MainNpc.SetDefaultWaitAs('cGulSleeping')
+    MainNpc.NpcAISetting(2, false)
+    MainNpc.NpcAISetting(3, false)
+    MainNpc.NpcAISetting(8, true)
+    MainNpc.NpcAISetting(14, true)
+    return
+
+flow InitWakeup:
+    MainNpc.SetDefaultWaitAs('cDefault')
+    MainNpc.NpcAISetting(2, true)
+    MainNpc.NpcAISetting(3, true)
+    MainNpc.NpcAISetting(8, false)
+    return
+
 flow Root:
     if MainNpc.NpcCheckStateSelectTiming('cInit'):
         if event_flags_system['cLand:JohnnySitUpFlag']:
@@ -22,34 +56,9 @@ flow Root:
         run SetStateSleep
     return
 
-flow Init:
-    run InitCommon
-    if event_flags_system['cLand:JohnnySitUpFlag']:
-        run InitWakeup
-    else:
-        run InitSleep
-    return
-
-flow Hit:
-    MainNpc.NpcChangeAIState('cHit', 'SNPC_gul', 'Root', '', false, false)
-    return
-
-flow InitCommon:
-    MainNpc.NpcAISetting(0, true)
-    MainNpc.NpcAISetting(1, true)
-    MainNpc.SetSpecialPos('cSetPosType_SavePos')
-    return
-
-flow InitWakeup:
-    MainNpc.SetDefaultWaitAs('cDefault')
-    MainNpc.NpcAISetting(2, true)
-    MainNpc.NpcAISetting(3, true)
-    MainNpc.NpcAISetting(8, false)
-    return
-
-flow InitSleep:
-    MainNpc.GulFreeAction('cGulActionType_SetAngle')
+flow SetStateSleep:
     MainNpc.SetDefaultWaitAs('cGulSleeping')
+    MainNpc.NpcChangeWaitState('cWait', 'EntryName', 'FlowName', '', true, true, 0, true, '')
     MainNpc.NpcAISetting(2, false)
     MainNpc.NpcAISetting(3, false)
     MainNpc.NpcAISetting(8, true)
@@ -63,15 +72,6 @@ flow SetStateWakeup:
     MainNpc.NpcAISetting(3, true)
     MainNpc.NpcAISetting(8, false)
     MainNpc.NpcAISetting(14, false)
-    return
-
-flow SetStateSleep:
-    MainNpc.SetDefaultWaitAs('cGulSleeping')
-    MainNpc.NpcChangeWaitState('cWait', 'EntryName', 'FlowName', '', true, true, 0, true, '')
-    MainNpc.NpcAISetting(2, false)
-    MainNpc.NpcAISetting(3, false)
-    MainNpc.NpcAISetting(8, true)
-    MainNpc.NpcAISetting(14, true)
     return
 
 flow sub_Event40:

@@ -1,3 +1,92 @@
+flow CampFire_Start:
+    EventFlowSystemActor.BGMPropertyControl(78)
+    EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaCampFire', '', true, false, false, 0)
+    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:032', true)
+    EventFlowSystemActor.WaitFrame(5)
+    MainNpc.TurnBody(12, 180.0)
+    MainNpc.NpcWaitTurn()
+    MainNpc.TurnNeck(11)
+    EventFlowSystemActor.WaitFrame(5)
+    MainNpc.RequestSimple('NpcSpArrangeShort', false)
+    EventFlowSystemActor.WaitFrame(60)
+    MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+    EventFlowSystemActor.WaitFrame(10)
+    EventFlowSystemActor.EventCstmAction(0)
+    EventFlowSystemActor.WaitFrame(10)
+    EventFlowSystemActor.SoundTriggerEmit('FireOn', -1)
+    EventFlowSystemActor.WaitFrame(35)
+    fork:
+        branch0:
+        branch1:
+            EventFlowSystemActor.WaitFrame(30)
+            MainNpc.TurnBody(12, 0.0)
+            MainNpc.NpcWaitTurn()
+        branch2:
+            Player.CharacterEmoticonAction('Clapping', '', 40, false, false)
+        branch3:
+            Npc_1.CharacterEmoticonAction('Clapping', '', 40, false, false)
+        branch4:
+            Npc_2.CharacterEmoticonAction('Clapping', '', 40, false, false)
+        branch5:
+            Npc_3.CharacterEmoticonAction('Clapping', '', 40, false, false)
+        branch6:
+            Npc_4.CharacterEmoticonAction('Clapping', '', 40, false, false)
+    EventFlowSystemActor.WaitFrame(40)
+    fork:
+        branch0:
+        branch1:
+            Player.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch2:
+            Npc_1.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch3:
+            Npc_2.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch4:
+            Npc_3.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch5:
+            Npc_4.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+    EventFlowSystemActor.WaitFrame(15)
+    return
+
+flow Cmn_ApplauseAll_Keep:
+    fork:
+        branch0:
+        branch1:
+            Npc_1.CharacterEmoticonAction('Clapping', '', 75, false, true)
+        branch2:
+            Npc_2.CharacterEmoticonAction('Clapping', '', 75, false, true)
+        branch3:
+            Npc_3.CharacterEmoticonAction('Clapping', '', 75, false, true)
+        branch4:
+            Npc_4.CharacterEmoticonAction('Clapping', '', 75, false, true)
+    EventFlowSystemActor.WaitFrame(60)
+    return
+
+flow Cmn_ApplauseAll_Stop:
+    fork:
+        branch0:
+        branch1:
+            Npc_1.CharacterEmoticonAction('Clapping', '', 30, false, false)
+        branch2:
+            Npc_2.CharacterEmoticonAction('Clapping', '', 30, false, false)
+        branch3:
+            Npc_3.TurnNeck(10)
+            Npc_3.CharacterEmoticonAction('Clapping', '', 30, false, false)
+        branch4:
+            Npc_4.TurnNeck(10)
+            Npc_4.CharacterEmoticonAction('Clapping', '', 30, false, false)
+    EventFlowSystemActor.WaitFrame(45)
+    fork:
+        branch0:
+        branch1:
+            Npc_1.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch2:
+            Npc_2.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch3:
+            Npc_3.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+        branch4:
+            Npc_4.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
+    return
+
 flow Root:
     EventFlowSystemActor.SleepInsect('cSleep')
     run Tutorials_Prologue3_Orientation1::GoEventPlazaSetting
@@ -42,12 +131,12 @@ flow Root:
     if fEvent39 == 0:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:046', false)
         fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent26 == 0:
-            EventFlowSystemActor.SetIslandRubyType('ShimaSeom')
-        elif fEvent26 == 1:
+        if fEvent26 == 1:
             EventFlowSystemActor.SetIslandRubyType('JimaSeom')
         elif fEvent26 == 2:
             EventFlowSystemActor.SetIslandRubyType('TouSeom')
+        elif fEvent26 == 0:
+            EventFlowSystemActor.SetIslandRubyType('ShimaSeom')
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:045_01', false)
     elif fEvent39 == 11:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:047', false)
@@ -169,94 +258,5 @@ flow Root:
 
 flow Root_Init:
     MainNpc.NpcAITalkCastSetting('Prologue_Rco')
-    return
-
-flow Cmn_ApplauseAll_Keep:
-    fork:
-        branch0:
-        branch1:
-            Npc_1.CharacterEmoticonAction('Clapping', '', 75, false, true)
-        branch2:
-            Npc_2.CharacterEmoticonAction('Clapping', '', 75, false, true)
-        branch3:
-            Npc_3.CharacterEmoticonAction('Clapping', '', 75, false, true)
-        branch4:
-            Npc_4.CharacterEmoticonAction('Clapping', '', 75, false, true)
-    EventFlowSystemActor.WaitFrame(60)
-    return
-
-flow Cmn_ApplauseAll_Stop:
-    fork:
-        branch0:
-        branch1:
-            Npc_1.CharacterEmoticonAction('Clapping', '', 30, false, false)
-        branch2:
-            Npc_2.CharacterEmoticonAction('Clapping', '', 30, false, false)
-        branch3:
-            Npc_3.TurnNeck(10)
-            Npc_3.CharacterEmoticonAction('Clapping', '', 30, false, false)
-        branch4:
-            Npc_4.TurnNeck(10)
-            Npc_4.CharacterEmoticonAction('Clapping', '', 30, false, false)
-    EventFlowSystemActor.WaitFrame(45)
-    fork:
-        branch0:
-        branch1:
-            Npc_1.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch2:
-            Npc_2.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch3:
-            Npc_3.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch4:
-            Npc_4.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-    return
-
-flow CampFire_Start:
-    EventFlowSystemActor.BGMPropertyControl(78)
-    EventFlowSystemActor.CameraSetDemoParam('Npc:rco', 'EventPlazaCampFire', '', true, false, false, 0)
-    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:032', true)
-    EventFlowSystemActor.WaitFrame(5)
-    MainNpc.TurnBody(12, 180.0)
-    MainNpc.NpcWaitTurn()
-    MainNpc.TurnNeck(11)
-    EventFlowSystemActor.WaitFrame(5)
-    MainNpc.RequestSimple('NpcSpArrangeShort', false)
-    EventFlowSystemActor.WaitFrame(60)
-    MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-    EventFlowSystemActor.WaitFrame(10)
-    EventFlowSystemActor.EventCstmAction(0)
-    EventFlowSystemActor.WaitFrame(10)
-    EventFlowSystemActor.SoundTriggerEmit('FireOn', -1)
-    EventFlowSystemActor.WaitFrame(35)
-    fork:
-        branch0:
-        branch1:
-            EventFlowSystemActor.WaitFrame(30)
-            MainNpc.TurnBody(12, 0.0)
-            MainNpc.NpcWaitTurn()
-        branch2:
-            Player.CharacterEmoticonAction('Clapping', '', 40, false, false)
-        branch3:
-            Npc_1.CharacterEmoticonAction('Clapping', '', 40, false, false)
-        branch4:
-            Npc_2.CharacterEmoticonAction('Clapping', '', 40, false, false)
-        branch5:
-            Npc_3.CharacterEmoticonAction('Clapping', '', 40, false, false)
-        branch6:
-            Npc_4.CharacterEmoticonAction('Clapping', '', 40, false, false)
-    EventFlowSystemActor.WaitFrame(40)
-    fork:
-        branch0:
-        branch1:
-            Player.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch2:
-            Npc_1.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch3:
-            Npc_2.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch4:
-            Npc_3.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-        branch5:
-            Npc_4.CharacterEmoticonAction('EmotEnd', '', 30, false, false)
-    EventFlowSystemActor.WaitFrame(15)
     return
 

@@ -1,3 +1,7 @@
+flow Commentary_End:
+    run Event130
+    return
+
 flow Root:
     if event_flags_system['cPlayer:FutaHeardCommentary']:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:302', true)
@@ -28,50 +32,6 @@ flow Root:
 entrypoint Event130:
             MainNpc.NpcDelivery('"Default"', 2)
             run SNPC_owl_00_Common::Again
-        elif fEvent119 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:308', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:310', false)
-                run SNPC_owl_02_Museum_Judgment::Fossil_Check
-                MainNpc.OwlOpenItemMessage()
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:361', false)
-                fEvent15 = EventFlowSystemActor.MuseumLevel()
-                if fEvent15 == BlathersTent:
-                    if MainNpc.OwlIsDonation('cUISelect'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:362', true)
-                        run sub_Event156
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
-                        run sub_Event156
-                elif fEvent15 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                    if MainNpc.OwlIsDonation('cUISelect'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:363', true)
-                        run sub_Event156
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
-                        run sub_Event156
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:309', false)
-                run Commentary_End
-        elif fEvent119 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:313', false)
-            MainNpc.OwlOpenItemMessage()
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:361', false)
-            fEvent15 = EventFlowSystemActor.MuseumLevel()
-            if fEvent15 == BlathersTent:
-                if MainNpc.OwlIsDonation('cUISelect'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:362', true)
-                    run sub_Event156
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
-                    run sub_Event156
-            elif fEvent15 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                if MainNpc.OwlIsDonation('cUISelect'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:363', true)
-                    run sub_Event156
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
-                    run sub_Event156
         elif fEvent119 == 4:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:306', false)
             MainNpc.OwlOpenItemMessage()
@@ -86,6 +46,50 @@ entrypoint Event130:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:368', false)
                 run sub_Event162
+        elif fEvent119 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:308', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:310', false)
+                run SNPC_owl_02_Museum_Judgment::Fossil_Check
+                MainNpc.OwlOpenItemMessage()
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:361', false)
+                fEvent15 = EventFlowSystemActor.MuseumLevel()
+                if fEvent15 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                    if MainNpc.OwlIsDonation('cUISelect'):
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:363', true)
+                        run sub_Event156
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
+                        run sub_Event156
+                elif fEvent15 == BlathersTent:
+                    if MainNpc.OwlIsDonation('cUISelect'):
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:362', true)
+                        run sub_Event156
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
+                        run sub_Event156
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:309', false)
+                run Commentary_End
+        elif fEvent119 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:313', false)
+            MainNpc.OwlOpenItemMessage()
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:361', false)
+            fEvent15 = EventFlowSystemActor.MuseumLevel()
+            if fEvent15 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                if MainNpc.OwlIsDonation('cUISelect'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:363', true)
+                    run sub_Event156
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
+                    run sub_Event156
+            elif fEvent15 == BlathersTent:
+                if MainNpc.OwlIsDonation('cUISelect'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:362', true)
+                    run sub_Event156
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:364', true)
+                    run sub_Event156
         elif fEvent119 == 5:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:306', false)
             if MainNpc.OwlIsDonation('cUISelect'):
@@ -100,10 +104,6 @@ entrypoint Event130:
             run Commentary_End
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:303', true)
-    return
-
-flow Commentary_End:
-    run Event130
     return
 
 flow sub_Event156:

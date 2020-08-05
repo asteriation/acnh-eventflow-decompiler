@@ -1,26 +1,9 @@
-flow Root:
-    EventFlowSystemActor.SystemFaderRelease()
-    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'CutSpotlight', '', false, false, false, 0)
-    EventFlowSystemActor.WaitFrame(30)
-    if EventFlowSystemActor.SaveIsExist():
-        run SNPC_rco_95_SavedataRecovering::SavedataRestoring
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:002', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:022', false)
-        fEvent130 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent130 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:021', false)
-            run SaveSetting_Main
-        elif fEvent130 == 1:
-            run SNPC_rco_93_BlancoSettings::WebSetting_Main
-        elif fEvent130 == 2:
-            run SNPC_rco_94_SavedataRecoveringSettings::Root
-        elif fEvent130 == 3:
-            run Sel_EndMenu
+flow AfterMainPcDeleteExplain_Pl:
+    run Event83
     return
 
-flow Rco_MainSelect_OtherP:
-    run Event33
+flow AfterMainPcDeleteExplain_Sg:
+    run Event24
     return
 
 flow Cel_OtherP:
@@ -57,14 +40,48 @@ flow Cel_OtherP:
         run Delete_Cancel
     return
 
+flow Cmn_MainP_Sel:
+    run Event40
+    return
+
+flow Cmn_NormalSel:
+    run Event94
+    return
+
+flow Delete_Cancel:
+    run Event57
+    return
+
 flow Explain:
     run Explain_DeleteP_General
     return
 
-flow Seq_Close:
-    EventFlowSystemActor.MessageSuspend()
-    EventFlowSystemActor.WaitFrame(15)
-    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cNormalFader', 'cBlack', 0.5, 0.5)
+flow ExplainDeleteManPc:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:071_02', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_02', false)
+    return
+
+flow Explain_DeleteMainP:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:202_02', false)
+    run Event42
+    return
+
+flow Explain_DeleteP_General:
+    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:061', false)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_06', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_03', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:071_01', false)
+        run Rco_MainSelect_MainP
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_04', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_03', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_02', false)
+        run Rco_MainSelect_OtherP
     return
 
 flow Process_Delete:
@@ -78,72 +95,33 @@ flow Process_Delete:
     run Seq_Close
     return
 
-flow Delete_Cancel:
-    run Event57
-    return
-
-flow Sel_CurrentP:
-    run Event54
-    return
-
-flow Explain_DeleteMainP:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:202_02', false)
-    run Event42
-    return
-
-flow Cmn_MainP_Sel:
-    run Event40
-    return
-
-flow AfterMainPcDeleteExplain_Sg:
-    run Event24
-    return
-
-flow Cmn_NormalSel:
-    run Event94
-    return
-
-flow ExplainDeleteManPc:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:071_02', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_02', false)
-    return
-
-flow AfterMainPcDeleteExplain_Pl:
-    run Event83
-    return
-
-flow Sel_EndMenu:
-    run Event0
-    return
-
 flow Rco_MainSelect_MainP:
     run Event107
     return
 
-flow SaveSetting_Main:
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-entrypoint Event107:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:012', false)
-        fEvent108 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent108 == 0:
-            run Root_Delete_MainP
-        elif fEvent108 == 1:
-            run Explain
-        elif fEvent108 == 2:
-            run Sel_EndMenu
+flow Rco_MainSelect_OtherP:
+    run Event33
+    return
+
+flow Root:
+    EventFlowSystemActor.SystemFaderRelease()
+    EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'CutSpotlight', '', false, false, false, 0)
+    EventFlowSystemActor.WaitFrame(30)
+    if EventFlowSystemActor.SaveIsExist():
+        run SNPC_rco_95_SavedataRecovering::SavedataRestoring
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_01', false)
-entrypoint Event33:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:011', false)
-        fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent1 == 0:
-            run Root_Delete_OtherP
-        elif fEvent1 == 1:
-            run Explain
-        elif fEvent1 == 2:
-entrypoint Event0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:051', false)
-            run Seq_Close
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:002', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:022', false)
+        fEvent130 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent130 == 3:
+            run Sel_EndMenu
+        elif fEvent130 == 2:
+            run SNPC_rco_94_SavedataRecoveringSettings::Root
+        elif fEvent130 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:021', false)
+            run SaveSetting_Main
+        elif fEvent130 == 1:
+            run SNPC_rco_93_BlancoSettings::WebSetting_Main
     return
 
 flow Root_Delete_MainP:
@@ -202,13 +180,13 @@ entrypoint Event57:
 entrypoint Event83:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:112', false)
             fEvent84 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent84 == 0:
-                run Sel_CurrentP
-            elif fEvent84 == 1:
+            if fEvent84 == 1:
                 run Cel_OtherP
             elif fEvent84 == 2:
                 run ExplainDeleteManPc
                 run AfterMainPcDeleteExplain_Pl
+            elif fEvent84 == 0:
+                run Sel_CurrentP
             elif fEvent84 == 3:
                 run Delete_Cancel
         else:
@@ -216,43 +194,65 @@ entrypoint Event83:
 entrypoint Event94:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:104', false)
             fEvent59 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent59 == 0:
-                run Sel_CurrentP
-            elif fEvent59 == 1:
+            if fEvent59 == 1:
                 run Cel_OtherP
             elif fEvent59 == 2:
                 run Delete_Cancel
+            elif fEvent59 == 0:
+                run Sel_CurrentP
     elif EventFlowSystemActor.IsUnconnectedVillageLeader():
 entrypoint Event24:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:111', false)
         fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent26 == 0:
-            run Sel_CurrentP
-        elif fEvent26 == 1:
+        if fEvent26 == 1:
             run ExplainDeleteManPc
             run AfterMainPcDeleteExplain_Sg
         elif fEvent26 == 2:
             run Delete_Cancel
+        elif fEvent26 == 0:
+            run Sel_CurrentP
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_01', false)
         run Cmn_NormalSel
     return
 
-flow Explain_DeleteP_General:
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:061', false)
+flow SaveSetting_Main:
     if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_06', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:064_03', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:071_01', false)
-        run Rco_MainSelect_MainP
+entrypoint Event107:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:012', false)
+        fEvent108 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent108 == 2:
+            run Sel_EndMenu
+        elif fEvent108 == 1:
+            run Explain
+        elif fEvent108 == 0:
+            run Root_Delete_MainP
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_04', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:062_03', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_02', false)
-        run Rco_MainSelect_OtherP
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_01', false)
+entrypoint Event33:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:011', false)
+        fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent1 == 2:
+entrypoint Event0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:051', false)
+            run Seq_Close
+        elif fEvent1 == 0:
+            run Root_Delete_OtherP
+        elif fEvent1 == 1:
+            run Explain
+    return
+
+flow Sel_CurrentP:
+    run Event54
+    return
+
+flow Sel_EndMenu:
+    run Event0
+    return
+
+flow Seq_Close:
+    EventFlowSystemActor.MessageSuspend()
+    EventFlowSystemActor.WaitFrame(15)
+    EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cNormalFader', 'cBlack', 0.5, 0.5)
     return
 

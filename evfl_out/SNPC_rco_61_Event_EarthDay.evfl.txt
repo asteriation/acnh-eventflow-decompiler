@@ -1,3 +1,7 @@
+flow HedgePresent:
+    run Event7
+    return
+
 flow Root:
     if event_flags_system['cPlayer:RcoEarthDayAnnouncement']:
         if (not event_flags_system['cPlayer:RcoEarthDayGetHedge']) and (event_flags_system['cPlayer:EarthdayDailyAllClear']) and (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(12758, 'Slo001')):
@@ -30,10 +34,6 @@ entrypoint Event7:
         event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
         EventFlowSystemActor.ExitFlowchart()
     run sub_tm!Root
-
-flow HedgePresent:
-    run Event7
-    return
 
 flow sub_tm!Root:
     return

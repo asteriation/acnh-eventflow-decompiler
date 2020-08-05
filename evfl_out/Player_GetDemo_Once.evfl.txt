@@ -1,10 +1,13 @@
-flow Get_MainGame:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:200', true)
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-        EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame_Continue', 'cNextDemoEnd_Simple', 'Player_GetDemo_Once', false)
-    else:
-        run Demo_PublicAnnouncement_Process::Root
-        EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame_Continue2P', 'cNextDemoEnd_Simple', 'Player_GetDemo_Once', false)
+flow FinishDonationBuildBridgeSlope:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:215', false)
+    return
+
+flow Finish_1stKkLive:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:212', true)
+    if EventFlowSystemActor.MainPlayerIsBirthday(true):
+        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    elif EventFlowSystemActor.EventBranch(false, 0) == 3:
+        EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
 
 flow Get_FinishLoan:
@@ -21,12 +24,13 @@ flow Get_FinishLoan:
         EventFlowSystemActor.NpcPlayerActivity('cActivityType_ReturnLoan')
     return
 
-flow StartMainGameBitSet:
-    event_flags_system['cLifeSupportAchievement:ImmigratetoIsland'] += 1
-    event_flags_system['cPlayer:EnablePcTownDecoration'] = true
-    event_flags_system['cPlayer:ValidatePlayerSaveFlag'] = true
-    event_flags_system['cPlayer:PcMaingameStart'] = true
-    EventFlowSystemActor.SaveUpdateBackupCustomData()
+flow Get_MainGame:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:200', true)
+    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame_Continue', 'cNextDemoEnd_Simple', 'Player_GetDemo_Once', false)
+    else:
+        run Demo_PublicAnnouncement_Process::Root
+        EventFlowSystemActor.ReservePlayerMutterDemo('Get_MainGame_Continue2P', 'cNextDemoEnd_Simple', 'Player_GetDemo_Once', false)
     return
 
 flow Get_MainGame_Continue:
@@ -37,46 +41,6 @@ flow Get_MainGame_Continue:
     event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 7
     run SetLocalFruitFlag
     run StartMainGameBitSet
-    return
-
-flow SetLocalFruitFlag:
-    fEvent8 = EventFlowSystemActor.LandFruit()
-    if fEvent8 == 0:
-        event_flags_system['cLand:IslandLocalFruitCherry'] = true
-    elif fEvent8 == 1:
-        event_flags_system['cLand:IslandLocalFruitOrange'] = true
-    elif fEvent8 == 2:
-        event_flags_system['cLand:IslandLocalFruitPear'] = true
-    elif fEvent8 == 3:
-        event_flags_system['cLand:IslandLocalFruitPeach'] = true
-    elif fEvent8 == 4:
-        event_flags_system['cLand:IslandLocalFruitApple'] = true
-    return
-
-flow Finish_1stKkLive:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:212', true)
-    if EventFlowSystemActor.MainPlayerIsBirthday(true):
-        EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    elif EventFlowSystemActor.EventBranch(false, 0) == 3:
-        EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    return
-
-flow ImmQComplete_PutIn:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:213', false)
-    event_flags_system['cPlayer:ImmQCompleteDemo'] = true
-    return
-
-flow ImmQComplete_Notice:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:214_01', false)
-    event_flags_system['cPlayer:ImmQCompleteDemo'] = true
-    return
-
-flow FinishDonationBuildBridgeSlope:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:215', false)
-    return
-
-flow Get_ShoppingAppli:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:216', false)
     return
 
 flow Get_MainGame_Continue2P:
@@ -102,6 +66,42 @@ flow Get_MainGame_Continue2P:
         run sub_grp!Event48
     elif fEvent46 == InResServiceTent:
         run sub_grp!Event48
+    return
+
+flow Get_ShoppingAppli:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:216', false)
+    return
+
+flow ImmQComplete_Notice:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:214_01', false)
+    event_flags_system['cPlayer:ImmQCompleteDemo'] = true
+    return
+
+flow ImmQComplete_PutIn:
+    Player.OpenMessageWindow('TalkSys/SYS_Player:213', false)
+    event_flags_system['cPlayer:ImmQCompleteDemo'] = true
+    return
+
+flow SetLocalFruitFlag:
+    fEvent8 = EventFlowSystemActor.LandFruit()
+    if fEvent8 == 0:
+        event_flags_system['cLand:IslandLocalFruitCherry'] = true
+    elif fEvent8 == 1:
+        event_flags_system['cLand:IslandLocalFruitOrange'] = true
+    elif fEvent8 == 2:
+        event_flags_system['cLand:IslandLocalFruitPear'] = true
+    elif fEvent8 == 3:
+        event_flags_system['cLand:IslandLocalFruitPeach'] = true
+    elif fEvent8 == 4:
+        event_flags_system['cLand:IslandLocalFruitApple'] = true
+    return
+
+flow StartMainGameBitSet:
+    event_flags_system['cLifeSupportAchievement:ImmigratetoIsland'] += 1
+    event_flags_system['cPlayer:EnablePcTownDecoration'] = true
+    event_flags_system['cPlayer:ValidatePlayerSaveFlag'] = true
+    event_flags_system['cPlayer:PcMaingameStart'] = true
+    EventFlowSystemActor.SaveUpdateBackupCustomData()
     return
 
 flow sub_grp!Event48:

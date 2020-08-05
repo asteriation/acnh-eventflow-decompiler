@@ -1,10 +1,3 @@
-flow Root:
-    if EventFlowSystemActor.SystemCheckNowStage('cField'):
-        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_rct', '', false, true, false, 0, 1, 0, 0)
-    else:
-        MainNpc.NpcChangeAIState('cWait', 'SNPC_rct', 'Root', '', false, true)
-    return
-
 flow Init:
     if (not EventFlowSystemActor.SystemCheckNowStage('cField')) and (EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi')):
         MainNpc.NpcAISetExitStrc('Smiling', 'cTriggerType_ExitStrc', 30)
@@ -12,5 +5,12 @@ flow Init:
         MainNpc.SetSightRange(32, 0)
         MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
         MainNpc.NpcAISetting(16, true)
+    return
+
+flow Root:
+    if EventFlowSystemActor.SystemCheckNowStage('cField'):
+        MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_rct', '', false, true, false, 0, 1, 0, 0)
+    else:
+        MainNpc.NpcChangeAIState('cWait', 'SNPC_rct', 'Root', '', false, true)
     return
 

@@ -1,16 +1,3 @@
-flow Greet:
-    if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:007', false)
-    else:
-        fEvent20 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent20 in (0, 1):
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:004', false)
-        elif fEvent20 in (2, 3):
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:005', false)
-        elif fEvent20 in (4, 5):
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:006', false)
-    return
-
 flow Again:
     if EventFlowSystemActor.MuseumComplete():
         run Select3_Comp
@@ -38,38 +25,59 @@ flow Again:
                     run End
     return
 
-flow Talk:
-    run Event2
+flow CmnTodayTalk1st:
+    event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
+    run Greet
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:008', false)
+    run SNPC_owl_23_Museum_DiveFish::ChkCompReport
+    run SNPC_owl_24_Museum_StampRally::Root
+entrypoint Event2:
+    if EventFlowSystemActor.MuseumComplete():
+        if not event_flags_system['cPlayer:FutaExplanationDonationComp']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:014', false)
+            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+            run Comp_Direct
+        elif not event_flags_system['cLand:OwlWantsPainting']:
+            run Select3_Comp
+        elif (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']):
+            run SNPC_owl_22_Museum_RenualQuest::Select4_Painting
+        else:
+            run sub_Event104
+    elif event_flags_system['cLand:OwlFoundFossil']:
+        run Select45
+    else:
+        run SNPC_owl_10_Tent::Sel_NoFoundFossil
     return
 
-flow Select3_Comp:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:010', false)
-entrypoint Event9:
-    fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent9 == 0:
-        run SNPC_owl_02_Museum_Judgment::Root
-    elif fEvent9 == 1:
-        run SNPC_owl_03_Museum_Commentary::Root
-    elif fEvent9 == 2:
-        run End
+flow Comp_Again:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:091', false)
+    run Event9
+    return
+
+flow Comp_Direct:
+    run Event9
+    return
+
+flow DiveFish:
+    if not event_flags_system['cLand:OwlFoundDiveFish']:
+        run SNPC_owl_23_Museum_DiveFish::Select4_DiveFish
+    elif event_flags_system['cPlayer:OwlShowDiveFishReport']:
+        run Painting
+    else:
+        run SNPC_owl_23_Museum_DiveFish::TodayTalk1st
+    return
+
+flow DiveFish_Again:
+    if event_flags_system['cLand:OwlFoundDiveFish']:
+        run Painting_Again
+    else:
+        run SNPC_owl_23_Museum_DiveFish::Select5_DiveFish_Again
     return
 
 flow End:
     fEvent14 = EventFlowSystemActor.MuseumLevel()
     if fEvent14 == BlathersMuseumNoArt:
         run PaintingReminder
-        if event_flags_system['cLand:OwlFoundFossil']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:015', true)
-entrypoint Event16:
-            EventFlowSystemActor.ExitFlowchart()
-        else:
-            EventFlowSystemActor.MessageSuspend()
-            EventFlowSystemActor.WaitFrame(5)
-            MainNpc.CharacterEmoticonAction('Greeting', '', 0, false, false)
-            EventFlowSystemActor.WaitFrame(20)
-entrypoint Event16:
-            EventFlowSystemActor.ExitFlowchart()
-    elif fEvent14 == BlathersMuseumArt:
         if event_flags_system['cLand:OwlFoundFossil']:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:015', true)
 entrypoint Event16:
@@ -95,38 +103,31 @@ entrypoint Event16:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:112_03', false)
 entrypoint Event16:
             EventFlowSystemActor.ExitFlowchart()
-    return
-
-flow CmnTodayTalk1st:
-    event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
-    run Greet
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:008', false)
-    run SNPC_owl_23_Museum_DiveFish::ChkCompReport
-    run SNPC_owl_24_Museum_StampRally::Root
-entrypoint Event2:
-    if EventFlowSystemActor.MuseumComplete():
-        if not event_flags_system['cPlayer:FutaExplanationDonationComp']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:014', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-            run Comp_Direct
-        elif not event_flags_system['cLand:OwlWantsPainting']:
-            run Select3_Comp
-        elif (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']):
-            run SNPC_owl_22_Museum_RenualQuest::Select4_Painting
+    elif fEvent14 == BlathersMuseumArt:
+        if event_flags_system['cLand:OwlFoundFossil']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:015', true)
+entrypoint Event16:
+            EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_Event104
-    elif event_flags_system['cLand:OwlFoundFossil']:
-        run Select45
+            EventFlowSystemActor.MessageSuspend()
+            EventFlowSystemActor.WaitFrame(5)
+            MainNpc.CharacterEmoticonAction('Greeting', '', 0, false, false)
+            EventFlowSystemActor.WaitFrame(20)
+entrypoint Event16:
+            EventFlowSystemActor.ExitFlowchart()
+    return
+
+flow Greet:
+    if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:007', false)
     else:
-        run SNPC_owl_10_Tent::Sel_NoFoundFossil
-    return
-
-flow Select45:
-    run DiveFish
-    return
-
-flow Select3_Direct:
-    run Event31
+        fEvent20 = EventFlowSystemActor.EnvTimeZone()
+        if fEvent20 in (0, 1):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:004', false)
+        elif fEvent20 in (2, 3):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:005', false)
+        elif fEvent20 in (4, 5):
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:006', false)
     return
 
 flow Painting:
@@ -134,25 +135,48 @@ flow Painting:
     run Select4
     return
 
-flow DiveFish:
-    if not event_flags_system['cLand:OwlFoundDiveFish']:
-        run SNPC_owl_23_Museum_DiveFish::Select4_DiveFish
-    elif event_flags_system['cPlayer:OwlShowDiveFishReport']:
-        run Painting
+flow PaintingReminder:
+    if (event_flags_system['cLand:OwlWantsPainting']) and (not event_flags_system['cLand:MuseumGrowupEnable2']) and (event_flags_system['cPlayer:OwlPaintingQuestExplain']) and (not event_flags_system['cPlayer:OwlPaintingQuestReminder']):
+        event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:003', false)
+        run Event16
+    run sub_tm!PaintingReminder
+
+flow Painting_Again:
+    if not event_flags_system['cLand:OwlWantsPainting']:
+        run Select4_Again
+    elif event_flags_system['cLand:MuseumGrowupEnable2']:
+        run Select4_Again
     else:
-        run SNPC_owl_23_Museum_DiveFish::TodayTalk1st
+        run SNPC_owl_22_Museum_RenualQuest::Select5_Painting_Again
     return
 
 flow Select3_Again:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:094', false)
 entrypoint Event31:
     fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent31 == 0:
-        run SNPC_owl_01_Museum_Donation::Root
+    if fEvent31 == 2:
+        run End
     elif fEvent31 == 1:
         run SNPC_owl_02_Museum_Judgment::Root
-    elif fEvent31 == 2:
+    elif fEvent31 == 0:
+        run SNPC_owl_01_Museum_Donation::Root
+    return
+
+flow Select3_Comp:
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:010', false)
+entrypoint Event9:
+    fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
+    if fEvent9 == 0:
+        run SNPC_owl_02_Museum_Judgment::Root
+    elif fEvent9 == 1:
+        run SNPC_owl_03_Museum_Commentary::Root
+    elif fEvent9 == 2:
         run End
+    return
+
+flow Select3_Direct:
+    run Event31
     return
 
 flow Select4:
@@ -169,8 +193,12 @@ entrypoint Event36:
         run End
     return
 
-flow Select4_Direct:
-    run Event36
+flow Select45:
+    run DiveFish
+    return
+
+flow Select45_Again:
+    run DiveFish_Again
     return
 
 flow Select4_Again:
@@ -178,45 +206,17 @@ flow Select4_Again:
     run Event36
     return
 
-flow Select45_Again:
-    run DiveFish_Again
+flow Select4_Direct:
+    run Event36
     return
 
-flow Painting_Again:
-    if not event_flags_system['cLand:OwlWantsPainting']:
-        run Select4_Again
-    elif event_flags_system['cLand:MuseumGrowupEnable2']:
-        run Select4_Again
-    else:
-        run SNPC_owl_22_Museum_RenualQuest::Select5_Painting_Again
-    return
-
-flow DiveFish_Again:
-    if event_flags_system['cLand:OwlFoundDiveFish']:
-        run Painting_Again
-    else:
-        run SNPC_owl_23_Museum_DiveFish::Select5_DiveFish_Again
-    return
-
-flow Comp_Direct:
-    run Event9
-    return
-
-flow Comp_Again:
-    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:091', false)
-    run Event9
-    return
-
-flow PaintingReminder:
-    if (event_flags_system['cLand:OwlWantsPainting']) and (not event_flags_system['cLand:MuseumGrowupEnable2']) and (event_flags_system['cPlayer:OwlPaintingQuestExplain']) and (not event_flags_system['cPlayer:OwlPaintingQuestReminder']):
-        event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:003', false)
-        run Event16
-    run sub_tm!PaintingReminder
-
-flow sub_tm!PaintingReminder:
+flow Talk:
+    run Event2
     return
 
 flow sub_Event104:
     run Select3_Comp
+
+flow sub_tm!PaintingReminder:
+    return
 

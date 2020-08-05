@@ -1,3 +1,23 @@
+flow ExitStrc:
+    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
+    return
+
+flow Init:
+    run AI_NPC_Indoor::BBRegist
+    if EventFlowSystemActor.SystemCheckNowStage('cVisitPHouse'):
+        MainNpc.NpcRegistAIBlackBoard('VisitPHide', 0)
+        MainNpc.NpcRegistAIBlackBoard('VisitPGreet', 0)
+        MainNpc.NpcRegistAIBlackBoard('VisitPMove', 0)
+        if MainNpc.SystemIsInviteQuestNpcEntered():
+            MainNpc.NpcSetAIBlackBoard('VisitPMove', 1)
+        elif MainNpc.SystemVisitQuestKind('cPlayer'):
+            MainNpc.SystemSetInviteQuestEnterTime()
+            MainNpc.SystemSetInviteQuestNpcEnterFlag()
+            MainNpc.NpcSetAIBlackBoard('VisitPGreet', 1)
+        else:
+            MainNpc.NpcSetAIBlackBoard('VisitPHide', 1)
+    return
+
 flow Root:
     MainNpc.NpcAIDefaultSetting(1)
     MainNpc.SetIsStartNeedActivity('cOff')
@@ -22,20 +42,8 @@ flow Root:
         run sub_grp!Event41
     return
 
-flow Init:
-    run AI_NPC_Indoor::BBRegist
-    if EventFlowSystemActor.SystemCheckNowStage('cVisitPHouse'):
-        MainNpc.NpcRegistAIBlackBoard('VisitPHide', 0)
-        MainNpc.NpcRegistAIBlackBoard('VisitPGreet', 0)
-        MainNpc.NpcRegistAIBlackBoard('VisitPMove', 0)
-        if MainNpc.SystemIsInviteQuestNpcEntered():
-            MainNpc.NpcSetAIBlackBoard('VisitPMove', 1)
-        elif MainNpc.SystemVisitQuestKind('cPlayer'):
-            MainNpc.SystemSetInviteQuestEnterTime()
-            MainNpc.SystemSetInviteQuestNpcEnterFlag()
-            MainNpc.NpcSetAIBlackBoard('VisitPGreet', 1)
-        else:
-            MainNpc.NpcSetAIBlackBoard('VisitPHide', 1)
+flow TouchedFurniture:
+    run AI_NPC_Indoor::TouchedFurniture
     return
 
 flow VisitPCall:
@@ -50,14 +58,6 @@ flow VisitPGoHome:
 
 flow VisitPGreet:
     run AI_NPC_Common::ContinueSpeak
-    return
-
-flow TouchedFurniture:
-    run AI_NPC_Indoor::TouchedFurniture
-    return
-
-flow ExitStrc:
-    MainNpc.NpcChangeAIState('cExitReaction', '', '', '', false, false)
     return
 
 flow sub_grp!Event41:

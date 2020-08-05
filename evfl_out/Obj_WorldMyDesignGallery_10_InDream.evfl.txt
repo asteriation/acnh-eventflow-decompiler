@@ -1,3 +1,11 @@
+flow BackToAuthorOpus:
+    run Event53
+    return
+
+flow BackToList:
+    run Event29
+    return
+
 flow SearchByAuthorID:
     EventFlowSystemActor.MessageLockNext(1)
     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2431', false)
@@ -42,17 +50,9 @@ entrypoint Event53:
         run sub_Event15
     return
 
-flow BackToList:
-    run Event29
-    return
-
-flow BackToAuthorOpus:
-    run Event53
-    return
-
-flow sub_Event15:
+flow sub_Event118:
     run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
 
-flow sub_Event118:
+flow sub_Event15:
     run Obj_WorldMyDesignGallery_01_MainScene::Seq_Close
 

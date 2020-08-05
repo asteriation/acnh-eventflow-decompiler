@@ -1,42 +1,9 @@
-flow Talk_QuestProgress:
-    MainNpc.SetItemName(0, 24, 0)
-    if event_flags_system['cPlayer:CampQuestAccept']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:101', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:102', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:103', false)
-            event_flags_system['cPlayer:CampQuestAccept'] = false
-            event_flags_system['cLand:CampQuestInProgress'] = false
-            event_flags_system['cPlayer:CampQuestRejected'] = true
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:104', false)
-    return
-
 flow Talk_Ftr:
     MainNpc.SetItemName(0, 24, 0)
     if event_flags_system['cPlayer:CampQuestAccept']:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:301', false)
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:302', false)
-    return
-
-flow Talk_QuestStart:
-    MainNpc.SetItemName(0, 24, 0)
-    if event_flags_system['cPlayer:CampQuestRejected']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:008', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            event_flags_system['cPlayer:CampQuestRejected'] = false
-            run sub_grp!Event6
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:009', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:001', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run sub_grp!Event6
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:006', false)
-            event_flags_system['cPlayer:CampQuestRejected'] = true
     return
 
 flow Talk_QuestClear:
@@ -49,8 +16,8 @@ flow Talk_QuestClear:
             MainNpc.SetDeliveryItem(4, true)
             MainNpc.NpcDelivery('Keep', 0)
             fEvent49 = MainNpc.CheckCamperNpcMovePoint()
-            if fEvent49 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:205', false)
+            if fEvent49 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:207', false)
                 MainNpc.NpcDelivery('Default', 3)
                 EventFlowSystemActor.SelectRewardItemCampGame('cVeryGood')
                 MainNpc.SetDeliveryItem(1, true)
@@ -159,8 +126,8 @@ flow Talk_QuestClear:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:209_03', false)
                         event_flags_system['cLand:CampQuestClear'] = true
                         MainNpc.SaveCampNpcQuestFtr()
-            elif fEvent49 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:207', false)
+            elif fEvent49 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:205', false)
                 MainNpc.NpcDelivery('Default', 3)
                 EventFlowSystemActor.SelectRewardItemCampGame('cVeryGood')
                 MainNpc.SetDeliveryItem(1, true)
@@ -218,6 +185,39 @@ flow Talk_QuestClear:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:208', false)
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:204', false)
+    return
+
+flow Talk_QuestProgress:
+    MainNpc.SetItemName(0, 24, 0)
+    if event_flags_system['cPlayer:CampQuestAccept']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:101', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:102', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:103', false)
+            event_flags_system['cPlayer:CampQuestAccept'] = false
+            event_flags_system['cLand:CampQuestInProgress'] = false
+            event_flags_system['cPlayer:CampQuestRejected'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:104', false)
+    return
+
+flow Talk_QuestStart:
+    MainNpc.SetItemName(0, 24, 0)
+    if event_flags_system['cPlayer:CampQuestRejected']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:008', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            event_flags_system['cPlayer:CampQuestRejected'] = false
+            run sub_grp!Event6
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:009', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:001', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run sub_grp!Event6
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:006', false)
+            event_flags_system['cPlayer:CampQuestRejected'] = true
     return
 
 flow Talk_QuestStart_Re:
