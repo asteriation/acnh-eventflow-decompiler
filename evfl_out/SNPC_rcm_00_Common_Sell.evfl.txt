@@ -40,28 +40,30 @@ flow RcmSellSingleItemNormal:
 
 flow Root:
     fEvent36 = EventFlowSystemActor.ShopLevel()
-    if fEvent36 in (NooksCrannyInitial, NooksCrannyUpgraded):
-        if EventFlowSystemActor.EnvDayOfWeek() != 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
-            MainNpc.SetKabuka()
-            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSell', false)
-            run sub_grp!Event4
-        elif event_flags_system['cPlayer:RcmNoTurnipSellToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
-entrypoint Event31:
-            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
-            run sub_grp!Event4
-        else:
-            event_flags_system['cPlayer:RcmNoTurnipSellToday'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:022', false)
-entrypoint Event31:
-            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
-            run sub_grp!Event4
-    elif fEvent36 == InResServiceTent:
+    if fEvent36 == InResServiceTent:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
 entrypoint Event31:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
         run sub_grp!Event4
+    elif fEvent36 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        fEvent11 = EventFlowSystemActor.EnvDayOfWeek()
+        if fEvent11 in (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday):
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
+            MainNpc.SetKabuka()
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSell', false)
+            run sub_grp!Event4
+        elif fEvent11 == Sunday:
+            if event_flags_system['cPlayer:RcmNoTurnipSellToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
+entrypoint Event31:
+                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
+                run sub_grp!Event4
+            else:
+                event_flags_system['cPlayer:RcmNoTurnipSellToday'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:022', false)
+entrypoint Event31:
+                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
+                run sub_grp!Event4
     return
 
 flow Sell_Sunday:
@@ -155,7 +157,7 @@ flow sub_grp!Event2:
 flow sub_grp!Event4:
     if EventFlowSystemActor.UIResultMenuDecide():
         fEvent91 = EventFlowSystemActor.EnvDayOfWeek()
-        if fEvent91 == 6:
+        if fEvent91 == Saturday:
             if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
                 run ChkSellSpecificItem
                 MainNpc.ShopSellCalc('SellTotal', false, 1.0, true)
@@ -266,7 +268,7 @@ entrypoint Event37:
                             run rcm_Sell_Confirm
             else:
                 run CannotSellTurnip
-        elif fEvent91 in (1, 2, 3, 4, 5):
+        elif fEvent91 in (Monday, Tuesday, Wednesday, Thursday, Friday):
             run ChkSellSpecificItem
             MainNpc.ShopSellCalc('SellTotal', false, 1.0, true)
             EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cMoney', '', 'SellTotal')
@@ -374,7 +376,7 @@ entrypoint Event37:
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
                         run rcm_Sell_Confirm
-        elif fEvent91 == 0:
+        elif fEvent91 == Sunday:
 entrypoint Event92:
             if any ('Turnip', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:024', false)

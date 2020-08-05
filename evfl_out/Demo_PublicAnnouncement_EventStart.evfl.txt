@@ -66,33 +66,96 @@ flow Root:
         run PrepareDemo
         if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
             fEvent11 = EventFlowSystemActor.EnvSeason()
-            if fEvent11 == 1:
+            if fEvent11 == Summer:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_01', true)
-            elif fEvent11 == 0:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent11 == Spring:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart', true)
-            elif fEvent11 == 2:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent11 == Autumn:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_03', true)
-            elif fEvent11 == 3:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent11 == Winter:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_05', true)
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
         else:
             fEvent37 = EventFlowSystemActor.EnvSeason()
-            if fEvent37 == 0:
+            if fEvent37 == Spring:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_00', true)
-            elif fEvent37 == 1:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent37 == Summer:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_02', true)
-            elif fEvent37 == 2:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent37 == Autumn:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_04', true)
-            elif fEvent37 == 3:
+entrypoint Event21:
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
+            elif fEvent37 == Winter:
                 EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_06', true)
 entrypoint Event21:
-        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
-        EventFlowSystemActor.StoreNormalCamera(true)
-        EventFlowSystemActor.RequestRecreateFtr()
-        EventFlowSystemActor.WaitFrame(30)
-        EventFlowSystemActor.FadeIn(true)
-        if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
-            EventFlowSystemActor.RequestStartPeriodicalFireworks()
-        EventFlowSystemActor.BGMPropertyControl(106)
+                EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
+                EventFlowSystemActor.StoreNormalCamera(true)
+                EventFlowSystemActor.RequestRecreateFtr()
+                EventFlowSystemActor.WaitFrame(30)
+                EventFlowSystemActor.FadeIn(true)
+                if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
+                    EventFlowSystemActor.RequestStartPeriodicalFireworks()
+                EventFlowSystemActor.BGMPropertyControl(106)
     elif fEvent25 == 5:
         if event_flags_system['cLand:BuiltTownOffice']:
             run PrepareDemo

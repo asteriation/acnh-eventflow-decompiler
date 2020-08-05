@@ -33,11 +33,13 @@ flow Root:
     return
 
 flow SeasonMaterialChk_AutumnMushroom:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
-        if EventFlowSystemActor.EnvMonth() == 10:
+    fEvent22 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent22 == cWeatherArea_North:
+        if EventFlowSystemActor.EnvMonth() == November:
             run sub_grp!Event25
-    elif EventFlowSystemActor.EnvMonth() == 4:
-        run sub_grp!Event25
+    elif fEvent22 == cWeatherArea_South:
+        if EventFlowSystemActor.EnvMonth() == May:
+            run sub_grp!Event25
     return
 
 flow SeasonMaterialChk_AutumnNuts:
@@ -71,7 +73,7 @@ flow SeasonMaterialChk_Snowball:
     return
 
 flow SeasonMaterialChk_Snowflake:
-    if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_SnowGround')) and (EventFlowSystemActor.EnvWeather() in (5, 6)) and (not event_flags_system['cPlayer:PAnnounce_WinterSnowFlake']):
+    if (MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_SnowGround')) and (EventFlowSystemActor.EnvWeather() in (Snow5, Snow6)) and (not event_flags_system['cPlayer:PAnnounce_WinterSnowFlake']):
         subflow_results[11] = 5
         subflow_results[12] = 1
     return

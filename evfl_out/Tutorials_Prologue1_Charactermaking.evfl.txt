@@ -131,26 +131,54 @@ flow PV:
     EventFlowSystemActor.SoundTriggerEmit('Env_PlaneInside', 1)
     EventFlowSystemActor.WaitFrame(60)
     fEvent42 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent42 in (0, 1):
+    if fEvent42 in (Morning0, Morning1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:027_01', false)
-    elif fEvent42 in (2, 3):
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028_01', false)
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichiNewVillager')
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028', false)
+            EventFlowSystemActor.EnvSetDemoTime(0, 14, 0)
+            EventFlowSystemActor.TimeLock('cLockDemo')
+            event_flags_system['cPlayer:MakeVillagePlayerFlag'] = true
+            event_flags_system['cLandTemp:IsFirstPrologue'] = true
+            event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 1
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichi')
+        EventFlowSystemActor.SoundFade(1)
+        EventFlowSystemActor.WaitFrame(60)
+        EventFlowSystemActor.SystemRequestChangeStage('cOpeningMovie', 'cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0)
+    elif fEvent42 in (Afternoon0, Afternoon1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:027_02', false)
-    elif fEvent42 in (4, 5):
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028_01', false)
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichiNewVillager')
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028', false)
+            EventFlowSystemActor.EnvSetDemoTime(0, 14, 0)
+            EventFlowSystemActor.TimeLock('cLockDemo')
+            event_flags_system['cPlayer:MakeVillagePlayerFlag'] = true
+            event_flags_system['cLandTemp:IsFirstPrologue'] = true
+            event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 1
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichi')
+        EventFlowSystemActor.SoundFade(1)
+        EventFlowSystemActor.WaitFrame(60)
+        EventFlowSystemActor.SystemRequestChangeStage('cOpeningMovie', 'cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0)
+    elif fEvent42 in (Evening0, Evening1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:027_03', false)
-    if event_flags_system['cLand:ValidateVillageSave']:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028_01', false)
-        EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichiNewVillager')
-    else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028', false)
-        EventFlowSystemActor.EnvSetDemoTime(0, 14, 0)
-        EventFlowSystemActor.TimeLock('cLockDemo')
-        event_flags_system['cPlayer:MakeVillagePlayerFlag'] = true
-        event_flags_system['cLandTemp:IsFirstPrologue'] = true
-        event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 1
-        EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichi')
-    EventFlowSystemActor.SoundFade(1)
-    EventFlowSystemActor.WaitFrame(60)
-    EventFlowSystemActor.SystemRequestChangeStage('cOpeningMovie', 'cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0)
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028_01', false)
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichiNewVillager')
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:028', false)
+            EventFlowSystemActor.EnvSetDemoTime(0, 14, 0)
+            EventFlowSystemActor.TimeLock('cLockDemo')
+            event_flags_system['cPlayer:MakeVillagePlayerFlag'] = true
+            event_flags_system['cLandTemp:IsFirstPrologue'] = true
+            event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 1
+            EventFlowSystemActor.ReserveNpcCommand('PrologueTanukichi')
+        EventFlowSystemActor.SoundFade(1)
+        EventFlowSystemActor.WaitFrame(60)
+        EventFlowSystemActor.SystemRequestChangeStage('cOpeningMovie', 'cCircle', 'cNormalFader', 'cBlack', 1.0, 1.0)
     return
 
 flow Root:
@@ -159,22 +187,42 @@ flow Root:
     run Cut0
     EventFlowSystemActor.WaitFrame(20)
     fEvent65 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent65 in (0, 1):
+    if fEvent65 in (Morning0, Morning1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_01', false)
-    elif fEvent65 in (2, 3):
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
+        run Apply
+    elif fEvent65 in (Afternoon0, Afternoon1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_02', false)
-    elif fEvent65 in (4, 5):
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
+        run Apply
+    elif fEvent65 in (Evening0, Evening1):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:001_03', false)
-    if event_flags_system['cLand:ValidateVillageSave']:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
-        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
-    else:
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
-        SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
-        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
-    run Apply
+        if event_flags_system['cLand:ValidateVillageSave']:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:101', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:102_02', false)
+        else:
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_01', false)
+            SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:002_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_Airport:003_01', false)
+        run Apply
     return
 
 flow TerrainSelect:

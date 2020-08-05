@@ -1,14 +1,16 @@
 flow Month_1.3:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent33 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent33 == cWeatherArea_North:
         run Northern
-    else:
+    elif fEvent33 == cWeatherArea_South:
         run Southern
     return
 
 flow Month_1.4:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent37 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent37 == cWeatherArea_North:
         run Northern_1.4
-    else:
+    elif fEvent37 == cWeatherArea_South:
         run Southern_1.4
     return
 
@@ -66,25 +68,25 @@ flow NNPC_OpenEV:
 
 flow Northern:
     fEvent12 = EventFlowSystemActor.EnvMonth()
-    if fEvent12 == 5:
+    if fEvent12 == June:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:104', false)
-    elif fEvent12 == 6:
+    elif fEvent12 == July:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:105', false)
-    elif fEvent12 == 7:
+    elif fEvent12 == August:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:106', false)
-    elif fEvent12 == 8:
+    elif fEvent12 == September:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:107', false)
     return
 
 flow Northern_1.4:
     fEvent29 = EventFlowSystemActor.EnvMonth()
-    if fEvent29 == 5:
+    if fEvent29 == June:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:201', false)
-    elif fEvent29 == 6:
+    elif fEvent29 == July:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:202', false)
-    elif fEvent29 == 7:
+    elif fEvent29 == August:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:203', false)
-    elif fEvent29 == 8:
+    elif fEvent29 == September:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:204', false)
     return
 
@@ -102,25 +104,25 @@ flow Root:
 
 flow Southern:
     fEvent24 = EventFlowSystemActor.EnvMonth()
-    if fEvent24 == 10:
+    if fEvent24 == November:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:104', false)
-    elif fEvent24 == 11:
+    elif fEvent24 == December:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:105', false)
-    elif fEvent24 == 0:
+    elif fEvent24 == January:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:106', false)
-    elif fEvent24 == 1:
+    elif fEvent24 == February:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:107', false)
     return
 
 flow Southern_1.4:
     fEvent38 = EventFlowSystemActor.EnvMonth()
-    if fEvent38 == 10:
+    if fEvent38 == November:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:205', false)
-    elif fEvent38 == 11:
+    elif fEvent38 == December:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:206', false)
-    elif fEvent38 == 0:
+    elif fEvent38 == January:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:207', false)
-    elif fEvent38 == 1:
+    elif fEvent38 == February:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchInsectFes:208', false)
     return
 

@@ -14,18 +14,13 @@ flow MoveIn:
             fEvent12 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent12 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:001', false)
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent12 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:002', false)
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent12 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:003', false)
-        elif fEvent0 == 1:
-            fEvent13 = EventFlowSystemActor.EnvTimeZone()
-            if fEvent13 in (0, 1):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:004', false)
-            elif fEvent13 in (2, 3):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:005', false)
-            elif fEvent13 in (4, 5):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:006', false)
+                EventFlowSystemActor.ExitFlowchart()
         elif fEvent0 == 2:
             fEvent11 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent11 == 0:
@@ -35,7 +30,18 @@ flow MoveIn:
             elif fEvent11 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:009', false)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:010', false)
-        EventFlowSystemActor.ExitFlowchart()
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent0 == 1:
+            fEvent13 = EventFlowSystemActor.EnvTimeZone()
+            if fEvent13 in (Morning0, Morning1):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:004', false)
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent13 in (Afternoon0, Afternoon1):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:005', false)
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent13 in (Evening0, Evening1):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveIn:006', false)
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow MoveOut:

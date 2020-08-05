@@ -1,19 +1,20 @@
 flow Hint_Nuts_Rco:
     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent158 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent158 == cWeatherArea_North:
         fEvent159 = EventFlowSystemActor.EnvMonth()
-        if fEvent159 in (8, 9, 10):
+        if fEvent159 in (September, October, November):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
             run Hint_Nuts_Rco_Cmn
-        elif fEvent159 == 11:
+        elif fEvent159 == December:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
             run Hint_Nuts_Rco_Cmn
-    else:
+    elif fEvent158 == cWeatherArea_South:
         fEvent160 = EventFlowSystemActor.EnvMonth()
-        if fEvent160 in (2, 3, 4):
+        if fEvent160 in (March, April, May):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
             run Hint_Nuts_Rco_Cmn
-        elif fEvent160 == 5:
+        elif fEvent160 == June:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
             run Hint_Nuts_Rco_Cmn
     return
@@ -31,20 +32,21 @@ flow Hint_Nuts_Rco_Cmn:
     return
 
 flow Hint_Nuts_Sza:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent165 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent165 == cWeatherArea_North:
         fEvent166 = EventFlowSystemActor.EnvMonth()
-        if fEvent166 == 11:
+        if fEvent166 == December:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
             run Hint_Nuts_Sza_Cmn
-        elif fEvent166 in (8, 9, 10):
+        elif fEvent166 in (September, October, November):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
             run Hint_Nuts_Sza_Cmn
-    else:
+    elif fEvent165 == cWeatherArea_South:
         fEvent167 = EventFlowSystemActor.EnvMonth()
-        if fEvent167 in (2, 3, 4):
+        if fEvent167 in (March, April, May):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
             run Hint_Nuts_Sza_Cmn
-        elif fEvent167 == 5:
+        elif fEvent167 == June:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
             run Hint_Nuts_Sza_Cmn
     return

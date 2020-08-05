@@ -128,41 +128,74 @@ flow Seasons_Chk:
     if not event_flag_npc['cNpcMemory:TalkSeasonsNow']:
 entrypoint Event69:
         fEvent69 = EventFlowSystemActor.EnvSeason()
-        if fEvent69 == 0:
+        if fEvent69 == Spring:
             fEvent82 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent82 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:001', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent82 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:005', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent82 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:009', false)
-        elif fEvent69 == 1:
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
+        elif fEvent69 == Summer:
             fEvent83 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent83 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:002', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent83 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:006', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent83 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:010', false)
-        elif fEvent69 == 2:
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
+        elif fEvent69 == Autumn:
             fEvent84 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent84 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:003', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent84 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:007', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent84 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:011', false)
-        elif fEvent69 == 3:
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
+        elif fEvent69 == Winter:
             fEvent85 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
             if fEvent85 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:004', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent85 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:008', false)
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
             elif fEvent85 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Seasons:012', false)
-        event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
-        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
-        EventFlowSystemActor.ExitFlowchart()
+                event_flags_npc['cNpcMemory:TalkSeasonsNow'] = true
+                event_flags_npc['cNpcMemory:TalkReSelectLast'] = 1
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow SpotSP_Chk:
@@ -183,39 +216,39 @@ flow Spot_Chk:
 flow WeatherSP_Chk:
     if not event_flag_npc['cNpcMemory:TalkWeatherSPNow']:
         fEvent23 = EventFlowSystemActor.EnvSpecialWeather()
-        if fEvent23 == 8:
+        if fEvent23 == Normal8:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:108', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 9:
+        elif fEvent23 == Normal9:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:109', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 1:
+        elif fEvent23 == HeavyShowerMorning:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:101', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 7:
+        elif fEvent23 == AuroraBorealis1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:107', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 6:
+        elif fEvent23 == AuroraBorealis0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:106', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 5:
+        elif fEvent23 == DoubleRainbow:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:105', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 4:
+        elif fEvent23 == Rainbow:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:104', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 3:
+        elif fEvent23 == HeavyShowerEvening:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:103', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent23 == 2:
+        elif fEvent23 == HeavyShowerAfternoon:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeB_Weather:102', false)
             event_flags_npc['cNpcMemory:TalkWeatherSPNow'] = true
             EventFlowSystemActor.ExitFlowchart()
@@ -225,22 +258,40 @@ flow Weather_Chk:
     if not event_flag_npc['cNpcMemory:TalkWeatherNow']:
 entrypoint Event54:
         fEvent54 = MainNpc.EnvWeatherNNpcTalkCustom()
-        if fEvent54 == 0:
+        if fEvent54 == Fine:
             MainNpc.NpcSelectFreeTalk('cFineWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 2:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == Rain:
             MainNpc.NpcSelectFreeTalk('cRainWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 4:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == Snow:
             MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 1:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == Cloudy:
             MainNpc.NpcSelectFreeTalk('cCloudWeather', 'cWildCard', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 6:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == Blossom:
             MainNpc.NpcSelectFreeTalk('cFineWeather', 'cBlossomShower', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 3:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == HeavyRain:
             MainNpc.NpcSelectFreeTalk('cRainWeather', 'cHardRainWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        elif fEvent54 == 5:
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent54 == HeavySnow:
             MainNpc.NpcSelectFreeTalk('cSnowWeather', 'cHardSnowWeather', 'cWildCard', '', 'TalkNNpc/B1_Bo/Free/BO_FreeB_Weather', '', '', '', true)
-        event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
-        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
-        EventFlowSystemActor.ExitFlowchart()
+            event_flags_npc['cNpcMemory:TalkWeatherNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 3
+            EventFlowSystemActor.ExitFlowchart()
     return
 

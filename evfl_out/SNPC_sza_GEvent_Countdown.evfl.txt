@@ -87,7 +87,7 @@ entrypoint Event30:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:029_00', true)
                 else:
                     fEvent31 = EventFlowSystemActor.EnvTimeZone()
-                    if fEvent31 in (4, 5):
+                    if fEvent31 in (Evening0, Evening1):
                         if EventFlowSystemActor.EnvHourCompare(23, -1, true, true) == 0:
 entrypoint Event30:
                             fEvent30 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
@@ -118,12 +118,12 @@ entrypoint Event30:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:024', true)
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:025', true)
-                    elif fEvent31 == 3:
+                    elif fEvent31 == Afternoon1:
                         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:019', true)
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:020', true)
-                    elif fEvent31 in (0, 1, 2):
+                    elif fEvent31 in (Morning0, Morning1, Afternoon0):
                         fEvent39 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                         if fEvent39 == 1:
                             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Countdown:017', true)

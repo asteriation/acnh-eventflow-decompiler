@@ -8,37 +8,37 @@ flow GreetV_Again2:
 
 flow GreetV_Field1:
     fEvent9 = MainNpc.EnvWeatherNNpcTalkCustom()
-    if fEvent9 == 2:
+    if fEvent9 == Rain:
         MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 4:
+    elif fEvent9 == Snow:
         MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 1:
+    elif fEvent9 == Cloudy:
         MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 3:
+    elif fEvent9 == HeavyRain:
         MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 5:
+    elif fEvent9 == HeavySnow:
         MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 6:
+    elif fEvent9 == Blossom:
         MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
-    elif fEvent9 == 0:
+    elif fEvent9 == Fine:
         MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Field1', '', '', '')
     return
 
 flow GreetV_XX2:
     fEvent17 = MainNpc.EnvWeatherNNpcTalkCustom()
-    if fEvent17 == 0:
+    if fEvent17 == Fine:
         MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
-    elif fEvent17 == 2:
+    elif fEvent17 == Rain:
         MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
-    elif fEvent17 == 4:
+    elif fEvent17 == Snow:
         MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
-    elif fEvent17 == 1:
+    elif fEvent17 == Cloudy:
         MainNpc.NpcSelectMessage('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
-    elif fEvent17 == 3:
+    elif fEvent17 == HeavyRain:
         MainNpc.NpcSelectMessage('cWildCard', 'cRainWeather', 'cHardRainWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Rain2', '', '', '')
-    elif fEvent17 == 5:
+    elif fEvent17 == HeavySnow:
         MainNpc.NpcSelectMessage('cWildCard', 'cSnowWeather', 'cHardSnowWeather', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Snow2', '', '', '')
-    elif fEvent17 == 6:
+    elif fEvent17 == Blossom:
         MainNpc.NpcSelectMessage('cWildCard', 'cFineWeather', 'cBlossomShower', '', 'TalkNNpc/B1_Bo/Greet/BO_GreetV_Fine2', '', '', '')
     return
 

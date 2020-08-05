@@ -186,13 +186,13 @@ flow sub_grp!Event7:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:007', false)
             elif fEvent32 == 0:
                 fEvent33 = EventFlowSystemActor.EnvTimeZone()
-                if fEvent33 in (4, 5):
+                if fEvent33 in (Evening0, Evening1):
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:005', false)
-                elif fEvent33 == 3:
+                elif fEvent33 == Afternoon1:
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:004', false)
-                elif fEvent33 in (0, 1):
+                elif fEvent33 in (Morning0, Morning1):
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:002', false)
-                elif fEvent33 == 2:
+                elif fEvent33 == Afternoon0:
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:003', false)
         elif EventFlowSystemActor.NetIsConnected():
             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:047', false)

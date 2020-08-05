@@ -77,9 +77,10 @@ flow Hgs11:
             elif fEvent141 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:107', false)
         elif fEvent119 == 3:
-            if EventFlowSystemActor.EnvWeatherArea() == 0:
+            fEvent168 = EventFlowSystemActor.EnvWeatherArea()
+            if fEvent168 == cWeatherArea_North:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130', true)
-            else:
+            elif fEvent168 == cWeatherArea_South:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130_01', true)
     return
 

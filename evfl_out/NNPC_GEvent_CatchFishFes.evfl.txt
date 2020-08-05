@@ -1,19 +1,20 @@
 flow Month_1.3:
     fEvent33 = EventFlowSystemActor.EnvMonth()
-    if fEvent33 == 0:
+    if fEvent33 == January:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:104', false)
-    elif fEvent33 == 3:
+    elif fEvent33 == April:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:105', false)
-    elif fEvent33 == 6:
+    elif fEvent33 == July:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:106', false)
-    elif fEvent33 == 9:
+    elif fEvent33 == October:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:107', false)
     return
 
 flow Month_1.4:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent44 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent44 == cWeatherArea_North:
         run Northern_1.4
-    else:
+    elif fEvent44 == cWeatherArea_South:
         run Southern_1.4
     return
 
@@ -71,13 +72,13 @@ flow NNPC_OpenEV:
 
 flow Northern_1.4:
     fEvent34 = EventFlowSystemActor.EnvMonth()
-    if fEvent34 == 0:
+    if fEvent34 == January:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:201', false)
-    elif fEvent34 == 3:
+    elif fEvent34 == April:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:202', false)
-    elif fEvent34 == 6:
+    elif fEvent34 == July:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:203', false)
-    elif fEvent34 == 9:
+    elif fEvent34 == October:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:204', false)
     return
 
@@ -95,13 +96,13 @@ flow Root:
 
 flow Southern_1.4:
     fEvent45 = EventFlowSystemActor.EnvMonth()
-    if fEvent45 == 0:
+    if fEvent45 == January:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:205', false)
-    elif fEvent45 == 3:
+    elif fEvent45 == April:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:206', false)
-    elif fEvent45 == 6:
+    elif fEvent45 == July:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:207', false)
-    elif fEvent45 == 9:
+    elif fEvent45 == October:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:208', false)
     return
 

@@ -12,7 +12,8 @@ entrypoint Event79:
                     if fEvent79 == 3:
                         run TalkAfterEvent
                     elif fEvent79 in (0, 1, 2):
-                        if EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
+                        fEvent246 = EventFlowSystemActor.EnvMonth()
+                        if fEvent246 in (January, February, March, April, May, June, July, August, September):
                             fEvent247 = EventFlowSystemActor.RandomChoice3(3)
                             if fEvent247 == 0:
                                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:101', false)
@@ -20,7 +21,7 @@ entrypoint Event79:
                                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:102', false)
                             elif fEvent247 == 2:
                                 run sub_Event250
-                        else:
+                        elif fEvent246 in (October, November, December):
                             fEvent251 = EventFlowSystemActor.RandomChoice3(3)
                             if fEvent251 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:104', false)
@@ -34,7 +35,8 @@ entrypoint Event79:
                 if fEvent79 == 3:
                     run TalkAfterEvent
                 elif fEvent79 in (0, 1, 2):
-                    if EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
+                    fEvent246 = EventFlowSystemActor.EnvMonth()
+                    if fEvent246 in (January, February, March, April, May, June, July, August, September):
                         fEvent247 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent247 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:101', false)
@@ -42,7 +44,7 @@ entrypoint Event79:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:102', false)
                         elif fEvent247 == 2:
                             run sub_Event250
-                    else:
+                    elif fEvent246 in (October, November, December):
                         fEvent251 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent251 == 1:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:104', false)
@@ -76,10 +78,11 @@ entrypoint Event343:
                         if fEvent178 == 3:
                             run TalkAfterEvent
                         elif fEvent178 in (0, 1, 2):
-                            if EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
-                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:086', false)
-                            else:
+                            fEvent285 = EventFlowSystemActor.EnvMonth()
+                            if fEvent285 in (October, November, December):
                                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:087', false)
+                            elif fEvent285 in (January, February, March, April, May, June, July, August, September):
+                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:086', false)
             else:
                 event_flags_system['cPlayer:BeyEvent_TalkFirst'] = true
                 if event_flags_system['cPlayer:BeyDaily_TalkFirst']:
@@ -727,9 +730,10 @@ entrypoint Event114:
             elif fEvent107 == 3:
                 run TalkAfterEvent
             elif fEvent107 == 2:
-                if EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
+                fEvent111 = EventFlowSystemActor.EnvMonth()
+                if fEvent111 in (January, February, March, April, May, June, July, August, September):
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:128', false)
-                else:
+                elif fEvent111 in (October, November, December):
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:129', false)
         else:
             run SellBoxCancel
@@ -1018,21 +1022,29 @@ entrypoint Event293:
 entrypoint Event307:
                         if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                        elif EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                            MainNpc.SmartPhone(1)
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                        MainNpc.SmartPhone(1)
+                            fEvent313 = EventFlowSystemActor.EnvMonth()
+                            if fEvent313 in (October, November, December):
+                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
+                                MainNpc.SmartPhone(1)
+                            elif fEvent313 in (January, February, March, April, May, June, July, August, September):
+                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                                MainNpc.SmartPhone(1)
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:040', false)
 entrypoint Event307:
                         if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                        elif EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                            MainNpc.SmartPhone(1)
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                        MainNpc.SmartPhone(1)
+                            fEvent313 = EventFlowSystemActor.EnvMonth()
+                            if fEvent313 in (October, November, December):
+                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
+                                MainNpc.SmartPhone(1)
+                            elif fEvent313 in (January, February, March, April, May, June, July, August, September):
+                                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                                MainNpc.SmartPhone(1)
             elif event_flags_system['cPlayerVisit:DC_CatchFishFes_CooperativeBonus']:
                 run Result_Bonus_DC
             else:
@@ -1142,21 +1154,29 @@ entrypoint Event293:
 entrypoint Event307:
                     if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                    elif EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
-                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                        MainNpc.SmartPhone(1)
                     else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                    MainNpc.SmartPhone(1)
+                        fEvent313 = EventFlowSystemActor.EnvMonth()
+                        if fEvent313 in (October, November, December):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
+                            MainNpc.SmartPhone(1)
+                        elif fEvent313 in (January, February, March, April, May, June, July, August, September):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                            MainNpc.SmartPhone(1)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:040', false)
 entrypoint Event307:
                     if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                    elif EventFlowSystemActor.EnvMonth() in (0, 1, 2, 3, 4, 5, 6, 7, 8):
-                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                        MainNpc.SmartPhone(1)
                     else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                    MainNpc.SmartPhone(1)
+                        fEvent313 = EventFlowSystemActor.EnvMonth()
+                        if fEvent313 in (October, November, December):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
+                            MainNpc.SmartPhone(1)
+                        elif fEvent313 in (January, February, March, April, May, June, July, August, September):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
+                            MainNpc.SmartPhone(1)
         elif event_flags_system['cPlayerVisit:DC_CatchFishFes_CooperativeBonus']:
             run Result_Bonus_DC
         else:

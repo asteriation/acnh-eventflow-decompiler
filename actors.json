@@ -2189,7 +2189,7 @@
             },
             "EnvTimeZone": {
                 "params": {},
-                "return": "int6"
+                "return": "enum[Morning0,Morning1,Afternoon0,Afternoon1,Evening0,Evening1]"
             },
             "EnvSameDate": {
                 "params": {
@@ -2201,11 +2201,11 @@
             },
             "EnvMonth": {
                 "params": {},
-                "return": "int12"
+                "return": "enum[January,February,March,April,May,June,July,August,September,October,November,December]"
             },
             "EnvWeatherArea": {
                 "params": {},
-                "return": "int2"
+                "return": "enum[cWeatherArea_North,cWeatherArea_South]"
             },
             "CountBirthdayVillager": {
                 "params": {},
@@ -2233,7 +2233,7 @@
             },
             "EnvWeather": {
                 "params": {},
-                "return": "int8"
+                "return": "enum[Clear0,Clear1,Clear2,Rain3,Rain4,Snow5,Snow6,Clear7]"
             },
             "SubflowResultChoice9": {
                 "params": {
@@ -2276,11 +2276,11 @@
             },
             "EnvSpecialWeather": {
                 "params": {},
-                "return": "int10"
+                "return": "enum[Normal0,HeavyShowerMorning,HeavyShowerAfternoon,HeavyShowerEvening,Rainbow,DoubleRainbow,AuroraBorealis0,AuroraBorealis1,Normal8,Normal9]"
             },
             "EnvDayOfWeek": {
                 "params": {},
-                "return": "int7"
+                "return": "enum[Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday]"
             },
             "GlobalEventNow": {
                 "params": {
@@ -2310,13 +2310,13 @@
             },
             "EnvSeason": {
                 "params": {},
-                "return": "int4"
+                "return": "enum[Spring,Summer,Autumn,Winter]"
             },
             "EnvConstellation": {
                 "params": {
                     "ConstellationCheckType": "str"
                 },
-                "return": "int12"
+                "return": "enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]"
             },
             "IsSettlerQuestOutsideComplete": {
                 "params": {
@@ -5301,7 +5301,7 @@
             },
             "EnvWeatherNNpcTalkCustom": {
                 "params": {},
-                "return": "int7"
+                "return": "enum[Fine,Cloudy,Rain,HeavyRain,Snow,HeavySnow,Blossom]"
             },
             "CheckNpcActivity": {
                 "params": {

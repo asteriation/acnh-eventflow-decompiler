@@ -21,7 +21,7 @@ flow AreaSel_ExpS_Winter:
 flow AreaSel_ExplanationNorth:
     SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:302', false)
     fEvent52 = EventFlowSystemActor.EnvMonth()
-    if fEvent52 in (2, 3, 4):
+    if fEvent52 in (March, April, May):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_01', false)
         SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:305', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:311', false)
@@ -36,7 +36,7 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
-    elif fEvent52 in (5, 6, 7):
+    elif fEvent52 in (June, July, August):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_02', false)
         SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:305', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:312', false)
@@ -51,7 +51,7 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
-    elif fEvent52 in (8, 9, 10):
+    elif fEvent52 in (September, October, November):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_03', false)
         SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:305', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:313', false)
@@ -66,7 +66,7 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
-    elif fEvent52 in (0, 1):
+    elif fEvent52 in (January, February):
 entrypoint Event56:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_04', false)
         SubNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:305', false)
@@ -82,28 +82,28 @@ entrypoint Event114:
         elif fEvent114 == 2:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:301', false)
             run AreaSel_ExplanationNorth
-    elif fEvent52 == 11:
+    elif fEvent52 == December:
         run AreaSel_ExpN_Winter
     return
 
 flow AreaSel_ExplanationSouth:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:303', false)
     fEvent64 = EventFlowSystemActor.EnvMonth()
-    if fEvent64 == 11:
+    if fEvent64 == December:
         run AreaSel_ExpS_Winter
-    elif fEvent64 in (2, 3, 4):
+    elif fEvent64 in (March, April, May):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_07', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:317', false)
         run sub_grp!Event103
-    elif fEvent64 in (5, 6, 7):
+    elif fEvent64 in (June, July, August):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_08', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:318', false)
         run sub_grp!Event103
-    elif fEvent64 in (8, 9, 10):
+    elif fEvent64 in (September, October, November):
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_05', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:315', false)
         run sub_grp!Event103
-    elif fEvent64 in (0, 1):
+    elif fEvent64 in (January, February):
 entrypoint Event68:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:304_06', false)
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue1_AreaSelect:316', false)

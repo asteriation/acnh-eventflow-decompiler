@@ -298,7 +298,7 @@ queries:
 - IsMovingConsultationPlayerNotLiving() -> bool (inverted)
 - CheckNpcLook() -> int
 - IsFirewoksApproachNpc() -> bool (inverted)
-- EnvWeatherNNpcTalkCustom() -> int7
+- EnvWeatherNNpcTalkCustom() -> enum[Fine,Cloudy,Rain,HeavyRain,Snow,HeavySnow,Blossom]
 - CheckNpcActivity(Activity: str) -> bool (inverted)
 - CheckNpcTalkType() -> bool (inverted)
 - IsNnpcTent() -> bool (inverted)

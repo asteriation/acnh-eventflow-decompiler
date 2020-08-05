@@ -199,51 +199,51 @@ flow MyHomeChk:
 
 flow OwsChkMonthlyFlag:
     fEvent24 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
-    if fEvent24 == 0:
+    if fEvent24 == Capricorn:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 1:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 1
-    elif fEvent24 == 1:
+    elif fEvent24 == Aquarius:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 2:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 2
-    elif fEvent24 == 2:
+    elif fEvent24 == Pisces:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 3:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 3
-    elif fEvent24 == 3:
+    elif fEvent24 == Aries:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 4:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 4
-    elif fEvent24 == 4:
+    elif fEvent24 == Taurus:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 5:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 5
-    elif fEvent24 == 5:
+    elif fEvent24 == Gemini:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 6:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 6
-    elif fEvent24 == 6:
+    elif fEvent24 == Cancer:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 7:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 7
-    elif fEvent24 == 7:
+    elif fEvent24 == Leo:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 8:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 8
-    elif fEvent24 == 8:
+    elif fEvent24 == Virgo:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 9:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 9
-    elif fEvent24 == 9:
+    elif fEvent24 == Libra:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 10:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 10
-    elif fEvent24 == 10:
+    elif fEvent24 == Scorpius:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 11:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 11
-    elif fEvent24 == 11:
+    elif fEvent24 == Sagittarius:
         if event_flags_system['cPlayer:OwsThisZodiac'] != 12:
             event_flags_system['cPlayer:OwsPresentThisZodiacRecipe'] = false
             event_flags_system['cPlayer:OwsThisZodiac'] = 12
@@ -336,40 +336,41 @@ flow Root:
     return
 
 flow SeasonMaterialHintReset:
-    if EventFlowSystemActor.EnvWeatherArea() == 0:
+    fEvent215 = EventFlowSystemActor.EnvWeatherArea()
+    if fEvent215 == cWeatherArea_North:
         fEvent214 = EventFlowSystemActor.EnvMonth()
-        if fEvent214 in (2, 3, 4):
+        if fEvent214 in (March, April, May):
             run ResetFlag_Spring
             run Flag_Ornaments
-        elif fEvent214 in (5, 6, 7):
+        elif fEvent214 in (June, July, August):
             run ResetFlag_Summer
             run Flag_Ornaments
-        elif fEvent214 in (8, 9, 10):
+        elif fEvent214 in (September, October, November):
             run ResetFlag_Autumn
             run Flag_Ornaments
-        elif fEvent214 == 0:
+        elif fEvent214 == January:
             run ResetFlag_Winter
-        elif fEvent214 == 11:
+        elif fEvent214 == December:
             run ResetFlag_Winter
-        elif fEvent214 == 1:
+        elif fEvent214 == February:
             run Flag_Ornaments
             run ResetFlag_Winter
-    else:
+    elif fEvent215 == cWeatherArea_South:
         fEvent216 = EventFlowSystemActor.EnvMonth()
-        if fEvent216 in (8, 9, 10):
+        if fEvent216 in (September, October, November):
             run ResetFlag_Spring
             run Flag_Ornaments
-        elif fEvent216 == 11:
+        elif fEvent216 == December:
             run ResetFlag_Summer
-        elif fEvent216 == 0:
+        elif fEvent216 == January:
             run ResetFlag_Summer
-        elif fEvent216 in (2, 3, 4):
+        elif fEvent216 in (March, April, May):
             run ResetFlag_Autumn
             run Flag_Ornaments
-        elif fEvent216 in (5, 6, 7):
+        elif fEvent216 in (June, July, August):
             run ResetFlag_Winter
             run Flag_Ornaments
-        elif fEvent216 == 1:
+        elif fEvent216 == February:
             run Flag_Ornaments
             run ResetFlag_Summer
     return

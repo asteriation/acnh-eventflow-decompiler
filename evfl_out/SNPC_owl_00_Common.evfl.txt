@@ -122,11 +122,11 @@ flow Greet:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:007', false)
     else:
         fEvent20 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent20 in (0, 1):
+        if fEvent20 in (Morning0, Morning1):
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:004', false)
-        elif fEvent20 in (2, 3):
+        elif fEvent20 in (Afternoon0, Afternoon1):
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:005', false)
-        elif fEvent20 in (4, 5):
+        elif fEvent20 in (Evening0, Evening1):
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:006', false)
     return
 

@@ -62,26 +62,21 @@ flow Root:
             elif event_flags_system['cPlayer:AllowPcTentEntering']:
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:061', false)
             elif EventFlowSystemActor.ShoppingCapacity(4081, 'cItemName'):
-                if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3):
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051_01', false)
-                else:
+                fEvent86 = EventFlowSystemActor.EnvTimeZone()
+                if fEvent86 in (Evening0, Evening1):
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:052', false)
-                    MainNpc.SetDeliveryItemAtRandom(4081, true, 'cVillageRemakePattern', 0)
-                    MainNpc.NpcDelivery('Default', 1)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:053', false)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:054', false)
-                    event_flags_system['cPlayer:AllowPcTentEntering'] = true
-                else:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:057', false)
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:058', false)
-            elif EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3):
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_02', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
+                    run sub_grp!Event63
+                elif fEvent86 in (Morning0, Morning1, Afternoon0, Afternoon1):
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051_01', false)
+                    run sub_grp!Event63
             else:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
+                fEvent92 = EventFlowSystemActor.EnvTimeZone()
+                if fEvent92 in (Evening0, Evening1):
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
+                elif fEvent92 in (Morning0, Morning1, Afternoon0, Afternoon1):
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_02', false)
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
         elif EventFlowSystemActor.HasTargetItem(2500, 11):
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:013_01', false)
             MainNpc.SetDeliveryItemAtRandom(2500, false, 'cVillageRemakePattern', 0)
@@ -205,4 +200,16 @@ flow sub_Event3:
 flow sub_Event5:
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:002', false)
     return
+
+flow sub_grp!Event63:
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:052', false)
+        MainNpc.SetDeliveryItemAtRandom(4081, true, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Default', 1)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:053', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:054', false)
+        event_flags_system['cPlayer:AllowPcTentEntering'] = true
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:057', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:058', false)
 

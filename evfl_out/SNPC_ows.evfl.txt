@@ -13,73 +13,73 @@ flow ChkHaveZodiacPiece:
 
 flow ChkZodiacRecipe:
     fEvent34 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
-    if fEvent34 == 2:
+    if fEvent34 == Pisces:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5963, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5963, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 3:
+    elif fEvent34 == Aries:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5954, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5954, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 4:
+    elif fEvent34 == Taurus:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5961, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5961, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 5:
+    elif fEvent34 == Gemini:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5960, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5960, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 6:
+    elif fEvent34 == Cancer:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5959, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5959, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 7:
+    elif fEvent34 == Leo:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5964, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5964, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 8:
+    elif fEvent34 == Virgo:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5955, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5955, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 9:
+    elif fEvent34 == Libra:
         if EventFlowSystemActor.PlayerHasCraftRecipe(3774, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(3774, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 10:
+    elif fEvent34 == Scorpius:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5962, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5962, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 11:
+    elif fEvent34 == Sagittarius:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5958, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5958, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 0:
+    elif fEvent34 == Capricorn:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5957, ''):
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5957, false)
             run AfterSetZociacRecipe
-    elif fEvent34 == 1:
+    elif fEvent34 == Aquarius:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5956, ''):
             run NotSetZodiacRecipe
         else:
@@ -147,28 +147,35 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:101', false)
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:102', false)
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:103', false)
-        if EventFlowSystemActor.EnvSpecialWeather() in (0, 1, 2, 4, 5, 6, 7, 8, 9):
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106', false)
-        else:
+        fEvent0 = EventFlowSystemActor.EnvSpecialWeather()
+        if fEvent0 == HeavyShowerEvening:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
-        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-            run PresentRecipe
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                run PresentRecipe
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
+        elif fEvent0 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
+            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+                run PresentRecipe
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
     elif not event_flags_system['cPlayer:OwsTalkedToday']:
         event_flags_system['cPlayer:OwsTalkedToday'] = true
-        if EventFlowSystemActor.EnvSpecialWeather() in (0, 1, 2, 4, 5, 6, 7, 8, 9):
+        fEvent27 = EventFlowSystemActor.EnvSpecialWeather()
+        if fEvent27 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:001', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:004', false)
-        else:
+        elif fEvent27 == HeavyShowerEvening:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:002', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe
@@ -202,29 +209,29 @@ entrypoint Event200:
 
 flow SetZodiacStarPiece:
     fEvent161 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
-    if fEvent161 == 0:
+    if fEvent161 == Capricorn:
         MainNpc.SetDeliveryItemAtRandom(5985, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 1:
+    elif fEvent161 == Aquarius:
         MainNpc.SetDeliveryItemAtRandom(5986, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 11:
+    elif fEvent161 == Sagittarius:
         MainNpc.SetDeliveryItemAtRandom(5996, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 2:
+    elif fEvent161 == Pisces:
         MainNpc.SetDeliveryItemAtRandom(5987, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 3:
+    elif fEvent161 == Aries:
         MainNpc.SetDeliveryItemAtRandom(5988, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 4:
+    elif fEvent161 == Taurus:
         MainNpc.SetDeliveryItemAtRandom(5989, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 5:
+    elif fEvent161 == Gemini:
         MainNpc.SetDeliveryItemAtRandom(5990, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 6:
+    elif fEvent161 == Cancer:
         MainNpc.SetDeliveryItemAtRandom(5991, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 7:
+    elif fEvent161 == Leo:
         MainNpc.SetDeliveryItemAtRandom(5992, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 8:
+    elif fEvent161 == Virgo:
         MainNpc.SetDeliveryItemAtRandom(5993, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 9:
+    elif fEvent161 == Libra:
         MainNpc.SetDeliveryItemAtRandom(5994, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == 10:
+    elif fEvent161 == Scorpius:
         MainNpc.SetDeliveryItemAtRandom(5995, true, 'cVillageRemakePattern', 0)
     return
 

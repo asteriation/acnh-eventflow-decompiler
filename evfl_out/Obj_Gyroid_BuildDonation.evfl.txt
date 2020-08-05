@@ -4,14 +4,21 @@ flow Root:
     EventFlowSystemActor.PublicWorksSetBell(1, 'cBalance')
     EventFlowSystemActor.PublicWorksSetBell(2, 'cTotalDonate')
     fEvent1 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent1 in (0, 1):
+    if fEvent1 in (Morning0, Morning1):
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001', false)
-    elif fEvent1 in (2, 3):
+        run sub_grp!Event0
+    elif fEvent1 in (Afternoon0, Afternoon1):
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_01', false)
-    elif fEvent1 == 4:
+        run sub_grp!Event0
+    elif fEvent1 == Evening0:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_02', false)
-    elif fEvent1 == 5:
+        run sub_grp!Event0
+    elif fEvent1 == Evening1:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_03', false)
+        run sub_grp!Event0
+    return
+
+flow sub_grp!Event0:
     if event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 4:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:008', false)
     elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 3:
@@ -48,5 +55,4 @@ flow Root:
             else:
                 HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:004', false)
                 EventFlowSystemActor.UIMoneyDisappear()
-    return
 

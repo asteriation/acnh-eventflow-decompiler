@@ -20,44 +20,134 @@ flow Ending:
     event_flags_system['cPlayerTemp:RcoTalkSceneFlag'] = true
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:201', false)
     fEvent148 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent148 == 0:
+    if fEvent148 == Morning0:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:201_01', false)
-    elif fEvent148 in (1, 2, 3):
+        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_03', false)
+        elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_01', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_02', true)
+            run Ending2
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_01', false)
+            EventFlowSystemActor.SelectRewardItemDirect(11711, 50, 'cVillageRemakePattern', 0)
+            EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        if event_flags_system['cPlayer:PAnnouceHeardRemakeWsNewsToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:206', false)
+            event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = false
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:109', true)
+        event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
+        event_flags_system['cPlayer:RcoStayMyHouseImmQClear'] = false
+        fEvent151 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent151 in (0, 1, 2, 4, 5, 6, 7):
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
+            MainNpc.NpcAISetting(12, false)
+            Player.TurnBody(11, 0.0)
+            EventFlowSystemActor.SetHideObjectVisible()
+            EventFlowSystemActor.FadeIn(true)
+        elif fEvent151 == 3:
+            EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    elif fEvent148 in (Morning1, Afternoon0, Afternoon1):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:201_02', false)
-    elif fEvent148 == 4:
+        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_03', false)
+        elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_01', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_02', true)
+            run Ending2
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_01', false)
+            EventFlowSystemActor.SelectRewardItemDirect(11711, 50, 'cVillageRemakePattern', 0)
+            EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        if event_flags_system['cPlayer:PAnnouceHeardRemakeWsNewsToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:206', false)
+            event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = false
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:109', true)
+        event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
+        event_flags_system['cPlayer:RcoStayMyHouseImmQClear'] = false
+        fEvent151 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent151 in (0, 1, 2, 4, 5, 6, 7):
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
+            MainNpc.NpcAISetting(12, false)
+            Player.TurnBody(11, 0.0)
+            EventFlowSystemActor.SetHideObjectVisible()
+            EventFlowSystemActor.FadeIn(true)
+        elif fEvent151 == 3:
+            EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    elif fEvent148 == Evening0:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:201_03', false)
-    elif fEvent148 == 5:
+        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_03', false)
+        elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_01', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_02', true)
+            run Ending2
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_01', false)
+            EventFlowSystemActor.SelectRewardItemDirect(11711, 50, 'cVillageRemakePattern', 0)
+            EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        if event_flags_system['cPlayer:PAnnouceHeardRemakeWsNewsToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:206', false)
+            event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = false
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:109', true)
+        event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
+        event_flags_system['cPlayer:RcoStayMyHouseImmQClear'] = false
+        fEvent151 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent151 in (0, 1, 2, 4, 5, 6, 7):
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
+            MainNpc.NpcAISetting(12, false)
+            Player.TurnBody(11, 0.0)
+            EventFlowSystemActor.SetHideObjectVisible()
+            EventFlowSystemActor.FadeIn(true)
+        elif fEvent151 == 3:
+            EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+    elif fEvent148 == Evening1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:201_04', false)
-    if EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_03', false)
-    elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_02', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_01', false)
-    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_02', true)
-        run Ending2
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_01', false)
-        EventFlowSystemActor.SelectRewardItemDirect(11711, 50, 'cVillageRemakePattern', 0)
-        EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
-    if event_flags_system['cPlayer:PAnnouceHeardRemakeWsNewsToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:206', false)
-        event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = false
-    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:109', true)
-    event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
-    event_flags_system['cPlayer:RcoStayMyHouseImmQClear'] = false
-    fEvent151 = EventFlowSystemActor.EventBranch(false, 0)
-    if fEvent151 in (0, 1, 2, 4, 5, 6, 7):
-        EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
-        EventFlowSystemActor.WaitFrame(30)
-        EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
-        MainNpc.NpcAISetting(12, false)
-        Player.TurnBody(11, 0.0)
-        EventFlowSystemActor.SetHideObjectVisible()
-        EventFlowSystemActor.FadeIn(true)
-    elif fEvent151 == 3:
-        EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
+        if EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_03', false)
+        elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:202_01', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_02', true)
+            run Ending2
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:203_01', false)
+            EventFlowSystemActor.SelectRewardItemDirect(11711, 50, 'cVillageRemakePattern', 0)
+            EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        if event_flags_system['cPlayer:PAnnouceHeardRemakeWsNewsToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:206', false)
+            event_flags_system['cPlayer:RcoTalkAboutRemakeTrial'] = false
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:109', true)
+        event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
+        event_flags_system['cPlayer:RcoStayMyHouseImmQClear'] = false
+        fEvent151 = EventFlowSystemActor.EventBranch(false, 0)
+        if fEvent151 in (0, 1, 2, 4, 5, 6, 7):
+            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.CameraSetDemoParam('Player', 'cNormal', '', false, false, false, 0)
+            MainNpc.NpcAISetting(12, false)
+            Player.TurnBody(11, 0.0)
+            EventFlowSystemActor.SetHideObjectVisible()
+            EventFlowSystemActor.FadeIn(true)
+        elif fEvent151 == 3:
+            EventFlowSystemActor.SystemReenterStage(0, 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
 
 flow Ending2:

@@ -453,28 +453,28 @@ queries:
 - IsReturnJuneBridePhotoStudio() -> bool (inverted)
 - SubflowResultChoice2: subflow_results[<SetIndex>]
 - SubflowResultChoice6: subflow_results[<SetIndex>]
-- EnvTimeZone() -> int6
+- EnvTimeZone() -> enum[Morning0,Morning1,Afternoon0,Afternoon1,Evening0,Evening1]
 - EnvSameDate(CheckDateType: str, TimeType: str) -> bool (inverted)
-- EnvMonth() -> int12
-- EnvWeatherArea() -> int2
+- EnvMonth() -> enum[January,February,March,April,May,June,July,August,September,October,November,December]
+- EnvWeatherArea() -> enum[cWeatherArea_North,cWeatherArea_South]
 - CountBirthdayVillager() -> int10
 - MainPlayerIsBirthday(IsCheckNpcReservePlayerBirthday: bool) -> bool (inverted)
 - FacilityOpenPastDays(CountFacilityType: str, Days: int) -> bool (inverted)
 - IsCampSiteOccupied() -> bool (inverted)
-- EnvWeather() -> int8
+- EnvWeather() -> enum[Clear0,Clear1,Clear2,Rain3,Rain4,Snow5,Snow6,Clear7]
 - SubflowResultChoice9: subflow_results[<SetIndex>]
 - SubflowResultChoice8: subflow_results[<SetIndex>]
 - SubflowResultChoice10: subflow_results[<SetIndex>]
 - SubflowResultChoice7: subflow_results[<SetIndex>]
 - SubflowResultChoice3: subflow_results[<SetIndex>]
 - LandFruit() -> int5
-- EnvSpecialWeather() -> int10
-- EnvDayOfWeek() -> int7
+- EnvSpecialWeather() -> enum[Normal0,HeavyShowerMorning,HeavyShowerAfternoon,HeavyShowerEvening,Rainbow,DoubleRainbow,AuroraBorealis0,AuroraBorealis1,Normal8,Normal9]
+- EnvDayOfWeek() -> enum[Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday]
 - GlobalEventNow(EventLabelString: str, DayType: str, CheckNowTime: bool) -> bool (inverted)
 - EnvCheckBetweenDate(Month0: int, Day0: int, Month1: int, Day1: int, TimeType: str) -> bool (inverted)
 - RandomChoice7(ChoiceNumber: int) -> int7
-- EnvSeason() -> int4
-- EnvConstellation(ConstellationCheckType: str) -> int12
+- EnvSeason() -> enum[Spring,Summer,Autumn,Winter]
+- EnvConstellation(ConstellationCheckType: str) -> enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]
 - IsSettlerQuestOutsideComplete(SettlerType: int, OutsideCheckType: int) -> bool (inverted)
 - PlayerHouseLevel() -> int9
 - PlayerVillagerCount(Count: int) -> bool (inverted)

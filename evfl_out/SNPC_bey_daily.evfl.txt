@@ -101,7 +101,7 @@ flow Root:
             run sub_grp!Event192
         elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             fEvent7 = EventFlowSystemActor.EnvWeather()
-            if fEvent7 in (5, 6):
+            if fEvent7 in (Snow5, Snow6):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:023', false)
                 if event_flags_system['cPlayer:BeyDaily_QuestClear']:
                     if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
@@ -154,7 +154,7 @@ flow Root:
                         run Obj_Entry
                     elif fEvent148 == 0:
                         run Quest_Entry
-            elif fEvent7 in (3, 4):
+            elif fEvent7 in (Rain3, Rain4):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:022', false)
                 if event_flags_system['cPlayer:BeyDaily_QuestClear']:
                     if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
@@ -207,7 +207,7 @@ flow Root:
                         run Obj_Entry
                     elif fEvent148 == 0:
                         run Quest_Entry
-            elif fEvent7 in (0, 1, 2, 7):
+            elif fEvent7 in (Clear0, Clear1, Clear2, Clear7):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
                 if event_flags_system['cPlayer:BeyDaily_QuestClear']:
                     if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
@@ -418,19 +418,21 @@ flow TalkFirst_ClearQ:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:055', false)
 entrypoint Event40:
-            if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3, 4):
+            fEvent40 = EventFlowSystemActor.EnvTimeZone()
+            if fEvent40 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:057', false)
-            else:
+            elif fEvent40 == Evening1:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:058', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:059', false)
     return
 
 flow Talk_Always:
-    if EventFlowSystemActor.EnvTimeZone() in (0, 1, 2, 3, 4):
-        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:008', false)
-    else:
+    fEvent101 = EventFlowSystemActor.EnvTimeZone()
+    if fEvent101 == Evening1:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:009', false)
+    elif fEvent101 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:008', false)
     return
 
 flow sub_grp!Event131:

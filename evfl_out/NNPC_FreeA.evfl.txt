@@ -16,7 +16,7 @@ flow Always_Chk:
     return
 
 flow ClothesN1_Chk:
-    if (EventFlowSystemActor.EnvWeather() in (0, 1, 2, 7)) and (not event_flag_npc['cNpcMemory:BanClothesN1Today']) and (not event_flag_npc['cNpcMemory:BanClothesN1Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_A')):
+    if (EventFlowSystemActor.EnvWeather() in (Clear0, Clear1, Clear2, Clear7)) and (not event_flag_npc['cNpcMemory:BanClothesN1Today']) and (not event_flag_npc['cNpcMemory:BanClothesN1Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_A')):
         MainNpc.SetClothesXItemsTag(0)
         MainNpc.NpcOpenFreeMessage('cFreeAClothesN')
         event_flags_npc['cNpcMemory:BanClothesN1Today'] = true
@@ -25,7 +25,7 @@ flow ClothesN1_Chk:
     return
 
 flow ClothesN2_Chk:
-    if (EventFlowSystemActor.EnvWeather() in (0, 1, 2, 7)) and (not event_flag_npc['cNpcMemory:BanClothesN2Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_B')):
+    if (EventFlowSystemActor.EnvWeather() in (Clear0, Clear1, Clear2, Clear7)) and (not event_flag_npc['cNpcMemory:BanClothesN2Now']) and (MainNpc.NpcHasFreeMessage('cFreeAClothesN_B')):
         MainNpc.SetClothesXItemsTag(0)
         MainNpc.NpcOpenFreeMessage('cFreeAClothesN')
         event_flags_npc['cNpcMemory:BanClothesN2Now'] = true
@@ -71,38 +71,50 @@ flow First_Chk:
 entrypoint Event8:
         if MainNpc.CheckNpcActivity('cThoughtWalk'):
             fEvent55 = MainNpc.EnvWeatherNNpcTalkCustom()
-            if fEvent55 == 0:
+            if fEvent55 == Fine:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 1:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == Cloudy:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 2:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == Rain:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 3:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == HeavyRain:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardRainWeather', 'cRainWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 4:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == Snow:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 5:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == HeavySnow:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardSnowWeather', 'cSnowWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            elif fEvent55 == 6:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent55 == Blossom:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cBlossomShower', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First01', '', '', '', true)
-            EventFlowSystemActor.ExitFlowchart()
+                EventFlowSystemActor.ExitFlowchart()
         else:
             fEvent1 = MainNpc.EnvWeatherNNpcTalkCustom()
-            if fEvent1 == 0:
+            if fEvent1 == Fine:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cFineWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 1:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == Cloudy:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cCloudWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 2:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == Rain:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cRainWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 3:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == HeavyRain:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardRainWeather', 'cRainWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 4:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == Snow:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cSnowWeather', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 5:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == HeavySnow:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cHardSnowWeather', 'cSnowWeather', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            elif fEvent1 == 6:
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent1 == Blossom:
                 MainNpc.NpcSelectFreeTalk('cWildCard', 'cBlossomShower', '', '', 'TalkNNpc/B1_Bo/BO_FreeA_First02', '', '', '', true)
-            EventFlowSystemActor.ExitFlowchart()
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow HouseQuestions_Chk:
@@ -214,22 +226,40 @@ flow Week_Chk:
     if not event_flag_npc['cNpcMemory:TalkWeekNow']:
 entrypoint Event75:
         fEvent75 = EventFlowSystemActor.EnvDayOfWeek()
-        if fEvent75 == 1:
+        if fEvent75 == Monday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:001', false)
-        elif fEvent75 == 2:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Tuesday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:002', false)
-        elif fEvent75 == 3:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Wednesday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:003', false)
-        elif fEvent75 == 4:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Thursday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:004', false)
-        elif fEvent75 == 5:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Friday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:005', false)
-        elif fEvent75 == 6:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Saturday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:006', false)
-        elif fEvent75 == 0:
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Sunday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:007', false)
-        event_flags_npc['cNpcMemory:TalkWeekNow'] = true
-        event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
-        EventFlowSystemActor.ExitFlowchart()
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
     return
 

@@ -80,17 +80,18 @@ flow Sza_Common_Greet:
     event_flags_system['cPlayer:SzaTalkAtOfficeToday'] = true
     if not EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
         fEvent50 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent50 in (0, 1):
+        if fEvent50 in (Morning0, Morning1):
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_01', false)
-        elif fEvent50 == 2:
+            run sub_grp!Event10
+        elif fEvent50 == Afternoon0:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_02', false)
-        elif fEvent50 == 3:
+            run sub_grp!Event10
+        elif fEvent50 == Afternoon1:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_03', false)
-        elif fEvent50 in (4, 5):
+            run sub_grp!Event10
+        elif fEvent50 in (Evening0, Evening1):
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_04', false)
-        if EventFlowSystemActor.MainPlayerIsBirthday(false):
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:001_01', false)
-            subflow_results[0] = 1
+            run sub_grp!Event10
     elif EventFlowSystemActor.MainPlayerIsBirthday(false):
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:000_06', false)
         subflow_results[0] = 1
@@ -102,6 +103,11 @@ flow Sza_Common_Greet:
 flow Sza_Common_Select:
     run Event48
     return
+
+flow sub_grp!Event10:
+    if EventFlowSystemActor.MainPlayerIsBirthday(false):
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:001_01', false)
+        subflow_results[0] = 1
 
 flow szaNormalSeq:
     run Event11
