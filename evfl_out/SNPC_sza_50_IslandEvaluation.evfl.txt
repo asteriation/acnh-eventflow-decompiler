@@ -34,11 +34,10 @@ entrypoint Event176:
     else:
         fEvent168 = EventFlowSystemActor.RandomChoice4(4)
         if fEvent168 == 0:
-            fEvent175 = EventFlowSystemActor.MuseumLevel()
-            if fEvent175 in (BlathersTent, BlathersNotMovedIn):
+            if EventFlowSystemActor.MuseumLevel() in (BlathersNotMovedIn, BlathersTent):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026', false)
-            elif fEvent175 in (BlathersMuseumNoArt, BlathersMuseumArt):
+            else:
                 run AdviceAboutFtr
         elif fEvent168 == 1:
             if (EventFlowSystemActor.BridgeNum('cNoReserve', 3)) and (EventFlowSystemActor.BridgeNum('cNoReserve', 2)):
@@ -53,11 +52,10 @@ entrypoint Event176:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
         elif fEvent168 == 3:
-            fEvent187 = EventFlowSystemActor.ShopLevel()
-            if fEvent187 in (InResServiceTent, NooksCrannyInitial):
+            if EventFlowSystemActor.ShopLevel() in (InResServiceTent, NooksCrannyInitial):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:023', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:026_02', false)
-            elif fEvent187 == NooksCrannyUpgraded:
+            else:
                 run AdviceAboutFtr
     return
 
@@ -309,296 +307,56 @@ entrypoint Event110:
         fEvent139 = subflow_results[0]
         if fEvent139 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
-            EventFlowSystemActor.SwapSpeaker('cNone', false)
-            EventFlowSystemActor.WaitFrame(10)
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-            fEvent140 = subflow_results[1]
-            if fEvent140 == 0:
-                if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                    run ChkSellLand
-                else:
-entrypoint Event137:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                    event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                    run ChkTalkAboutSearchLand
-            elif fEvent140 == 1:
-                run AdviceForLife
-                run sub_grp!Event11
-            elif fEvent140 == 2:
-                run AdviceForNatural
-                run sub_grp!Event11
-            elif fEvent140 == 3:
-                fEvent3 = subflow_results[0]
-                if fEvent3 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                    run AdviceForMinusPoint
-                elif fEvent3 == 4:
-                    if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    else:
-                        event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                        if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                        run Get_GoldenWateringRecipe
         elif fEvent139 == 1:
             if subflow_results[1] == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:901', true)
-                EventFlowSystemActor.SwapSpeaker('cNone', false)
-                EventFlowSystemActor.WaitFrame(10)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-                fEvent140 = subflow_results[1]
-                if fEvent140 == 0:
-                    if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                        run ChkSellLand
-                    else:
-entrypoint Event137:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                        event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                        run ChkTalkAboutSearchLand
-                elif fEvent140 == 1:
-                    run AdviceForLife
-                    run sub_grp!Event11
-                elif fEvent140 == 2:
-                    run AdviceForNatural
-                    run sub_grp!Event11
-                elif fEvent140 == 3:
-                    fEvent3 = subflow_results[0]
-                    if fEvent3 == 3:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                        run AdviceForMinusPoint
-                    elif fEvent3 == 4:
-                        if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        else:
-                            event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                            if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                            run Get_GoldenWateringRecipe
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:902', true)
-                EventFlowSystemActor.SwapSpeaker('cNone', false)
-                EventFlowSystemActor.WaitFrame(10)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-                fEvent140 = subflow_results[1]
-                if fEvent140 == 0:
-                    if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                        run ChkSellLand
-                    else:
-entrypoint Event137:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                        event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                        run ChkTalkAboutSearchLand
-                elif fEvent140 == 1:
-                    run AdviceForLife
-                    run sub_grp!Event11
-                elif fEvent140 == 2:
-                    run AdviceForNatural
-                    run sub_grp!Event11
-                elif fEvent140 == 3:
-                    fEvent3 = subflow_results[0]
-                    if fEvent3 == 3:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                        run AdviceForMinusPoint
-                    elif fEvent3 == 4:
-                        if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        else:
-                            event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                            if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                            run Get_GoldenWateringRecipe
         elif fEvent139 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:903', true)
-            EventFlowSystemActor.SwapSpeaker('cNone', false)
-            EventFlowSystemActor.WaitFrame(10)
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-            fEvent140 = subflow_results[1]
-            if fEvent140 == 0:
-                if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                    run ChkSellLand
-                else:
-entrypoint Event137:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                    event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                    run ChkTalkAboutSearchLand
-            elif fEvent140 == 1:
-                run AdviceForLife
-                run sub_grp!Event11
-            elif fEvent140 == 2:
-                run AdviceForNatural
-                run sub_grp!Event11
-            elif fEvent140 == 3:
-                fEvent3 = subflow_results[0]
-                if fEvent3 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                    run AdviceForMinusPoint
-                elif fEvent3 == 4:
-                    if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    else:
-                        event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                        if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                        run Get_GoldenWateringRecipe
         elif fEvent139 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:904', true)
-            EventFlowSystemActor.SwapSpeaker('cNone', false)
-            EventFlowSystemActor.WaitFrame(10)
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-            fEvent140 = subflow_results[1]
-            if fEvent140 == 0:
-                if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                    run ChkSellLand
-                else:
-entrypoint Event137:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                    event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                    run ChkTalkAboutSearchLand
-            elif fEvent140 == 1:
-                run AdviceForLife
-                run sub_grp!Event11
-            elif fEvent140 == 2:
-                run AdviceForNatural
-                run sub_grp!Event11
-            elif fEvent140 == 3:
-                fEvent3 = subflow_results[0]
-                if fEvent3 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                    run AdviceForMinusPoint
-                elif fEvent3 == 4:
-                    if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    else:
-                        event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                        if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                    if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                        run Get_GoldenWateringRecipe
         elif fEvent139 == 4:
             if EventFlowSystemActor.PercentChoice(80):
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:905', true)
-                EventFlowSystemActor.SwapSpeaker('cNone', false)
-                EventFlowSystemActor.WaitFrame(10)
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-                fEvent140 = subflow_results[1]
-                if fEvent140 == 0:
-                    if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                        run ChkSellLand
-                    else:
-entrypoint Event137:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                        event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                        run ChkTalkAboutSearchLand
-                elif fEvent140 == 1:
-                    run AdviceForLife
-                    run sub_grp!Event11
-                elif fEvent140 == 2:
-                    run AdviceForNatural
-                    run sub_grp!Event11
-                elif fEvent140 == 3:
-                    fEvent3 = subflow_results[0]
-                    if fEvent3 == 3:
-                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                        run AdviceForMinusPoint
-                    elif fEvent3 == 4:
-                        if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        else:
-                            event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                            if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                        if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                            run Get_GoldenWateringRecipe
+            elif EventFlowSystemActor.EnvSeason() in (Spring, Summer, Autumn):
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_02', false)
             else:
-                fEvent142 = EventFlowSystemActor.EnvSeason()
-                if fEvent142 in (Spring, Summer, Autumn):
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_02', false)
-                    EventFlowSystemActor.SwapSpeaker('cNone', false)
-                    EventFlowSystemActor.WaitFrame(10)
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-                    fEvent140 = subflow_results[1]
-                    if fEvent140 == 0:
-                        if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                            run ChkSellLand
-                        else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_01', false)
+        EventFlowSystemActor.SwapSpeaker('cNone', false)
+        EventFlowSystemActor.WaitFrame(10)
+        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
+        fEvent140 = subflow_results[1]
+        if fEvent140 == 0:
+            if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
+                run ChkSellLand
+            else:
 entrypoint Event137:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                            event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                            run ChkTalkAboutSearchLand
-                    elif fEvent140 == 1:
-                        run AdviceForLife
-                        run sub_grp!Event11
-                    elif fEvent140 == 2:
-                        run AdviceForNatural
-                        run sub_grp!Event11
-                    elif fEvent140 == 3:
-                        fEvent3 = subflow_results[0]
-                        if fEvent3 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                            run AdviceForMinusPoint
-                        elif fEvent3 == 4:
-                            if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                            else:
-                                event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                                if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                            if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                                run Get_GoldenWateringRecipe
-                elif fEvent142 == Winter:
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:906_01', false)
-                    EventFlowSystemActor.SwapSpeaker('cNone', false)
-                    EventFlowSystemActor.WaitFrame(10)
-                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:900_02', false)
-                    fEvent140 = subflow_results[1]
-                    if fEvent140 == 0:
-                        if event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star']:
-                            run ChkSellLand
-                        else:
-entrypoint Event137:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
-                            event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
-                            run ChkTalkAboutSearchLand
-                    elif fEvent140 == 1:
-                        run AdviceForLife
-                        run sub_grp!Event11
-                    elif fEvent140 == 2:
-                        run AdviceForNatural
-                        run sub_grp!Event11
-                    elif fEvent140 == 3:
-                        fEvent3 = subflow_results[0]
-                        if fEvent3 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
-                            run AdviceForMinusPoint
-                        elif fEvent3 == 4:
-                            if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                            else:
-                                event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
-                                if event_flags_system['cPlayer:Experienced3starEvaluation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
-                            if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
-                                run Get_GoldenWateringRecipe
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801', false)
+                event_flags_system['cPlayer:SzaIslandEvaluationTalkAbout1Star'] = true
+                run ChkTalkAboutSearchLand
+        elif fEvent140 == 1:
+            run AdviceForLife
+            run sub_grp!Event11
+        elif fEvent140 == 2:
+            run AdviceForNatural
+            run sub_grp!Event11
+        elif fEvent140 == 3:
+            fEvent3 = subflow_results[0]
+            if fEvent3 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:031_01', false)
+                run AdviceForMinusPoint
+            elif fEvent3 == 4:
+                if event_flags_system['cPlayer:SzaIslandEvaluation5star1st']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
+                else:
+                    event_flags_system['cPlayer:SzaIslandEvaluation5star1st'] = true
+                    if event_flags_system['cPlayer:Experienced3starEvaluation']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:012', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:011', false)
+                if (event_flags_system['cPlayer:MainmenuRecipe']) and (not EventFlowSystemActor.PlayerHasCraftRecipe(8533, '')):
+                    run Get_GoldenWateringRecipe
     elif subflow_results[0] in (0, 1):
         run Sza_Evaluation_NmlSeq
     elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:

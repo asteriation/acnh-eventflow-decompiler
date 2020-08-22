@@ -33,11 +33,10 @@ flow Root:
     return
 
 flow SeasonMaterialChk_AutumnMushroom:
-    fEvent22 = EventFlowSystemActor.EnvWeatherArea()
-    if fEvent22 == cWeatherArea_North:
+    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
         if EventFlowSystemActor.EnvMonth() == November:
             run sub_grp!Event25
-    elif fEvent22 == cWeatherArea_South:
+    else:
         if EventFlowSystemActor.EnvMonth() == May:
             run sub_grp!Event25
     return

@@ -6,19 +6,12 @@ flow Root:
     fEvent1 = EventFlowSystemActor.EnvTimeZone()
     if fEvent1 in (Morning0, Morning1):
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001', false)
-        run sub_grp!Event0
     elif fEvent1 in (Afternoon0, Afternoon1):
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_01', false)
-        run sub_grp!Event0
     elif fEvent1 == Evening0:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_02', false)
-        run sub_grp!Event0
     elif fEvent1 == Evening1:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:001_03', false)
-        run sub_grp!Event0
-    return
-
-flow sub_grp!Event0:
     if event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 4:
         HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:008', false)
     elif event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] == 3:
@@ -55,4 +48,5 @@ flow sub_grp!Event0:
             else:
                 HaniwaKun.OpenMessageWindow('TalkObj/OBJ_Gyroid:004', false)
                 EventFlowSystemActor.UIMoneyDisappear()
+    return
 

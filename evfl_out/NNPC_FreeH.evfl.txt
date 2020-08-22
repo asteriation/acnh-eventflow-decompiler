@@ -7,21 +7,17 @@ flow ChkReact1stPresent:
                 MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:011', false)
                 fEvent40 = MainNpc.EnvWeatherNNpcTalkCustom()
                 if fEvent40 in (Fine, Blossom):
-                    fEvent5 = EventFlowSystemActor.EnvTimeZone()
-                    if fEvent5 in (Morning0, Morning1, Afternoon0):
+                    if EventFlowSystemActor.EnvTimeZone() in (Morning0, Morning1, Afternoon0):
                         MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_01', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent5 in (Afternoon1, Evening0, Evening1):
+                    else:
                         MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_04', false)
-                        EventFlowSystemActor.ExitFlowchart()
                 elif fEvent40 == Cloudy:
-                    EventFlowSystemActor.ExitFlowchart()
+                    pass
                 elif fEvent40 in (Rain, HeavyRain):
                     MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_02', false)
-                    EventFlowSystemActor.ExitFlowchart()
                 elif fEvent40 in (Snow, HeavySnow):
                     MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_03', false)
-                    EventFlowSystemActor.ExitFlowchart()
+                EventFlowSystemActor.ExitFlowchart()
         elif fEvent33 == 5:
             if not Player.PlayerIsUseCoordinate():
                 if event_flags_system['cPlayer:1stPresentHatType'] == 0:

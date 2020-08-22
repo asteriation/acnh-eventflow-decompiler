@@ -38,6 +38,16 @@ def _format_type(type_: str, value: Any) -> str:
     else:
         raise ValueError(f'bad type: {type_}')
 
+def _count_type_values(type_: str) -> int:
+    if type_.startswith('int') and type_ != 'int':
+        return int(type_[3:])
+    elif type_ == 'bool':
+        return 2
+    elif type_.startswith('enum'):
+        return len(type_.split(','))
+    else:
+        return 999999999
+
 class Action:
     def __init__(self, name: str, params: List[Param], conversion: Optional[str] = None) -> None:
         self.name = name
@@ -104,10 +114,7 @@ class Query:
             ]
         self.default = conversion is None
         self.auto = False
-        self.num_values = int(rv[3:]) if rv.startswith('int') and rv != 'int' else \
-                len(rv[5:-1].split(',')) if rv.startswith('enum') else \
-                2 if rv == 'bool' else \
-                1000000000
+        self.num_values = _count_type_values(rv)
 
     def format(self, params: Dict[str, Any], negated: bool) -> str:
         if negated:
@@ -418,10 +425,7 @@ class SwitchNode(Node):
         self.cases: Dict[str, List[Any]] = {}
         self.terminal_node: Optional[Node] = None
 
-        if self.query.rv.startswith('int') and self.query.rv != 'int':
-            assert sum(len(x) for x in self.cases.values()) <= int(self.query.rv[3:])
-        elif self.query.rv == 'bool':
-            assert sum(len(x) for x in self.cases.values()) <= 2
+        assert sum(len(x) for x in self.cases.values()) <= _count_type_values(self.query.rv)
 
     def del_out_edge(self, dest: Node) -> None:
         Node.del_out_edge(self, dest)
@@ -446,8 +450,7 @@ class SwitchNode(Node):
 
     def register_terminal_node(self, terminal_node: Node) -> None:
         # todo: improve when switch node doesn't need a terminal node contact
-        if self.query.rv == 'bool' and (sum(len(x) for x in self.cases.values()) == 2) or \
-                (self.query.rv.startswith('int') and self.query.rv != 'int' and (sum(len(x) for x in self.cases.values()) == int(self.query.rv[3:]))):
+        if sum(len(x) for x in self.cases.values()) == _count_type_values(self.query.rv):
             self.terminal_node = None
             return
 

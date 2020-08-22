@@ -32,80 +32,70 @@ flow CmnBdayChk:
 flow Root:
     if EventFlowSystemActor.EnvSameDate('cNewYear', 'cNowTime'):
         subflow_results[1] = 6
-    elif EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cNowTime'):
-        subflow_results[1] = 7
-        run sub_grp!Event14
     else:
-        fEvent1 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent1 == Morning0:
-            subflow_results[1] = 0
-            run sub_grp!Event14
-        elif fEvent1 == Morning1:
-            subflow_results[1] = 1
-            run sub_grp!Event14
-        elif fEvent1 == Afternoon0:
-            subflow_results[1] = 2
-            run sub_grp!Event14
-        elif fEvent1 == Afternoon1:
-            subflow_results[1] = 3
-            run sub_grp!Event14
-        elif fEvent1 == Evening0:
-            subflow_results[1] = 4
-            run sub_grp!Event14
-        elif fEvent1 == Evening1:
-            subflow_results[1] = 5
-            run sub_grp!Event14
+        if EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cNowTime'):
+            subflow_results[1] = 7
+        else:
+            fEvent1 = EventFlowSystemActor.EnvTimeZone()
+            if fEvent1 == Morning0:
+                subflow_results[1] = 0
+            elif fEvent1 == Morning1:
+                subflow_results[1] = 1
+            elif fEvent1 == Afternoon0:
+                subflow_results[1] = 2
+            elif fEvent1 == Afternoon1:
+                subflow_results[1] = 3
+            elif fEvent1 == Evening0:
+                subflow_results[1] = 4
+            elif fEvent1 == Evening1:
+                subflow_results[1] = 5
+        fEvent14 = EventFlowSystemActor.EventCheck('Countdown')
+        if fEvent14 in (0, 1):
+            subflow_results[2] = 9
+        elif fEvent14 in (2, 3):
+            fEvent6 = EventFlowSystemActor.EventCheck('FishingConvention')
+            if fEvent6 in (0, 1):
+                if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                    fEvent4 = EventFlowSystemActor.EnvMonth()
+                    if fEvent4 == January:
+                        subflow_results[2] = 4
+                    elif fEvent4 == April:
+                        subflow_results[2] = 1
+                    elif fEvent4 == July:
+                        subflow_results[2] = 2
+                    elif fEvent4 == October:
+                        subflow_results[2] = 3
+                else:
+                    fEvent0 = EventFlowSystemActor.EnvMonth()
+                    if fEvent0 == January:
+                        subflow_results[2] = 2
+                    elif fEvent0 == April:
+                        subflow_results[2] = 3
+                    elif fEvent0 == July:
+                        subflow_results[2] = 4
+                    elif fEvent0 == October:
+                        subflow_results[2] = 1
+            elif fEvent6 in (2, 3):
+                if EventFlowSystemActor.EventCheck('InsectConvention') in (0, 1):
+                    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                        fEvent24 = EventFlowSystemActor.EnvMonth()
+                        if fEvent24 == June:
+                            subflow_results[2] = 5
+                        elif fEvent24 == July:
+                            subflow_results[2] = 6
+                        elif fEvent24 == August:
+                            subflow_results[2] = 7
+                        elif fEvent24 == September:
+                            subflow_results[2] = 8
+                    else:
+                        fEvent30 = EventFlowSystemActor.EnvMonth()
+                        if fEvent30 == January:
+                            subflow_results[2] = 7
+                        elif fEvent30 == February:
+                            subflow_results[2] = 8
+                        elif fEvent30 == November:
+                            subflow_results[2] = 5
+                        elif fEvent30 == December:
+                            subflow_results[2] = 6
     return
-
-flow sub_grp!Event14:
-    fEvent14 = EventFlowSystemActor.EventCheck('Countdown')
-    if fEvent14 in (0, 1):
-        subflow_results[2] = 9
-    elif fEvent14 in (2, 3):
-        fEvent6 = EventFlowSystemActor.EventCheck('FishingConvention')
-        if fEvent6 in (0, 1):
-            fEvent28 = EventFlowSystemActor.EnvWeatherArea()
-            if fEvent28 == cWeatherArea_North:
-                fEvent4 = EventFlowSystemActor.EnvMonth()
-                if fEvent4 == January:
-                    subflow_results[2] = 4
-                elif fEvent4 == April:
-                    subflow_results[2] = 1
-                elif fEvent4 == July:
-                    subflow_results[2] = 2
-                elif fEvent4 == October:
-                    subflow_results[2] = 3
-            elif fEvent28 == cWeatherArea_South:
-                fEvent0 = EventFlowSystemActor.EnvMonth()
-                if fEvent0 == January:
-                    subflow_results[2] = 2
-                elif fEvent0 == April:
-                    subflow_results[2] = 3
-                elif fEvent0 == July:
-                    subflow_results[2] = 4
-                elif fEvent0 == October:
-                    subflow_results[2] = 1
-        elif fEvent6 in (2, 3):
-            if EventFlowSystemActor.EventCheck('InsectConvention') in (0, 1):
-                fEvent29 = EventFlowSystemActor.EnvWeatherArea()
-                if fEvent29 == cWeatherArea_North:
-                    fEvent24 = EventFlowSystemActor.EnvMonth()
-                    if fEvent24 == June:
-                        subflow_results[2] = 5
-                    elif fEvent24 == July:
-                        subflow_results[2] = 6
-                    elif fEvent24 == August:
-                        subflow_results[2] = 7
-                    elif fEvent24 == September:
-                        subflow_results[2] = 8
-                elif fEvent29 == cWeatherArea_South:
-                    fEvent30 = EventFlowSystemActor.EnvMonth()
-                    if fEvent30 == January:
-                        subflow_results[2] = 7
-                    elif fEvent30 == February:
-                        subflow_results[2] = 8
-                    elif fEvent30 == November:
-                        subflow_results[2] = 5
-                    elif fEvent30 == December:
-                        subflow_results[2] = 6
 

@@ -12,23 +12,16 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_02', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_03', false)
-    fEvent18 = EventFlowSystemActor.MuseumLevel()
-    if fEvent18 in (BlathersTent, BlathersMuseumNoArt, BlathersNotMovedIn):
+    if EventFlowSystemActor.MuseumLevel() in (BlathersNotMovedIn, BlathersTent, BlathersMuseumNoArt):
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:113', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:114', false)
-        if event_flags_system['cLand:OwlFoundFossil']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_01', false)
-            event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_02', false)
-    elif fEvent18 == BlathersMuseumArt:
+    else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:116', false)
         event_flags_system['cPlayer:Owl1stTalkMuseum2'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:114', false)
-        if event_flags_system['cLand:OwlFoundFossil']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_01', false)
-            event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_02', false)
+    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:114', false)
+    if event_flags_system['cLand:OwlFoundFossil']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_01', false)
+        event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:115_02', false)
     return
 

@@ -43,116 +43,24 @@ flow RcmSellSingleItemNormal:
     return
 
 flow Root:
-    fEvent36 = EventFlowSystemActor.ShopLevel()
-    if fEvent36 == InResServiceTent:
+    if EventFlowSystemActor.ShopLevel() == InResServiceTent:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
 entrypoint Event31:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
-        run sub_grp!Event4
-    elif fEvent36 in (NooksCrannyInitial, NooksCrannyUpgraded):
-        fEvent11 = EventFlowSystemActor.EnvDayOfWeek()
-        if fEvent11 == Sunday:
-            if event_flags_system['cPlayer:RcmNoTurnipSellToday']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
-entrypoint Event31:
-                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
-                run sub_grp!Event4
-            else:
-                event_flags_system['cPlayer:RcmNoTurnipSellToday'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:022', false)
-entrypoint Event31:
-                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
-                run sub_grp!Event4
-        elif fEvent11 in (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday):
+    else:
+        if EventFlowSystemActor.EnvDayOfWeek() != Sunday:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
             MainNpc.SetKabuka()
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSell', false)
-            run sub_grp!Event4
-    return
-
-flow Sell_Sunday:
-    run Event31
-    return
-
-flow rcm_Sell_Cancel:
-    run Event29
-    return
-
-flow rcm_Sell_Cancel_GoldenToolRecipe:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:905', false)
-    run Event78
-    return
-
-flow rcm_Sell_Confirm:
-    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-        run rcm_Sell_Cancel
-    elif subflow_results[2] == 0:
-        MainNpc.ShopSellCalc('SellTotal', false, 1.0, true)
-        fEvent15 = EventFlowSystemActor.MoneyCapacity('SellTotal', 'cShop')
-        if fEvent15 == 0:
-            MainNpc.ShopSellDone(1.0, false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:051', false)
-            event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
-entrypoint Event44:
-            if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
-                MainNpc.NpcDelivery('Default', 3)
-                event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
-            if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
-                if event_flags_system['cLand:MuseumBuilt']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
-                event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
-                event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
-        elif fEvent15 == 1:
-            MainNpc.ShopSellDone(1.0, false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:052', false)
-            event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
-entrypoint Event44:
-            if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
-                MainNpc.NpcDelivery('Default', 3)
-                event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
-            if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
-                if event_flags_system['cLand:MuseumBuilt']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
-                event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
-                event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
-        elif fEvent15 == 2:
-            fEvent62 = EventFlowSystemActor.PlayerHouseLevel()
-            if fEvent62 == Homeless:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:054', true)
-                if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
-                    MainNpc.NpcDelivery('Default', 10)
-            elif fEvent62 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:053', true)
-                MainNpc.ShopSellDone(1.0, false)
-                event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
-entrypoint Event44:
-                if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
-                    MainNpc.NpcDelivery('Default', 3)
-                    event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
-                if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
-                    if event_flags_system['cLand:MuseumBuilt']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
-                    event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
-                    event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
-    else:
-        MainNpc.ShopSellDone(1.0, false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:051_01', false)
-        run Cmn_After_Sell_Confirm
-    return
-
-flow sub_grp!Event4:
+        elif event_flags_system['cPlayer:RcmNoTurnipSellToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:021', false)
+entrypoint Event31:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
+        else:
+            event_flags_system['cPlayer:RcmNoTurnipSellToday'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:022', false)
+entrypoint Event31:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', '', 'cSellWithoutTurnip', false)
     if EventFlowSystemActor.UIResultMenuDecide():
         fEvent91 = EventFlowSystemActor.EnvDayOfWeek()
         if fEvent91 == Sunday:
@@ -412,4 +320,86 @@ entrypoint Event78:
         if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
             MainNpc.NpcDelivery('Default', 10)
             event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
+    return
+
+flow Sell_Sunday:
+    run Event31
+    return
+
+flow rcm_Sell_Cancel:
+    run Event29
+    return
+
+flow rcm_Sell_Cancel_GoldenToolRecipe:
+    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:905', false)
+    run Event78
+    return
+
+flow rcm_Sell_Confirm:
+    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+        run rcm_Sell_Cancel
+    elif subflow_results[2] == 0:
+        MainNpc.ShopSellCalc('SellTotal', false, 1.0, true)
+        fEvent15 = EventFlowSystemActor.MoneyCapacity('SellTotal', 'cShop')
+        if fEvent15 == 0:
+            MainNpc.ShopSellDone(1.0, false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:051', false)
+            event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
+entrypoint Event44:
+            if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
+                MainNpc.NpcDelivery('Default', 3)
+                event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
+            if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
+                if event_flags_system['cLand:MuseumBuilt']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
+                event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
+                event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
+        elif fEvent15 == 1:
+            MainNpc.ShopSellDone(1.0, false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:052', false)
+            event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
+entrypoint Event44:
+            if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
+                MainNpc.NpcDelivery('Default', 3)
+                event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
+            if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
+                if event_flags_system['cLand:MuseumBuilt']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
+                event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
+                event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
+        elif fEvent15 == 2:
+            if EventFlowSystemActor.PlayerHouseLevel() == Homeless:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:054', true)
+                if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
+                    MainNpc.NpcDelivery('Default', 10)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:053', true)
+                MainNpc.ShopSellDone(1.0, false)
+                event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1
+entrypoint Event44:
+                if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
+                    MainNpc.NpcDelivery('Default', 3)
+                    event_flags_system['cPlayerTemp:RcmSellItemSingle'] = false
+                if (EventFlowSystemActor.IsMyVillage()) and (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (event_flags_system['cPlayerTemp:StoreSellFruitChk']):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_01', false)
+                    if event_flags_system['cLand:MuseumBuilt']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_03', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_02', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:056_04', false)
+                    event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
+                    event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
+    else:
+        MainNpc.ShopSellDone(1.0, false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:051_01', false)
+        run Cmn_After_Sell_Confirm
+    return
 

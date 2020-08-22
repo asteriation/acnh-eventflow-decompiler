@@ -9,81 +9,31 @@ flow RcmDIYbookBuySel:
         run SNPC_rcm_00_Common::Rcm_Common_BuyCheckUI
         event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
         EventFlowSystemActor.UIShopBuyDisappear()
-        if EventFlowSystemActor.NetIsConnected():
-            Player.PlayerChangeStateDemoTalk()
-            Player.TurnBody(0, 0.0)
-            Player.PlayerWaitTurn()
-            MainNpc.SmartPhone(0)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:107_01', true)
-            EventFlowSystemActor.WaitFrame(15)
-            Player.SmartPhone(0)
-            fork:
-                branch0:
-                branch1:
-                    Player.SmartPhone(4)
-                branch2:
-                    MainNpc.CharacterEmoticonAction('Smiling', '', 30, true, false)
-            EventFlowSystemActor.WaitFrame(20)
-            MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
-            MainNpc.SmartPhone(4)
-            EventFlowSystemActor.WaitFrame(30)
-            MainNpc.SmartPhoneSE('Phone_Sending', 2)
-            EventFlowSystemActor.WaitFrame(30)
-            Player.SmartPhoneSE('Phone_Recieving', 2)
-            EventFlowSystemActor.WaitFrame(15)
-            MainNpc.SmartPhone(5)
-            Player.SmartPhone(5)
-        else:
-            fEvent14 = EventFlowSystemActor.ShopLevel()
-            if fEvent14 == InResServiceTent:
-                Player.PlayerChangeStateDemoTalk()
-                Player.TurnBody(0, 0.0)
-                Player.PlayerWaitTurn()
-                MainNpc.SmartPhone(0)
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:107_01', true)
-                EventFlowSystemActor.WaitFrame(15)
-                Player.SmartPhone(0)
-                fork:
-                    branch0:
-                    branch1:
-                        Player.SmartPhone(4)
-                    branch2:
-                        MainNpc.CharacterEmoticonAction('Smiling', '', 30, true, false)
-                EventFlowSystemActor.WaitFrame(20)
-                MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
-                MainNpc.SmartPhone(4)
-                EventFlowSystemActor.WaitFrame(30)
-                MainNpc.SmartPhoneSE('Phone_Sending', 2)
-                EventFlowSystemActor.WaitFrame(30)
-                Player.SmartPhoneSE('Phone_Recieving', 2)
-                EventFlowSystemActor.WaitFrame(15)
-                MainNpc.SmartPhone(5)
-                Player.SmartPhone(5)
-            elif fEvent14 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                MainNpc.NpcMoveToPlayer()
-                Player.PlayerChangeStateDemoTalk()
-                Player.TurnBody(0, 0.0)
-                Player.PlayerWaitTurn()
-                MainNpc.SmartPhone(0)
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:107_01', true)
-                EventFlowSystemActor.WaitFrame(15)
-                Player.SmartPhone(0)
-                fork:
-                    branch0:
-                    branch1:
-                        Player.SmartPhone(4)
-                    branch2:
-                        MainNpc.CharacterEmoticonAction('Smiling', '', 30, true, false)
-                EventFlowSystemActor.WaitFrame(20)
-                MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
-                MainNpc.SmartPhone(4)
-                EventFlowSystemActor.WaitFrame(30)
-                MainNpc.SmartPhoneSE('Phone_Sending', 2)
-                EventFlowSystemActor.WaitFrame(30)
-                Player.SmartPhoneSE('Phone_Recieving', 2)
-                EventFlowSystemActor.WaitFrame(15)
-                MainNpc.SmartPhone(5)
-                Player.SmartPhone(5)
+        if (not EventFlowSystemActor.NetIsConnected()) and (EventFlowSystemActor.ShopLevel() != InResServiceTent):
+            MainNpc.NpcMoveToPlayer()
+        Player.PlayerChangeStateDemoTalk()
+        Player.TurnBody(0, 0.0)
+        Player.PlayerWaitTurn()
+        MainNpc.SmartPhone(0)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:107_01', true)
+        EventFlowSystemActor.WaitFrame(15)
+        Player.SmartPhone(0)
+        fork:
+            branch0:
+            branch1:
+                Player.SmartPhone(4)
+            branch2:
+                MainNpc.CharacterEmoticonAction('Smiling', '', 30, true, false)
+        EventFlowSystemActor.WaitFrame(20)
+        MainNpc.CharacterEmoticonAction('EmotEnd', '', 30, true, false)
+        MainNpc.SmartPhone(4)
+        EventFlowSystemActor.WaitFrame(30)
+        MainNpc.SmartPhoneSE('Phone_Sending', 2)
+        EventFlowSystemActor.WaitFrame(30)
+        Player.SmartPhoneSE('Phone_Recieving', 2)
+        EventFlowSystemActor.WaitFrame(15)
+        MainNpc.SmartPhone(5)
+        Player.SmartPhone(5)
     elif fEvent65 == 1:
         if any (5603, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_01', false)
@@ -101,10 +51,9 @@ flow RcmDIYbookBuySel:
 flow Rcm_Cmn_DisableDIY:
     if EventFlowSystemActor.IsMyVillage():
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:104_01_01', false)
-        fEvent24 = EventFlowSystemActor.ShopLevel()
-        if fEvent24 == InResServiceTent:
+        if EventFlowSystemActor.ShopLevel() == InResServiceTent:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:104_01_02', false)
-        elif fEvent24 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:104_01_03', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:108', false)
@@ -133,13 +82,10 @@ entrypoint Event7:
                     Player.SmartPhone(1)
             event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
-            fEvent56 = EventFlowSystemActor.ShopLevel()
-            if fEvent56 == InResServiceTent:
-                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
-            elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+            if EventFlowSystemActor.ShopLevel() != InResServiceTent:
                 Player.TurnBody(13, 0.0)
                 Player.PlayerWaitTurn()
-                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     elif any (5604, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
         if EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'DIYbook2'):
             run RcmDIYbookBought
@@ -156,13 +102,10 @@ entrypoint Event7:
                     Player.SmartPhone(1)
             event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
-            fEvent56 = EventFlowSystemActor.ShopLevel()
-            if fEvent56 == InResServiceTent:
-                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
-            elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+            if EventFlowSystemActor.ShopLevel() != InResServiceTent:
                 Player.TurnBody(13, 0.0)
                 Player.PlayerWaitTurn()
-                run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     elif EventFlowSystemActor.PlayerHasCraftRecipe(65534, 'DIYbook3'):
         run RcmDIYbookBought
     else:
@@ -178,12 +121,9 @@ entrypoint Event7:
                 Player.SmartPhone(1)
         event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
-        fEvent56 = EventFlowSystemActor.ShopLevel()
-        if fEvent56 == InResServiceTent:
-            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
-        elif fEvent56 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if EventFlowSystemActor.ShopLevel() != InResServiceTent:
             Player.TurnBody(13, 0.0)
             Player.PlayerWaitTurn()
-            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
+        run SNPC_rcm_00_Common::Rcm_Common_BuyAgain2
     return
 

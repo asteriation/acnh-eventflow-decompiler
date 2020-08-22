@@ -2,10 +2,9 @@ flow ObjRcoMachineCheck1st:
     run ObjRcoStandChair
     run AI_NPC_Rco::CheckRob_ATM_Direction
     event_flags_system['cPlayerTemp:RcoMachineTalkCntl'] = true
-    fEvent1 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent1 == Homeless:
+    if EventFlowSystemActor.PlayerHouseLevel() == Homeless:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:002', false)
-    elif fEvent1 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+    else:
         fEvent41 = subflow_results[0]
         if fEvent41 == 1:
             if event_flags_system['cPlayerTemp:RcoHeardOfficeOBJ']:

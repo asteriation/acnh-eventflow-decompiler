@@ -336,8 +336,7 @@ flow Root:
     return
 
 flow SeasonMaterialHintReset:
-    fEvent215 = EventFlowSystemActor.EnvWeatherArea()
-    if fEvent215 == cWeatherArea_North:
+    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
         fEvent214 = EventFlowSystemActor.EnvMonth()
         if fEvent214 == January:
             run ResetFlag_Winter
@@ -355,7 +354,7 @@ flow SeasonMaterialHintReset:
             run Flag_Ornaments
         elif fEvent214 == December:
             run ResetFlag_Winter
-    elif fEvent215 == cWeatherArea_South:
+    else:
         fEvent216 = EventFlowSystemActor.EnvMonth()
         if fEvent216 == January:
             run ResetFlag_Summer

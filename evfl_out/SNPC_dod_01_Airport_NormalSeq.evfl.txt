@@ -84,10 +84,9 @@ entrypoint Event212:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:001_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:001_03', false)
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:001_03_01', false)
-        fEvent38 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent38 == Homeless:
+        if EventFlowSystemActor.PlayerHouseLevel() == Homeless:
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:001_03_03', false)
-        elif fEvent38 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+        else:
             run sub_grp!Event139
     return
 
@@ -260,16 +259,36 @@ flow Root:
     if event_flags_system['cLand:VillageDaysCount'] < 1:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:021_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:021_02', false)
-    elif event_flags_system['cPlayer:OdekakeFirstTalk']:
-        fEvent58 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent58 == Homeless:
-            if not event_flags_system['cPlayerTemp:DodTalkSceneFlag']:
-                event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_02', false)
-        elif fEvent58 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-            if event_flags_system['cPlayerTemp:DodTalkSceneFlag']:
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:003', false)
+    elif not event_flags_system['cPlayer:OdekakeFirstTalk']:
+        event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
+        run FirstExplain
+    elif EventFlowSystemActor.PlayerHouseLevel() == Homeless:
+        if not event_flags_system['cPlayerTemp:DodTalkSceneFlag']:
+            event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_02', false)
+    elif event_flags_system['cPlayerTemp:DodTalkSceneFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:003', false)
+entrypoint Event6:
+        fEvent6 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent6 == 0:
+            run SelectIsland
+        elif fEvent6 == 1:
+            if event_flags_system['cPlayer:OdekakeTutorial']:
+                run SNPC_dod_AirPort::EntryPoint_Host
+            else:
+                run UGCNoticeChk_Host
+        elif fEvent6 == 2:
+            run SNPC_dod_AirPort::EntryPoint_Cancel
+    else:
+        event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
+        if (event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) and (not event_flags_system['cPlayer:DodHeardAboutMileTravelTicket']):
+            run MileTicketExplain
+        else:
+            if (EventFlowSystemActor.TermEventNow('MayDay', false)) and (event_flags_system['cPlayer:GetMayDayTicket']) and (not event_flags_system['cPlayer:DodHeardAboutMayDayTravelTicket']):
+                run MileTicketExplain
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:002', false)
 entrypoint Event6:
                 fEvent6 = EventFlowSystemActor.GeneralTalkChoice3()
                 if fEvent6 == 0:
@@ -281,29 +300,6 @@ entrypoint Event6:
                         run UGCNoticeChk_Host
                 elif fEvent6 == 2:
                     run SNPC_dod_AirPort::EntryPoint_Cancel
-            else:
-                event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
-                if (event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) and (not event_flags_system['cPlayer:DodHeardAboutMileTravelTicket']):
-                    run MileTicketExplain
-                else:
-                    if (EventFlowSystemActor.TermEventNow('MayDay', false)) and (event_flags_system['cPlayer:GetMayDayTicket']) and (not event_flags_system['cPlayer:DodHeardAboutMayDayTravelTicket']):
-                        run MileTicketExplain
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:002', false)
-entrypoint Event6:
-                        fEvent6 = EventFlowSystemActor.GeneralTalkChoice3()
-                        if fEvent6 == 0:
-                            run SelectIsland
-                        elif fEvent6 == 1:
-                            if event_flags_system['cPlayer:OdekakeTutorial']:
-                                run SNPC_dod_AirPort::EntryPoint_Host
-                            else:
-                                run UGCNoticeChk_Host
-                        elif fEvent6 == 2:
-                            run SNPC_dod_AirPort::EntryPoint_Cancel
-    else:
-        event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
-        run FirstExplain
     return
 
 flow SelDestWOticket_NoSpn:

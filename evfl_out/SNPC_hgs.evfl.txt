@@ -68,10 +68,9 @@ flow Hgs11:
         elif fEvent119 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:120', true)
         elif fEvent119 == 3:
-            fEvent168 = EventFlowSystemActor.EnvWeatherArea()
-            if fEvent168 == cWeatherArea_North:
+            if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130', true)
-            elif fEvent168 == cWeatherArea_South:
+            else:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130_01', true)
         elif fEvent119 == 4:
             if not event_flags_system['cPlayer:KotonoTalkBeforeFlag']:

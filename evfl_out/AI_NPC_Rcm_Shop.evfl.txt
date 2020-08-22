@@ -60,14 +60,12 @@ flow Rcm_Wait:
 
 flow Root:
     if MainNpc.NpcCheckStateSelectTiming('cInit'):
-        fEvent30 = EventFlowSystemActor.ShopLevel()
-        if fEvent30 in (InResServiceTent, NooksCrannyUpgraded):
+        if EventFlowSystemActor.ShopLevel() in (InResServiceTent, NooksCrannyUpgraded):
             run Rcm_Wait
-        elif fEvent30 == NooksCrannyInitial:
-            if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.HghFreeQuery2('cHghQueryType_HghStayMarket')):
-                MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'hgh')
-            else:
-                run Rcm_Wait
+        elif (EventFlowSystemActor.IsMyVillage()) and (MainNpc.HghFreeQuery2('cHghQueryType_HghStayMarket')):
+            MainNpc.NpcChangeConversationPretenseState('cConversationPretense', 'Root', 'SNPC_rcm', '', false, true, 0, 'hgh')
+        else:
+            run Rcm_Wait
     elif MainNpc.NpcBlackBoard('DemoSpeak', 1):
         MainNpc.NpcAISetting(4, false)
         MainNpc.NpcSetAIBlackBoard('DemoSpeak', 0)

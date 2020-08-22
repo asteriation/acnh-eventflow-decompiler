@@ -150,28 +150,26 @@ flow Root:
         DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:998', false)
     elif EventFlowSystemActor.NetHasVisitor():
         Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:091', false)
+    elif EventFlowSystemActor.PlayerHouseLevel() == Homeless:
+        Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:010', false)
+        DynamicCast_dod.NpcWaitTalkPrepare()
+        DynamicCast_dod.TurnBody(10, 0.0)
+        DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_02', false)
     else:
-        fEvent76 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent76 == Homeless:
-            Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:010', false)
+        EventFlowSystemActor.UIMoneyAppear()
+        Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:010', false)
+        if EventFlowSystemActor.HasBellCount(200):
             DynamicCast_dod.NpcWaitTalkPrepare()
             DynamicCast_dod.TurnBody(10, 0.0)
-            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:999_02', false)
-        elif fEvent76 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-            EventFlowSystemActor.UIMoneyAppear()
-            Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:010', false)
-            if EventFlowSystemActor.HasBellCount(200):
-                DynamicCast_dod.NpcWaitTalkPrepare()
-                DynamicCast_dod.TurnBody(10, 0.0)
-                if not EventFlowSystemActor.NetIsConnected():
-                    run Obj_MessageCardRack_03_SendFriend::EntryPoint_CheckUnlockFriend
-                elif EventFlowSystemActor.IsVillageGateOpened():
-                    run EntryPoint_ConfirmGateClose
-                else:
-                    run EntryPoint_ConfirmEndOdekake
+            if not EventFlowSystemActor.NetIsConnected():
+                run Obj_MessageCardRack_03_SendFriend::EntryPoint_CheckUnlockFriend
+            elif EventFlowSystemActor.IsVillageGateOpened():
+                run EntryPoint_ConfirmGateClose
             else:
-                Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:011', false)
-                EventFlowSystemActor.UIMoneyDisappear()
+                run EntryPoint_ConfirmEndOdekake
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_MessageCardRack:011', false)
+            EventFlowSystemActor.UIMoneyDisappear()
     return
 
 flow StartCardEditing:

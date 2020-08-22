@@ -32,20 +32,22 @@ flow ChangeOperatorChk:
     return
 
 flow ChkEscapeTo:
-    fEvent146 = EventFlowSystemActor.ShopLevel()
-    if fEvent146 == InResServiceTent:
-        run sub_grp!Event150
-    elif fEvent146 in (NooksCrannyInitial, NooksCrannyUpgraded):
-        if event_flags_system['cLand:MarketConstruction2']:
-            run sub_grp!Event150
-        else:
-            fEvent151 = EventFlowSystemActor.PlayerHouseLevel()
-            if fEvent151 == Homeless:
-                subflow_results[0] = 3
-            elif fEvent151 == PlacedTent:
-                subflow_results[0] = 4
-            elif fEvent151 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-                subflow_results[0] = 5
+    if (EventFlowSystemActor.ShopLevel() != InResServiceTent) and (not event_flags_system['cLand:MarketConstruction2']):
+        fEvent151 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent151 == Homeless:
+            subflow_results[0] = 3
+        elif fEvent151 == PlacedTent:
+            subflow_results[0] = 4
+        elif fEvent151 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+            subflow_results[0] = 5
+    else:
+        fEvent150 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent150 == Homeless:
+            subflow_results[0] = 0
+        elif fEvent150 == PlacedTent:
+            subflow_results[0] = 1
+        elif fEvent150 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+            subflow_results[0] = 2
     return
 
 flow ChkRacketIntro:
@@ -68,13 +70,11 @@ flow EscapeToMarket:
     return
 
 flow EscapeToMyhome:
-    fEvent41 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent41 in (Homeless, PlacedTent):
+    if EventFlowSystemActor.PlayerHouseLevel() in (Homeless, PlacedTent):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_01', true)
-        run PlayerWarpTo
-    elif fEvent41 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+    else:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_02', true)
-        run PlayerWarpTo
+    run PlayerWarpTo
     return
 
 flow EscapeToPlaza:
@@ -304,15 +304,6 @@ flow sub_grp!Event1:
     elif fEvent1 == 3:
         run EscapeSelCansel
 
-flow sub_grp!Event150:
-    fEvent150 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent150 == Homeless:
-        subflow_results[0] = 0
-    elif fEvent150 == PlacedTent:
-        subflow_results[0] = 1
-    elif fEvent150 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-        subflow_results[0] = 2
-
 flow sub_grp!Event38:
     fEvent38 = EventFlowSystemActor.GeneralTalkChoice5()
     if fEvent38 == 0:
@@ -368,20 +359,15 @@ entrypoint Event18:
             if fEvent91 == 0:
                 run PlayerWarpTo
             elif fEvent91 == 1:
-                fEvent169 = EventFlowSystemActor.PlayerHouseLevel()
-                if fEvent169 == Homeless:
+                if EventFlowSystemActor.PlayerHouseLevel() == Homeless:
                     run PlayerWarpTo
-                elif fEvent169 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+                else:
                     run PlayerWarpTo
             elif fEvent91 == 2:
-                fEvent189 = EventFlowSystemActor.ShopLevel()
-                if fEvent189 == InResServiceTent:
+                if (EventFlowSystemActor.ShopLevel() != InResServiceTent) and (not event_flags_system['cLand:MarketConstruction2']):
                     run PlayerWarpTo
-                elif fEvent189 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                    if event_flags_system['cLand:MarketConstruction2']:
-                        run PlayerWarpTo
-                    else:
-                        run PlayerWarpTo
+                else:
+                    run PlayerWarpTo
             elif fEvent91 == 3:
                 run PlayerWarpTo
 

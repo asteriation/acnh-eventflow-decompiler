@@ -37,15 +37,12 @@ flow RcoDonationReward3:
     run RcoTent_GiveSeeds
     MainNpc.SetItemName(0, 14, 0)
     MainNpc.NpcDelivery('Keep', 1)
-    fEvent23 = EventFlowSystemActor.ShopLevel()
-    if fEvent23 == InResServiceTent:
+    if EventFlowSystemActor.ShopLevel() == InResServiceTent:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:013_02', false)
-        MainNpc.NpcDelivery('Default', 2)
-        event_flags_system['cPlayer:RcoGotDonationRewardFlower'] = true
-    elif fEvent23 in (NooksCrannyInitial, NooksCrannyUpgraded):
+    else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:013_03', false)
-        MainNpc.NpcDelivery('Default', 2)
-        event_flags_system['cPlayer:RcoGotDonationRewardFlower'] = true
+    MainNpc.NpcDelivery('Default', 2)
+    event_flags_system['cPlayer:RcoGotDonationRewardFlower'] = true
     return
 
 flow RcoDonationReward4:

@@ -1,7 +1,6 @@
 flow Hint_Nuts_Rco:
     MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:600', false)
-    fEvent158 = EventFlowSystemActor.EnvWeatherArea()
-    if fEvent158 == cWeatherArea_North:
+    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
         fEvent159 = EventFlowSystemActor.EnvMonth()
         if fEvent159 in (September, October, November):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
@@ -9,7 +8,7 @@ flow Hint_Nuts_Rco:
         elif fEvent159 == December:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01_01', false)
             run Hint_Nuts_Rco_Cmn
-    elif fEvent158 == cWeatherArea_South:
+    else:
         fEvent160 = EventFlowSystemActor.EnvMonth()
         if fEvent160 in (March, April, May):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:612_01', false)
@@ -32,8 +31,7 @@ flow Hint_Nuts_Rco_Cmn:
     return
 
 flow Hint_Nuts_Sza:
-    fEvent165 = EventFlowSystemActor.EnvWeatherArea()
-    if fEvent165 == cWeatherArea_North:
+    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
         fEvent166 = EventFlowSystemActor.EnvMonth()
         if fEvent166 in (September, October, November):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)
@@ -41,7 +39,7 @@ flow Hint_Nuts_Sza:
         elif fEvent166 == December:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01_01', false)
             run Hint_Nuts_Sza_Cmn
-    elif fEvent165 == cWeatherArea_South:
+    else:
         fEvent167 = EventFlowSystemActor.EnvMonth()
         if fEvent167 in (March, April, May):
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:612_01', false)

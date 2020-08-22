@@ -75,17 +75,15 @@ entrypoint Event40:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:021', false)
 entrypoint Event29:
-            fEvent29 = EventFlowSystemActor.EnvTimeZone()
-            if fEvent29 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
+            if EventFlowSystemActor.EnvTimeZone() in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:022', false)
-            elif fEvent29 == Evening1:
+            else:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:023', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:011', false)
-        fEvent13 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent13 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
+        if EventFlowSystemActor.EnvTimeZone() in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:012', true)
-        elif fEvent13 == Evening1:
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:013', true)
     return
 
@@ -171,13 +169,11 @@ flow Root:
     return
 
 flow Tag_Num_daily:
-    fEvent151 = EventFlowSystemActor.EnvSeason()
-    if fEvent151 in (Spring, Summer, Autumn):
+    if EventFlowSystemActor.EnvSeason() in (Spring, Summer, Autumn):
         EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', 'cPlayerTemp:CatchInsectFesGetNum', 6)
-        EventFlowSystemActor.SetTagFromSystem(3, 'cFlow', 'cDegit', 'cPlayerTemp:CatchInsectFesGetNum', 3)
-    elif fEvent151 == Winter:
+    else:
         EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', 'cPlayerTemp:CatchInsectFesGetNum', 4)
-        EventFlowSystemActor.SetTagFromSystem(3, 'cFlow', 'cDegit', 'cPlayerTemp:CatchInsectFesGetNum', 3)
+    EventFlowSystemActor.SetTagFromSystem(3, 'cFlow', 'cDegit', 'cPlayerTemp:CatchInsectFesGetNum', 3)
     return
 
 flow Tag_SET_HOUR_daily:
@@ -185,10 +181,9 @@ flow Tag_SET_HOUR_daily:
     return
 
 flow TalkCancel:
-    fEvent81 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent81 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
+    if EventFlowSystemActor.EnvTimeZone() in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:002', false)
-    elif fEvent81 == Evening1:
+    else:
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:003', false)
     return
 

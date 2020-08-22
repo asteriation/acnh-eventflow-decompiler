@@ -1,14 +1,12 @@
 flow Rco_CmnSel_Cancel:
-    fEvent4 = EventFlowSystemActor.OfficeLevel()
-    if fEvent4 in (ResServiceTent0, ResServiceTent1):
-        if event_flags_system['cPlayer:RcoTentAdviceCanceled']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:021_02', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:021_01', false)
-            event_flags_system['cPlayer:RcoTentAdviceCanceled'] = true
-    elif fEvent4 == ResServiceBuilding:
+    if EventFlowSystemActor.OfficeLevel() not in (ResServiceTent0, ResServiceTent1):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:015_01', false)
         if event_flags_system['cPlayer:RcoAwaitingExplanation']:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:015_02', false)
+    elif event_flags_system['cPlayer:RcoTentAdviceCanceled']:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:021_02', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:021_01', false)
+        event_flags_system['cPlayer:RcoTentAdviceCanceled'] = true
     return
 

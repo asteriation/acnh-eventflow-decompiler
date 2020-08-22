@@ -93,8 +93,7 @@ flow MoveCampSite:
     return
 
 flow MoveFacilityChk:
-    fEvent196 = EventFlowSystemActor.MuseumLevel()
-    if fEvent196 in (BlathersTent, BlathersNotMovedIn):
+    if EventFlowSystemActor.MuseumLevel() in (BlathersNotMovedIn, BlathersTent):
         if event_flags_system['cLand:TailorBuilt']:
             if event_flags_system['cLand:CampSiteBuilt']:
                 subflow_results[2] = 6
@@ -104,16 +103,15 @@ flow MoveFacilityChk:
             subflow_results[2] = 3
         else:
             subflow_results[2] = 0
-    elif fEvent196 in (BlathersMuseumNoArt, BlathersMuseumArt):
-        if event_flags_system['cLand:TailorBuilt']:
-            if event_flags_system['cLand:CampSiteBuilt']:
-                subflow_results[2] = 7
-            else:
-                subflow_results[2] = 4
-        elif event_flags_system['cLand:CampSiteBuilt']:
-            subflow_results[2] = 5
+    elif event_flags_system['cLand:TailorBuilt']:
+        if event_flags_system['cLand:CampSiteBuilt']:
+            subflow_results[2] = 7
         else:
-            subflow_results[2] = 1
+            subflow_results[2] = 4
+    elif event_flags_system['cLand:CampSiteBuilt']:
+        subflow_results[2] = 5
+    else:
+        subflow_results[2] = 1
     return
 
 flow MoveMuseum:

@@ -241,16 +241,10 @@ flow Root_Tutorial_Init:
 flow UnlockAddRecipeFor2P:
     if EventFlowSystemActor.ShopLevel() in (NooksCrannyInitial, NooksCrannyUpgraded):
         EventFlowSystemActor.PlayerSetCraftRecipe(3068, 'None')
-        if event_flags_system['cLand:MuseumConstructionToday']:
+        if (event_flags_system['cLand:MuseumConstructionToday']) or (EventFlowSystemActor.MuseumLevel() not in (BlathersNotMovedIn, BlathersTent)):
             EventFlowSystemActor.PlayerSetCraftRecipe(4703, 'None')
-            run sub_grp!Event266
-        else:
-            fEvent257 = EventFlowSystemActor.MuseumLevel()
-            if fEvent257 in (BlathersTent, BlathersNotMovedIn):
-                run sub_grp!Event266
-            elif fEvent257 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                EventFlowSystemActor.PlayerSetCraftRecipe(4703, 'None')
-                run sub_grp!Event266
+        if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+            EventFlowSystemActor.PlayerSetCraftRecipe(2615, 'None')
     return
 
 flow VisitorOnMyIsland:
@@ -358,43 +352,7 @@ flow WorkingTable_Normal:
     return
 
 flow sub_grp!Event158:
-    fEvent158 = EventFlowSystemActor.OfficeLevel()
-    if fEvent158 in (ResServiceTent0, ResServiceTent1):
-        if EventFlowSystemActor.IsSharePlay(0):
-            run RemakeWS_SharePlay
-        else:
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304', true)
-            if event_flags_system['cLandTemp:RcoRemakeWSInThisScene']:
-                pass
-            else:
-                DynamicCast_rco.NpcRailMove(2, 0, 1, 0, false, false)
-                event_flags_system['cLandTemp:RcoRemakeWSInThisScene'] = true
-            DynamicCast_rco.SetDeliveryItemAtRandom(2513, false, 'cVillageRemakePattern', 0)
-            DynamicCast_rco.NpcDelivery('Default', 1)
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304_02', true)
-            EventFlowSystemActor.SetItemToPocket(2513, 50)
-            Player.TurnBody(11, 0.0)
-            Player.TurnNeck(11)
-            Player.PlayerDemoTurn('cNorth')
-            Player.PlayerWaitTurn()
-            EventFlowSystemActor.UIItemSelectWindowHandling(3436, '', 'cItemSelectRemakeTutorial', '', 'cItemName', false)
-            EventFlowSystemActor.UIWorkingHandling('cRemakeSelectTutorial')
-            subflow_results[0] = 1
-            subflow_results[1] = 1
-            run Workbench_Cmn_DIYdemo
-            fork:
-                branch0:
-                branch1:
-                    DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:401', false)
-                branch2:
-                    run Workbench_Cmn_DIYfinish
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:402', false)
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:403', true)
-            event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = false
-            event_flags_system['cPlayer:RcoEnableRemakeTrial'] = false
-            event_flags_system['cPlayer:EnableDiyRemake'] = true
-            EventFlowSystemActor.SoundDuckingOff(18)
-    elif fEvent158 == ResServiceBuilding:
+    if EventFlowSystemActor.OfficeLevel() not in (ResServiceTent0, ResServiceTent1):
 entrypoint Event159:
         DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304_01', true)
         EventFlowSystemActor.SetItemToPocket(2513, 50)
@@ -419,10 +377,40 @@ entrypoint Event159:
         event_flags_system['cPlayer:RcoEnableRemakeTrial'] = false
         event_flags_system['cPlayer:EnableDiyRemake'] = true
         EventFlowSystemActor.SoundDuckingOff(18)
-
-flow sub_grp!Event266:
-    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
-        EventFlowSystemActor.PlayerSetCraftRecipe(2615, 'None')
+    elif EventFlowSystemActor.IsSharePlay(0):
+        run RemakeWS_SharePlay
+    else:
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304', true)
+        if event_flags_system['cLandTemp:RcoRemakeWSInThisScene']:
+            pass
+        else:
+            DynamicCast_rco.NpcRailMove(2, 0, 1, 0, false, false)
+            event_flags_system['cLandTemp:RcoRemakeWSInThisScene'] = true
+        DynamicCast_rco.SetDeliveryItemAtRandom(2513, false, 'cVillageRemakePattern', 0)
+        DynamicCast_rco.NpcDelivery('Default', 1)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:304_02', true)
+        EventFlowSystemActor.SetItemToPocket(2513, 50)
+        Player.TurnBody(11, 0.0)
+        Player.TurnNeck(11)
+        Player.PlayerDemoTurn('cNorth')
+        Player.PlayerWaitTurn()
+        EventFlowSystemActor.UIItemSelectWindowHandling(3436, '', 'cItemSelectRemakeTutorial', '', 'cItemName', false)
+        EventFlowSystemActor.UIWorkingHandling('cRemakeSelectTutorial')
+        subflow_results[0] = 1
+        subflow_results[1] = 1
+        run Workbench_Cmn_DIYdemo
+        fork:
+            branch0:
+            branch1:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:401', false)
+            branch2:
+                run Workbench_Cmn_DIYfinish
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:402', false)
+        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:403', true)
+        event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = false
+        event_flags_system['cPlayer:RcoEnableRemakeTrial'] = false
+        event_flags_system['cPlayer:EnableDiyRemake'] = true
+        EventFlowSystemActor.SoundDuckingOff(18)
 
 flow sub_grp!Event84:
     if event_flags_system['cPlayer:MainmenuRecipe']:

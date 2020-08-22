@@ -11,10 +11,9 @@ flow Month_1.3:
     return
 
 flow Month_1.4:
-    fEvent44 = EventFlowSystemActor.EnvWeatherArea()
-    if fEvent44 == cWeatherArea_North:
+    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
         run Northern_1.4
-    elif fEvent44 == cWeatherArea_South:
+    else:
         run Southern_1.4
     return
 

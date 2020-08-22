@@ -10,22 +10,19 @@ flow RcoChkAboutMyHomeSel:
     if fEvent23 == PlacedTent:
         subflow_results[0] = 0
     elif fEvent23 in (BaseHouse, HouseExpansion1, BackRoom):
-        fEvent37 = EventFlowSystemActor.OfficeLevel()
-        if fEvent37 in (ResServiceTent0, ResServiceTent1):
+        if EventFlowSystemActor.OfficeLevel() in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 0
-        elif fEvent37 == ResServiceBuilding:
+        else:
             subflow_results[0] = 3
     elif fEvent23 in (LeftRoom, RightRoom, SecondFloor):
-        fEvent45 = EventFlowSystemActor.OfficeLevel()
-        if fEvent45 in (ResServiceTent0, ResServiceTent1):
+        if EventFlowSystemActor.OfficeLevel() in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 2
-        elif fEvent45 == ResServiceBuilding:
+        else:
             subflow_results[0] = 5
     elif fEvent23 == Basement:
-        fEvent48 = EventFlowSystemActor.OfficeLevel()
-        if fEvent48 in (ResServiceTent0, ResServiceTent1):
+        if EventFlowSystemActor.OfficeLevel() in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 1
-        elif fEvent48 == ResServiceBuilding:
+        else:
             subflow_results[0] = 4
     return
 

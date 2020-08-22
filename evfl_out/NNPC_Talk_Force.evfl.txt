@@ -17,11 +17,10 @@ flow Flea:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:004', false)
                 MainNpc.NpcAddFriendship(5)
         elif fEvent70 == 5:
-            fEvent71 = EventFlowSystemActor.EnvSeason()
-            if fEvent71 in (Spring, Autumn, Winter):
+            if EventFlowSystemActor.EnvSeason() in (Spring, Autumn, Winter):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:004', false)
                 MainNpc.NpcAddFriendship(5)
-            elif fEvent71 == Summer:
+            else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Force/BO_Force_Flea:003', false)
                 MainNpc.NpcAddFriendship(5)
     elif fEvent26 == 2:

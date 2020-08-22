@@ -147,35 +147,28 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:101', false)
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:102', false)
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:103', false)
-        fEvent0 = EventFlowSystemActor.EnvSpecialWeather()
-        if fEvent0 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
+        if EventFlowSystemActor.EnvSpecialWeather() in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                run PresentRecipe
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
-        elif fEvent0 == HeavyShowerEvening:
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                run PresentRecipe
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            run PresentRecipe
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
     elif not event_flags_system['cPlayer:OwsTalkedToday']:
         event_flags_system['cPlayer:OwsTalkedToday'] = true
-        fEvent27 = EventFlowSystemActor.EnvSpecialWeather()
-        if fEvent27 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
+        if EventFlowSystemActor.EnvSpecialWeather() in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:001', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:004', false)
-        elif fEvent27 == HeavyShowerEvening:
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:002', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe

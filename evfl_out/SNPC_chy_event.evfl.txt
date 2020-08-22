@@ -18,10 +18,8 @@ entrypoint Event76:
 entrypoint Event360:
                 fEvent360 = EventFlowSystemActor.EventCheck('InsectConvention')
                 if fEvent360 in (0, 1, 2):
-                    fEvent426 = EventFlowSystemActor.EnvWeatherArea()
-                    if fEvent426 == cWeatherArea_North:
-                        fEvent274 = EventFlowSystemActor.EnvMonth()
-                        if fEvent274 in (January, February, March, April, May, June, July, August):
+                    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                        if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August):
                             fEvent275 = EventFlowSystemActor.RandomChoice3(3)
                             if fEvent275 == 0:
                                 run sub_Event276
@@ -29,7 +27,7 @@ entrypoint Event360:
                                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
                             elif fEvent275 == 2:
                                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                        elif fEvent274 in (September, October, November, December):
+                        else:
                             fEvent279 = EventFlowSystemActor.RandomChoice3(3)
                             if fEvent279 == 0:
                                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
@@ -37,7 +35,7 @@ entrypoint Event360:
                                 run sub_Event280
                             elif fEvent279 == 2:
                                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
-                    elif fEvent426 == cWeatherArea_South:
+                    else:
                         fEvent427 = EventFlowSystemActor.EnvMonth()
                         if fEvent427 in (January, February, March, April, May, June, July, August, September, November):
                             fEvent275 = EventFlowSystemActor.RandomChoice3(3)
@@ -61,10 +59,8 @@ entrypoint Event360:
 entrypoint Event360:
             fEvent360 = EventFlowSystemActor.EventCheck('InsectConvention')
             if fEvent360 in (0, 1, 2):
-                fEvent426 = EventFlowSystemActor.EnvWeatherArea()
-                if fEvent426 == cWeatherArea_North:
-                    fEvent274 = EventFlowSystemActor.EnvMonth()
-                    if fEvent274 in (January, February, March, April, May, June, July, August):
+                if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                    if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August):
                         fEvent275 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent275 == 0:
                             run sub_Event276
@@ -72,7 +68,7 @@ entrypoint Event360:
                             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
                         elif fEvent275 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                    elif fEvent274 in (September, October, November, December):
+                    else:
                         fEvent279 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent279 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
@@ -80,7 +76,7 @@ entrypoint Event360:
                             run sub_Event280
                         elif fEvent279 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
-                elif fEvent426 == cWeatherArea_South:
+                else:
                     fEvent427 = EventFlowSystemActor.EnvMonth()
                     if fEvent427 in (January, February, March, April, May, June, July, August, September, November):
                         fEvent275 = EventFlowSystemActor.RandomChoice3(3)
@@ -817,18 +813,15 @@ flow SellBOX:
             if fEvent107 in (0, 1):
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:127', false)
             elif fEvent107 == 2:
-                fEvent204 = EventFlowSystemActor.EnvWeatherArea()
-                if fEvent204 == cWeatherArea_North:
-                    fEvent203 = EventFlowSystemActor.EnvMonth()
-                    if fEvent203 in (January, February, March, April, May, June, July, August):
+                if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                    if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August):
                         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:128', false)
-                    elif fEvent203 in (September, October, November, December):
+                    else:
                         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:129', false)
-                elif fEvent204 == cWeatherArea_South:
-                    fEvent207 = EventFlowSystemActor.EnvMonth()
-                    if fEvent207 in (January, February, March, April, May, June, July, August, September, October, November):
+                else:
+                    if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September, October, November):
                         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:128', false)
-                    elif fEvent207 == December:
+                    else:
                         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:129', false)
             elif fEvent107 == 3:
                 run Talk_AfterEv
@@ -1038,20 +1031,16 @@ entrypoint Event157:
 entrypoint Event179:
             if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:042', true)
+            elif EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
+                if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August):
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
             else:
-                fEvent402 = EventFlowSystemActor.EnvWeatherArea()
-                if fEvent402 == cWeatherArea_North:
-                    fEvent185 = EventFlowSystemActor.EnvMonth()
-                    if fEvent185 in (January, February, March, April, May, June, July, August):
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
-                    elif fEvent185 in (September, October, November, December):
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
-                elif fEvent402 == cWeatherArea_South:
-                    fEvent425 = EventFlowSystemActor.EnvMonth()
-                    if fEvent425 in (January, February, March, April, May, June, July, August, September, October, November):
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
-                    elif fEvent425 == December:
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
+                if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September, October, November):
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
 
 flow sub_grp!Event337:
     if EventFlowSystemActor.IsSharePlay(0):
@@ -1100,14 +1089,13 @@ flow sub_grp!Event398:
             else:
                 fEvent433 = EventFlowSystemActor.EventCheck('InsectConvention')
                 if fEvent433 in (0, 1, 2):
-                    fEvent394 = EventFlowSystemActor.EnvWeatherArea()
-                    if fEvent394 == cWeatherArea_North:
+                    if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
                         fEvent391 = EventFlowSystemActor.EnvMonth()
                         if fEvent391 in (June, July, August):
                             run AfterEv_TalkNextMonth
                         elif fEvent391 == September:
                             run AfterEv_TalkNextYear
-                    elif fEvent394 == cWeatherArea_South:
+                    else:
                         fEvent395 = EventFlowSystemActor.EnvMonth()
                         if fEvent395 in (January, February, November):
                             run AfterEv_TalkNextMonth
@@ -1118,14 +1106,13 @@ flow sub_grp!Event398:
     else:
         fEvent433 = EventFlowSystemActor.EventCheck('InsectConvention')
         if fEvent433 in (0, 1, 2):
-            fEvent394 = EventFlowSystemActor.EnvWeatherArea()
-            if fEvent394 == cWeatherArea_North:
+            if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
                 fEvent391 = EventFlowSystemActor.EnvMonth()
                 if fEvent391 in (June, July, August):
                     run AfterEv_TalkNextMonth
                 elif fEvent391 == September:
                     run AfterEv_TalkNextYear
-            elif fEvent394 == cWeatherArea_South:
+            else:
                 fEvent395 = EventFlowSystemActor.EnvMonth()
                 if fEvent395 in (January, February, November):
                     run AfterEv_TalkNextMonth
@@ -1144,14 +1131,13 @@ flow sub_grp!Event407:
 flow sub_grp!Event430:
     fEvent430 = EventFlowSystemActor.EventCheck('InsectConvention')
     if fEvent430 in (0, 1, 2):
-        fEvent428 = EventFlowSystemActor.EnvWeatherArea()
-        if fEvent428 == cWeatherArea_North:
+        if EventFlowSystemActor.EnvWeatherArea() == cWeatherArea_North:
             fEvent314 = EventFlowSystemActor.EnvMonth()
             if fEvent314 in (June, July, August):
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:086', false)
             elif fEvent314 == September:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:087', false)
-        elif fEvent428 == cWeatherArea_South:
+        else:
             fEvent429 = EventFlowSystemActor.EnvMonth()
             if fEvent429 in (January, February, November):
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:086', false)

@@ -182,31 +182,17 @@ entrypoint Event107:
             fEvent15 = EventFlowSystemActor.EnvTimeZone()
             if fEvent15 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_01', false)
-entrypoint Event145:
-                if subflow_results[0] == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                    run hgh_Peddler_Sel_3B_Housing
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                    run sub_grp!Event93
             elif fEvent15 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_02', false)
-entrypoint Event145:
-                if subflow_results[0] == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                    run hgh_Peddler_Sel_3B_Housing
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                    run sub_grp!Event93
             elif fEvent15 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_03', false)
 entrypoint Event145:
-                if subflow_results[0] == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                    run hgh_Peddler_Sel_3B_Housing
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                    run sub_grp!Event93
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
+                run hgh_Peddler_Sel_3B_Housing
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
+                run sub_grp!Event93
         elif event_flags_system['cPlayer:HghPeddlerPurchaceToday']:
             if subflow_results[0] == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:107', false)

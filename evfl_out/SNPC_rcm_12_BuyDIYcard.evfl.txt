@@ -29,12 +29,9 @@ entrypoint Event77:
         MainNpc.NpcSetQuestRewardToPlayerBaggage('cFree')
         event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
-        fEvent33 = EventFlowSystemActor.ShopLevel()
-        if fEvent33 == InResServiceTent:
-            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
-        elif fEvent33 in (NooksCrannyInitial, NooksCrannyUpgraded):
+        if EventFlowSystemActor.ShopLevel() != InResServiceTent:
             Player.TurnBody(13, 0.0)
-            run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
+        run SNPC_rcm_00_Common::Rcm_Common_BuyAgain
     elif fEvent87 == 1:
         fEvent90 = subflow_results[1]
         if fEvent90 == 0:

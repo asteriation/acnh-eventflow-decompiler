@@ -69,67 +69,7 @@ flow Root:
         if fEvent36 == 0:
             fEvent35 = EventFlowSystemActor.ShopLevel()
             if fEvent35 == InResServiceTent:
-                if event_flags_system['cPlayer:RcmTalked1stAfterPrologue']:
-                    fEvent47 = EventFlowSystemActor.PlayerHouseLevel()
-                    if fEvent47 in (Homeless, PlacedTent):
-entrypoint Event3:
-                        run SNPC_rcm_00_Common::Root
-                        run Rcm_SeqClose
-                    elif fEvent47 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-                        if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                            if not event_flags_system['cPlayer:RcmTookQuestReq']:
-                                run SNPC_rcm_01_Tent_1_Entries::Request
-entrypoint Event7:
-                                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                                EventFlowSystemActor.UIMoneyDisappear()
-                                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                                EventFlowSystemActor.ExitFlowchart()
-                            elif not event_flags_system['cLand:RcmShopMaterialComplete']:
-                                run SNPC_rcm_01_Tent_1_Entries::Root
-entrypoint Event7:
-                                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                                EventFlowSystemActor.UIMoneyDisappear()
-                                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                                EventFlowSystemActor.ExitFlowchart()
-                            elif not event_flags_system['cPlayer:Prologue4RcmGetTent']:
-                                run SNPC_rcm_00_Common::Root
-entrypoint Event7:
-                                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                                EventFlowSystemActor.UIMoneyDisappear()
-                                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                                EventFlowSystemActor.ExitFlowchart()
-                            elif event_flags_system['cPlayer:Prologue4RcmBuiltShop']:
-                                run SNPC_rcm_00_Common::Root
-entrypoint Event7:
-                                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                                EventFlowSystemActor.UIMoneyDisappear()
-                                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                                EventFlowSystemActor.ExitFlowchart()
-                            else:
-                                run SNPC_rcm_01_Tent_1_Entries::ReportTent
-entrypoint Event7:
-                                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                                EventFlowSystemActor.UIMoneyDisappear()
-                                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                                EventFlowSystemActor.ExitFlowchart()
-                        else:
-                            run Not1stPlayer_ShopRequest
-                else:
+                if not event_flags_system['cPlayer:RcmTalked1stAfterPrologue']:
                     run SNPC_rcm_01_Tent_0_1stShopping::Root
 entrypoint Event7:
                     event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
@@ -139,6 +79,63 @@ entrypoint Event7:
                     event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
                     event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
                     EventFlowSystemActor.ExitFlowchart()
+                elif EventFlowSystemActor.PlayerHouseLevel() in (Homeless, PlacedTent):
+entrypoint Event3:
+                    run SNPC_rcm_00_Common::Root
+                    run Rcm_SeqClose
+                elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                    if not event_flags_system['cPlayer:RcmTookQuestReq']:
+                        run SNPC_rcm_01_Tent_1_Entries::Request
+entrypoint Event7:
+                        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                        EventFlowSystemActor.UIMoneyDisappear()
+                        event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                        event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif not event_flags_system['cLand:RcmShopMaterialComplete']:
+                        run SNPC_rcm_01_Tent_1_Entries::Root
+entrypoint Event7:
+                        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                        EventFlowSystemActor.UIMoneyDisappear()
+                        event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                        event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif not event_flags_system['cPlayer:Prologue4RcmGetTent']:
+                        run SNPC_rcm_00_Common::Root
+entrypoint Event7:
+                        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                        EventFlowSystemActor.UIMoneyDisappear()
+                        event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                        event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif event_flags_system['cPlayer:Prologue4RcmBuiltShop']:
+                        run SNPC_rcm_00_Common::Root
+entrypoint Event7:
+                        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                        EventFlowSystemActor.UIMoneyDisappear()
+                        event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                        event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        run SNPC_rcm_01_Tent_1_Entries::ReportTent
+entrypoint Event7:
+                        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                        EventFlowSystemActor.UIMoneyDisappear()
+                        event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                        event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                        event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+                    run Not1stPlayer_ShopRequest
             elif fEvent35 == NooksCrannyInitial:
                 if event_flags_system['cPlayer:TwinTurnipExplanation']:
                     run SNPC_rcm_00_Common::Root

@@ -18,8 +18,7 @@ entrypoint Event405:
 entrypoint Event79:
                 fEvent79 = EventFlowSystemActor.EventCheck('FishingConvention')
                 if fEvent79 in (0, 1, 2):
-                    fEvent246 = EventFlowSystemActor.EnvMonth()
-                    if fEvent246 in (January, February, March, April, May, June, July, August, September):
+                    if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                         fEvent247 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent247 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:101', false)
@@ -27,7 +26,7 @@ entrypoint Event79:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:102', false)
                         elif fEvent247 == 2:
                             run sub_Event250
-                    elif fEvent246 in (October, November, December):
+                    else:
                         fEvent251 = EventFlowSystemActor.RandomChoice3(3)
                         if fEvent251 == 0:
                             run sub_Event250
@@ -41,8 +40,7 @@ entrypoint Event79:
 entrypoint Event79:
             fEvent79 = EventFlowSystemActor.EventCheck('FishingConvention')
             if fEvent79 in (0, 1, 2):
-                fEvent246 = EventFlowSystemActor.EnvMonth()
-                if fEvent246 in (January, February, March, April, May, June, July, August, September):
+                if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                     fEvent247 = EventFlowSystemActor.RandomChoice3(3)
                     if fEvent247 == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:101', false)
@@ -50,7 +48,7 @@ entrypoint Event79:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:102', false)
                     elif fEvent247 == 2:
                         run sub_Event250
-                elif fEvent246 in (October, November, December):
+                else:
                     fEvent251 = EventFlowSystemActor.RandomChoice3(3)
                     if fEvent251 == 0:
                         run sub_Event250
@@ -84,10 +82,9 @@ entrypoint Event343:
                 else:
                     fEvent178 = EventFlowSystemActor.EventCheck('FishingConvention')
                     if fEvent178 in (0, 1, 2):
-                        fEvent285 = EventFlowSystemActor.EnvMonth()
-                        if fEvent285 in (January, February, March, April, May, June, July, August, September):
+                        if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:086', false)
-                        elif fEvent285 in (October, November, December):
+                        else:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:087', false)
                     elif fEvent178 == 3:
                         run TalkAfterEvent
@@ -718,10 +715,9 @@ flow SellBOX:
             if fEvent107 in (0, 1):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:127', false)
             elif fEvent107 == 2:
-                fEvent111 = EventFlowSystemActor.EnvMonth()
-                if fEvent111 in (January, February, March, April, May, June, July, August, September):
+                if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:128', false)
-                elif fEvent111 in (October, November, December):
+                else:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:129', false)
             elif fEvent107 == 3:
                 run TalkAfterEvent
@@ -1030,15 +1026,12 @@ entrypoint Event293:
 entrypoint Event307:
                     if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                        MainNpc.SmartPhone(1)
                     else:
-                        fEvent313 = EventFlowSystemActor.EnvMonth()
-                        if fEvent313 in (January, February, March, April, May, June, July, August, September):
+                        if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
-                            MainNpc.SmartPhone(1)
-                        elif fEvent313 in (October, November, December):
+                        else:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                            MainNpc.SmartPhone(1)
+                    MainNpc.SmartPhone(1)
     else:
         if event_flags_system['cPlayerTemp:CatchFishFesGetNum'] >= 1:
             if EventFlowSystemActor.IsSharePlay(0):
@@ -1153,15 +1146,12 @@ entrypoint Event293:
 entrypoint Event307:
                     if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:042', true)
-                        MainNpc.SmartPhone(1)
                     else:
-                        fEvent313 = EventFlowSystemActor.EnvMonth()
-                        if fEvent313 in (January, February, March, April, May, June, July, August, September):
+                        if EventFlowSystemActor.EnvMonth() in (January, February, March, April, May, June, July, August, September):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:044', true)
-                            MainNpc.SmartPhone(1)
-                        elif fEvent313 in (October, November, December):
+                        else:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_event:043', true)
-                            MainNpc.SmartPhone(1)
+                    MainNpc.SmartPhone(1)
 
 flow sub_grp!Event344:
     if event_flags_system['cPlayer:CatchFishFesCount'] >= 10:

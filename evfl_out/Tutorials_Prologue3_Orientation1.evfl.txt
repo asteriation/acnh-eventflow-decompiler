@@ -46,26 +46,22 @@ flow Greeting:
     return
 
 flow Rco_Orientation2P_Office:
-    fEvent49 = EventFlowSystemActor.OfficeLevel()
-    if fEvent49 in (ResServiceTent0, ResServiceTent1):
-        fEvent57 = EventFlowSystemActor.ShopLevel()
-        if fEvent57 == InResServiceTent:
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_01', false)
-        elif fEvent57 in (NooksCrannyInitial, NooksCrannyUpgraded):
-            if not event_flags_system['cLand:EnableBuildTownOffice']:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_02', false)
-            elif event_flags_system['cLand:OfficeConstruction1']:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_04', false)
-            else:
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_02', false)
-                MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_03', false)
-    elif fEvent49 == ResServiceBuilding:
+    if EventFlowSystemActor.OfficeLevel() not in (ResServiceTent0, ResServiceTent1):
         if EventFlowSystemActor.EnvSameDate('cEndOfTheYear', 'cGrowUpTime'):
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_07', false)
         else:
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_05', false)
             if EventFlowSystemActor.EnvSameDate('cPreEndOfTheYear', 'cGrowUpTime'):
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_06', false)
+    elif EventFlowSystemActor.ShopLevel() == InResServiceTent:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_01', false)
+    elif not event_flags_system['cLand:EnableBuildTownOffice']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_02', false)
+    elif event_flags_system['cLand:OfficeConstruction1']:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_04', false)
+    else:
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_02', false)
+        MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue3_Orientation1:112_03', false)
     return
 
 flow Root:

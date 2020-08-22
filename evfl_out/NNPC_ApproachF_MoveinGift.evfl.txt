@@ -7,104 +7,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 == 1:
         subflow_results[0] = 1
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -112,104 +43,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 in (2, 3):
         subflow_results[0] = 0
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -217,104 +79,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 == 4:
         subflow_results[0] = 2
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -322,104 +115,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 == 5:
         subflow_results[0] = 1
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -427,104 +151,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 == 6:
         subflow_results[0] = 2
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -532,104 +187,35 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     elif fEvent22 == 7:
         subflow_results[0] = 1
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
@@ -637,103 +223,34 @@ flow Root:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
             if fEvent6 in (Morning0, Morning1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_01', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Afternoon0, Afternoon1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_02', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
             elif fEvent6 in (Evening0, Evening1):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_03', false)
-                if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-                if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                    fEvent30 = subflow_results[0]
-                    if fEvent30 == 0:
-                        MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                    elif fEvent30 == 1:
-                        MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    elif fEvent30 == 2:
-                        MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.WrapDeliveryItem()
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                    MainNpc.NpcDelivery('Default', 2)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:001_04', false)
-            if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
-            if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
-                fEvent30 = subflow_results[0]
-                if fEvent30 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
-                elif fEvent30 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                elif fEvent30 == 2:
-                    MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.WrapDeliveryItem()
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
-                MainNpc.NpcDelivery('Default', 2)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
+        if event_flag_npc['cNpcMemory:FirstGreetingAtNpcHome']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:002', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:003', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:004', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:005', true)
+            fEvent30 = subflow_results[0]
+            if fEvent30 == 0:
+                MainNpc.NpcDecideRewardByCondition(0, 11, false, true)
+            elif fEvent30 == 1:
+                MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
+            elif fEvent30 == 2:
+                MainNpc.NpcDecideRewardByCondition(250, 9, true, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.WrapDeliveryItem()
+            MainNpc.NpcDelivery('Keep', 1)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:006', false)
+            MainNpc.NpcDelivery('Default', 2)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
     return
 

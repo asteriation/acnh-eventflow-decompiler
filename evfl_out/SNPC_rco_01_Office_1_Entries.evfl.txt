@@ -39,27 +39,15 @@ flow IslandDevelopmentIntro:
             run SNPC_rco_54_IslandDevelopment::Root
         elif fEvent16 == 2:
             run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-    elif event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading']:
-        fEvent102 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent102 in (Homeless, PlacedTent):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-                run SNPC_rco_00_Common::Root
-            else:
-                run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-        elif fEvent102 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02', false)
-            event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-                run SNPC_rco_00_Common::Root
-            else:
-                run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_03', false)
+        if event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading']:
+            if EventFlowSystemActor.PlayerHouseLevel() in (Homeless, PlacedTent):
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02', false)
+                event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_03', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
