@@ -1,0 +1,8 @@
+.*.s??
+.*.un~
+_unused
+bfevfl_*
+Info
+evfl
+__pycache__
+env
