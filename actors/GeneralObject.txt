@@ -1,0 +1,10 @@
+Actor GeneralObject
+actions:
+- StartAnimation(ActionName: str, ActionType: str)
+- SetTagFromSystem(TagID: int, TagType: str, SetTagType: str, AccessKey: str, Value: any)
+queries:
+- SettlerQuest() -> int4
+- CheckLockReason() -> int6
+- HouseOwnerLooks() -> int8
+- HouseIsTent() -> bool (inverted)
+- CheckPlayerHouseLockReason() -> int3
