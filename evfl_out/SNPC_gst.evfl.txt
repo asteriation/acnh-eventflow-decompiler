@@ -35,10 +35,10 @@ flow Gst_Choose_Item_NotHave:
 flow Gst_Choose_Item_Rich:
     if EventFlowSystemActor.PercentChoice(90):
         fEvent99 = subflow_results[0]
-        if fEvent99 == 1:
-            MainNpc.GstDecideReward(false, Wallpaper, 1850, 10000)
-        elif fEvent99 == 0:
+        if fEvent99 == 0:
             MainNpc.GstDecideReward(false, Furniture, 2000, 15000)
+        elif fEvent99 == 1:
+            MainNpc.GstDecideReward(false, Wallpaper, 1850, 10000)
         elif fEvent99 == 2:
             MainNpc.GstDecideReward(false, Flooring, 1850, 10000)
         elif fEvent99 == 3:
@@ -65,10 +65,10 @@ flow Gst_Hit:
     fEvent87 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
     if fEvent87 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_01', true)
-    elif fEvent87 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_03', true)
     elif fEvent87 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_02', true)
+    elif fEvent87 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/gst/SP_gst:065_03', true)
     return
 
 flow Gst_Quest:

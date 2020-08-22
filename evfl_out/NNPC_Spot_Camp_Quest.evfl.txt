@@ -16,8 +16,8 @@ flow Talk_QuestClear:
             MainNpc.SetDeliveryItem(4, true)
             MainNpc.NpcDelivery('Keep', 0)
             fEvent49 = MainNpc.CheckCamperNpcMovePoint()
-            if fEvent49 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:207', false)
+            if fEvent49 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:205', false)
                 MainNpc.NpcDelivery('Default', 3)
                 EventFlowSystemActor.SelectRewardItemCampGame('cVeryGood')
                 MainNpc.SetDeliveryItem(1, true)
@@ -126,8 +126,8 @@ flow Talk_QuestClear:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:209_03', false)
                         event_flags_system['cLand:CampQuestClear'] = true
                         MainNpc.SaveCampNpcQuestFtr()
-            elif fEvent49 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:205', false)
+            elif fEvent49 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Quest:207', false)
                 MainNpc.NpcDelivery('Default', 3)
                 EventFlowSystemActor.SelectRewardItemCampGame('cVeryGood')
                 MainNpc.SetDeliveryItem(1, true)

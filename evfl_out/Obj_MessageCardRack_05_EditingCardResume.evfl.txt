@@ -20,14 +20,28 @@ flow EntryPoint_ReEditKeepCard:
     EventFlowSystemActor.UIMoneyDisappear()
     EventFlowSystemActor.UITempMsgCardHandling()
     fEvent4 = EventFlowSystemActor.UIManageUnfinishedMessage()
-    if fEvent4 == 3:
-        run Obj_MessageCardRack::EntryPoint_CancelNega
-    elif fEvent4 == 1:
-        run EntryPoint_ChangeToName
-    elif fEvent4 == 0:
+    if fEvent4 == 0:
         EventFlowSystemActor.NetUpdateFriendList('cFriendOnly')
         fEvent24 = EventFlowSystemActor.IsValidUnfinishMailTo()
-        if fEvent24 == 1:
+        if fEvent24 == 0:
+            fEvent12 = EventFlowSystemActor.UnfinishMailToType()
+            if fEvent12 == 0:
+                if EventFlowSystemActor.HasFreeInPostOffice('cToNpc'):
+                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditNPC
+                else:
+                    run Obj_MessageCardRack::EntryPoint_StockFull
+            elif fEvent12 == 1:
+                if EventFlowSystemActor.HasFreeInPostOffice('cToVillagePlayer'):
+                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
+                else:
+                    run Obj_MessageCardRack::EntryPoint_StockFull
+            elif fEvent12 == 2:
+                run Obj_MessageCardRack_03_SendFriend::EntryPoint_EditFriend
+            elif fEvent12 == 3:
+                run Obj_MessageCardRack_02_SendFuture::EntryPoint_EditFuture
+            elif fEvent12 == 4:
+                run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
+        elif fEvent24 == 1:
             EventFlowSystemActor.SetTagNameUnfinishMail(0, 'cCommonNpc')
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:611', false)
             run sub_grp!Event29
@@ -35,26 +49,12 @@ flow EntryPoint_ReEditKeepCard:
             EventFlowSystemActor.SetTagNameUnfinishMail(0, 'cCommonPlayer')
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:610', false)
             run sub_grp!Event29
-        elif fEvent24 == 0:
-            fEvent12 = EventFlowSystemActor.UnfinishMailToType()
-            if fEvent12 == 3:
-                run Obj_MessageCardRack_02_SendFuture::EntryPoint_EditFuture
-            elif fEvent12 == 2:
-                run Obj_MessageCardRack_03_SendFriend::EntryPoint_EditFriend
-            elif fEvent12 == 4:
-                run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
-            elif fEvent12 == 1:
-                if EventFlowSystemActor.HasFreeInPostOffice('cToVillagePlayer'):
-                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditPlayer
-                else:
-                    run Obj_MessageCardRack::EntryPoint_StockFull
-            elif fEvent12 == 0:
-                if EventFlowSystemActor.HasFreeInPostOffice('cToNpc'):
-                    run Obj_MessageCardRack_01_SendVillage::EntryPoint_EditNPC
-                else:
-                    run Obj_MessageCardRack::EntryPoint_StockFull
+    elif fEvent4 == 1:
+        run EntryPoint_ChangeToName
     elif fEvent4 == 2:
         run EntryPoint_RemoveCard
+    elif fEvent4 == 3:
+        run Obj_MessageCardRack::EntryPoint_CancelNega
     return
 
 flow EntryPoint_RemoveCard:
@@ -79,16 +79,16 @@ flow EntryPoint_RemoveCard:
 flow Root:
     if subflow_results[1] == 0:
         fEvent6 = EventFlowSystemActor.UnfinishMailToType()
-        if fEvent6 == 3:
-            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:602', false)
-            run EntryPoint_ReEditKeepCard
-        elif fEvent6 == 0:
+        if fEvent6 == 0:
             EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToNpc', 'cDegit', '', 0)
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:601', false)
             run EntryPoint_ReEditKeepCard
         elif fEvent6 in (1, 2):
             EventFlowSystemActor.SetTagFromSystem(0, 'cTemporaryMailToPlayer', 'cDegit', '', 0)
             DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:600', false)
+            run EntryPoint_ReEditKeepCard
+        elif fEvent6 == 3:
+            DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:602', false)
             run EntryPoint_ReEditKeepCard
     else:
         DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:604', false)

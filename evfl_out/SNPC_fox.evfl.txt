@@ -117,37 +117,21 @@ flow Root_LeaveShop:
 flow Root_Talk:
     run FirstTalk_Setting
     fEvent86 = subflow_results[0]
-    if fEvent86 == 1:
-        event_flags_system['cPlayer:FoxFirstTalkInShipFlag'] = true
-        run FirstTalkInShip
-    elif fEvent86 == 2:
-        event_flags_system['cPlayer:FoxTalkTodayFlag'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
-    elif fEvent86 == 3:
-        event_flags_system['cPlayerVisit:FoxTalkFlag'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
-    elif fEvent86 == 0:
+    if fEvent86 == 0:
         if MainNpc.FoxBuyGalleryForThisIsland():
             fEvent28 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent28 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:203', false)
-            elif fEvent28 == 0:
+            if fEvent28 == 0:
                 run Talk_AfterBuy
             elif fEvent28 == 1:
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:202', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:205', false)
+            elif fEvent28 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:203', false)
         else:
             fEvent109 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent109 == 2:
-                if event_flags_system['cLand:FoxArtStockCount'] <= 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:207', false)
-                elif event_flags_system['cLand:FoxArtStockCount'] <= 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:208', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:209', false)
-            elif fEvent109 == 0:
+            if fEvent109 == 0:
                 if event_flags_system['cPlayer:FoxBuyTodayFlag']:
                     run Talk_AfterBuy
                 else:
@@ -157,6 +141,22 @@ flow Root_Talk:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:204', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:206', false)
+            elif fEvent109 == 2:
+                if event_flags_system['cLand:FoxArtStockCount'] <= 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:207', false)
+                elif event_flags_system['cLand:FoxArtStockCount'] <= 1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:208', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:209', false)
+    elif fEvent86 == 1:
+        event_flags_system['cPlayer:FoxFirstTalkInShipFlag'] = true
+        run FirstTalkInShip
+    elif fEvent86 == 2:
+        event_flags_system['cPlayer:FoxTalkTodayFlag'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
+    elif fEvent86 == 3:
+        event_flags_system['cPlayerVisit:FoxTalkFlag'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:201', false)
     return
 
 flow Root_Visit:

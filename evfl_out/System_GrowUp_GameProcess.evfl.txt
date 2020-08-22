@@ -72,19 +72,19 @@ flow NNpcContractCounter:
         event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
     elif EventFlowSystemActor.NpcHouseNum('cConstructed') < 5:
         fEvent18 = subflow_results[3]
-        if fEvent18 in (2, 3, 4):
+        if fEvent18 == 0:
+            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+        elif fEvent18 == 1:
+            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 1
+            if subflow_results[2] == 0:
+                event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
+        elif fEvent18 in (2, 3, 4):
             event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 3
             fEvent19 = subflow_results[2]
             if fEvent19 == 0:
                 event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
             elif fEvent19 == 1:
                 event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 1
-        elif fEvent18 == 1:
-            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 1
-            if subflow_results[2] == 0:
-                event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
-        elif fEvent18 == 0:
-            event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
     else:
         event_flags_system['cLand:NNpcContractProbablityAddPoint'] = 0
     return

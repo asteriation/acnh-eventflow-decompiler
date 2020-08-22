@@ -114,15 +114,15 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:002', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:022', false)
         fEvent130 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent130 == 3:
-            run Sel_EndMenu
-        elif fEvent130 == 2:
-            run SNPC_rco_94_SavedataRecoveringSettings::Root
-        elif fEvent130 == 0:
+        if fEvent130 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:021', false)
             run SaveSetting_Main
         elif fEvent130 == 1:
             run SNPC_rco_93_BlancoSettings::WebSetting_Main
+        elif fEvent130 == 2:
+            run SNPC_rco_94_SavedataRecoveringSettings::Root
+        elif fEvent130 == 3:
+            run Sel_EndMenu
     return
 
 flow Root_Delete_MainP:
@@ -177,13 +177,13 @@ entrypoint Event57:
 entrypoint Event24:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:111', false)
             fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent26 == 1:
+            if fEvent26 == 0:
+                run Sel_CurrentP
+            elif fEvent26 == 1:
                 run ExplainDeleteManPc
                 run AfterMainPcDeleteExplain_Sg
             elif fEvent26 == 2:
                 run Delete_Cancel
-            elif fEvent26 == 0:
-                run Sel_CurrentP
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_01', false)
             run Cmn_NormalSel
@@ -191,13 +191,13 @@ entrypoint Event24:
 entrypoint Event83:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:112', false)
         fEvent84 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent84 == 1:
+        if fEvent84 == 0:
+            run Sel_CurrentP
+        elif fEvent84 == 1:
             run Cel_OtherP
         elif fEvent84 == 2:
             run ExplainDeleteManPc
             run AfterMainPcDeleteExplain_Pl
-        elif fEvent84 == 0:
-            run Sel_CurrentP
         elif fEvent84 == 3:
             run Delete_Cancel
     else:
@@ -205,12 +205,12 @@ entrypoint Event83:
 entrypoint Event94:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:104', false)
         fEvent59 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent59 == 1:
+        if fEvent59 == 0:
+            run Sel_CurrentP
+        elif fEvent59 == 1:
             run Cel_OtherP
         elif fEvent59 == 2:
             run Delete_Cancel
-        elif fEvent59 == 0:
-            run Sel_CurrentP
     return
 
 flow SaveSetting_Main:
@@ -218,25 +218,25 @@ flow SaveSetting_Main:
 entrypoint Event107:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:012', false)
         fEvent108 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent108 == 2:
-            run Sel_EndMenu
+        if fEvent108 == 0:
+            run Root_Delete_MainP
         elif fEvent108 == 1:
             run Explain
-        elif fEvent108 == 0:
-            run Root_Delete_MainP
+        elif fEvent108 == 2:
+            run Sel_EndMenu
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:010_01', false)
 entrypoint Event33:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:011', false)
         fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent1 == 2:
-entrypoint Event0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:051', false)
-            run Seq_Close
-        elif fEvent1 == 0:
+        if fEvent1 == 0:
             run Root_Delete_OtherP
         elif fEvent1 == 1:
             run Explain
+        elif fEvent1 == 2:
+entrypoint Event0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:051', false)
+            run Seq_Close
     return
 
 flow Sel_CurrentP:

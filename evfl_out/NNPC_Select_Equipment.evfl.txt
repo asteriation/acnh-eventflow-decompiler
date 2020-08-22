@@ -26,7 +26,11 @@ flow Root:
         if MainNpc.IsNpcPlayerRelativeItem() != 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
         fEvent18 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Tops', 'OnePiece', 'Cap', 'Accessory')
-        if fEvent18 == 1:
+        if fEvent18 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:206', true)
+            MainNpc.NpcDelivery('"Default"', 4)
+            MainNpc.UpdateNpcUsuallyTops('cCap')
+        elif fEvent18 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:201', true)
             MainNpc.NpcDelivery('"Default"', 4)
             MainNpc.UpdateNpcUsuallyTops('cTops')
@@ -34,10 +38,6 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:202', true)
             MainNpc.NpcDelivery('"Default"', 4)
             MainNpc.UpdateNpcUsuallyTops('cTops')
-        elif fEvent18 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:206', true)
-            MainNpc.NpcDelivery('"Default"', 4)
-            MainNpc.UpdateNpcUsuallyTops('cCap')
         elif fEvent18 == 3:
             if any ('HeadHairAcce', '', '', '', '', '', '', '') in EventFlowSystemActor.CategoryItemSelect('cItemSelect'):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:203', true)

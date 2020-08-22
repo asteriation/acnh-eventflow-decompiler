@@ -33,10 +33,10 @@ flow NNPC_AfterEV:
 
 flow NNPC_BeforeEV:
     fEvent0 = EventFlowSystemActor.RandomChoice3(3)
-    if fEvent0 == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:002', true)
-    elif fEvent0 == 0:
+    if fEvent0 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:001', true)
+    elif fEvent0 == 1:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:002', true)
     elif fEvent0 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:003', true)
     EventFlowSystemActor.ExitFlowchart()
@@ -57,16 +57,16 @@ flow NNPC_OpenEV:
     else:
         event_flags_npc['cNpcMemory:GEventTalkProgressFlag'] = true
         fEvent11 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-        if fEvent11 == 2:
+        if fEvent11 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:004', true)
+        elif fEvent11 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:005', true)
+        elif fEvent11 == 2:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:006', true)
         elif fEvent11 == 3:
             run Month_1.3
         elif fEvent11 == 4:
             run Month_1.4
-        elif fEvent11 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:004', true)
-        elif fEvent11 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_CatchFishFes:005', true)
         EventFlowSystemActor.ExitFlowchart()
     return
 

@@ -69,10 +69,10 @@ flow Root:
                 fEvent0 = EventFlowSystemActor.EnvHourTwentyFour()
                 if fEvent0 in (0, 1, 2, 3, 4):
                     run AI_owl_night
-                elif fEvent0 in (18, 19, 20, 21, 22, 23):
-                    run AI_owl_night
                 elif fEvent0 in (5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
                     run AI_owl_day
+                elif fEvent0 in (18, 19, 20, 21, 22, 23):
+                    run AI_owl_night
     else:
         run AI_owl_changeawake
     return

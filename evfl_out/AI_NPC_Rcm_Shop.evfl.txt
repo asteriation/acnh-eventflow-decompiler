@@ -37,11 +37,11 @@ flow Init:
         MainNpc.NpcAISetting(8, true)
         MainNpc.NpcChangeHeadCtrlMode('cPlayer', false)
         fEvent14 = EventFlowSystemActor.ShopLevel()
-        if fEvent14 == NooksCrannyUpgraded:
-            MainNpc.NpcAISetPosByRail(3, 0, 0.0, true)
-            run sub_grp!Event24
-        elif fEvent14 == NooksCrannyInitial:
+        if fEvent14 == NooksCrannyInitial:
             MainNpc.NpcAISetPosByRail(6, 0, -80.0, true)
+            run sub_grp!Event24
+        elif fEvent14 == NooksCrannyUpgraded:
+            MainNpc.NpcAISetPosByRail(3, 0, 0.0, true)
             run sub_grp!Event24
     else:
         MainNpc.NpcAISetRequestSpeakFunc('cShopClose', false)

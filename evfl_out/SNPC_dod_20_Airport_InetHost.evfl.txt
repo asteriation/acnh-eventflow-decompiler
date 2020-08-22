@@ -46,13 +46,13 @@ flow EntryPoint_InetHost:
                 fEvent19 = EventFlowSystemActor.GeneralTalkChoice4()
                 if fEvent19 == 0:
                     run EntryPoint_Friend
+                elif fEvent19 == 1:
+                    run EntryPoint_BestFriend
+                elif fEvent19 == 2:
+                    run EntryPoint_Keyword
                 elif fEvent19 == 3:
                     EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                     run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                elif fEvent19 == 2:
-                    run EntryPoint_Keyword
-                elif fEvent19 == 1:
-                    run EntryPoint_BestFriend
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:300', false)
                 fEvent48 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -74,12 +74,12 @@ flow EntryPoint_Keyword:
     if EventFlowSystemActor.NetHasAddressData('cBestFriend'):
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:402', false)
         fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent31 == 2:
-            run EntryPoint_KeywordAnybody
-        elif fEvent31 == 0:
+        if fEvent31 == 0:
             run EntryPoint_KeywordOnlyFriend
         elif fEvent31 == 1:
             run EntryPoint_KeywordOnlyBestFriend
+        elif fEvent31 == 2:
+            run EntryPoint_KeywordAnybody
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:401', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -102,11 +102,11 @@ flow EntryPoint_KeywordAnybody:
         EventFlowSystemActor.OpenVillageGate(false)
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:405', true)
         run SNPC_dod_AirPort::EntryPoint_CheckOpenGateFirst
+    elif fEvent55 == 1:
+        run EntryPoint_KeywordOnlyFriend
     elif fEvent55 == 2:
         EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
         run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-    elif fEvent55 == 1:
-        run EntryPoint_KeywordOnlyFriend
     return
 
 flow EntryPoint_KeywordOnlyBestFriend:

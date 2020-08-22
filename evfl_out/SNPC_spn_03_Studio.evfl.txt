@@ -115,10 +115,6 @@ entrypoint Event29:
                         MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:112_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:113', false)
                 run Spn_Explain_Again
-            elif fEvent29 == 4:
-                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_02', false)
-                if not event_flags_system['cPlayer:SpnPhotoStudioGuideDone']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
             elif fEvent29 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:121', false)
                 if event_flags_system['cPlayer:EnableEmoticonUI']:
@@ -139,6 +135,10 @@ entrypoint Event29:
                     run Spn_Explain_Again
                 else:
                     run Spn_Explain_Again
+            elif fEvent29 == 4:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_02', false)
+                if not event_flags_system['cPlayer:SpnPhotoStudioGuideDone']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_01_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_02_Commune:102_02', true)

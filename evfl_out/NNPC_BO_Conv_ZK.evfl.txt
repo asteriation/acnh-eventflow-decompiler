@@ -31,7 +31,18 @@ flow sub_grp!Event61:
                 MainNpc.TurnNeck(1)
         SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:002', false)
         fEvent36 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent36 == 1:
+        if fEvent36 == 0:
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:003', false)
+            fork:
+                branch0:
+                branch1:
+                    Player.TurnNeck(0)
+                branch2:
+                    SubNpc.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:004', false)
+            Player.TurnNeck(1)
+            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:009', false)
+        elif fEvent36 == 1:
             SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:005', false)
             fork:
                 branch0:
@@ -51,17 +62,6 @@ flow sub_grp!Event61:
                 branch2:
                     SubNpc.TurnNeck(0)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:008', false)
-            Player.TurnNeck(1)
-            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:009', false)
-        elif fEvent36 == 0:
-            SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:003', false)
-            fork:
-                branch0:
-                branch1:
-                    Player.TurnNeck(0)
-                branch2:
-                    SubNpc.TurnNeck(0)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:004', false)
             Player.TurnNeck(1)
             SubNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Conv/BO_Conv_ZK:009', false)
     else:

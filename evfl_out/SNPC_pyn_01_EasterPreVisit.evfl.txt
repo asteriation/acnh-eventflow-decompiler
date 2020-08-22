@@ -3,7 +3,9 @@ flow Root:
         if event_flags_system['cPlayerVisit:DC_PynTalkFlag']:
 entrypoint Event59:
             fEvent59 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-            if fEvent59 == 1:
+            if fEvent59 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:022', false)
+            elif fEvent59 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:031', false)
             elif fEvent59 == 2:
                 MainNpc.TurnBody(10, 0.0)
@@ -13,8 +15,6 @@ entrypoint Event59:
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_01', false)
                 MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:024_02', false)
-            elif fEvent59 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:022', false)
             elif fEvent59 == 3:
                 if EventFlowSystemActor.EnvHourOverGrowUp():
                     run Event59

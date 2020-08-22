@@ -43,15 +43,15 @@ entrypoint Event17:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cMyDesignTitle')
                 EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cUpload')
                 fEvent29 = EventFlowSystemActor.UIMyDesignExchangeUploadResult()
-                if fEvent29 == 1:
+                if fEvent29 == 0:
+                    run BackToSelect
+                elif fEvent29 == 1:
                     event_flags_system['cPlayerTemp:MyDesignExchangeCallMyIdList'] = false
                     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2427', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                         run Obj_WorldMyDesignGallery_01_MainScene::MainUI
                     else:
                         run NextSelect
-                elif fEvent29 == 0:
-                    run BackToSelect
                 elif fEvent29 == 2:
                     run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:

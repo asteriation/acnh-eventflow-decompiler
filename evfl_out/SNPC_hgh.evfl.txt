@@ -172,12 +172,12 @@ flow Hgh_Select_BuyTicket:
         MainNpc.ShopBuyDone(true, false)
         run Hgh_Common_BuyTicket
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent145 == 2:
-        run Hgh_Common_Cancel
-        EventFlowSystemActor.ExitFlowchart()
     elif fEvent145 == 1:
         run Hgh_Common_Process_BuyBell
         run Hgh_Common_Buy
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent145 == 2:
+        run Hgh_Common_Cancel
         EventFlowSystemActor.ExitFlowchart()
     return
 

@@ -212,8 +212,6 @@ entrypoint Event82:
     fEvent82 = EventFlowSystemActor.IsDeliveryToOthers()
     if fEvent82 == 0:
         run DeliverVillager
-    elif fEvent82 == 2:
-        run DeliverFriend
     elif fEvent82 == 1:
         if not EventFlowSystemActor.UIIsCatalogBootSmartPhone():
             if event_flags_system['cLifeSupportAchievement:BuyItemCatalog'] < 100:
@@ -229,47 +227,14 @@ entrypoint Event82:
                 run Obj_RcoMachine_MileExchange::RecipeReceiveing2_End
                 EventFlowSystemActor.ReservePlayerMutterDemo('Get_ShoppingAppli', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
                 EventFlowSystemActor.ExitFlowchart()
+    elif fEvent82 == 2:
+        run DeliverFriend
     return
 
 flow RcoSelSeq:
     run ChkRcoMachineSel
     fEvent49 = subflow_results[0]
-    if fEvent49 == 3:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:007', false)
-        fEvent194 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent194 == 0:
-            run Obj_RcoMachine_MileExchange::Root
-        elif fEvent194 == 4:
-            run SelExit
-        elif fEvent194 == 3:
-            run Obj_RcoMachine_Amiibo::Root
-        elif fEvent194 == 1:
-            run RcoMachineOnlineShopping
-        elif fEvent194 == 2:
-            run RcoMachineATM
-    elif fEvent49 == 1:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:002', false)
-        fEvent6 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent6 == 0:
-            run Obj_RcoMachine_MileExchange::Root
-        elif fEvent6 == 2:
-            run RcoMachineATM
-        elif fEvent6 == 1:
-            run RcoMachineOnlineShopping
-        elif fEvent6 == 3:
-            run SelExit
-    elif fEvent49 == 2:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:008', false)
-        fEvent67 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent67 == 2:
-            run Obj_RcoMachine_Amiibo::Root
-        elif fEvent67 == 3:
-            run SelExit
-        elif fEvent67 == 0:
-            run RcoMachineOnlineShopping
-        elif fEvent67 == 1:
-            run RcoMachineATM
-    elif fEvent49 == 0:
+    if fEvent49 == 0:
         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:002_01', false)
         fEvent97 = EventFlowSystemActor.GeneralTalkChoice3()
         if fEvent97 == 0:
@@ -277,6 +242,41 @@ flow RcoSelSeq:
         elif fEvent97 == 1:
             run RcoMachineATM
         elif fEvent97 == 2:
+            run SelExit
+    elif fEvent49 == 1:
+        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:002', false)
+        fEvent6 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent6 == 0:
+            run Obj_RcoMachine_MileExchange::Root
+        elif fEvent6 == 1:
+            run RcoMachineOnlineShopping
+        elif fEvent6 == 2:
+            run RcoMachineATM
+        elif fEvent6 == 3:
+            run SelExit
+    elif fEvent49 == 2:
+        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:008', false)
+        fEvent67 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent67 == 0:
+            run RcoMachineOnlineShopping
+        elif fEvent67 == 1:
+            run RcoMachineATM
+        elif fEvent67 == 2:
+            run Obj_RcoMachine_Amiibo::Root
+        elif fEvent67 == 3:
+            run SelExit
+    elif fEvent49 == 3:
+        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:007', false)
+        fEvent194 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent194 == 0:
+            run Obj_RcoMachine_MileExchange::Root
+        elif fEvent194 == 1:
+            run RcoMachineOnlineShopping
+        elif fEvent194 == 2:
+            run RcoMachineATM
+        elif fEvent194 == 3:
+            run Obj_RcoMachine_Amiibo::Root
+        elif fEvent194 == 4:
             run SelExit
     return
 

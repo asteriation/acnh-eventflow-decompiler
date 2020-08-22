@@ -14,29 +14,29 @@ flow Hgh_BuyFittingRoom:
     Player.TurnBody(0, 0.0)
     MainNpc.TurnBody(10, 0.0)
     fEvent8 = EventFlowSystemActor.UIShopBuyTailorResult()
-    if fEvent8 == 4:
-        run Hgh_BuyFitting
-    elif fEvent8 == 0:
+    if fEvent8 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:012', false)
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent8 == 3:
-        if EventFlowSystemActor.UIShopBuyTailorIsWear():
-            run Hgh_BuyFitting
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:013', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:017', true)
-    elif fEvent8 == 2:
-        if EventFlowSystemActor.UIShopBuyTailorIsWear():
-            run Hgh_BuyFitting
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:012', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:016', false)
     elif fEvent8 == 1:
         if EventFlowSystemActor.UIShopBuyTailorIsWear():
             run Hgh_BuyFitting
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:011', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:015', false)
+    elif fEvent8 == 2:
+        if EventFlowSystemActor.UIShopBuyTailorIsWear():
+            run Hgh_BuyFitting
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:012', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:016', false)
+    elif fEvent8 == 3:
+        if EventFlowSystemActor.UIShopBuyTailorIsWear():
+            run Hgh_BuyFitting
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:013', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_20_FittingRoom:017', true)
+    elif fEvent8 == 4:
+        run Hgh_BuyFitting
     return
 
 flow Hgh_ExplainFittingRoom:

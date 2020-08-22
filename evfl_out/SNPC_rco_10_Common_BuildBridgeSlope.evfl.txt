@@ -1,34 +1,7 @@
 flow 0_OrderSeq:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:003', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent1 == 1:
-entrypoint Event52:
-        if EventFlowSystemActor.SlopeNum('cAll', 8):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:208', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:201', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:202', true)
-            EventFlowSystemActor.UIShopBuyHandling('cSlope')
-            if EventFlowSystemActor.UIResultMenuDecide():
-                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:203', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:204', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:205', false)
-                        MainNpc.SetBridgeSlopeKitToPlayerBaggage(1)
-                        event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
-                        event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
-                        event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = true
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:206', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
-    elif fEvent1 == 0:
+    if fEvent1 == 0:
 entrypoint Event58:
         if EventFlowSystemActor.BridgeNum('cAll', 8):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:108', false)
@@ -55,6 +28,33 @@ entrypoint Event58:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:107', false)
+    elif fEvent1 == 1:
+entrypoint Event52:
+        if EventFlowSystemActor.SlopeNum('cAll', 8):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:208', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:201', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:202', true)
+            EventFlowSystemActor.UIShopBuyHandling('cSlope')
+            if EventFlowSystemActor.UIResultMenuDecide():
+                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:203', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketOnly'):
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:204', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:205', false)
+                        MainNpc.SetBridgeSlopeKitToPlayerBaggage(1)
+                        event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 1
+                        event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself'] = true
+                        event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:206', false)
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:207', false)
     elif fEvent1 == 2:
 entrypoint Event84:
         EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cMoney', '', 10000)
@@ -140,9 +140,7 @@ flow 1_FindPlaceSeq:
     if event_flags_system['cPlayer:RcoBuildBridgeSlopeMyself']:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:401', false)
         fEvent16 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent16 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:405', false)
-        elif fEvent16 == 0:
+        if fEvent16 == 0:
             if event_flags_system['cLand:RcoBuildBridgeSlopeSelector']:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:402_01', false)
             else:
@@ -156,6 +154,8 @@ flow 1_FindPlaceSeq:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:404', false)
             event_flags_system['cLand:RcoBuildBridgeSlopeStatusCounter'] = 0
             event_flags_system['cLand:RcoBuildBridgeSlopeSelector'] = false
+        elif fEvent16 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:405', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:601', false)
     return
@@ -215,10 +215,10 @@ flow FirstSeq:
             run Bridge_Catalog
         elif fEvent39 == 1:
             run Slope_Catalog
-        elif fEvent39 == 3:
-            run BridgeSlope_Cancel
         elif fEvent39 == 2:
             run BridgeSlope_Remove
+        elif fEvent39 == 3:
+            run BridgeSlope_Cancel
     elif fEvent113 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_12_Infra_BridgeSlope:011', false)
     elif fEvent113 == 2:

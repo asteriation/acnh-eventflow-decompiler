@@ -21,10 +21,7 @@ entrypoint Event62:
             EventFlowSystemActor.SetTagFromUIResult(0, 'cSelectNpcName')
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:305', false)
             fEvent63 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent63 == 1:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:307', false)
-                run NPC_Select
-            elif fEvent63 == 0:
+            if fEvent63 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:306', true)
                 EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
                 EventFlowSystemActor.WaitFrame(60)
@@ -38,6 +35,9 @@ entrypoint Event62:
                 else:
                     EventFlowSystemActor.UISelectNpcMoveOut('cRandomSelect')
                 MainNpc.NpcFixedInducement()
+            elif fEvent63 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:307', false)
+                run NPC_Select
             elif fEvent63 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:308', false)
         else:

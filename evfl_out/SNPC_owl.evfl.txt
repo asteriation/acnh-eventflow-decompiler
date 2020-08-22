@@ -90,7 +90,7 @@ entrypoint Event35:
 entrypoint Event32:
                     event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
                     fEvent84 = EventFlowSystemActor.MuseumLevel()
-                    if fEvent84 in (BlathersNotMovedIn, BlathersTent, BlathersMuseumNoArt):
+                    if fEvent84 in (BlathersTent, BlathersMuseumNoArt, BlathersNotMovedIn):
                         if event_flags_system['cPlayer:Owl1stTalkMuseum1']:
                             run SNPC_owl_00_Common::CmnTodayTalk1st
                         else:

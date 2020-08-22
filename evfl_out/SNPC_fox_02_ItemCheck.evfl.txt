@@ -38,8 +38,8 @@ flow BuyArt:
                         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:101', false)
                 event_flags_system['cPlayerTemp:FoxCheckArtCount'] += 1
         fEvent24 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent24 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
+        if fEvent24 == 0:
+            run sub_grp!Event19
         elif fEvent24 == 1:
             run LookArtMode
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:107', false)
@@ -47,8 +47,8 @@ flow BuyArt:
                 run sub_grp!Event19
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:108', false)
-        elif fEvent24 == 0:
-            run sub_grp!Event19
+        elif fEvent24 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
     return
 
 flow BuyFtr:

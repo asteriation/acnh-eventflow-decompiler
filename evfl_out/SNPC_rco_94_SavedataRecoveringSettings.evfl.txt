@@ -23,11 +23,7 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:001_01', false)
 entrypoint Event2:
     fEvent2 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent2 == 2:
-        run SNPC_rco_92_OtherSettings::Sel_EndMenu
-    elif fEvent2 == 1:
-        run SavedataRestoringExplain
-    elif fEvent2 == 0:
+    if fEvent2 == 0:
         if (not EventFlowSystemActor.BackupAgentExist()) or (EventFlowSystemActor.SaveIsEnabledBackupSetting()):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:003', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -61,6 +57,10 @@ entrypoint Event20:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:007', false)
             run AskStart
+    elif fEvent2 == 1:
+        run SavedataRestoringExplain
+    elif fEvent2 == 2:
+        run SNPC_rco_92_OtherSettings::Sel_EndMenu
     return
 
 flow SaveRecoveringSetting:

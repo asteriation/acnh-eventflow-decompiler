@@ -150,15 +150,15 @@ flow Root:
         if fEvent127 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:101', false)
             run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_WsMh
-        elif fEvent127 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:104', false)
-            run SNPC_rco_01_Tent_Selecor::RcoTentSel_5B_DoWsMh
         elif fEvent127 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:102', false)
             run SNPC_rco_01_Tent_Selecor::RcoTentSel_4B_DoMh
         elif fEvent127 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:103', false)
             run SNPC_rco_01_Tent_Selecor::RcoTentSel_3B
+        elif fEvent127 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common_Choice:104', false)
+            run SNPC_rco_01_Tent_Selecor::RcoTentSel_5B_DoWsMh
     else:
         fEvent185 = subflow_results[0]
         if fEvent185 == 0:

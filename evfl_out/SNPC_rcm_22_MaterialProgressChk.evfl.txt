@@ -60,11 +60,11 @@ flow Chk_Materials3:
 flow Root:
     run Chk_HowManyType
     fEvent26 = subflow_results[0]
-    if fEvent26 == 3:
-        run Chk_Materials3
+    if fEvent26 == 1:
+        run Chk_Materials
     elif fEvent26 == 2:
         run Chk_Materials2
-    elif fEvent26 == 1:
-        run Chk_Materials
+    elif fEvent26 == 3:
+        run Chk_Materials3
     return
 

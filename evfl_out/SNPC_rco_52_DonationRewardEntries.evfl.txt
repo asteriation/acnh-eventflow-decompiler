@@ -81,29 +81,29 @@ flow RcoDonationReward5:
 
 flow RcoTent_GiveSeeds:
     fEvent67 = EventFlowSystemActor.VillageFlower('cVillageCreate')
-    if fEvent67 == 7:
-        EventFlowSystemActor.SetItemToPocket(2912, 5)
-        MainNpc.SetDeliveryItemAtRandom(2912, false, 'cVillageRemakePattern', 0)
-    elif fEvent67 == 6:
-        EventFlowSystemActor.SetItemToPocket(2884, 5)
-        MainNpc.SetDeliveryItemAtRandom(2884, false, 'cVillageRemakePattern', 0)
-    elif fEvent67 == 4:
-        EventFlowSystemActor.SetItemToPocket(2936, 5)
-        MainNpc.SetDeliveryItemAtRandom(2936, false, 'cVillageRemakePattern', 0)
+    if fEvent67 == 0:
+        EventFlowSystemActor.SetItemToPocket(3769, 5)
+        MainNpc.SetDeliveryItemAtRandom(3769, false, 'cVillageRemakePattern', 0)
+    elif fEvent67 == 1:
+        EventFlowSystemActor.SetItemToPocket(2984, 5)
+        MainNpc.SetDeliveryItemAtRandom(2984, false, 'cVillageRemakePattern', 0)
     elif fEvent67 == 2:
         EventFlowSystemActor.SetItemToPocket(2626, 5)
         MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
     elif fEvent67 == 3:
         EventFlowSystemActor.SetItemToPocket(3745, 5)
         MainNpc.SetDeliveryItemAtRandom(3745, false, 'cVillageRemakePattern', 0)
-    elif fEvent67 == 0:
-        EventFlowSystemActor.SetItemToPocket(3769, 5)
-        MainNpc.SetDeliveryItemAtRandom(3769, false, 'cVillageRemakePattern', 0)
-    elif fEvent67 == 1:
-        EventFlowSystemActor.SetItemToPocket(2984, 5)
-        MainNpc.SetDeliveryItemAtRandom(2984, false, 'cVillageRemakePattern', 0)
+    elif fEvent67 == 4:
+        EventFlowSystemActor.SetItemToPocket(2936, 5)
+        MainNpc.SetDeliveryItemAtRandom(2936, false, 'cVillageRemakePattern', 0)
     elif fEvent67 == 5:
         EventFlowSystemActor.SetItemToPocket(3724, 5)
         MainNpc.SetDeliveryItemAtRandom(3724, false, 'cVillageRemakePattern', 0)
+    elif fEvent67 == 6:
+        EventFlowSystemActor.SetItemToPocket(2884, 5)
+        MainNpc.SetDeliveryItemAtRandom(2884, false, 'cVillageRemakePattern', 0)
+    elif fEvent67 == 7:
+        EventFlowSystemActor.SetItemToPocket(2912, 5)
+        MainNpc.SetDeliveryItemAtRandom(2912, false, 'cVillageRemakePattern', 0)
     return
 

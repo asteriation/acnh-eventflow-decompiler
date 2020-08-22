@@ -6,11 +6,7 @@ flow ObjRcoMachineCheck1st:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:002', false)
     else:
         fEvent41 = subflow_results[0]
-        if fEvent41 == 2:
-            run ObjRcoMachineCheck_2PUnlockFence
-        elif fEvent41 == 3:
-            run ObjRcoMachineCheck_UnlockAmiibo
-        elif fEvent41 == 1:
+        if fEvent41 == 1:
             if event_flags_system['cPlayerTemp:RcoHeardOfficeOBJ']:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_00_02', false)
             else:
@@ -32,6 +28,10 @@ flow ObjRcoMachineCheck1st:
                     event_flags_system['cPlayer:RcoMachineAmiiboCamperUnlock'] = true
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_02', false)
+        elif fEvent41 == 2:
+            run ObjRcoMachineCheck_2PUnlockFence
+        elif fEvent41 == 3:
+            run ObjRcoMachineCheck_UnlockAmiibo
     return
 
 flow ObjRcoMachineCheck1st_Init:

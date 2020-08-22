@@ -82,16 +82,7 @@ flow boc_Buy:
 
 flow boc_Select:
     fEvent7 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent7 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:030', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:031', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:032', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:033', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:014', false)
-        run boc_Select
-    elif fEvent7 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:020', true)
-    elif fEvent7 == 0:
+    if fEvent7 == 0:
         if (not EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag')) and (not EventFlowSystemActor.HasKindItem('cKind', 'Money', '')) and (not EventFlowSystemActor.HasKindItem('cKind', 'Turnip', '')):
             MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:016', true)
         else:
@@ -118,5 +109,14 @@ entrypoint Event21:
                     run boc_Buy
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:017', true)
+    elif fEvent7 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:030', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:031', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:032', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:033', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:014', false)
+        run boc_Select
+    elif fEvent7 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:020', true)
     return
 

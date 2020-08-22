@@ -24,19 +24,7 @@ flow ChkCampsite:
 
 flow ChkMarket:
     fEvent29 = EventFlowSystemActor.ShopLevel()
-    if fEvent29 == NooksCrannyUpgraded:
-        run CmnPhoneCallImmQ
-        if EventFlowSystemActor.FacilityOpenPastDays('cMarket2', 8):
-            if not event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag']:
-                if event_flags_system['cLand:MarketOpen1stDay2']:
-                    subflow_results[7] = 5
-                else:
-                    subflow_results[7] = 6
-                subflow_results[4] = 1
-                event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
-        else:
-            event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
-    elif fEvent29 == NooksCrannyInitial:
+    if fEvent29 == NooksCrannyInitial:
         if event_flags_system['cLand:MarketConstruction2']:
             subflow_results[7] = 4
             run CmnPhoneCallImmQ
@@ -53,6 +41,18 @@ flow ChkMarket:
             event_flags_system['cPlayer:TownNewsHeardShopOpen1Flag'] = true
             run CmnPhoneCallImmQ
             subflow_results[4] = 1
+    elif fEvent29 == NooksCrannyUpgraded:
+        run CmnPhoneCallImmQ
+        if EventFlowSystemActor.FacilityOpenPastDays('cMarket2', 8):
+            if not event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag']:
+                if event_flags_system['cLand:MarketOpen1stDay2']:
+                    subflow_results[7] = 5
+                else:
+                    subflow_results[7] = 6
+                subflow_results[4] = 1
+                event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
+        else:
+            event_flags_system['cPlayer:TownNewsHeardShopOpen2Flag'] = true
     return
 
 flow ChkMuseum:
@@ -64,7 +64,15 @@ flow ChkMuseum:
         subflow_results[4] = 1
     else:
         fEvent6 = EventFlowSystemActor.MuseumLevel()
-        if fEvent6 == BlathersMuseumNoArt:
+        if fEvent6 == BlathersTent:
+            if (subflow_results[0] == 0) and (not event_flags_system['cPlayer:AnnouncementOwlMovedIn']):
+                if event_flags_system['cLand:MuseumTentBuiltToday']:
+                    subflow_results[6] = 1
+                else:
+                    subflow_results[6] = 2
+                subflow_results[4] = 1
+                event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
+        elif fEvent6 == BlathersMuseumNoArt:
             if EventFlowSystemActor.FacilityOpenPastDays('cMuseum', 8):
                 if not event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag']:
                     if event_flags_system['cLand:Museum2BuiltToday']:
@@ -75,14 +83,6 @@ flow ChkMuseum:
                     event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag'] = true
             else:
                 event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag'] = true
-        elif fEvent6 == BlathersTent:
-            if (subflow_results[0] == 0) and (not event_flags_system['cPlayer:AnnouncementOwlMovedIn']):
-                if event_flags_system['cLand:MuseumTentBuiltToday']:
-                    subflow_results[6] = 1
-                else:
-                    subflow_results[6] = 2
-                subflow_results[4] = 1
-                event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
         elif fEvent6 == BlathersMuseumArt:
             if EventFlowSystemActor.FacilityOpenPastDays('cMuseum2', 8):
                 if not event_flags_system['cPlayer:TownNewsHeardMuseum2OpenFlag']:

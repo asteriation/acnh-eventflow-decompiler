@@ -34,39 +34,25 @@ flow Root:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
         MainNpc.NpcDelivery('Default', 0)
         fEvent16 = subflow_results[6]
-        if fEvent16 == 3:
-            run DeleteWood
-            run DeleteHardWood
-            run DeleteSoftWood
-            run DeleteIron
-entrypoint Event9:
-            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
-            MainNpc.SetItemName(2, 1, 0)
-            MainNpc.SetEventRewardToPlayerBaggage('cFree')
-entrypoint Event25:
-            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
-            MainNpc.SetItemName(1, 1, 0)
-            MainNpc.SetEventRewardToPlayerBaggage('cFree')
-entrypoint Event62:
-            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
-            MainNpc.SetItemName(0, 1, 0)
-            MainNpc.SetDeliveryItem(1, true)
-        elif fEvent16 == 0:
+        if fEvent16 == 0:
             fEvent2 = subflow_results[11]
-            if fEvent2 == 1:
+            if fEvent2 == 0:
+                run DeleteWood
+            elif fEvent2 == 1:
                 run DeleteHardWood
             elif fEvent2 == 2:
                 run DeleteSoftWood
             elif fEvent2 == 3:
                 run DeleteIron
-            elif fEvent2 == 0:
-                run DeleteWood
             run SNPC_rcm_22_MaterialProgressChk::Root
             if subflow_results[0] in (1, 2, 3):
                 run RewardProcess
         elif fEvent16 == 1:
             fEvent31 = subflow_results[12]
-            if fEvent31 == 1:
+            if fEvent31 == 0:
+                run DeleteWood
+                run DeleteHardWood
+            elif fEvent31 == 1:
                 run DeleteWood
                 run DeleteSoftWood
             elif fEvent31 == 2:
@@ -81,15 +67,12 @@ entrypoint Event62:
             elif fEvent31 == 5:
                 run DeleteSoftWood
                 run DeleteIron
-            elif fEvent31 == 0:
-                run DeleteWood
-                run DeleteHardWood
             run SNPC_rcm_22_MaterialProgressChk::Root
             fEvent51 = subflow_results[0]
-            if fEvent51 == 4:
-                run RewardProcess
-            elif fEvent51 in (2, 3):
+            if fEvent51 in (2, 3):
                 run RewardProcess2
+            elif fEvent51 == 4:
+                run RewardProcess
         elif fEvent16 == 2:
             fEvent58 = subflow_results[13]
             if fEvent58 == 0:
@@ -114,6 +97,23 @@ entrypoint Event62:
                 run RewardProcess3
             elif fEvent55 == 4:
                 run RewardProcess2
+        elif fEvent16 == 3:
+            run DeleteWood
+            run DeleteHardWood
+            run DeleteSoftWood
+            run DeleteIron
+entrypoint Event9:
+            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
+            MainNpc.SetItemName(2, 1, 0)
+            MainNpc.SetEventRewardToPlayerBaggage('cFree')
+entrypoint Event25:
+            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
+            MainNpc.SetItemName(1, 1, 0)
+            MainNpc.SetEventRewardToPlayerBaggage('cFree')
+entrypoint Event62:
+            MainNpc.NpcDecideRewardByCondition(3000, 5, false, true)
+            MainNpc.SetItemName(0, 1, 0)
+            MainNpc.SetDeliveryItem(1, true)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:054', false)
         EventFlowSystemActor.ExitFlowchart()

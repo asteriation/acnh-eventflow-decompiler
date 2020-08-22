@@ -19,10 +19,6 @@ flow Core:
     fEvent28 = EventFlowSystemActor.SaveVersionCheck()
     if fEvent28 == 0:
         run SaveDataLoad
-    elif fEvent28 == 3:
-        run Broken
-    elif fEvent28 == 4:
-        run UnexpectedError
     elif fEvent28 == 1:
         EventFlowSystemActor.UIBootBGChangeDialog()
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1372', false)
@@ -31,6 +27,10 @@ flow Core:
         EventFlowSystemActor.MessageSuspend()
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1374', false)
         run SaveDataLoad
+    elif fEvent28 == 3:
+        run Broken
+    elif fEvent28 == 4:
+        run UnexpectedError
     return
 
 flow PreProcess:

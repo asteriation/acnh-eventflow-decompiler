@@ -258,9 +258,9 @@ flow QuizEnd:
         MainNpc.SetItemName(0, 1, 4)
         MainNpc.SetDeliveryItemApplySave()
         fEvent16 = MainNpc.DeliveryQuestType()
-        if fEvent16 == 2:
+        if fEvent16 == 0:
             MainNpc.NpcDelivery('Default', 10)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:007', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:005', false)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:008', false)
             MainNpc.RegistToReleaseItemList(1)
             quest_flags['cDeliveryItemOpen'] = false
@@ -276,9 +276,9 @@ flow QuizEnd:
             quest_flags['cDeliveryQuizPlay'] = true
             quest_flags['cDeliveryEnd'] = true
             event_flags_npc['cNpcMemory:StoodUpFlag'] = false
-        elif fEvent16 == 0:
+        elif fEvent16 == 2:
             MainNpc.NpcDelivery('Default', 10)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:005', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:007', false)
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:008', false)
             MainNpc.RegistToReleaseItemList(1)
             quest_flags['cDeliveryItemOpen'] = false
@@ -310,14 +310,14 @@ flow Thanks1:
     MainNpc.SetDeliveryItem(1, true)
     MainNpc.NpcDelivery('Default', 1)
     fEvent15 = MainNpc.NpcRewardType()
-    if fEvent15 == 5:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:103', false)
-    elif fEvent15 == 0:
+    if fEvent15 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:104', false)
     elif fEvent15 in (1, 2, 3):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:105', false)
     elif fEvent15 == 4:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:106', false)
+    elif fEvent15 == 5:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_Delivery_End:103', false)
     MainNpc.RegistToReleaseItemList(4)
     quest_flags['cDeliveryEnd'] = true
     event_flags_npc['cNpcMemory:StoodUpFlag'] = false

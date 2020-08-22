@@ -177,12 +177,12 @@ flow Root_Init:
 
 flow SzaPostAction:
     fEvent101 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent101 == 2:
-        MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
-    elif fEvent101 == 0:
+    if fEvent101 == 0:
         MainNpc.RequestSimple('SzaNewsSmile', false)
     elif fEvent101 == 1:
         pass
+    elif fEvent101 == 2:
+        MainNpc.CharacterEmoticonAction('Smiling', '', 0, true, false)
     EventFlowSystemActor.WaitFrame(20)
     return
 

@@ -73,15 +73,15 @@ flow End:
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:052', true)
     fEvent64 = MainNpc.NpcCheckCatchQuestType()
-    if fEvent64 == 2:
-        EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cQuest', false)
-        MainNpc.SetItemName(0, 4, 0)
-    elif fEvent64 == 0:
+    if fEvent64 == 0:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Insect', 'cItemSelect', '', 'cQuest', false)
         MainNpc.SetItemName(0, 4, 0)
     elif fEvent64 == 1:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Insect', 'cItemSelect', '', 'cQuest', false)
         MainNpc.SetItemName(0, 0, 2)
+    elif fEvent64 == 2:
+        EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cQuest', false)
+        MainNpc.SetItemName(0, 4, 0)
     elif fEvent64 == 3:
         EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Fish', 'cItemSelect', '', 'cQuest', false)
         MainNpc.SetItemName(0, 0, 3)
@@ -97,7 +97,11 @@ flow End:
                     run Give
                 else:
                     fEvent67 = MainNpc.NpcCatchQuestInsectNormalType()
-                    if fEvent67 == 2:
+                    if fEvent67 == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:006', false)
+                    elif fEvent67 == 1:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:007', false)
+                    elif fEvent67 == 2:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:008', false)
                     elif fEvent67 == 3:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:010', false)
@@ -107,10 +111,6 @@ flow End:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:012', false)
                     elif fEvent67 == 6:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:013', false)
-                    elif fEvent67 == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:006', false)
-                    elif fEvent67 == 1:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:007', false)
                     MainNpc.NpcDelivery('Default', 10)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:003', false)
@@ -165,21 +165,21 @@ flow Give:
     MainNpc.SetDeliveryItem(1, true)
     MainNpc.NpcDelivery('Default', 1)
     fEvent62 = MainNpc.NpcQuestReward()
-    if fEvent62 == 2:
+    if fEvent62 == 0:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:045', false, true)
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:041', false, true)
         else:
-            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:046', false, true)
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:042', false, true)
     elif fEvent62 == 1:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:043', false, true)
         else:
             MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:044', false, true)
-    elif fEvent62 == 0:
+    elif fEvent62 == 2:
         if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:041', false, true)
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:045', false, true)
         else:
-            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:042', false, true)
+            MainNpc.QuestStartOpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:046', false, true)
     MainNpc.NpcQuestControl('cFinish')
     event_flags_system['cLifeSupportDaily:AchieveQuest'] = true
     event_flags_system['cLifeSupportAchievement:AchieveVillagersQuest'] += 1

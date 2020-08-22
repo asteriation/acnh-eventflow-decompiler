@@ -65,10 +65,10 @@ flow Quest_ConfirmGive:
         if fEvent101 in (1, 2, 4, 7):
             if MainNpc.HasNpcRequestedItem():
                 fEvent18 = MainNpc.NpcHaveQuestType('')
-                if fEvent18 == 2:
-                    run NNPC_Quest_LostProperty_End::Give1
-                elif fEvent18 == 1:
+                if fEvent18 == 1:
                     run NNPC_Quest_CatchFishInsect_End::End
+                elif fEvent18 == 2:
+                    run NNPC_Quest_LostProperty_End::Give1
             else:
                 fEvent106 = MainNpc.NpcHaveQuestType('')
                 if fEvent106 == 1:
@@ -91,13 +91,7 @@ flow Root:
     run QuestStart_Chk
     run NNPC_Talk_Greet::Root
     fEvent0 = EventFlowSystemActor.NpcGeneralTalkChoice()
-    if fEvent0 == 2:
-        run Quest_ConfirmGive
-    elif fEvent0 == 3:
-        run NNPC_Select_Present::Root
-    elif fEvent0 == 1:
-        run End_Root
-    elif fEvent0 == 0:
+    if fEvent0 == 0:
         run NNPC_FreeH::HintTalkChk
         run NNPC_FreeH::Progress_NpcHouseBuilt
         run NNPC_FreeH::ForMarketBuilding_Chk
@@ -105,6 +99,12 @@ flow Root:
         if (event_flags_npc['cNpcMemory:ContinuousTalkCount'] < 1) and (MainNpc.NpcIsSitting() not in (0, 1, 2, 3, 5)) and (EventFlowSystemActor.EnvHourCompare(2, -1, true, true) == 0):
             run QuestOrder_Chk
         run NNPC_Free_Root::Root
+    elif fEvent0 == 1:
+        run End_Root
+    elif fEvent0 == 2:
+        run Quest_ConfirmGive
+    elif fEvent0 == 3:
+        run NNPC_Select_Present::Root
     elif fEvent0 == 4:
         run NNPC_GEvent_BirthdayP::Give_Capcake
     return
@@ -116,17 +116,17 @@ flow sub_grp!Event113:
 flow sub_grp!Event23:
     if not MainNpc.NpcIsQuestClient('cMyQuest', true, true):
         fEvent9 = MainNpc.NpcHaveQuestType('')
-        if fEvent9 == 3:
-            run NNPC_Quest_Delivery_Begin::Begin
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent9 == 1:
+        if fEvent9 == 1:
             run NNPC_Quest_CatchFishInsect_Begin::Begin
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent9 == 4:
-            run NNPC_Quest_TreasureHunt_Begin::Begin
             EventFlowSystemActor.ExitFlowchart()
         elif fEvent9 == 2:
             if (not event_flags_system['cLand:LostPropertyFound']) and (not event_flags_system['cPlayerTemp:QuestCancell']):
                 run NNPC_Quest_LostProperty_Begin::Begin
                 EventFlowSystemActor.ExitFlowchart()
+        elif fEvent9 == 3:
+            run NNPC_Quest_Delivery_Begin::Begin
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent9 == 4:
+            run NNPC_Quest_TreasureHunt_Begin::Begin
+            EventFlowSystemActor.ExitFlowchart()
 

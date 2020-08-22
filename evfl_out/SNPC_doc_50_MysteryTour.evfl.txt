@@ -37,8 +37,6 @@ flow Root:
                 EventFlowSystemActor.SystemRequestChangeStage('cFromOutlierToHomeland', 'cCircle', 'cDALWithLoadWait', 'cBlack', 1.0, 1.0)
             else:
                 run DocCmnCancel
-        elif fEvent2 == 2:
-            run sub_Event25
         elif fEvent2 == 1:
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 EventFlowSystemActor.UISonkatsuPointAppear()
@@ -75,6 +73,8 @@ entrypoint Event18:
                     MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:013', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:012', true)
+        elif fEvent2 == 2:
+            run sub_Event25
     else:
         event_flags_system['cPlayerTemp:DodTalkSceneFlag'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:001_01', false)

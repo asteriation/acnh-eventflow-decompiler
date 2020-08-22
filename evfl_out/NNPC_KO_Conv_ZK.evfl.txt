@@ -54,14 +54,14 @@ flow sub_grp!Event0:
         SubNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_ZK:008', false)
         MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_ZK:009', false)
         fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent37 == 1:
-            EventFlowSystemActor.WaitFrame(30)
-            Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_ZK:014', false)
-        elif fEvent37 == 0:
+        if fEvent37 == 0:
             EventFlowSystemActor.WaitFrame(40)
             Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
             MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_ZK:010', false)
+        elif fEvent37 == 1:
+            EventFlowSystemActor.WaitFrame(30)
+            Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B3_Ko/Conv/KO_Conv_ZK:014', false)
         elif fEvent37 == 2:
             EventFlowSystemActor.WaitFrame(30)
             Player.CharacterEmoticonAction('EmotEnd', '', 0, true, false)

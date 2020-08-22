@@ -112,12 +112,12 @@ flow SetPlaza:
 
 flow TreasureNoPlay:
     fEvent13 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-    if fEvent13 == 1:
+    if fEvent13 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:008', false)
+    elif fEvent13 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:009', false)
     elif fEvent13 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:010', false)
-    elif fEvent13 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_Begin:008', false)
     MainNpc.NpcQuestControl('cFinish')
     return
 

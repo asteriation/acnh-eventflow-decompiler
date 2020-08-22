@@ -33,7 +33,9 @@ flow ChangeOperatorChk:
 
 flow ChkEscapeTo:
     fEvent146 = EventFlowSystemActor.ShopLevel()
-    if fEvent146 in (NooksCrannyInitial, NooksCrannyUpgraded):
+    if fEvent146 == InResServiceTent:
+        run sub_grp!Event150
+    elif fEvent146 in (NooksCrannyInitial, NooksCrannyUpgraded):
         if event_flags_system['cLand:MarketConstruction2']:
             run sub_grp!Event150
         else:
@@ -44,8 +46,6 @@ flow ChkEscapeTo:
                 subflow_results[0] = 4
             elif fEvent151 in (2, 3, 4, 5, 6, 7, 8):
                 subflow_results[0] = 5
-    elif fEvent146 == InResServiceTent:
-        run sub_grp!Event150
     return
 
 flow ChkRacketIntro:
@@ -101,35 +101,35 @@ flow GotoEscapeSelect:
     else:
         run ChkEscapeTo
         fEvent158 = subflow_results[0]
-        if fEvent158 == 3:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:046', false)
-            fEvent32 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent32 == 1:
-                run EscapeToMarket
-            elif fEvent32 == 3:
-                run EscapeSelCansel
-            elif fEvent32 == 2:
-                run EscapeToAirport
-            elif fEvent32 == 0:
-                run EscapeToPlaza
-        elif fEvent158 == 0:
+        if fEvent158 == 0:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:045', false)
             fEvent165 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent165 == 2:
-                run EscapeSelCansel
-            elif fEvent165 == 0:
+            if fEvent165 == 0:
                 run EscapeToPlaza
             elif fEvent165 == 1:
                 run EscapeToAirport
-        elif fEvent158 == 4:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:047', false)
-            run sub_grp!Event38
-        elif fEvent158 == 2:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_01', false)
-            run sub_grp!Event1
+            elif fEvent165 == 2:
+                run EscapeSelCansel
         elif fEvent158 == 1:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_02', false)
             run sub_grp!Event1
+        elif fEvent158 == 2:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_01', false)
+            run sub_grp!Event1
+        elif fEvent158 == 3:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:046', false)
+            fEvent32 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent32 == 0:
+                run EscapeToPlaza
+            elif fEvent32 == 1:
+                run EscapeToMarket
+            elif fEvent32 == 2:
+                run EscapeToAirport
+            elif fEvent32 == 3:
+                run EscapeSelCansel
+        elif fEvent158 == 4:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:047', false)
+            run sub_grp!Event38
         elif fEvent158 == 5:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:044_03', false)
             run sub_grp!Event38
@@ -295,12 +295,12 @@ flow sub_grp!Event1:
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice4()
     if fEvent1 == 0:
         run EscapeToMyhome
+    elif fEvent1 == 1:
+        run EscapeToPlaza
     elif fEvent1 == 2:
         run EscapeToAirport
     elif fEvent1 == 3:
         run EscapeSelCansel
-    elif fEvent1 == 1:
-        run EscapeToPlaza
 
 flow sub_grp!Event150:
     fEvent150 = EventFlowSystemActor.PlayerHouseLevel()
@@ -313,16 +313,16 @@ flow sub_grp!Event150:
 
 flow sub_grp!Event38:
     fEvent38 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent38 == 3:
-        run EscapeToAirport
-    elif fEvent38 == 2:
-        run EscapeToMarket
-    elif fEvent38 == 0:
+    if fEvent38 == 0:
         run EscapeToMyhome
-    elif fEvent38 == 4:
-        run EscapeSelCansel
     elif fEvent38 == 1:
         run EscapeToPlaza
+    elif fEvent38 == 2:
+        run EscapeToMarket
+    elif fEvent38 == 3:
+        run EscapeToAirport
+    elif fEvent38 == 4:
+        run EscapeSelCansel
 
 flow sub_grp!Event81:
     if EventFlowSystemActor.GeneralTalkChoice2() != 0:
@@ -363,22 +363,22 @@ entrypoint Event18:
             run PlayerWarpTo
         else:
             fEvent91 = EventFlowSystemActor.RandomChoice4(4)
-            if fEvent91 == 1:
+            if fEvent91 == 0:
+                run PlayerWarpTo
+            elif fEvent91 == 1:
                 if EventFlowSystemActor.PlayerHouseLevel() == 0:
                     run PlayerWarpTo
                 else:
                     run PlayerWarpTo
-            elif fEvent91 == 3:
-                run PlayerWarpTo
-            elif fEvent91 == 0:
-                run PlayerWarpTo
             elif fEvent91 == 2:
                 fEvent189 = EventFlowSystemActor.ShopLevel()
-                if fEvent189 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                if fEvent189 == InResServiceTent:
+                    run PlayerWarpTo
+                elif fEvent189 in (NooksCrannyInitial, NooksCrannyUpgraded):
                     if event_flags_system['cLand:MarketConstruction2']:
                         run PlayerWarpTo
                     else:
                         run PlayerWarpTo
-                elif fEvent189 == InResServiceTent:
-                    run PlayerWarpTo
+            elif fEvent91 == 3:
+                run PlayerWarpTo
 

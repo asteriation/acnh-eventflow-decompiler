@@ -525,10 +525,10 @@ class SwitchNode(Node):
             vname = f'f{self.name}'
 
             cases: List[str] = []
-            for event, values in sorted(self.cases.items(), key=lambda x: x[0]):
+            for event, values in sorted(self.cases.items(), key=lambda x: min(x[1])):
                 try:
                     else_s = 'el' if cases else ''
-                    op_s = f'== {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(_format_type(self.query.rv, v)  for v in values) + ')'
+                    op_s = f'== {_format_type(self.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(_format_type(self.query.rv, v)  for v in sorted(values)) + ')'
                     cases.append(
                             f'{_indent(indent_level)}{else_s}if {vname} {op_s}:\n' +
                             [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1)

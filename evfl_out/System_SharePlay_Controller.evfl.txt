@@ -23,6 +23,8 @@ entrypoint Event20:
                     run StartPlay
                 else:
                     run NextPlayer
+            elif fEvent37 == 1:
+                run sub_grp!Event31
             elif fEvent37 == 2:
                 EventFlowSystemActor.ControllerConnectEnd(true)
                 if EventFlowSystemActor.CountSharePlayerNum(4):
@@ -38,8 +40,6 @@ entrypoint Event20:
                 else:
                     EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:011', false)
                     run StartPlay
-            elif fEvent37 == 1:
-                run sub_grp!Event31
     else:
         run System_Controller::SetupSoloController
     return

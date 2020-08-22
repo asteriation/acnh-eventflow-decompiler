@@ -6,11 +6,11 @@ flow RumorOP_Action_Villager:
         MainNpc.SetRumorDSkipInfo()
     elif MainNpc.CanSelectRumorMessage(0):
         fEvent5 = MainNpc.IsRumorActionDaysAgo()
-        if fEvent5 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:002', false)
-            MainNpc.NpcOpenRumorMessage()
-        elif fEvent5 in (0, 1):
+        if fEvent5 in (0, 1):
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:001', false)
+            MainNpc.NpcOpenRumorMessage()
+        elif fEvent5 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:002', false)
             MainNpc.NpcOpenRumorMessage()
         elif fEvent5 == 3:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorOP_Action:003', false)

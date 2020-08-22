@@ -3,9 +3,7 @@ flow Again:
         run Select3_Comp
     else:
         fEvent27 = EventFlowSystemActor.MuseumLevel()
-        if fEvent27 == BlathersMuseumArt:
-            run Select4_Again
-        elif fEvent27 == BlathersTent:
+        if fEvent27 == BlathersTent:
             if EventFlowSystemActor.MuseumDonationNumCheck(20):
                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:093', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -23,6 +21,8 @@ flow Again:
                     run SNPC_owl_01_Museum_Donation::Root
                 else:
                     run End
+        elif fEvent27 == BlathersMuseumArt:
+            run Select4_Again
     return
 
 flow CmnTodayTalk1st:
@@ -76,20 +76,7 @@ flow DiveFish_Again:
 
 flow End:
     fEvent14 = EventFlowSystemActor.MuseumLevel()
-    if fEvent14 == BlathersMuseumNoArt:
-        run PaintingReminder
-        if event_flags_system['cLand:OwlFoundFossil']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:015', true)
-entrypoint Event16:
-            EventFlowSystemActor.ExitFlowchart()
-        else:
-            EventFlowSystemActor.MessageSuspend()
-            EventFlowSystemActor.WaitFrame(5)
-            MainNpc.CharacterEmoticonAction('Greeting', '', 0, false, false)
-            EventFlowSystemActor.WaitFrame(20)
-entrypoint Event16:
-            EventFlowSystemActor.ExitFlowchart()
-    elif fEvent14 == BlathersTent:
+    if fEvent14 == BlathersTent:
         if not EventFlowSystemActor.MuseumDonationNumCheck(20):
             EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cLand:DonationAmountForMuseum', 0)
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:112_01', false)
@@ -101,6 +88,19 @@ entrypoint Event16:
             EventFlowSystemActor.ExitFlowchart()
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:112_03', false)
+entrypoint Event16:
+            EventFlowSystemActor.ExitFlowchart()
+    elif fEvent14 == BlathersMuseumNoArt:
+        run PaintingReminder
+        if event_flags_system['cLand:OwlFoundFossil']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:015', true)
+entrypoint Event16:
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            EventFlowSystemActor.MessageSuspend()
+            EventFlowSystemActor.WaitFrame(5)
+            MainNpc.CharacterEmoticonAction('Greeting', '', 0, false, false)
+            EventFlowSystemActor.WaitFrame(20)
 entrypoint Event16:
             EventFlowSystemActor.ExitFlowchart()
     elif fEvent14 == BlathersMuseumArt:
@@ -155,12 +155,12 @@ flow Select3_Again:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:094', false)
 entrypoint Event31:
     fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent31 == 2:
-        run End
+    if fEvent31 == 0:
+        run SNPC_owl_01_Museum_Donation::Root
     elif fEvent31 == 1:
         run SNPC_owl_02_Museum_Judgment::Root
-    elif fEvent31 == 0:
-        run SNPC_owl_01_Museum_Donation::Root
+    elif fEvent31 == 2:
+        run End
     return
 
 flow Select3_Comp:

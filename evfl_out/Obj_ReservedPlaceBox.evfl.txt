@@ -426,21 +426,21 @@ flow CmnInsideFtrSel:
     if fEvent1 == 0:
         GeneralObject.StartAnimation('Open', 'アクション終了を待たない')
         fEvent289 = GeneralObject.SettlerQuest()
-        if fEvent289 == 2:
+        if fEvent289 == 1:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsA', false)
+            run sub_grp!Event76
+        elif fEvent289 == 2:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsB', false)
             run sub_grp!Event76
         elif fEvent289 == 3:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsC', false)
             run sub_grp!Event76
-        elif fEvent289 == 1:
-            EventFlowSystemActor.UIItemSelectWindowHandling(65534, 'Ftr', 'cItemSelect', '', 'cBringHomeFurnishingsA', false)
-            run sub_grp!Event76
-    elif fEvent1 == 3:
-        EventFlowSystemActor.ExitFlowchart()
     elif fEvent1 == 1:
         run SelForOutsideFtr
     elif fEvent1 == 2:
         run SelForInstructions
+    elif fEvent1 == 3:
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow DelFtrA1:
@@ -612,10 +612,17 @@ flow ImmQBox:
                 EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
 entrypoint Event268:
                 fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
+                if fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
                 elif fEvent268 == 1:
 entrypoint Event359:
                     EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
@@ -629,19 +636,12 @@ entrypoint Event359:
                     elif fEvent441 == 3:
                         run ChkOutdoorFtrC
                         run 2ndChkOutdoorFtrC
+                elif fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
                 elif fEvent268 == 3:
                     EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
     elif fEvent356 == 2:
         EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_02', false)
         if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
@@ -652,10 +652,17 @@ entrypoint Event359:
                 EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
 entrypoint Event268:
                 fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
+                if fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
                 elif fEvent268 == 1:
 entrypoint Event359:
                     EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
@@ -669,19 +676,12 @@ entrypoint Event359:
                     elif fEvent441 == 3:
                         run ChkOutdoorFtrC
                         run 2ndChkOutdoorFtrC
+                elif fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
                 elif fEvent268 == 3:
                     EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
     elif fEvent356 == 3:
         EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:001_03', false)
         if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']):
@@ -692,10 +692,17 @@ entrypoint Event359:
                 EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:003', false)
 entrypoint Event268:
                 fEvent268 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent268 == 2:
-entrypoint Event269:
-                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
-                    run BoxForMigrantQuest_Sel
+                if fEvent268 == 0:
+                    fEvent271 = GeneralObject.SettlerQuest()
+                    if fEvent271 == 1:
+                        run ChkIndoorFtrA
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 2:
+                        run ChkIndoorFtrB
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
+                    elif fEvent271 == 3:
+                        run ChkIndoorFtrC
+                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
                 elif fEvent268 == 1:
 entrypoint Event359:
                     EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:014', false)
@@ -709,19 +716,12 @@ entrypoint Event359:
                     elif fEvent441 == 3:
                         run ChkOutdoorFtrC
                         run 2ndChkOutdoorFtrC
+                elif fEvent268 == 2:
+entrypoint Event269:
+                    EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_MigrantsQuest:004', false)
+                    run BoxForMigrantQuest_Sel
                 elif fEvent268 == 3:
                     EventFlowSystemActor.ExitFlowchart()
-                elif fEvent268 == 0:
-                    fEvent271 = GeneralObject.SettlerQuest()
-                    if fEvent271 == 1:
-                        run ChkIndoorFtrA
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 2:
-                        run ChkIndoorFtrB
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
-                    elif fEvent271 == 3:
-                        run ChkIndoorFtrC
-                        GeneralObject.StartAnimation('Close', 'アクション終了を待たない')
     return
 
 flow IndoorClearCntA:

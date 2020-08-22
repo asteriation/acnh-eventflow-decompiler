@@ -10,16 +10,16 @@ flow ChkPhoneCall:
         subflow_results[2] = 1
     if event_flags_system['cPlayer:StandByPhoneCallSharePlay']:
         fEvent140 = EventFlowSystemActor.EventBranch(false, 0)
-        if fEvent140 == 3:
-            subflow_results[5] = 1
+        if fEvent140 in (0, 1, 2, 4, 5, 6, 7):
+            subflow_results[3] = 1
             if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
                 subflow_results[4] = 1
             if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:
                 subflow_results[6] = 1
             if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (event_flags_system['cPlayer:StandByPhoneCallJuneBride']):
                 subflow_results[7] = 1
-        elif fEvent140 in (0, 1, 2, 4, 5, 6, 7):
-            subflow_results[3] = 1
+        elif fEvent140 == 3:
+            subflow_results[5] = 1
             if event_flags_system['cPlayer:StandByPhoneCallPurchaseBox']:
                 subflow_results[4] = 1
             if event_flags_system['cPlayer:StandByPhoneCallIslandCreater']:

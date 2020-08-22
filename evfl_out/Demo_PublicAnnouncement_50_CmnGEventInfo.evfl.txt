@@ -3,24 +3,24 @@ flow DiveFish_Rco0:
         if event_flags_system['cPlayer:DiveFish_GetLetter']:
             event_flags_system['cPlayer:DiveFishPublic_2day'] = true
             fEvent150 = EventFlowSystemActor.ShopLevel()
-            if fEvent150 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_02', false)
+            if fEvent150 == InResServiceTent:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_04', false)
                 event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
                 subflow_results[15] = 1
-            elif fEvent150 == InResServiceTent:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_04', false)
+            elif fEvent150 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_02', false)
                 event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
                 subflow_results[15] = 1
         else:
             event_flags_system['cPlayer:DiveFishPublic_1day'] = true
             event_flags_system['cPlayer:PublicAnnouncement_DiveFish'] = true
             fEvent148 = EventFlowSystemActor.ShopLevel()
-            if fEvent148 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_01', false)
+            if fEvent148 == InResServiceTent:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_03', false)
                 event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
                 subflow_results[15] = 1
-            elif fEvent148 == InResServiceTent:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_03', false)
+            elif fEvent148 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:047_01', false)
                 event_flags_system['cPlayerTemp:PublicAnnounceDiveFish'] = true
                 subflow_results[15] = 1
     return

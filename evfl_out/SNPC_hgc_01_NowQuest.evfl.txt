@@ -1,10 +1,10 @@
 flow Hgc_Check_Chk:
     if MainNpc.HgcPlayerDefaultOutfit():
         fEvent86 = subflow_results[0]
-        if fEvent86 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:024', false)
-        elif fEvent86 == 0:
+        if fEvent86 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:023', false)
+        elif fEvent86 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:024', false)
         elif fEvent86 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:025', false)
         EventFlowSystemActor.ExitFlowchart()
@@ -64,10 +64,10 @@ flow Hgc_Chk_OK:
 
 flow Hgc_Clear:
     fEvent37 = subflow_results[0]
-    if fEvent37 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:057', false)
-    elif fEvent37 == 0:
+    if fEvent37 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:047', false)
+    elif fEvent37 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:057', false)
     elif fEvent37 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:067', false)
     fEvent21 = MainNpc.HgcFashionCheckResult()
@@ -77,13 +77,13 @@ flow Hgc_Clear:
     elif fEvent21 == 1:
         event_flags_system['cPlayer:KotonoQuestCount'] += 3
         EventFlowSystemActor.PlayReport(1, 'cHgcFashionCheckResult')
-    elif fEvent21 == 3:
-        event_flags_system['cPlayer:KotonoQuestCount'] += 5
-        EventFlowSystemActor.PlayReport(3, 'cHgcFashionCheckResult')
-        event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
     elif fEvent21 == 2:
         event_flags_system['cPlayer:KotonoQuestCount'] += 4
         EventFlowSystemActor.PlayReport(2, 'cHgcFashionCheckResult')
+        event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
+    elif fEvent21 == 3:
+        event_flags_system['cPlayer:KotonoQuestCount'] += 5
+        EventFlowSystemActor.PlayReport(3, 'cHgcFashionCheckResult')
         event_flags_system['cPlayer:KotonoQuestClearCount'] += 1
     event_flags_system['cPlayer:KotonoQuestClearFlag'] = true
     return
@@ -91,12 +91,12 @@ flow Hgc_Clear:
 flow Hgc_Get_Coupon:
     if event_flags_system['cPlayer:KotonoGotTicketFlag']:
         fEvent34 = subflow_results[0]
-        if fEvent34 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:062', false)
+        if fEvent34 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:042', false)
         elif fEvent34 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:052', false)
-        elif fEvent34 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:042', false)
+        elif fEvent34 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:062', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:041', false)
         event_flags_system['cPlayer:KotonoGotTicketFlag'] = true
@@ -155,12 +155,12 @@ entrypoint Event7:
             run Hgc_Clear
         else:
             fEvent16 = subflow_results[0]
-            if fEvent16 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:063', false)
+            if fEvent16 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:043', false)
             elif fEvent16 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:053', false)
-            elif fEvent16 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:043', false)
+            elif fEvent16 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:063', false)
             MainNpc.DecideEventReward('cKotonoReward')
             if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
                 MainNpc.MessageSuspend()
@@ -171,20 +171,20 @@ entrypoint Event7:
                 MainNpc.NpcDelivery('"Default"', 1)
                 if event_flags_system['cPlayer:KotonoKateTalkFlag']:
                     fEvent94 = subflow_results[0]
-                    if fEvent94 == 2:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:068', false)
-                    elif fEvent94 == 0:
+                    if fEvent94 == 0:
                         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:049', false)
                     elif fEvent94 == 1:
                         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:058', false)
+                    elif fEvent94 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:068', false)
                     if MainNpc.HgcFreeQuery2('cHgcQueryType_FirstGet'):
                         fEvent14 = subflow_results[0]
-                        if fEvent14 == 2:
-                            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:065', false)
+                        if fEvent14 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:045', false)
                         elif fEvent14 == 1:
                             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:055', false)
-                        elif fEvent14 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:045', false)
+                        elif fEvent14 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:065', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:048', false)
                     event_flags_system['cPlayer:KotonoKateTalkFlag'] = true
@@ -196,12 +196,12 @@ entrypoint Event7:
                 if fEvent20 == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:044', false)
                     EventFlowSystemActor.SystemMailSend('cHgc', 'MAIL_SNpc_hgc', 'cFastTomorrow', 'cReward', 'cNone', false, 7)
-                elif fEvent20 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:064', false)
-                    EventFlowSystemActor.SystemMailSend('cHgc', 'MAIL_SNpc_hgc', 'cFastTomorrow', 'cReward', 'cNone', false, 9)
                 elif fEvent20 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:054', false)
                     EventFlowSystemActor.SystemMailSend('cHgc', 'MAIL_SNpc_hgc', 'cFastTomorrow', 'cReward', 'cNone', false, 8)
+                elif fEvent20 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:064', false)
+                    EventFlowSystemActor.SystemMailSend('cHgc', 'MAIL_SNpc_hgc', 'cFastTomorrow', 'cReward', 'cNone', false, 9)
                 run Hgc_Clear
     else:
         fEvent8 = subflow_results[0]

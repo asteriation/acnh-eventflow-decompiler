@@ -13,7 +13,19 @@ flow ChkHaveZodiacPiece:
 
 flow ChkZodiacRecipe:
     fEvent34 = EventFlowSystemActor.EnvConstellation('cGrowUpTime')
-    if fEvent34 == Pisces:
+    if fEvent34 == Capricorn:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5957, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5957, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == Aquarius:
+        if EventFlowSystemActor.PlayerHasCraftRecipe(5956, ''):
+            run NotSetZodiacRecipe
+        else:
+            MainNpc.NpcSetRewardRecipe(5956, false)
+            run AfterSetZociacRecipe
+    elif fEvent34 == Pisces:
         if EventFlowSystemActor.PlayerHasCraftRecipe(5963, ''):
             run NotSetZodiacRecipe
         else:
@@ -72,18 +84,6 @@ flow ChkZodiacRecipe:
             run NotSetZodiacRecipe
         else:
             MainNpc.NpcSetRewardRecipe(5958, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == Capricorn:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5957, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5957, false)
-            run AfterSetZociacRecipe
-    elif fEvent34 == Aquarius:
-        if EventFlowSystemActor.PlayerHasCraftRecipe(5956, ''):
-            run NotSetZodiacRecipe
-        else:
-            MainNpc.NpcSetRewardRecipe(5956, false)
             run AfterSetZociacRecipe
     return
 
@@ -148,19 +148,19 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:102', false)
         MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:103', false)
         fEvent0 = EventFlowSystemActor.EnvSpecialWeather()
-        if fEvent0 == HeavyShowerEvening:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104_01', false)
+        if fEvent0 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:112', false)
-        elif fEvent0 in (Normal0, HeavyShowerMorning, HeavyShowerAfternoon, Rainbow, DoubleRainbow, AuroraBorealis0, AuroraBorealis1, Normal8, Normal9):
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104', false)
+        elif fEvent0 == HeavyShowerEvening:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:104_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:105', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:106_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:107', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run PresentRecipe
@@ -213,8 +213,6 @@ flow SetZodiacStarPiece:
         MainNpc.SetDeliveryItemAtRandom(5985, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == Aquarius:
         MainNpc.SetDeliveryItemAtRandom(5986, true, 'cVillageRemakePattern', 0)
-    elif fEvent161 == Sagittarius:
-        MainNpc.SetDeliveryItemAtRandom(5996, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == Pisces:
         MainNpc.SetDeliveryItemAtRandom(5987, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == Aries:
@@ -233,6 +231,8 @@ flow SetZodiacStarPiece:
         MainNpc.SetDeliveryItemAtRandom(5994, true, 'cVillageRemakePattern', 0)
     elif fEvent161 == Scorpius:
         MainNpc.SetDeliveryItemAtRandom(5995, true, 'cVillageRemakePattern', 0)
+    elif fEvent161 == Sagittarius:
+        MainNpc.SetDeliveryItemAtRandom(5996, true, 'cVillageRemakePattern', 0)
     return
 
 flow ShowZodiacChk:
@@ -273,31 +273,31 @@ flow TalkAboutZodiac:
     run ShowZodiacChk
     if subflow_results[1] == 0:
         fEvent174 = subflow_results[0]
-        if fEvent174 == 9:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:059', false)
-        elif fEvent174 == 8:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:058', false)
-        elif fEvent174 == 7:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:057', false)
-        elif fEvent174 == 6:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:056', false)
-        elif fEvent174 == 5:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:055', false)
-        elif fEvent174 == 4:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:054', false)
-        elif fEvent174 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:053', false)
+        if fEvent174 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:051', false)
         elif fEvent174 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:052', false)
-        elif fEvent174 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:051', false)
+        elif fEvent174 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:053', false)
+        elif fEvent174 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:054', false)
+        elif fEvent174 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:055', false)
+        elif fEvent174 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:056', false)
+        elif fEvent174 == 7:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:057', false)
+        elif fEvent174 == 8:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:058', false)
+        elif fEvent174 == 9:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:059', false)
     else:
         fEvent175 = subflow_results[0]
-        if fEvent175 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:062', false)
+        if fEvent175 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:060', false)
         elif fEvent175 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:061', false)
-        elif fEvent175 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:060', false)
+        elif fEvent175 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/ows/SP_ows:062', false)
     return
 

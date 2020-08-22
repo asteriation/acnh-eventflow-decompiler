@@ -47,16 +47,16 @@ flow Root:
     else:
         run NNPC_Talk_Greet_Spot::Root
     fEvent4 = EventFlowSystemActor.NpcGeneralTalkChoice()
-    if fEvent4 == 2:
+    if fEvent4 == 0:
+        run Spot_Museum
+    elif fEvent4 == 1:
+        run NNPC_Talk_General::End_Root
+    elif fEvent4 == 2:
         run NNPC_Talk_General::Quest_ConfirmGive
     elif fEvent4 == 3:
         run NNPC_Select_Present::Root
     elif fEvent4 == 4:
         run NNPC_GEvent_BirthdayP::Give_Capcake
-    elif fEvent4 == 0:
-        run Spot_Museum
-    elif fEvent4 == 1:
-        run NNPC_Talk_General::End_Root
     return
 
 flow Spot_Museum:

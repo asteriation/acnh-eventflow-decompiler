@@ -92,12 +92,12 @@ flow WebSetting_Explain:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_93_BlancoSettings:020', false)
         fEvent8 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent8 == 2:
-            run SNPC_rco_92_OtherSettings::Sel_EndMenu
-        elif fEvent8 == 0:
+        if fEvent8 == 0:
             run WebSetting_Activate
         elif fEvent8 == 1:
             run WebSetting_Explain
+        elif fEvent8 == 2:
+            run SNPC_rco_92_OtherSettings::Sel_EndMenu
     return
 
 flow WebSetting_Main:

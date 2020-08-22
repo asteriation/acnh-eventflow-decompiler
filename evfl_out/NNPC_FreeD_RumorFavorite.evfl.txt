@@ -1,6 +1,8 @@
 flow Input:
     fEvent37 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent37 == 3:
+    if fEvent37 in (0, 1, 2):
+        run sub_grp!Event38
+    elif fEvent37 == 3:
 entrypoint Event53:
         EventFlowSystemActor.UISoftwareKeyboardHandling('cTaste', true)
         EventFlowSystemActor.SetTagFromUIResult(0, 'cRumorFavorite')
@@ -10,8 +12,6 @@ entrypoint Event53:
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:052', false)
             run Event53
-    elif fEvent37 in (0, 1, 2):
-        run sub_grp!Event38
     elif fEvent37 == 4:
         if MainNpc.NpcRumorIsSelectedAllDeny():
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeD_RumorP_Favorite:061', false)

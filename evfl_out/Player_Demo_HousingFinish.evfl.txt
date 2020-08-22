@@ -290,20 +290,20 @@ flow RecipeGet_Flower:
 
 flow RecipeGet_Fruit:
     fEvent95 = EventFlowSystemActor.LandFruit()
-    if fEvent95 == 3:
-        EventFlowSystemActor.PlayerSetCraftRecipe(4128, 'SeqRcoAlbeit')
-        EventFlowSystemActor.PlayerSetCraftRecipe(4127, 'SeqRcoAlbeit')
-    elif fEvent95 == 4:
-        EventFlowSystemActor.PlayerSetCraftRecipe(4134, 'SeqRcoAlbeit')
-        EventFlowSystemActor.PlayerSetCraftRecipe(2596, 'SeqRcoAlbeit')
-    elif fEvent95 == 2:
-        EventFlowSystemActor.PlayerSetCraftRecipe(1263, 'SeqRcoAlbeit')
-        EventFlowSystemActor.PlayerSetCraftRecipe(4546, 'SeqRcoAlbeit')
-    elif fEvent95 == 0:
+    if fEvent95 == 0:
         EventFlowSystemActor.PlayerSetCraftRecipe(4011, 'SeqRcoAlbeit')
         EventFlowSystemActor.PlayerSetCraftRecipe(4012, 'SeqRcoAlbeit')
     elif fEvent95 == 1:
         EventFlowSystemActor.PlayerSetCraftRecipe(3976, 'SeqRcoAlbeit')
         EventFlowSystemActor.PlayerSetCraftRecipe(3975, 'SeqRcoAlbeit')
+    elif fEvent95 == 2:
+        EventFlowSystemActor.PlayerSetCraftRecipe(1263, 'SeqRcoAlbeit')
+        EventFlowSystemActor.PlayerSetCraftRecipe(4546, 'SeqRcoAlbeit')
+    elif fEvent95 == 3:
+        EventFlowSystemActor.PlayerSetCraftRecipe(4128, 'SeqRcoAlbeit')
+        EventFlowSystemActor.PlayerSetCraftRecipe(4127, 'SeqRcoAlbeit')
+    elif fEvent95 == 4:
+        EventFlowSystemActor.PlayerSetCraftRecipe(4134, 'SeqRcoAlbeit')
+        EventFlowSystemActor.PlayerSetCraftRecipe(2596, 'SeqRcoAlbeit')
     return
 

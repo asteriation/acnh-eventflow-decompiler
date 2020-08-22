@@ -128,11 +128,7 @@ flow Rco_Greet_Snow:
 flow Root:
     if subflow_results[0] == 0:
         fEvent0 = subflow_results[1]
-        if fEvent0 == 6:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:003', false)
-        elif fEvent0 == 7:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:004', false)
-        elif fEvent0 in (0, 1, 2, 3, 4):
+        if fEvent0 in (0, 1, 2, 3, 4):
             if MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_FirstSnow'):
 entrypoint Event89:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:005', false)
@@ -143,6 +139,10 @@ entrypoint Event89:
                 run Rco_Greet_Snow
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:002', false)
+        elif fEvent0 == 6:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:003', false)
+        elif fEvent0 == 7:
+            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:004', false)
         if event_flags_system['cLand:OfficeConstruction1']:
             if event_flags_system['cPlayer:PAnnounceHeardOfficeRenual']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:003_01', false)
@@ -164,7 +164,10 @@ entrypoint Event89:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:004', false)
         MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:001', false)
         fEvent7 = subflow_results[2]
-        if fEvent7 == 1:
+        if fEvent7 == 0:
+            if MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_FirstSnow'):
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:005', false)
+        elif fEvent7 == 1:
             run FishSpring
             subflow_results[15] = 1
         elif fEvent7 == 2:
@@ -191,8 +194,5 @@ entrypoint Event89:
         elif fEvent7 == 9:
             run NewYearEve
             subflow_results[15] = 1
-        elif fEvent7 == 0:
-            if MainNpc.EnvPublicAnnouncement('cEnvAnnounceQueryType_FirstSnow'):
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:005', false)
     return
 

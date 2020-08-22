@@ -31,10 +31,10 @@ flow Root:
         fEvent15 = EventFlowSystemActor.RandomChoice3(3)
         if fEvent15 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:020', false)
-        elif fEvent15 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:022', false)
         elif fEvent15 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:021', false)
+        elif fEvent15 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:022', false)
         MainNpc.OpenMessageWindow('TalkSNpc/seo/SP_seo:009', true)
         if MainNpc.SeoCanReturnSwim():
             MainNpc.NpcChangeHeadCtrlMode('cNoLook', true)

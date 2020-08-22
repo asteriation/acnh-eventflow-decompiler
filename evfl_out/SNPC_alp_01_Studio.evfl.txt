@@ -2,19 +2,19 @@ flow Alp_Chk_Exchange:
     if not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
         run SNPC_alw_01_Studio::Alw_DayChk
         fEvent34 = subflow_results[0]
-        if fEvent34 == 5:
+        if fEvent34 == 0:
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:101', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:102', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent34 == 5:
             if event_flags_system['cPlayer:AlwJuneBrideQuestStartFlag']:
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:103', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:104', false)
                 event_flags_system['cPlayer:AlpJuneBrideExchangeFlag'] = true
-        elif fEvent34 == 0:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:101', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:102', false)
-            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Alp_Chk_GetStick:

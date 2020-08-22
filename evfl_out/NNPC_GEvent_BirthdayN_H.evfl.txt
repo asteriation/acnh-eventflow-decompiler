@@ -43,10 +43,10 @@ flow ItemComment:
         fEvent49 = EventFlowSystemActor.RandomChoice3(3)
         if fEvent49 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:014', false)
-        elif fEvent49 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:016', false)
         elif fEvent49 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:015', false)
+        elif fEvent49 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:016', false)
         MainNpc.NpcDelivery('"Default"', 6)
         MainNpc.SetDeliveryItemApplySave()
         EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
@@ -150,22 +150,22 @@ flow Root:
             if fEvent35 == 0:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:004', false)
                 run sub_grp!Event38
-            elif fEvent35 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:006', false)
-                run sub_grp!Event38
             elif fEvent35 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:005', false)
+                run sub_grp!Event38
+            elif fEvent35 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:006', false)
                 run sub_grp!Event38
     elif not event_flag_npc['cNpcMemory:BirhdayNPresentFlag']:
         fEvent28 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
         if fEvent28 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:060', false)
             run sub_grp!Event38
-        elif fEvent28 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:062', false)
-            run sub_grp!Event38
         elif fEvent28 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:061', false)
+            run sub_grp!Event38
+        elif fEvent28 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:062', false)
             run sub_grp!Event38
     elif (not EventFlowSystemActor.IsMyVillage()) and (event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 0) and (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag')):
         if event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 1:
@@ -226,12 +226,12 @@ flow Root_Out:
             EventFlowSystemActor.ExitFlowchart()
         else:
             fEvent8 = EventFlowSystemActor.RandomChoice3(3)
-            if fEvent8 == 1:
+            if fEvent8 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:067', true)
+            elif fEvent8 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:068', true)
             elif fEvent8 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:069', true)
-            elif fEvent8 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:067', true)
             EventFlowSystemActor.ExitFlowchart()
     return
 
@@ -298,14 +298,14 @@ flow sub_grp!Event21:
     fEvent21 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
     if fEvent21 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:054', true)
-    elif fEvent21 == 3:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:057', true)
-    elif fEvent21 == 4:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:058', true)
     elif fEvent21 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:055', true)
     elif fEvent21 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:056', true)
+    elif fEvent21 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:057', true)
+    elif fEvent21 == 4:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:058', true)
 
 flow sub_grp!Event38:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -330,10 +330,10 @@ flow sub_grp!Event38:
 
 flow sub_grp!Event79:
     fEvent79 = EventFlowSystemActor.RandomChoice3(3)
-    if fEvent79 == 1:
+    if fEvent79 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:050', true)
+    elif fEvent79 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:051', true)
     elif fEvent79 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:052', true)
-    elif fEvent79 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:050', true)
 

@@ -17,15 +17,7 @@ flow Birthday:
     elif event_flags_system['cLandTemp:PlayerBirthdayPinataEnd']:
         MainNpc.NpcAISetting(8, false)
         fEvent77 = MainNpc.NpcBirthdayCast()
-        if fEvent77 == 3:
-            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
-            MainNpc.SetIsStartNeedActivity('cOff')
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent77 == 4:
-            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_G', '', '', false, true)
-            MainNpc.SetIsStartNeedActivity('cOff')
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent77 == 1:
+        if fEvent77 == 1:
             MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayP_H', '', '', false, false)
             MainNpc.SetIsStartNeedActivity('cOff')
             EventFlowSystemActor.ExitFlowchart()
@@ -33,18 +25,18 @@ flow Birthday:
             MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayP_G', '', '', false, false)
             MainNpc.SetIsStartNeedActivity('cOff')
             EventFlowSystemActor.ExitFlowchart()
-    else:
-        MainNpc.NpcAISetting(8, false)
-        fEvent26 = MainNpc.NpcBirthdayCast()
-        if fEvent26 == 3:
-            MainNpc.NpcChangeAIState('cNpcBDHost', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
+        elif fEvent77 == 3:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
             MainNpc.SetIsStartNeedActivity('cOff')
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent26 == 4:
+        elif fEvent77 == 4:
             MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_G', '', '', false, true)
             MainNpc.SetIsStartNeedActivity('cOff')
             EventFlowSystemActor.ExitFlowchart()
-        elif fEvent26 == 1:
+    else:
+        MainNpc.NpcAISetting(8, false)
+        fEvent26 = MainNpc.NpcBirthdayCast()
+        if fEvent26 == 1:
             MainNpc.NpcAISetting(8, true)
             MainNpc.NpcChangeAIState('cPlayerBDHost', 'NNPC_GEvent_BirthdayP_H', '', '', false, false)
             MainNpc.SetIsStartNeedActivity('cOff')
@@ -54,19 +46,27 @@ flow Birthday:
             MainNpc.NpcChangeAIState('cPlayerBDGuest', 'NNPC_GEvent_BirthdayP_G', '', '', false, false)
             MainNpc.SetIsStartNeedActivity('cOff')
             EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 3:
+            MainNpc.NpcChangeAIState('cNpcBDHost', 'NNPC_GEvent_BirthdayN_H', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 4:
+            MainNpc.NpcChangeAIState('cBirthdayWander', 'NNPC_GEvent_BirthdayN_G', '', '', false, true)
+            MainNpc.SetIsStartNeedActivity('cOff')
+            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Countdown:
     fEvent111 = MainNpc.DevideCountDownState()
-    if fEvent111 in (6, 7):
+    if fEvent111 in (1, 2, 3, 4, 5):
+        MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent111 in (6, 7):
         MainNpc.SetNpcFeel('cHappy', -1)
         MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
         EventFlowSystemActor.ExitFlowchart()
     elif fEvent111 == 8:
         MainNpc.SetNpcFeel('cNormal', -1)
-        MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent111 in (1, 2, 3, 4, 5):
         MainNpc.NpcChangeAIState('cBlockWander', '', '', '', true, true)
         EventFlowSystemActor.ExitFlowchart()
     return

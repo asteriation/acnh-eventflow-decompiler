@@ -12,24 +12,24 @@ flow Root:
         run SeasonMaterialChk_Ornament
     if subflow_results[12] == 1:
         fEvent39 = subflow_results[11]
-        if fEvent39 == 5:
-            event_flags_system['cPlayer:PAnnounce_WinterSnowFlake'] = true
-        elif fEvent39 == 0:
+        if fEvent39 == 0:
             event_flags_system['cPlayer:PAnnounce_SummerShell'] = true
         elif fEvent39 == 1:
             event_flags_system['cPlayer:PAnnounce_AutumnNuts'] = true
         elif fEvent39 == 2:
             event_flags_system['cPlayer:PAnnounce_AutumnMushroom'] = true
-        elif fEvent39 == 4:
-            event_flags_system['cPlayer:PAnnounce_WinterSnowball'] = true
-        elif fEvent39 == 8:
-            event_flags_system['cPlayer:PAnnounce_WinterOrnament'] = true
         elif fEvent39 == 3:
             event_flags_system['cPlayer:PAnnounce_AutumnRedLeaf'] = true
-        elif fEvent39 == 7:
-            event_flags_system['cPlayer:PAnnounce_SpringSakura'] = true
+        elif fEvent39 == 4:
+            event_flags_system['cPlayer:PAnnounce_WinterSnowball'] = true
+        elif fEvent39 == 5:
+            event_flags_system['cPlayer:PAnnounce_WinterSnowFlake'] = true
         elif fEvent39 == 6:
             event_flags_system['cPlayer:PAnnounce_SpringBamboo'] = true
+        elif fEvent39 == 7:
+            event_flags_system['cPlayer:PAnnounce_SpringSakura'] = true
+        elif fEvent39 == 8:
+            event_flags_system['cPlayer:PAnnounce_WinterOrnament'] = true
     return
 
 flow SeasonMaterialChk_AutumnMushroom:

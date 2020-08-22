@@ -36,18 +36,23 @@ entrypoint Event29:
             else:
 entrypoint Event0:
                 fEvent0 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent0 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:003', false)
-                elif fEvent0 == 0:
+                if fEvent0 == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:001', false)
                 elif fEvent0 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:002', false)
+                elif fEvent0 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_Easter:003', false)
                 EventFlowSystemActor.ExitFlowchart()
         elif EventFlowSystemActor.PercentChoice(10):
             run WaterEgg
         else:
             fEvent11 = MainNpc.CheckNpcLook()
-            if fEvent11 == 1:
+            if fEvent11 == 0:
+                if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                    run EarthEgg
+                else:
+                    run SkyEgg
+            elif fEvent11 == 1:
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     run WoodEgg
                 else:
@@ -67,26 +72,21 @@ entrypoint Event0:
                     run EarthEgg
                 else:
                     run WoodEgg
-            elif fEvent11 == 6:
-                if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                    run EarthEgg
-                else:
-                    run StoneEgg
             elif fEvent11 == 5:
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     run StoneEgg
                 else:
                     run WoodEgg
+            elif fEvent11 == 6:
+                if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                    run EarthEgg
+                else:
+                    run StoneEgg
             elif fEvent11 == 7:
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     run SkyEgg
                 else:
                     run LeafEgg
-            elif fEvent11 == 0:
-                if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                    run EarthEgg
-                else:
-                    run SkyEgg
     return
 
 flow SkyEgg:

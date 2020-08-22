@@ -1,14 +1,7 @@
 flow Root:
     if EventFlowSystemActor.SystemCheckPastDaysFromPlayerMade(1):
         fEvent39 = MainNpc.NpcInducementType()
-        if fEvent39 == 1:
-            MainNpc.NpcSetLastLandWord()
-            if MainNpc.InducePlayerExist():
-                MainNpc.SetPlayerName(0)
-                run S001
-            else:
-                run S011
-        elif fEvent39 == 0:
+        if fEvent39 == 0:
             if (not MainNpc.NpcBirthType('cGrowup')) and (not MainNpc.NpcBirthType('cSettler')):
                 MainNpc.NpcSetLastLandWord()
                 if not MainNpc.NpcBirthType('cForeign'):
@@ -19,6 +12,19 @@ flow Root:
                     run S411
             else:
                 run S511
+        elif fEvent39 == 1:
+            MainNpc.NpcSetLastLandWord()
+            if MainNpc.InducePlayerExist():
+                MainNpc.SetPlayerName(0)
+                run S001
+            else:
+                run S011
+        elif fEvent39 == 2:
+            if MainNpc.InducePlayerExist():
+                MainNpc.SetPlayerName(0)
+                run S101
+            else:
+                run S111
         elif fEvent39 == 3:
             if MainNpc.InducePlayerExist():
                 MainNpc.SetPlayerName(0)
@@ -31,12 +37,6 @@ flow Root:
                 run S301
             else:
                 run S311
-        elif fEvent39 == 2:
-            if MainNpc.InducePlayerExist():
-                MainNpc.SetPlayerName(0)
-                run S101
-            else:
-                run S111
     else:
         run S501
     return
@@ -145,12 +145,12 @@ flow S501:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_First_Stranger:504', false)
     elif MainNpc.IsNnpcTent():
         fEvent28 = MainNpc.CheckNpcLook()
-        if fEvent28 == 3:
+        if fEvent28 in (0, 1, 2, 4, 6, 7):
+            run sub_grp!Event91
+        elif fEvent28 == 3:
             MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_First_Stranger:316', false)
         elif fEvent28 == 5:
             MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_First_Stranger:316', false)
-        elif fEvent28 in (0, 1, 2, 4, 6, 7):
-            run sub_grp!Event91
     else:
         run sub_grp!Event91
     return

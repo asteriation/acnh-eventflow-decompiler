@@ -95,11 +95,7 @@ entrypoint Event5:
     event_flags_system['cPlayer:RcoTalked1stAfterPrologue'] = true
     event_flags_system['cPlayer:RcoTentEnableDIYtrial'] = true
     fEvent10 = EventFlowSystemActor.OfficeLevel()
-    if fEvent10 == ResServiceBuilding:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:002', false)
-        event_flags_system['cPlayer:RcoFirstTalkNewOffice'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
-    elif fEvent10 in (ResServiceTent0, ResServiceTent1):
+    if fEvent10 in (ResServiceTent0, ResServiceTent1):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001', false)
         fEvent38 = EventFlowSystemActor.ShopLevel()
         if fEvent38 == InResServiceTent:
@@ -107,6 +103,10 @@ entrypoint Event5:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
         elif fEvent38 in (NooksCrannyInitial, NooksCrannyUpgraded):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
+    elif fEvent10 == ResServiceBuilding:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:002', false)
+        event_flags_system['cPlayer:RcoFirstTalkNewOffice'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:001_02', false)
     return
 
 flow RcoFirstVisit_Force_Init:

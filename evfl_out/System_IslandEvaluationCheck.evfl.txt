@@ -65,12 +65,7 @@ flow ChkStarRating:
 
 flow Compare_BeforeEvaluation:
     fEvent64 = subflow_results[0]
-    if fEvent64 == 4:
-        subflow_results[6] = 0
-        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 5:
-            subflow_results[6] = 1
-        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 5
-    elif fEvent64 == 0:
+    if fEvent64 == 0:
         if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] > 1:
             subflow_results[6] = 2
         else:
@@ -102,6 +97,11 @@ flow Compare_BeforeEvaluation:
         if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 4:
             subflow_results[6] = 1
         event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 4
+    elif fEvent64 == 4:
+        subflow_results[6] = 0
+        if event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] == 5:
+            subflow_results[6] = 1
+        event_flags_system['cPlayer:SzaBeforeIslandEvaluation'] = 5
     return
 
 flow IslandEvaluationChk:
@@ -113,7 +113,9 @@ entrypoint Event47:
         subflow_results[1] = 1
         subflow_results[5] = 0
         fEvent38 = subflow_results[3]
-        if fEvent38 == 1:
+        if fEvent38 == 0:
+            subflow_results[0] = 1
+        elif fEvent38 == 1:
             subflow_results[0] = 1
             if subflow_results[2] == 0:
                 subflow_results[1] = 2
@@ -127,35 +129,33 @@ entrypoint Event47:
         elif fEvent38 == 3:
             subflow_results[0] = 3
             fEvent42 = subflow_results[2]
-            if fEvent42 == 2:
-                subflow_results[0] = 2
+            if fEvent42 in (0, 1):
+                subflow_results[0] = 1
                 subflow_results[1] = 2
                 subflow_results[5] = 1
-            elif fEvent42 in (0, 1):
-                subflow_results[0] = 1
+            elif fEvent42 == 2:
+                subflow_results[0] = 2
                 subflow_results[1] = 2
                 subflow_results[5] = 1
         elif fEvent38 == 4:
             subflow_results[0] = 4
             fEvent43 = subflow_results[2]
-            if fEvent43 == 3:
-                subflow_results[0] = 3
+            if fEvent43 in (0, 1):
+                subflow_results[0] = 1
                 subflow_results[1] = 2
                 subflow_results[5] = 1
             elif fEvent43 == 2:
                 subflow_results[0] = 2
                 subflow_results[1] = 2
                 subflow_results[5] = 1
-            elif fEvent43 in (0, 1):
-                subflow_results[0] = 1
+            elif fEvent43 == 3:
+                subflow_results[0] = 3
                 subflow_results[1] = 2
                 subflow_results[5] = 1
             elif fEvent43 == 4:
                 subflow_results[1] = 3
                 if subflow_results[4] in (1, 2, 3):
                     subflow_results[0] = 3
-        elif fEvent38 == 0:
-            subflow_results[0] = 1
     else:
         run NotEnoughNNpc
     return

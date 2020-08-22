@@ -28,18 +28,18 @@ flow Root:
     event_flags_system['cLandTemp:RctEnterBalloon'] = true
     run SNPC_rcm_03_RenualOpen::Chk_RenualOpen_Talk
     fEvent24 = subflow_results[1]
-    if fEvent24 == 2:
-        run Rcm_Market1_First
-    elif fEvent24 == 4:
-        run Rcm_Market2_First
+    if fEvent24 == 0:
+        run sub_Event11
     elif fEvent24 == 1:
         run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
+    elif fEvent24 == 2:
+        run Rcm_Market1_First
     elif fEvent24 == 3:
         run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
+    elif fEvent24 == 4:
+        run Rcm_Market2_First
     elif fEvent24 == 5:
         run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
-    elif fEvent24 == 0:
-        run sub_Event11
     return
 
 flow Root_Init:

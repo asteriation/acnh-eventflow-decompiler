@@ -58,16 +58,16 @@ flow Chest_PC_Other:
         EventFlowSystemActor.UIClosetBalloonDisappear()
     elif EventFlowSystemActor.IsMyVillage():
         fEvent19 = EventFlowSystemActor.UIClosetItemNum()
-        if fEvent19 == 2:
+        if fEvent19 == 0:
+            Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
+        elif fEvent19 == 1:
+            Player.OpenMessageWindow('TalkFtr/FTR_Chest:003', false)
+        elif fEvent19 == 2:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:004', false)
         elif fEvent19 == 3:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:005', false)
         elif fEvent19 == 4:
             Player.OpenMessageWindow('TalkFtr/FTR_Chest:006', false)
-        elif fEvent19 == 0:
-            Player.OpenMessageWindow('TalkFtr/FTR_Chest:002', false)
-        elif fEvent19 == 1:
-            Player.OpenMessageWindow('TalkFtr/FTR_Chest:003', false)
     else:
         Player.OpenMessageWindow('TalkFtr/FTR_Chest:015', false)
     return

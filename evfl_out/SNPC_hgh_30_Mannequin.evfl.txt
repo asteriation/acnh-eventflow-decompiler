@@ -12,12 +12,41 @@ flow Root:
             run SNPC_hgh::Hgh_Chk_BuyMannequin
         elif fEvent11 == 2:
             run Root_Mannequin_Cancel
+    elif fEvent1 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_30_Mannequin:004', false)
+        fEvent4 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent4 == 0:
+            MainNpc.HghSetMannequinSelectItem(0)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent4 == 1:
+            MainNpc.HghSetMannequinSelectItem(1)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent4 == 2:
+            MainNpc.HghSetMannequinSelectItem(2)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent4 == 3:
+            run Root_Mannequin_Cancel
+    elif fEvent1 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_30_Mannequin:003', false)
+        fEvent5 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent5 == 0:
+            MainNpc.HghSetMannequinSelectItem(0)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent5 == 1:
+            MainNpc.HghSetMannequinSelectItem(1)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent5 == 2:
+            MainNpc.HghSetMannequinSelectItem(2)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent5 == 3:
+            MainNpc.HghSetMannequinSelectItem(3)
+            run SNPC_hgh::Hgh_Chk_BuyMannequin
+        elif fEvent5 == 4:
+            run Root_Mannequin_Cancel
     elif fEvent1 == 5:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_30_Mannequin:002', false)
         fEvent32 = EventFlowSystemActor.GeneralTalkChoice6()
-        if fEvent32 == 5:
-            run Root_Mannequin_Cancel
-        elif fEvent32 == 0:
+        if fEvent32 == 0:
             MainNpc.HghSetMannequinSelectItem(0)
             run SNPC_hgh::Hgh_Chk_BuyMannequin
         elif fEvent32 == 1:
@@ -32,37 +61,8 @@ flow Root:
         elif fEvent32 == 4:
             MainNpc.HghSetMannequinSelectItem(4)
             run SNPC_hgh::Hgh_Chk_BuyMannequin
-    elif fEvent1 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_30_Mannequin:003', false)
-        fEvent5 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent5 == 0:
-            MainNpc.HghSetMannequinSelectItem(0)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-        elif fEvent5 == 4:
+        elif fEvent32 == 5:
             run Root_Mannequin_Cancel
-        elif fEvent5 == 2:
-            MainNpc.HghSetMannequinSelectItem(2)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-        elif fEvent5 == 3:
-            MainNpc.HghSetMannequinSelectItem(3)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-        elif fEvent5 == 1:
-            MainNpc.HghSetMannequinSelectItem(1)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-    elif fEvent1 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_30_Mannequin:004', false)
-        fEvent4 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent4 == 3:
-            run Root_Mannequin_Cancel
-        elif fEvent4 == 0:
-            MainNpc.HghSetMannequinSelectItem(0)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-        elif fEvent4 == 1:
-            MainNpc.HghSetMannequinSelectItem(1)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
-        elif fEvent4 == 2:
-            MainNpc.HghSetMannequinSelectItem(2)
-            run SNPC_hgh::Hgh_Chk_BuyMannequin
     return
 
 flow Root_Mannequin_Cancel:

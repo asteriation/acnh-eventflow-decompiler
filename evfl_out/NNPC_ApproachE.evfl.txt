@@ -5,10 +5,10 @@ flow AN_Got_Shovel:
 flow ForMarketBuilding:
     event_flags_npc['cNpcSave:MarketBuildingSupport'] = true
     fEvent1 = MainNpc.CheckNpcLook()
-    if fEvent1 == 5:
-        run ForMarketBuilding_HA
-    elif fEvent1 == 3:
+    if fEvent1 == 3:
         run ForMarketBuilding_AN
+    elif fEvent1 == 5:
+        run ForMarketBuilding_HA
     return
 
 flow ForMarketBuilding_AN:

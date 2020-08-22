@@ -3,12 +3,12 @@ flow About_MyDream:
     MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:3001', false)
 entrypoint Event116:
     fEvent116 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent116 == 1:
+    if fEvent116 == 0:
+        run Update_Dream
+    elif fEvent116 == 1:
         run About_PublishNo
     elif fEvent116 == 2:
         run Delete_Dream
-    elif fEvent116 == 0:
-        run Update_Dream
     elif fEvent116 == 3:
         run ReturnSelect
     return
@@ -36,11 +36,11 @@ flow About_PublishNo:
 
 flow Caution_Parental:
     fEvent151 = subflow_results[1]
-    if fEvent151 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2041', false)
-        run ReturnSelect
-    elif fEvent151 == 0:
+    if fEvent151 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:1041', false)
+        run ReturnSelect
+    elif fEvent151 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2041', false)
         run ReturnSelect
     elif fEvent151 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:3341', false)

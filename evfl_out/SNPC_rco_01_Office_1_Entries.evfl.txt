@@ -131,10 +131,10 @@ flow Rco_Office_Infra:
         if subflow_results[0] == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:075_01', false)
             fEvent44 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent44 == 1:
-                run SNPC_rco_10_Common_BuildBridgeSlope::Root
-            elif fEvent44 == 0:
+            if fEvent44 == 0:
                 run Rco_CmnSel_GetHousing
+            elif fEvent44 == 1:
+                run SNPC_rco_10_Common_BuildBridgeSlope::Root
             elif fEvent44 == 2:
                 run SNPC_rco_10_Common_MoveNpcFacility::Root
             elif fEvent44 == 3:

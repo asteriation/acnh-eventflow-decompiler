@@ -131,13 +131,15 @@ flow Root:
     if fEvent39 == 0:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:046', false)
         fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent26 == 1:
+        if fEvent26 == 0:
+            EventFlowSystemActor.SetIslandRubyType('ShimaSeom')
+        elif fEvent26 == 1:
             EventFlowSystemActor.SetIslandRubyType('JimaSeom')
         elif fEvent26 == 2:
             EventFlowSystemActor.SetIslandRubyType('TouSeom')
-        elif fEvent26 == 0:
-            EventFlowSystemActor.SetIslandRubyType('ShimaSeom')
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:045_01', false)
+    elif fEvent39 in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13):
+        pass
     elif fEvent39 == 11:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:047', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -145,8 +147,6 @@ flow Root:
         else:
             EventFlowSystemActor.SetIslandRubyType('TouDo')
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:045_01', false)
-    elif fEvent39 in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13):
-        pass
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:045_01_02', true)
     run Cmn_ApplauseAll_Stop
     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:045_02', true)

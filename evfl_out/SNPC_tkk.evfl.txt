@@ -100,21 +100,27 @@ entrypoint Event27:
         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:026', false)
 entrypoint Event29:
         fEvent29 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent29 == 3:
-            run Tkk_Refuse
+        if fEvent29 == 0:
+            if EventFlowSystemActor.NetIsConnected():
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:037', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:036', false)
+                run Tkk_Request_Share
+            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Random', 'cTkkSelectFeelType_None')
+            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
         elif fEvent29 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:032', false)
             fEvent88 = EventFlowSystemActor.GeneralTalkChoice5()
-            if fEvent88 == 3:
+            if fEvent88 == 0:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoGood')
+            elif fEvent88 == 1:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoBad')
+            elif fEvent88 == 2:
+                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Clement')
+            elif fEvent88 == 3:
                 MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Blue')
             elif fEvent88 == 4:
                 MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Unsure')
-            elif fEvent88 == 1:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoBad')
-            elif fEvent88 == 0:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_SoGood')
-            elif fEvent88 == 2:
-                MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Feeling', 'cTkkSelectFeelType_Clement')
             if EventFlowSystemActor.NetIsConnected():
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:034', false)
             else:
@@ -147,14 +153,8 @@ entrypoint Event29:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:028', false)
                 run Tkk_SelectMusic
-        elif fEvent29 == 0:
-            if EventFlowSystemActor.NetIsConnected():
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:037', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk:036', false)
-                run Tkk_Request_Share
-            MainNpc.TkkRequestSongSet('cTkkSelectSongMethod_Random', 'cTkkSelectFeelType_None')
-            MainNpc.TkkFreeAction('cTkkActionType_ToReady')
+        elif fEvent29 == 3:
+            run Tkk_Refuse
     else:
         run Tkk_Refuse
     return

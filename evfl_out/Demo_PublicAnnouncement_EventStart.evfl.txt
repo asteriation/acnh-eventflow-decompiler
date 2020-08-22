@@ -47,27 +47,12 @@ flow Root:
     if fEvent25 == 0:
         run PrepareDemo
         run Cmn_AnnounceEnd
-    elif fEvent25 == 2:
-        run PrepareDemo
-        if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
-            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart', true)
-            run Cmn_AnnounceEnd
-        else:
-            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart_00', true)
-            run Cmn_AnnounceEnd
-    elif fEvent25 == 3:
-        run PrepareDemo
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:CountdownStart', true)
-        run Cmn_AnnounceEnd
-    elif fEvent25 == 4:
-        run PrepareDemo
-        run Cmn_AnnounceEnd
     elif fEvent25 == 1:
         run PrepareDemo
         if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
             fEvent11 = EventFlowSystemActor.EnvSeason()
-            if fEvent11 == Summer:
-                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_01', true)
+            if fEvent11 == Spring:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart', true)
 entrypoint Event21:
                 EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
                 EventFlowSystemActor.StoreNormalCamera(true)
@@ -77,8 +62,8 @@ entrypoint Event21:
                 if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
                     EventFlowSystemActor.RequestStartPeriodicalFireworks()
                 EventFlowSystemActor.BGMPropertyControl(106)
-            elif fEvent11 == Spring:
-                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart', true)
+            elif fEvent11 == Summer:
+                EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:FishingStart_01', true)
 entrypoint Event21:
                 EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929, true)
                 EventFlowSystemActor.StoreNormalCamera(true)
@@ -156,6 +141,21 @@ entrypoint Event21:
                 if EventFlowSystemActor.GlobalEventNow('Fireworks', 'cMainOnly', false):
                     EventFlowSystemActor.RequestStartPeriodicalFireworks()
                 EventFlowSystemActor.BGMPropertyControl(106)
+    elif fEvent25 == 2:
+        run PrepareDemo
+        if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) == 0:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart', true)
+            run Cmn_AnnounceEnd
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:InsectStart_00', true)
+            run Cmn_AnnounceEnd
+    elif fEvent25 == 3:
+        run PrepareDemo
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_EventStart:CountdownStart', true)
+        run Cmn_AnnounceEnd
+    elif fEvent25 == 4:
+        run PrepareDemo
+        run Cmn_AnnounceEnd
     elif fEvent25 == 5:
         if event_flags_system['cLand:BuiltTownOffice']:
             run PrepareDemo

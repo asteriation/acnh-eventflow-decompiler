@@ -4,19 +4,19 @@ flow MainUI:
     fEvent12 = EventFlowSystemActor.MyDesignExchangeMenuResult()
     if fEvent12 == 0:
         run Seq_Close
+    elif fEvent12 == 1:
+        EventFlowSystemActor.MyDesignExchangeResetError()
+        run Obj_WorldMyDesignGallery_04_Search::SearchByMyDesignID
+    elif fEvent12 == 2:
+        run Obj_WorldMyDesignGallery_04_Search::SearchByAuthorID
     elif fEvent12 == 3:
         run Obj_WorldMyDesignGallery_03_Upload::Root
     elif fEvent12 == 4:
         run Obj_WorldMyDesignGallery_05_MyOpus::Root
-    elif fEvent12 == 2:
-        run Obj_WorldMyDesignGallery_04_Search::SearchByAuthorID
     elif fEvent12 == 5:
         run Obj_WorldMyDesignGallery_06_Search2::SearchByCondition
     elif fEvent12 == 6:
         run Obj_WorldMyDesignGallery_06_Search2::SearchByFavoriteAuthor
-    elif fEvent12 == 1:
-        EventFlowSystemActor.MyDesignExchangeResetError()
-        run Obj_WorldMyDesignGallery_04_Search::SearchByMyDesignID
     return
 
 flow Root:

@@ -15,16 +15,7 @@ flow Root_Talk:
 
 flow Snowman_Built:
     fEvent0 = SnowMan.SnowManGrade()
-    if fEvent0 == 3:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:004', false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent0 == 2:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:003', false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent0 == 1:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:002', false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent0 == 0:
+    if fEvent0 == 0:
         SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:001', false)
         SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:010', false)
         event_flags_system['cLifeSupportAchievement:MakePerfectSnowball'] += 1
@@ -32,16 +23,16 @@ flow Snowman_Built:
             if EventFlowSystemActor.IsMadeCraftUnlockRecipe('Snowman', 'cAND'):
                 SnowMan.DecideEventReward('cSnowmanReward')
                 fEvent7 = EventFlowSystemActor.RandomChoice5(5)
-                if fEvent7 == 4:
-                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 5)
-                elif fEvent7 == 3:
-                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
-                elif fEvent7 == 2:
-                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+                if fEvent7 == 0:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
                 elif fEvent7 == 1:
                     EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
-                elif fEvent7 == 0:
-                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 1)
+                elif fEvent7 == 2:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+                elif fEvent7 == 3:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
+                elif fEvent7 == 4:
+                    EventFlowSystemActor.SystemMailSend('cSnowman', 'MAIL_SP_Snowman', 'cFastTomorrow', 'cReward', 'cNone', false, 5)
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:016', false)
                 event_flags_system['cPlayer:SnowmanGotDay1Flag'] = true
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:021', false)
@@ -95,6 +86,15 @@ flow Snowman_Built:
             else:
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
                 EventFlowSystemActor.ExitFlowchart()
+    elif fEvent0 == 1:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:002', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent0 == 2:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:003', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent0 == 3:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:004', false)
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Snowman_Chat:
@@ -106,7 +106,15 @@ flow Snowman_Chat:
 
 flow Snowman_Chat_Always:
     fEvent36 = SnowMan.SnowManAge()
-    if fEvent36 == 1:
+    if fEvent36 == 0:
+        fEvent49 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
+        if fEvent49 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:056', false)
+        elif fEvent49 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:057', false)
+        elif fEvent49 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:058', false)
+    elif fEvent36 == 1:
         fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
         if fEvent37 == 0:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:059', false)
@@ -130,28 +138,30 @@ flow Snowman_Chat_Always:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:066', false)
         elif fEvent48 == 2:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:067', false)
-    elif fEvent36 == 0:
-        fEvent49 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
-        if fEvent49 == 0:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:056', false)
-        elif fEvent49 == 1:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:057', false)
-        elif fEvent49 == 2:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:058', false)
     return
 
 flow Snowman_Chat_Grade:
     fEvent53 = SnowMan.SnowManGrade()
-    if fEvent53 == 1:
+    if fEvent53 == 0:
+        fEvent70 = SnowMan.SnowManAge()
+        if fEvent70 == 0:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:068', false)
+        elif fEvent70 == 1:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:069', false)
+        elif fEvent70 == 2:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:070', false)
+        elif fEvent70 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:071', false)
+    elif fEvent53 == 1:
         fEvent57 = SnowMan.SnowManAge()
-        if fEvent57 == 3:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:075', false)
-        elif fEvent57 == 0:
+        if fEvent57 == 0:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:072', false)
         elif fEvent57 == 1:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:073', false)
         elif fEvent57 == 2:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:074', false)
+        elif fEvent57 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:075', false)
     elif fEvent53 == 2:
         fEvent62 = SnowMan.SnowManAge()
         if fEvent62 == 0:
@@ -164,16 +174,16 @@ flow Snowman_Chat_Grade:
                 run sub_grp!Event73
         elif fEvent62 == 1:
             fEvent123 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
-            if fEvent123 == 2:
-                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:077', false)
-            elif fEvent123 == 0:
+            if fEvent123 == 0:
                 run sub_grp!Event122
             elif fEvent123 == 1:
                 run sub_grp!Event73
-        elif fEvent62 == 3:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:079', false)
+            elif fEvent123 == 2:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:077', false)
         elif fEvent62 == 2:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:078', false)
+        elif fEvent62 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:079', false)
     elif fEvent53 == 3:
         fEvent67 = SnowMan.SnowManAge()
         if fEvent67 == 0:
@@ -186,26 +196,16 @@ flow Snowman_Chat_Grade:
                 run sub_grp!Event175
         elif fEvent67 == 1:
             fEvent133 = EventFlowSystemActor.RandomChoiceExcludePrevious3(false, 3)
-            if fEvent133 == 2:
-                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:085', false)
-            elif fEvent133 == 0:
+            if fEvent133 == 0:
                 run sub_grp!Event130
             elif fEvent133 == 1:
                 run sub_grp!Event175
-        elif fEvent67 == 3:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:087', false)
+            elif fEvent133 == 2:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:085', false)
         elif fEvent67 == 2:
             SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:086', false)
-    elif fEvent53 == 0:
-        fEvent70 = SnowMan.SnowManAge()
-        if fEvent70 == 3:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:071', false)
-        elif fEvent70 == 0:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:068', false)
-        elif fEvent70 == 1:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:069', false)
-        elif fEvent70 == 2:
-            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:070', false)
+        elif fEvent67 == 3:
+            SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:087', false)
     return
 
 flow Snowman_Chat_GuestP:
@@ -237,7 +237,12 @@ flow Snowman_Chat_GuestP:
 flow Snowman_Chat_HostP:
     if SnowMan.SnowManIsSnowMeltSeason():
         fEvent35 = SnowMan.SnowManAge()
-        if fEvent35 == 2:
+        if fEvent35 in (0, 1):
+            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:050', false)
+            else:
+                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:051', false)
+        elif fEvent35 == 2:
             if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:052', false)
             else:
@@ -247,21 +252,11 @@ flow Snowman_Chat_HostP:
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:054', false)
             else:
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:055', false)
-        elif fEvent35 in (0, 1):
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, false) == 0:
-                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:050', false)
-            else:
-                SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:051', false)
     elif SnowMan.SnowManGrade() in (0, 1):
         run sub_grp!Event26
     else:
         fEvent142 = SnowMan.SnowManAge()
-        if fEvent142 == 1:
-            if EventFlowSystemActor.PercentChoice(55):
-                run Snowman_Chat_Always
-            else:
-                run Snowman_Chat_Grade
-        elif fEvent142 == 0:
+        if fEvent142 == 0:
             if event_flags_system['cPlayer:SnowmanFirstBuildTodayFlag']:
                 run Snowman_Chat_Always
             else:
@@ -269,6 +264,11 @@ flow Snowman_Chat_HostP:
                     run Snowman_Chat_Always
                 else:
                     run Snowman_Chat_Grade
+        elif fEvent142 == 1:
+            if EventFlowSystemActor.PercentChoice(55):
+                run Snowman_Chat_Always
+            else:
+                run Snowman_Chat_Grade
         elif fEvent142 in (2, 3):
             run sub_grp!Event26
     return
@@ -390,15 +390,15 @@ flow Snowman_FirstBuild:
             else:
                 SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:014', false)
     fEvent152 = SnowMan.SnowManGrade()
-    if fEvent152 == 3:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:106', false)
-    elif fEvent152 == 2:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:105', false)
-    elif fEvent152 == 1:
-        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:104', false)
-    elif fEvent152 == 0:
+    if fEvent152 == 0:
         SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:103', false)
         event_flags_system['cLifeSupportAchievement:MakePerfectSnowball'] += 1
+    elif fEvent152 == 1:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:104', false)
+    elif fEvent152 == 2:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:105', false)
+    elif fEvent152 == 3:
+        SnowMan.OpenMessageWindow('TalkObj/OBJ_Snowman:106', false)
     EventFlowSystemActor.ExitFlowchart()
     return
 

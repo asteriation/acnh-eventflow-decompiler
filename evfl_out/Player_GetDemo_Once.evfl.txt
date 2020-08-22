@@ -58,13 +58,13 @@ flow Get_MainGame_Continue2P:
         EventFlowSystemActor.SystemMailSendDirect('cNintendo', 'MAIL_SP_Nintendo', 'cReward', 2)
         EventFlowSystemActor.StartupMailSend(true, true, true)
     fEvent46 = EventFlowSystemActor.ShopLevel()
-    if fEvent46 == NooksCrannyInitial:
+    if fEvent46 == InResServiceTent:
+        run sub_grp!Event48
+    elif fEvent46 == NooksCrannyInitial:
         event_flags_system['cPlayer:RcmHeardAboutNewOpen1'] = true
         run sub_grp!Event48
     elif fEvent46 == NooksCrannyUpgraded:
         event_flags_system['cPlayer:RcmHeardAboutNewOpen2'] = true
-        run sub_grp!Event48
-    elif fEvent46 == InResServiceTent:
         run sub_grp!Event48
     return
 
@@ -106,20 +106,40 @@ flow StartMainGameBitSet:
 
 flow sub_grp!Event48:
     fEvent48 = EventFlowSystemActor.OfficeLevel()
-    if fEvent48 == ResServiceBuilding:
+    if fEvent48 in (ResServiceTent0, ResServiceTent1):
+        if event_flags_system['cLand:TailorBuilt']:
+            event_flags_system['cPlayer:PAnnounceTailorBuilt'] = true
+        if event_flags_system['cLand:CampSiteBuilt']:
+            event_flags_system['cPlayer:PAnnounceCampsite'] = true
+        fEvent58 = EventFlowSystemActor.MuseumLevel()
+        if fEvent58 == BlathersTent:
+            event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
+            run StartMainGameBitSet
+            EventFlowSystemActor.NpcInitializeActivity(-1)
+            EventFlowSystemActor.CalendarEventStartFor2P()
+            EventFlowSystemActor.ResetNpcScheduleForStart()
+            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+        elif fEvent58 in (BlathersMuseumNoArt, BlathersMuseumArt):
+            event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag'] = true
+            run StartMainGameBitSet
+            EventFlowSystemActor.NpcInitializeActivity(-1)
+            EventFlowSystemActor.CalendarEventStartFor2P()
+            EventFlowSystemActor.ResetNpcScheduleForStart()
+            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+        elif fEvent58 == BlathersNotMovedIn:
+            run StartMainGameBitSet
+            EventFlowSystemActor.NpcInitializeActivity(-1)
+            EventFlowSystemActor.CalendarEventStartFor2P()
+            EventFlowSystemActor.ResetNpcScheduleForStart()
+            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
+    elif fEvent48 == ResServiceBuilding:
         event_flags_system['cPlayer:RcoFirstTalkNewOffice'] = true
         if event_flags_system['cLand:TailorBuilt']:
             event_flags_system['cPlayer:PAnnounceTailorBuilt'] = true
         if event_flags_system['cLand:CampSiteBuilt']:
             event_flags_system['cPlayer:PAnnounceCampsite'] = true
         fEvent58 = EventFlowSystemActor.MuseumLevel()
-        if fEvent58 == BlathersNotMovedIn:
-            run StartMainGameBitSet
-            EventFlowSystemActor.NpcInitializeActivity(-1)
-            EventFlowSystemActor.CalendarEventStartFor2P()
-            EventFlowSystemActor.ResetNpcScheduleForStart()
-            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
-        elif fEvent58 == BlathersTent:
+        if fEvent58 == BlathersTent:
             event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
             run StartMainGameBitSet
             EventFlowSystemActor.NpcInitializeActivity(-1)
@@ -133,27 +153,7 @@ flow sub_grp!Event48:
             EventFlowSystemActor.CalendarEventStartFor2P()
             EventFlowSystemActor.ResetNpcScheduleForStart()
             EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
-    elif fEvent48 in (ResServiceTent0, ResServiceTent1):
-        if event_flags_system['cLand:TailorBuilt']:
-            event_flags_system['cPlayer:PAnnounceTailorBuilt'] = true
-        if event_flags_system['cLand:CampSiteBuilt']:
-            event_flags_system['cPlayer:PAnnounceCampsite'] = true
-        fEvent58 = EventFlowSystemActor.MuseumLevel()
-        if fEvent58 == BlathersNotMovedIn:
-            run StartMainGameBitSet
-            EventFlowSystemActor.NpcInitializeActivity(-1)
-            EventFlowSystemActor.CalendarEventStartFor2P()
-            EventFlowSystemActor.ResetNpcScheduleForStart()
-            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
-        elif fEvent58 == BlathersTent:
-            event_flags_system['cPlayer:AnnouncementOwlMovedIn'] = true
-            run StartMainGameBitSet
-            EventFlowSystemActor.NpcInitializeActivity(-1)
-            EventFlowSystemActor.CalendarEventStartFor2P()
-            EventFlowSystemActor.ResetNpcScheduleForStart()
-            EventFlowSystemActor.SystemReenterStage(2, 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
-        elif fEvent58 in (BlathersMuseumNoArt, BlathersMuseumArt):
-            event_flags_system['cPlayer:TownNewsHeardMuseumOpenFlag'] = true
+        elif fEvent58 == BlathersNotMovedIn:
             run StartMainGameBitSet
             EventFlowSystemActor.NpcInitializeActivity(-1)
             EventFlowSystemActor.CalendarEventStartFor2P()

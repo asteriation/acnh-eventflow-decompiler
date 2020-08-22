@@ -45,34 +45,34 @@ entrypoint Event9:
             run ChkNpcTentStatus
             if event_flags_system['cPlayer:Prologue4AfterBuiltPcTent']:
                 fEvent1 = subflow_results[0]
-                if fEvent1 == 7:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:017', false)
-                elif fEvent1 == 0:
+                if fEvent1 == 0:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
                 elif fEvent1 in (1, 2):
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:019', false)
-                elif fEvent1 == 4:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
                 elif fEvent1 == 3:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:016', false)
-                elif fEvent1 == 6:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
+                elif fEvent1 == 4:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
                 elif fEvent1 == 5:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:018', false)
+                elif fEvent1 == 6:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
+                elif fEvent1 == 7:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:017', false)
             else:
                 event_flags_system['cPlayer:Prologue4AfterBuiltPcTent'] = true
                 MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:011', false)
                 fEvent12 = subflow_results[0]
-                if fEvent12 == 4:
+                if fEvent12 == 0:
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
+                elif fEvent12 in (1, 2, 3):
+                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
+                elif fEvent12 == 4:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:013', false)
                 elif fEvent12 in (5, 7):
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
-                elif fEvent12 in (1, 2, 3):
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:015', false)
                 elif fEvent12 == 6:
                     MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:014', false)
-                elif fEvent12 == 0:
-                    MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation2_Rco:012', false)
         else:
             run sub_Event5
     elif not event_flags_system['cPlayer:PrologueForCampfire1']:
@@ -148,19 +148,19 @@ entrypoint Event9:
         MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:061', false)
     elif EventFlowSystemActor.ShoppingCapacity(4081, 'cItemName'):
         fEvent86 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent86 in (Evening0, Evening1):
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051', false)
-            run sub_grp!Event63
-        elif fEvent86 in (Morning0, Morning1, Afternoon0, Afternoon1):
+        if fEvent86 in (Morning0, Morning1, Afternoon0, Afternoon1):
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051_01', false)
+            run sub_grp!Event63
+        elif fEvent86 in (Evening0, Evening1):
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:051', false)
             run sub_grp!Event63
     else:
         fEvent92 = EventFlowSystemActor.EnvTimeZone()
-        if fEvent92 in (Evening0, Evening1):
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
-            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
-        elif fEvent92 in (Morning0, Morning1, Afternoon0, Afternoon1):
+        if fEvent92 in (Morning0, Morning1, Afternoon0, Afternoon1):
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_02', false)
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
+        elif fEvent92 in (Evening0, Evening1):
+            MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:055_01', false)
             MainNpc.OpenMessageWindow('Tutorials/Tutorials_Prologue4_Orientation3:056', false)
     return
 

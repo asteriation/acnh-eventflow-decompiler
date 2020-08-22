@@ -52,9 +52,7 @@ flow FieldQuestions_Chk:
 
 flow Fireworks_Chk:
     fEvent35 = EventFlowSystemActor.EventCheck('Fireworks')
-    if fEvent35 == 3:
-        run ToFreeA_First
-    elif fEvent35 in (0, 1, 2):
+    if fEvent35 in (0, 1, 2):
         if EventFlowSystemActor.EnvHourCompare(18, 59, true, true) == 0:
             run ToFreeA_First
         else:
@@ -65,6 +63,8 @@ flow Fireworks_Chk:
                     run NNPC_Free_FieldV::FireworksV_1.4
             else:
                 run ToFreeA_First
+    elif fEvent35 == 3:
+        run ToFreeA_First
     return
 
 flow First_Chk:
@@ -135,15 +135,15 @@ flow ReSelection_Week:
 flow TentFirst_Chk:
     if (MainNpc.IsNnpcTent()) and (event_flags_npc['cNpcMemory:TalkCountToday'] >= 1):
         fEvent21 = MainNpc.CheckNpcLook()
-        if fEvent21 == 5:
-            if EventFlowSystemActor.EnvHourCompare(6, 30, true, true) in (0, 1):
+        if fEvent21 == 3:
+            if EventFlowSystemActor.EnvHourCompare(9, 30, true, true) in (0, 1):
                 if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:001', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:002', false)
                 EventFlowSystemActor.ExitFlowchart()
-        elif fEvent21 == 3:
-            if EventFlowSystemActor.EnvHourCompare(9, 30, true, true) in (0, 1):
+        elif fEvent21 == 5:
+            if EventFlowSystemActor.EnvHourCompare(6, 30, true, true) in (0, 1):
                 if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_FirstTent:001', false)
                 else:
@@ -228,7 +228,12 @@ flow Week_Chk:
     if not event_flag_npc['cNpcMemory:TalkWeekNow']:
 entrypoint Event75:
         fEvent75 = EventFlowSystemActor.EnvDayOfWeek()
-        if fEvent75 == Monday:
+        if fEvent75 == Sunday:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:007', false)
+            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
+            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent75 == Monday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:001', false)
             event_flags_npc['cNpcMemory:TalkWeekNow'] = true
             event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
@@ -255,11 +260,6 @@ entrypoint Event75:
             EventFlowSystemActor.ExitFlowchart()
         elif fEvent75 == Saturday:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:006', false)
-            event_flags_npc['cNpcMemory:TalkWeekNow'] = true
-            event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent75 == Sunday:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeA_Week:007', false)
             event_flags_npc['cNpcMemory:TalkWeekNow'] = true
             event_flags_npc['cNpcMemory:TalkReSelectLast'] = 2
             EventFlowSystemActor.ExitFlowchart()

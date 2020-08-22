@@ -1,9 +1,9 @@
 flow Cmn_RndItem:
     fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious8(8, false)
-    if fEvent57 == 1:
-        MainNpc.SetDeliveryItemAtRandom(3816, true, 'cVillageRemakePattern', 0)
-    elif fEvent57 == 0:
+    if fEvent57 == 0:
         MainNpc.SetDeliveryItemAtRandom(2319, true, 'cVillageRemakePattern', 0)
+    elif fEvent57 == 1:
+        MainNpc.SetDeliveryItemAtRandom(3816, true, 'cVillageRemakePattern', 0)
     elif fEvent57 == 2:
         MainNpc.SetDeliveryItemAtRandom(4379, true, 'cVillageRemakePattern', 0)
     elif fEvent57 == 3:

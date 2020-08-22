@@ -129,20 +129,20 @@ flow GulB_DC:
         run GulBTalkChk
         if event_flags_system['cLandTemp:GulBTalkShareplay']:
             fEvent247 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent247 == 1:
+            if fEvent247 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:062_01', false)
+            elif fEvent247 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:062_02', false)
             elif fEvent247 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:062_03', false)
-            elif fEvent247 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:062_01', false)
         else:
             fEvent243 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent243 == 1:
+            if fEvent243 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:061_01', false)
+            elif fEvent243 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:061_02', false)
             elif fEvent243 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:061_03', false)
-            elif fEvent243 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:061_01', false)
     else:
         run GulBKeepSleep
     return

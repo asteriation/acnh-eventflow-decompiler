@@ -69,12 +69,12 @@ flow Root:
     elif EventFlowSystemActor.NetHasDesignerID():
         EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:030', false)
         fEvent15 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent15 == 2:
-            run EntryPoint_Cancel
-        elif fEvent15 == 0:
+        if fEvent15 == 0:
             run EntryPoint_SignIn
         elif fEvent15 == 1:
             run EntryPoint_AuthorID
+        elif fEvent15 == 2:
+            run EntryPoint_Cancel
     else:
         EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_WorldMyDesignGallery:011', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:

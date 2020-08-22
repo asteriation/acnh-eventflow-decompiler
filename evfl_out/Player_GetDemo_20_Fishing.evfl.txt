@@ -5,13 +5,9 @@ flow Chk_TrashDiyRecipe:
             EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_TrashBag', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
         else:
             fEvent37 = subflow_results[0]
-            if fEvent37 == 3:
-                event_flags_system['cPlayer:CountGotTrash_Can'] += 1
-                if EventFlowSystemActor.PlayerHasCraftRecipe(132, ''):
-                    if (not EventFlowSystemActor.PlayerHasCraftRecipe(7045, '')) and (event_flags_system['cPlayer:CountGotTrash_Can'] >= 3):
-                        EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can2', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
-                elif event_flags_system['cPlayer:CountGotTrash_Can'] >= 1:
-                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can1', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+            if fEvent37 == 1:
+                if not EventFlowSystemActor.PlayerHasCraftRecipe(12326, ''):
+                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Boot', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
             elif fEvent37 == 2:
                 event_flags_system['cPlayer:CountGotTrash_Tire'] += 1
                 if EventFlowSystemActor.PlayerHasCraftRecipe(2329, ''):
@@ -19,9 +15,13 @@ flow Chk_TrashDiyRecipe:
                         EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Tire2', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
                 elif event_flags_system['cPlayer:CountGotTrash_Tire'] >= 1:
                     EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Tire1', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
-            elif fEvent37 == 1:
-                if not EventFlowSystemActor.PlayerHasCraftRecipe(12326, ''):
-                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Boot', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+            elif fEvent37 == 3:
+                event_flags_system['cPlayer:CountGotTrash_Can'] += 1
+                if EventFlowSystemActor.PlayerHasCraftRecipe(132, ''):
+                    if (not EventFlowSystemActor.PlayerHasCraftRecipe(7045, '')) and (event_flags_system['cPlayer:CountGotTrash_Can'] >= 3):
+                        EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can2', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
+                elif event_flags_system['cPlayer:CountGotTrash_Can'] >= 1:
+                    EventFlowSystemActor.ReservePlayerMutterDemo('GetDiyRecipe_Trash_Can1', 'cNextDemoEnd_Simple', 'Player_GetDemo_Recipe_DIY', true)
     return
 
 flow Cmn_PcActionStop:

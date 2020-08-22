@@ -27,10 +27,10 @@ flow ReportTent:
         fEvent36 = EventFlowSystemActor.GeneralTalkChoice4()
         if fEvent36 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:023', false)
-        elif fEvent36 == 2:
-            run SNPC_rcm_00_Common::Rcm_Common_Buy
         elif fEvent36 == 1:
             run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent36 == 2:
+            run SNPC_rcm_00_Common::Rcm_Common_Buy
         elif fEvent36 == 3:
             run SNPC_rcm_00_Common::rcm_Common_End
     return
@@ -61,12 +61,12 @@ entrypoint Event7:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
 entrypoint Event62:
                 fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent62 == 2:
-                    run RcmConfirmConsultation
+                if fEvent62 == 0:
+                    run SNPC_rcm_00_Common_Sell::Root
                 elif fEvent62 == 1:
                     run SNPC_rcm_00_Common::Rcm_Common_Buy
-                elif fEvent62 == 0:
-                    run SNPC_rcm_00_Common_Sell::Root
+                elif fEvent62 == 2:
+                    run RcmConfirmConsultation
                 elif fEvent62 == 3:
                     run SNPC_rcm_00_Common::rcm_Common_End
     else:
@@ -94,12 +94,12 @@ entrypoint Event7:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
 entrypoint Event62:
             fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent62 == 2:
-                run RcmConfirmConsultation
+            if fEvent62 == 0:
+                run SNPC_rcm_00_Common_Sell::Root
             elif fEvent62 == 1:
                 run SNPC_rcm_00_Common::Rcm_Common_Buy
-            elif fEvent62 == 0:
-                run SNPC_rcm_00_Common_Sell::Root
+            elif fEvent62 == 2:
+                run RcmConfirmConsultation
             elif fEvent62 == 3:
                 run SNPC_rcm_00_Common::rcm_Common_End
     return
@@ -110,10 +110,10 @@ entrypoint Event86:
     fEvent86 = EventFlowSystemActor.GeneralTalkChoice4()
     if fEvent86 == 0:
         run SNPC_rcm_21_MaterialCollecting::Root
-    elif fEvent86 == 2:
-        run SNPC_rcm_00_Common::Rcm_Common_Buy
     elif fEvent86 == 1:
         run SNPC_rcm_00_Common_Sell::Root
+    elif fEvent86 == 2:
+        run SNPC_rcm_00_Common::Rcm_Common_Buy
     elif fEvent86 == 3:
         run SNPC_rcm_00_Common::rcm_Common_End
     return

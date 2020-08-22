@@ -16,12 +16,12 @@ flow Root:
     elif not event_flag_npc['cNpcMemory:BirhdayNTalkFlag']:
         event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
         fEvent7 = EventFlowSystemActor.RandomChoice3(3)
-        if fEvent7 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:003', true)
+        if fEvent7 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:001', true)
         elif fEvent7 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:002', true)
-        elif fEvent7 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:001', true)
+        elif fEvent7 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:003', true)
     elif EventFlowSystemActor.IsMyVillage():
         if event_flags_system['cPlayer:BirthdayNGavePresentFlag']:
             run sub_grp!Event9
@@ -38,21 +38,21 @@ flow sub_grp!Event8:
     fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
     if fEvent8 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:010', true)
-    elif fEvent8 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:012', true)
     elif fEvent8 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:011', true)
+    elif fEvent8 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:012', true)
 
 flow sub_grp!Event9:
     fEvent9 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-    if fEvent9 == 4:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:009', true)
+    if fEvent9 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:005', true)
     elif fEvent9 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:006', true)
-    elif fEvent9 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:005', true)
-    elif fEvent9 == 3:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:008', true)
     elif fEvent9 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:007', true)
+    elif fEvent9 == 3:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:008', true)
+    elif fEvent9 == 4:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:009', true)
 

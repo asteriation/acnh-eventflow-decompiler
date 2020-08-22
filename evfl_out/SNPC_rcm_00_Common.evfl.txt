@@ -82,12 +82,12 @@ flow Rcm_Common_BuyCheckUI:
 
 flow Rcm_Common_TurnipChk:
     fEvent138 = EventFlowSystemActor.EnvDayOfWeek()
-    if fEvent138 in (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday):
+    if fEvent138 == Sunday:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:082', false)
+        run Event6
+    elif fEvent138 in (Monday, Tuesday, Wednesday, Thursday, Friday, Saturday):
         EventFlowSystemActor.SetTagFromSystem(0, 'cKabuka', '"cDegit"', '""', 0)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:081', false)
-        run Event6
-    elif fEvent138 == Sunday:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:082', false)
         run Event6
     return
 
@@ -191,10 +191,10 @@ flow Root:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:002', false)
         fEvent12 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent12 == 1:
-            run Rcm_Common_Buy
-        elif fEvent12 == 0:
+        if fEvent12 == 0:
             run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent12 == 1:
+            run Rcm_Common_Buy
         elif fEvent12 == 2:
             run rcm_Common_End
     elif fEvent2 in (NooksCrannyInitial, NooksCrannyUpgraded):
@@ -207,14 +207,14 @@ flow Root:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:012', false)
 entrypoint Event0:
         fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent0 == 3:
-            run rcm_Common_End
-        elif fEvent0 == 0:
+        if fEvent0 == 0:
             run SNPC_rcm_00_Common_Sell::Root
         elif fEvent0 == 1:
             run Rcm_Common_TurnipChk
         elif fEvent0 == 2:
             run rcm_Common_TodaysFurniture
+        elif fEvent0 == 3:
+            run rcm_Common_End
     return
 
 flow rcm_Common_End:
@@ -224,7 +224,21 @@ flow rcm_Common_End:
 flow rcm_Common_TodaysFurniture:
     EventFlowSystemActor.SetTagFromSystem(0, 'cExpensivePurchase1', 'cDegit', '', 0)
     fEvent68 = EventFlowSystemActor.ShopLevel()
-    if fEvent68 == NooksCrannyUpgraded:
+    if fEvent68 == NooksCrannyInitial:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
+entrypoint Event6:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:019', false)
+        fEvent148 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent148 == 0:
+            run SNPC_rcm_00_Common_Sell::Root
+        elif fEvent148 == 1:
+            run Rcm_Common_TurnipChk
+        elif fEvent148 == 2:
+            run rcm_Common_TodaysFurniture
+        elif fEvent148 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
+    elif fEvent68 == NooksCrannyUpgraded:
         EventFlowSystemActor.SetTagFromSystem(1, 'cExpensivePurchase2', 'cDegit', '', 0)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
@@ -235,24 +249,10 @@ entrypoint Event6:
             run SNPC_rcm_00_Common_Sell::Root
         elif fEvent148 == 1:
             run Rcm_Common_TurnipChk
-        elif fEvent148 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
         elif fEvent148 == 2:
             run rcm_Common_TodaysFurniture
-    elif fEvent68 == NooksCrannyInitial:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:121_02', false)
-entrypoint Event6:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:019', false)
-        fEvent148 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent148 == 0:
-            run SNPC_rcm_00_Common_Sell::Root
-        elif fEvent148 == 1:
-            run Rcm_Common_TurnipChk
         elif fEvent148 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:904', false)
-        elif fEvent148 == 2:
-            run rcm_Common_TodaysFurniture
     return
 
 flow sub_grp!Event82:

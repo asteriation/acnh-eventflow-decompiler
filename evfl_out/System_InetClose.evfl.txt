@@ -44,7 +44,12 @@ flow InetClose:
     if not EventFlowSystemActor.NetIsInviteFriend():
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:005', true)
         fEvent14 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent14 == 2:
+        if fEvent14 == 0:
+            run EntryPoint_OkaeriVisitor
+        elif fEvent14 == 1:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
+        elif fEvent14 == 2:
 entrypoint Event52:
             EventFlowSystemActor.UIShopMoneyDisappear()
             EventFlowSystemActor.UIIllegalReportHandling(5)
@@ -54,21 +59,19 @@ entrypoint Event52:
                 fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
                 if fEvent39 == 0:
                     run EntryPoint_OkaeriVisitor
-                elif fEvent39 == 2:
-                    run Report_Visitor
                 elif fEvent39 == 1:
                     EventFlowSystemActor.UIShopMoneyDisappear()
                     EventFlowSystemActor.UIMenuProfileOthersHandling()
-        elif fEvent14 == 1:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIMenuProfileOthersHandling()
-        elif fEvent14 == 0:
-            run EntryPoint_OkaeriVisitor
+                elif fEvent39 == 2:
+                    run Report_Visitor
     elif EventFlowSystemActor.NetHasVisitor():
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:002', true)
         fEvent3 = EventFlowSystemActor.GeneralTalkChoice4()
         if fEvent3 == 0:
             run EntryPoint_OhiakiHost
+        elif fEvent3 == 1:
+            EventFlowSystemActor.UIShopMoneyDisappear()
+            EventFlowSystemActor.UIMenuProfileOthersHandling()
         elif fEvent3 == 2:
 entrypoint Event49:
             EventFlowSystemActor.UIShopMoneyDisappear()
@@ -79,14 +82,11 @@ entrypoint Event49:
                 fEvent41 = EventFlowSystemActor.GeneralTalkChoice4()
                 if fEvent41 == 0:
                     run EntryPoint_OhiakiHost
-                elif fEvent41 == 2:
-                    run Report_Host
                 elif fEvent41 == 1:
                     EventFlowSystemActor.UIShopMoneyDisappear()
                     EventFlowSystemActor.UIMenuProfileOthersHandling()
-        elif fEvent3 == 1:
-            EventFlowSystemActor.UIShopMoneyDisappear()
-            EventFlowSystemActor.UIMenuProfileOthersHandling()
+                elif fEvent41 == 2:
+                    run Report_Host
     else:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_CloseMenu:001', true)
         fEvent20 = EventFlowSystemActor.GeneralTalkChoice3()

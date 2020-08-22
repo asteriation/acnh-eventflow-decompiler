@@ -18,13 +18,13 @@ flow Root:
         fEvent9 = EventFlowSystemActor.EventBranch(false, 0)
         if fEvent9 == 1:
             run NNPC_GEvent_CatchFishFes::Root
-        elif fEvent9 == 4:
-            run NNPC_GEvent_Easter::Root
-        elif fEvent9 == 5:
-            run NNPC_GEvent_Fireworks::Root
         elif fEvent9 == 2:
             run NNPC_GEvent_CatchInsectFes::Root
         elif fEvent9 == 3:
             run NNPC_GEvent_Countdown::Root
+        elif fEvent9 == 4:
+            run NNPC_GEvent_Easter::Root
+        elif fEvent9 == 5:
+            run NNPC_GEvent_Fireworks::Root
     return
 

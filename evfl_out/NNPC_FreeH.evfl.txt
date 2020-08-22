@@ -6,22 +6,22 @@ flow ChkReact1stPresent:
                 event_flags_npc['cNpcSave:React1stNpcPresent'] = true
                 MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:011', false)
                 fEvent40 = MainNpc.EnvWeatherNNpcTalkCustom()
-                if fEvent40 in (Rain, HeavyRain):
+                if fEvent40 in (Fine, Blossom):
+                    fEvent5 = EventFlowSystemActor.EnvTimeZone()
+                    if fEvent5 in (Morning0, Morning1, Afternoon0):
+                        MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_01', false)
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent5 in (Afternoon1, Evening0, Evening1):
+                        MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_04', false)
+                        EventFlowSystemActor.ExitFlowchart()
+                elif fEvent40 == Cloudy:
+                    EventFlowSystemActor.ExitFlowchart()
+                elif fEvent40 in (Rain, HeavyRain):
                     MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_02', false)
                     EventFlowSystemActor.ExitFlowchart()
                 elif fEvent40 in (Snow, HeavySnow):
                     MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_03', false)
                     EventFlowSystemActor.ExitFlowchart()
-                elif fEvent40 == Cloudy:
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent40 in (Fine, Blossom):
-                    fEvent5 = EventFlowSystemActor.EnvTimeZone()
-                    if fEvent5 in (Afternoon1, Evening0, Evening1):
-                        MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_04', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent5 in (Morning0, Morning1, Afternoon0):
-                        MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:012_01', false)
-                        EventFlowSystemActor.ExitFlowchart()
         elif fEvent33 == 5:
             if not Player.PlayerIsUseCoordinate():
                 if event_flags_system['cPlayer:1stPresentHatType'] == 0:
@@ -60,7 +60,15 @@ flow ForMarketBuilding_Chk:
     if (EventFlowSystemActor.IsMyVillage()) and (MainNpc.NpcIsSitting() == 4) and (event_flag_npc['cNpcTemp:MarketBuildingTalk']):
         event_flags_npc['cNpcSave:MarketBuildingSupport'] = true
         fEvent55 = MainNpc.CheckNpcLook()
-        if fEvent55 == 5:
+        if fEvent55 == 3:
+            if event_flags_system['cLand:RcmShopMaterialComplete']:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:011', false)
+                run NNPC_ApproachE::FromFreeH_AN2
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:001', false)
+                run NNPC_ApproachE::FromFreeH_AN1
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent55 == 5:
             if event_flags_system['cLand:RcmShopMaterialComplete']:
                 if event_flags_system['cPlayer:DecideShopArea']:
                     MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:012', false)
@@ -71,14 +79,6 @@ flow ForMarketBuilding_Chk:
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:001', false)
                 run NNPC_ApproachE::FromFreeH_HA1
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent55 == 3:
-            if event_flags_system['cLand:RcmShopMaterialComplete']:
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:011', false)
-                run NNPC_ApproachE::FromFreeH_AN2
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/Free/AN_FreeH_ForMarketBuilding:001', false)
-                run NNPC_ApproachE::FromFreeH_AN1
             EventFlowSystemActor.ExitFlowchart()
     return
 

@@ -67,14 +67,7 @@ flow HouseBuild_Root:
 
 flow HousingKitCommon:
     fEvent20 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent20 == 2:
-        EventFlowSystemActor.StructureDeletePreviewGuide(false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent20 == 1:
-        EventFlowSystemActor.BuildStructurePlayReport('StructureType', 'StructureBuildPosType', 'BuildTiming')
-        run System_Structure_Common::BuildStructure
-        EventFlowSystemActor.SystemDeletePlayerItem('cItemWindow', 1)
-    elif fEvent20 == 0:
+    if fEvent20 == 0:
         EventFlowSystemActor.WaitFrame(15)
         Player.CharacterEmoticonAction('AbsentMindedness', '', 0, true, false)
         EventFlowSystemActor.WaitFrame(20)
@@ -92,6 +85,13 @@ flow HousingKitCommon:
         else:
             run System_Structure_Common::DeletePreviewStructure
             EventFlowSystemActor.ExitFlowchart()
+    elif fEvent20 == 1:
+        EventFlowSystemActor.BuildStructurePlayReport('StructureType', 'StructureBuildPosType', 'BuildTiming')
+        run System_Structure_Common::BuildStructure
+        EventFlowSystemActor.SystemDeletePlayerItem('cItemWindow', 1)
+    elif fEvent20 == 2:
+        EventFlowSystemActor.StructureDeletePreviewGuide(false)
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow HousingKitCommonError:

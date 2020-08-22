@@ -299,13 +299,13 @@ entrypoint Event595:
     event_flags_system['cPlayer:ImmQHeardNoticeRemoveFtr'] = false
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
     fEvent786 = subflow_results[0]
-    if fEvent786 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:102', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:103_02', false)
-        run sub_grp!Event104
-    elif fEvent786 in (1, 2):
+    if fEvent786 in (1, 2):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:101', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:103_01', false)
+        run sub_grp!Event104
+    elif fEvent786 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:102', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:103_02', false)
         run sub_grp!Event104
     return
 
@@ -396,7 +396,9 @@ flow sub_grp!Event104:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:105_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:106', false)
                 fEvent114 = subflow_results[0]
-                if fEvent114 == 3:
+                if fEvent114 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:110', false)
+                elif fEvent114 == 3:
 entrypoint Event115:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:107', false)
                     if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
@@ -419,8 +421,6 @@ entrypoint Event115:
                     event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
                     event_flags_system['cLand:RcmImmQuestComplete'] = true
                     event_flags_system['cLand:RcmImmQuestRunning'] = false
-                elif fEvent114 in (1, 2):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:110', false)
             elif fEvent109 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:104_02', false)
                 if EventFlowSystemActor.IsFirstNpcLiveInTent():
@@ -429,7 +429,9 @@ entrypoint Event115:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:105_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:106', false)
                 fEvent114 = subflow_results[0]
-                if fEvent114 == 3:
+                if fEvent114 in (1, 2):
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:110', false)
+                elif fEvent114 == 3:
 entrypoint Event115:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:107', false)
                     if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
@@ -452,6 +454,4 @@ entrypoint Event115:
                     event_flags_system['cPlayer:ImmQTalkAboutPrize'] = true
                     event_flags_system['cLand:RcmImmQuestComplete'] = true
                     event_flags_system['cLand:RcmImmQuestRunning'] = false
-                elif fEvent114 in (1, 2):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:110', false)
 

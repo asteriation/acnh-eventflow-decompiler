@@ -55,12 +55,12 @@ entrypoint Event41:
     else:
         event_flags_system['cPlayerTemp:NnpcTalkSelectCount'] += 1
         fEvent44 = MainNpc.CheckNpcFavorLevel()
-        if fEvent44 == 5:
-            run Friend
+        if fEvent44 in (0, 1):
+            run BestFriend
         elif fEvent44 in (2, 3, 4):
             run GoodFriend
-        elif fEvent44 in (0, 1):
-            run BestFriend
+        elif fEvent44 == 5:
+            run Friend
     return
 
 flow Free_HouseG:

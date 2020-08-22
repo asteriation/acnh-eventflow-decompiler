@@ -15,19 +15,19 @@ flow Root:
         fEvent18 = subflow_results[1]
         if fEvent18 == 0:
             run ChkChestNormal
-        elif fEvent18 == 2:
-            run SNPC_rcm_00_In::Rcm_Market1_First
-            run SNPC_rcm::Rcm_SeqClose
-        elif fEvent18 == 4:
-            run SNPC_rcm_00_In::Rcm_Market2_First
-            run SNPC_rcm::Rcm_SeqClose
         elif fEvent18 == 1:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
             event_flags_system['cPlayer:RcmTalkAboutCupboard'] = true
             run SNPC_rcm::Rcm_SeqClose
+        elif fEvent18 == 2:
+            run SNPC_rcm_00_In::Rcm_Market1_First
+            run SNPC_rcm::Rcm_SeqClose
         elif fEvent18 == 3:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
             event_flags_system['cPlayer:RcmTalkAboutCupboard'] = true
+            run SNPC_rcm::Rcm_SeqClose
+        elif fEvent18 == 4:
+            run SNPC_rcm_00_In::Rcm_Market2_First
             run SNPC_rcm::Rcm_SeqClose
         elif fEvent18 == 5:
             run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2

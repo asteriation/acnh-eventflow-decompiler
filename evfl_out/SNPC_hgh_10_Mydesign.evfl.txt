@@ -10,14 +10,12 @@ flow Hgh_Mydesign_Not_Report_Select:
     fEvent97 = MainNpc.HghMydesignOwner()
     if fEvent97 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:002', false)
-    elif fEvent97 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:004', false)
     elif fEvent97 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:003', false)
+    elif fEvent97 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:004', false)
     fEvent7 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent7 == 2:
-        run Hgh_MyDesign_JustLooking
-    elif fEvent7 == 0:
+    if fEvent7 == 0:
         run Hgh_Mydesign_Get
     elif fEvent7 == 1:
 entrypoint Event62:
@@ -49,6 +47,8 @@ entrypoint Event30:
                 run hgh_Cancel
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:020', false)
+    elif fEvent7 == 2:
+        run Hgh_MyDesign_JustLooking
     return
 
 flow Hgh_Mydesign_RefreshChk:
@@ -57,11 +57,11 @@ flow Hgh_Mydesign_RefreshChk:
 
 flow Hgh_Mydesign_Report_Select:
     fEvent90 = MainNpc.HghMydesignOwner()
-    if fEvent90 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:004_01', false)
-        run sub_grp!Event1
-    elif fEvent90 == 1:
+    if fEvent90 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:003_01', false)
+        run sub_grp!Event1
+    elif fEvent90 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:004_01', false)
         run sub_grp!Event1
     return
 
@@ -72,37 +72,23 @@ flow Hgh_Mydesign_Show:
 flow Hgh_Talk:
     MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_10_Mydesign:001', false)
     fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent0 == 1:
-        MainNpc.ShopCheckItemSet('CheckMyDesign', 'cTailor')
-        MainNpc.CameraForWallHangingMyDesign()
-        EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignDesignName', 'cDegit', '', 0)
-        fEvent2 = MainNpc.HghMydesignOwner()
-        if fEvent2 == 2:
-            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignLandName', 'cDegit', '', 0)
-            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
-            if not EventFlowSystemActor.NetHasPOPID(false):
-                run Hgh_Mydesign_Not_Report_Select
-            elif MainNpc.HghFreeQuery2('cHghQueryType_CheckMyDesignIsTailorDefault'):
-                run Hgh_Mydesign_Not_Report_Select
-            else:
-                run Hgh_Mydesign_Report_Select
-        elif fEvent2 == 0:
-            run Hgh_Mydesign_Not_Report_Select
-        elif fEvent2 == 1:
-            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
-            if not EventFlowSystemActor.NetHasPOPID(false):
-                run Hgh_Mydesign_Not_Report_Select
-            elif MainNpc.HghFreeQuery2('cHghQueryType_CheckMyDesignIsTailorDefault'):
-                run Hgh_Mydesign_Not_Report_Select
-            else:
-                run Hgh_Mydesign_Report_Select
-    elif fEvent0 == 0:
+    if fEvent0 == 0:
         MainNpc.NpcAddBlackBoard('CheckMyDesign', 4)
         MainNpc.ShopCheckItemSet('CheckMyDesign', 'cTailor')
         MainNpc.CameraForWallHangingMyDesign()
         EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignDesignName', 'cDegit', '', 0)
         fEvent2 = MainNpc.HghMydesignOwner()
-        if fEvent2 == 2:
+        if fEvent2 == 0:
+            run Hgh_Mydesign_Not_Report_Select
+        elif fEvent2 == 1:
+            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
+            if not EventFlowSystemActor.NetHasPOPID(false):
+                run Hgh_Mydesign_Not_Report_Select
+            elif MainNpc.HghFreeQuery2('cHghQueryType_CheckMyDesignIsTailorDefault'):
+                run Hgh_Mydesign_Not_Report_Select
+            else:
+                run Hgh_Mydesign_Report_Select
+        elif fEvent2 == 2:
             EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignLandName', 'cDegit', '', 0)
             EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
             if not EventFlowSystemActor.NetHasPOPID(false):
@@ -111,9 +97,23 @@ flow Hgh_Talk:
                 run Hgh_Mydesign_Not_Report_Select
             else:
                 run Hgh_Mydesign_Report_Select
-        elif fEvent2 == 0:
+    elif fEvent0 == 1:
+        MainNpc.ShopCheckItemSet('CheckMyDesign', 'cTailor')
+        MainNpc.CameraForWallHangingMyDesign()
+        EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignDesignName', 'cDegit', '', 0)
+        fEvent2 = MainNpc.HghMydesignOwner()
+        if fEvent2 == 0:
             run Hgh_Mydesign_Not_Report_Select
         elif fEvent2 == 1:
+            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
+            if not EventFlowSystemActor.NetHasPOPID(false):
+                run Hgh_Mydesign_Not_Report_Select
+            elif MainNpc.HghFreeQuery2('cHghQueryType_CheckMyDesignIsTailorDefault'):
+                run Hgh_Mydesign_Not_Report_Select
+            else:
+                run Hgh_Mydesign_Report_Select
+        elif fEvent2 == 2:
+            EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignLandName', 'cDegit', '', 0)
             EventFlowSystemActor.SetTagFromSystem(0, 'cTailorMyDesignPlayerName', 'cDegit', '', 0)
             if not EventFlowSystemActor.NetHasPOPID(false):
                 run Hgh_Mydesign_Not_Report_Select

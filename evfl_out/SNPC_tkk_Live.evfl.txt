@@ -92,9 +92,7 @@ flow Tkk_LiveAfter_JudgeGet:
 
 flow Tkk_LiveAfter_LastWord:
     fEvent61 = MainNpc.TkkLiveType()
-    if fEvent61 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:029', false)
-    elif fEvent61 == 0:
+    if fEvent61 == 0:
         if not MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:016', false)
         elif not EventFlowSystemActor.IsSharePlay(0):
@@ -106,17 +104,13 @@ flow Tkk_LiveAfter_LastWord:
             run Tkk_BdayLive_EndMC
         else:
             run sub_Event53
+    elif fEvent61 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:029', false)
     return
 
 flow Tkk_LiveAfter_MusicGet_Multi:
     fEvent46 = MainNpc.TkkLiveType()
-    if fEvent46 == 1:
-        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:020', false)
-    elif fEvent46 == 2:
-        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:025', false)
-    elif fEvent46 == 0:
+    if fEvent46 == 0:
         if EventFlowSystemActor.IsSharePlay(0):
             EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', true, 4)
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:019', false)
@@ -124,6 +118,12 @@ flow Tkk_LiveAfter_MusicGet_Multi:
         else:
             EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:027', false)
+    elif fEvent46 == 1:
+        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 3)
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:020', false)
+    elif fEvent46 == 2:
+        EventFlowSystemActor.SystemMailSend('cTkk', 'MAIL_SNpc_tkk', 'cFastTomorrow', 'cReward', 'cNone', false, 2)
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:025', false)
     return
 
 flow Tkk_LiveAfter_MusicGet_Single:
@@ -153,38 +153,38 @@ flow Tkk_LiveAfter_MusicGet_Single:
 flow Tkk_LiveBefore_Msg:
     EventFlowSystemActor.SetTkkLiveRequestPlayerName()
     fEvent2 = MainNpc.TkkLiveType()
-    if fEvent2 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:011', false)
-    elif fEvent2 == 0:
+    if fEvent2 == 0:
         fEvent0 = MainNpc.TkkQeruestMethodType()
-        if fEvent0 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
+        if fEvent0 == 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:002', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
         elif fEvent0 == 1:
             fEvent3 = MainNpc.TkkRequestFeeling()
             if fEvent3 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:004', false)
+            elif fEvent3 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:005', false)
             elif fEvent3 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:006', false)
             elif fEvent3 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:007', false)
             elif fEvent3 == 4:
                 MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:008', false)
-            elif fEvent3 == 1:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:005', false)
-        elif fEvent0 == 0:
-            if subflow_results[0] == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:002', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
+        elif fEvent0 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:001', false)
     elif fEvent2 == 1:
         fEvent134 = MainNpc.CompareDayBirthdayLive()
         if fEvent134 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:012', false)
-        elif fEvent134 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:013', false)
         elif fEvent134 == 1:
             pass
+        elif fEvent134 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:013', false)
         MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:009', false)
+    elif fEvent2 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/tkk/SP_tkk_Live:011', false)
     return
 
 flow Tkk_LiveDemo:

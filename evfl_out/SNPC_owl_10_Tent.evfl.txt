@@ -40,10 +40,10 @@ entrypoint Event17:
                     fEvent27 = EventFlowSystemActor.GeneralTalkChoice3()
                     if fEvent27 == 0:
                         run SNPC_owl_01_Museum_Donation::Root
-                    elif fEvent27 == 2:
-                        run SNPC_owl_00_Common::End
                     elif fEvent27 == 1:
                         run SNPC_owl_02_Museum_Judgment::Root
+                    elif fEvent27 == 2:
+                        run SNPC_owl_00_Common::End
                 elif event_flags_system['cPlayer:FutaReadyForMuseum']:
                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:192', false)
                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

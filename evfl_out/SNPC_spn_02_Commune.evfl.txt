@@ -103,7 +103,9 @@ flow sub_grp!Event59:
                 if event_flags_system['cPlayer:MainmenuRecipe']:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018', false)
                     fEvent72 = subflow_results[0]
-                    if fEvent72 == 7:
+                    if fEvent72 == 6:
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent72 == 7:
                         MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:019', false)
 entrypoint Event31:
                         fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -116,8 +118,6 @@ entrypoint Event31:
                             run SNPC_spn_03_Studio::Spn_Explain_Select
                         elif fEvent31 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:013', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent72 == 6:
                         EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018_02', false)
@@ -133,7 +133,9 @@ entrypoint Event31:
                 if event_flags_system['cPlayer:MainmenuRecipe']:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018', false)
                     fEvent72 = subflow_results[0]
-                    if fEvent72 == 7:
+                    if fEvent72 == 6:
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent72 == 7:
                         MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:019', false)
 entrypoint Event31:
                         fEvent31 = EventFlowSystemActor.GeneralTalkChoice3()
@@ -146,8 +148,6 @@ entrypoint Event31:
                             run SNPC_spn_03_Studio::Spn_Explain_Select
                         elif fEvent31 == 2:
                             MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:013', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent72 == 6:
                         EventFlowSystemActor.ExitFlowchart()
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:018_02', false)

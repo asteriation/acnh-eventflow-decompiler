@@ -10,101 +10,101 @@ flow Rco_OfficeSel_3B_2P:
 
 flow Rco_OfficeSel_4B:
     fEvent12 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent12 == 3:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
+    if fEvent12 == 0:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
     elif fEvent12 == 1:
         run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
     elif fEvent12 == 2:
         run SNPC_rco_01_Office_1_Entries::Rco_Office_Infra
-    elif fEvent12 == 0:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
+    elif fEvent12 == 3:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_4B_2P_Ce:
     fEvent39 = EventFlowSystemActor.GeneralTalkChoice4()
-    if fEvent39 == 3:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-    elif fEvent39 == 2:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
-    elif fEvent39 == 0:
+    if fEvent39 == 0:
         run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
     elif fEvent39 == 1:
         run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
+    elif fEvent39 == 2:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
+    elif fEvent39 == 3:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_4B_2P_HintWs:
     fEvent24 = EventFlowSystemActor.GeneralTalkChoice4()
     if fEvent24 == 0:
         run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
-    elif fEvent24 == 2:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
-    elif fEvent24 == 3:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     elif fEvent24 == 1:
         if event_flags_system['cPlayer:RcoEnableRemakeTrial']:
             run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
         else:
             run SNPC_rco_01_Tent_1_Entries::RcoTentAskDIYtrial
+    elif fEvent24 == 2:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
+    elif fEvent24 == 3:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_5B_2P_HintWsCe:
     fEvent38 = EventFlowSystemActor.GeneralTalkChoice5()
     if fEvent38 == 0:
         run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
-    elif fEvent38 == 3:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
-    elif fEvent38 == 2:
-        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
-    elif fEvent38 == 4:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     elif fEvent38 == 1:
         if event_flags_system['cPlayer:RcoEnableRemakeTrial']:
             run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
         else:
             run SNPC_rco_01_Tent_1_Entries::RcoTentAskDIYtrial
+    elif fEvent38 == 2:
+        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
+    elif fEvent38 == 3:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
+    elif fEvent38 == 4:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_5B_Ce:
     fEvent17 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent17 == 4:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
+    if fEvent17 == 0:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
+    elif fEvent17 == 1:
+        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
     elif fEvent17 == 2:
         run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
     elif fEvent17 == 3:
         run SNPC_rco_01_Office_1_Entries::Rco_Office_Infra
-    elif fEvent17 == 0:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
-    elif fEvent17 == 1:
-        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
+    elif fEvent17 == 4:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_5B_HintWs:
     fEvent0 = EventFlowSystemActor.GeneralTalkChoice5()
     if fEvent0 == 0:
         run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
+    elif fEvent0 == 1:
+        run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
     elif fEvent0 == 2:
         run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
     elif fEvent0 == 3:
         run SNPC_rco_01_Office_1_Entries::Rco_Office_Infra
-    elif fEvent0 == 1:
-        run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
     elif fEvent0 == 4:
         run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 
 flow Rco_OfficeSel_6B_HintWsCe:
     fEvent5 = EventFlowSystemActor.GeneralTalkChoice6()
-    if fEvent5 == 5:
-        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-    elif fEvent5 == 4:
-        run SNPC_rco_01_Office_1_Entries::Rco_Office_Infra
-    elif fEvent5 == 2:
-        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
-    elif fEvent5 == 0:
+    if fEvent5 == 0:
         run SNPC_rco_01_Tent_1_Entries::RcoTentWhatShoudIdo
-    elif fEvent5 == 3:
-        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
     elif fEvent5 == 1:
         run SNPC_rco_01_Tent_1_Entries::RcoAskRemakeTrial
+    elif fEvent5 == 2:
+        run SNPC_rco_05_ChkCeremony::RcoAttendCeremony
+    elif fEvent5 == 3:
+        run SNPC_rco_01_Tent_1_Entries::RcoTentAboutMyhome
+    elif fEvent5 == 4:
+        run SNPC_rco_01_Office_1_Entries::Rco_Office_Infra
+    elif fEvent5 == 5:
+        run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     return
 

@@ -64,11 +64,11 @@ flow Root:
                             else:
                                 EventFlowSystemActor.UIMoneyDisappear()
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:206', false)
+                    elif fEvent50 == 1:
+                        run sub_grp!Event134
                     elif fEvent50 == 2:
                         EventFlowSystemActor.UIMoneyDisappear()
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:204', false)
-                    elif fEvent50 == 1:
-                        run sub_grp!Event134
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:005', false)
         else:
@@ -132,11 +132,11 @@ flow Root:
                             else:
                                 EventFlowSystemActor.UIMoneyDisappear()
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:206', false)
+                    elif fEvent50 == 1:
+                        run sub_grp!Event134
                     elif fEvent50 == 2:
                         EventFlowSystemActor.UIMoneyDisappear()
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:204', false)
-                    elif fEvent50 == 1:
-                        run sub_grp!Event134
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachC_Sell:006', false)
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:

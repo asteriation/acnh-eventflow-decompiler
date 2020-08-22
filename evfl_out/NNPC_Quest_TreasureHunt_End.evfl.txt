@@ -15,21 +15,21 @@ flow End_Lose:
     else:
         if MainNpc.NpcIsTreasureHuntLimitOver2():
             fEvent14 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent14 == 1:
+            if fEvent14 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:300', true)
+            elif fEvent14 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:301', true)
             elif fEvent14 == 2:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:302', true)
-            elif fEvent14 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:300', true)
         else:
             MainNpc.NpcAddFriendship(-1)
             fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent57 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:202', true)
+            if fEvent57 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:200', true)
             elif fEvent57 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:201', true)
-            elif fEvent57 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:200', true)
+            elif fEvent57 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:202', true)
         event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
         run Treasure_Finish
     return
@@ -78,10 +78,10 @@ flow End_Win:
         fEvent55 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
         if fEvent55 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:100', true)
-        elif fEvent55 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:102', true)
         elif fEvent55 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:101', true)
+        elif fEvent55 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:102', true)
         MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
         run Treasure_Finish
     else:

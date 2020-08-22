@@ -210,8 +210,8 @@ flow Root:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
-    elif fEvent22 == 4:
-        subflow_results[0] = 2
+    elif fEvent22 in (2, 3):
+        subflow_results[0] = 0
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
         if event_flags_npc['cNpcMemory:TalkCountToday'] >= 1:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()
@@ -315,8 +315,8 @@ flow Root:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:007', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachF_First:008', false)
-    elif fEvent22 in (2, 3):
-        subflow_results[0] = 0
+    elif fEvent22 == 4:
+        subflow_results[0] = 2
         event_flags_npc['cNpcMemory:AppF_MoveinGiftOccured'] = true
         if event_flags_npc['cNpcMemory:TalkCountToday'] >= 1:
             fEvent6 = EventFlowSystemActor.EnvTimeZone()

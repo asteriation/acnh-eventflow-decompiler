@@ -35,10 +35,12 @@ entrypoint Event59:
         if (not EventFlowSystemActor.CountSharePlayerNum(3)) and (not EventFlowSystemActor.CountWaitingPlayerNum(1)):
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:006_01', true)
             fEvent61 = EventFlowSystemActor.GeneralTalkChoice6()
-            if fEvent61 == 2:
-                run SharePlay_SaveAndGameEnd
-            elif fEvent61 == 0:
+            if fEvent61 == 0:
                 run SharePlay_ChangeLeader
+            elif fEvent61 == 1:
+                run System_SharePlay_Exit::Root
+            elif fEvent61 == 2:
+                run SharePlay_SaveAndGameEnd
             elif fEvent61 == 3:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 EventFlowSystemActor.UIMenuProfileOthersHandling()
@@ -47,29 +49,27 @@ entrypoint Event59:
                 run SharePlay_HowToPlay
             elif fEvent61 == 5:
                 EventFlowSystemActor.CancelSharePlayEntry()
-            elif fEvent61 == 1:
-                run System_SharePlay_Exit::Root
         else:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:006', true)
             fEvent36 = EventFlowSystemActor.GeneralTalkChoice7()
-            if fEvent36 == 3:
-                run SharePlay_SaveAndGameEnd
-            elif fEvent36 == 0:
+            if fEvent36 == 0:
                 run SharePlay_ChangeLeader
             elif fEvent36 == 1:
                 run System_SharePlay_Exit::Root
-            elif fEvent36 == 6:
-                EventFlowSystemActor.CancelSharePlayEntry()
-            elif fEvent36 == 4:
-                EventFlowSystemActor.UIShopMoneyDisappear()
-                EventFlowSystemActor.UIMenuProfileOthersHandling()
             elif fEvent36 == 2:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 EventFlowSystemActor.PrepareSharePlayEntry()
                 run Choice
+            elif fEvent36 == 3:
+                run SharePlay_SaveAndGameEnd
+            elif fEvent36 == 4:
+                EventFlowSystemActor.UIShopMoneyDisappear()
+                EventFlowSystemActor.UIMenuProfileOthersHandling()
             elif fEvent36 == 5:
                 EventFlowSystemActor.UIShopMoneyDisappear()
                 run SharePlay_HowToPlay
+            elif fEvent36 == 6:
+                EventFlowSystemActor.CancelSharePlayEntry()
     else:
         run SharePlay_AppOpen_Solo
     return

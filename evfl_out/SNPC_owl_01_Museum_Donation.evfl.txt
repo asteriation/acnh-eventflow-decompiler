@@ -23,7 +23,10 @@ flow MuseumAfterDonationCommon:
 flow OwlNoDonationItems:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:141', false)
     fEvent123 = EventFlowSystemActor.MuseumLevel()
-    if fEvent123 == BlathersMuseumNoArt:
+    if fEvent123 == BlathersTent:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:142', false)
+        run sub_grp!Event1
+    elif fEvent123 == BlathersMuseumNoArt:
         if event_flags_system['cLand:OwlFoundDiveFish']:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:149', false)
             run sub_grp!Event1
@@ -37,9 +40,6 @@ flow OwlNoDonationItems:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:146', false)
             run sub_grp!Event1
-    elif fEvent123 == BlathersTent:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:142', false)
-        run sub_grp!Event1
     return
 
 flow OwlTentDonationAgain:
@@ -52,170 +52,23 @@ flow Root:
 entrypoint Event2:
         if event_flags_system['cLand:OwlFoundFossil']:
             fEvent83 = EventFlowSystemActor.MuseumLevel()
-            if fEvent83 == BlathersMuseumNoArt:
-                if event_flags_system['cPlayer:OwlShowDiveFishReport']:
-                    if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_4'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation1_4', 'cItemFilter', false)
-entrypoint Event73:
-                        if not EventFlowSystemActor.UIResultMenuDecide():
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
-                        elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
-                            fEvent11 = MainNpc.OwlDonationFakeRate()
-                            if fEvent11 == 1:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
-                            elif fEvent11 == 2:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent11 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
-                        else:
-                            MainNpc.SetDeliveryItem(4, false)
-                            EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                            MainNpc.NpcDelivery('Keep', 0)
-                            fEvent82 = MainNpc.OwlDonationItemType()
-                            if fEvent82 == 6:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                MainNpc.NpcDelivery('"Default"', 10)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent82 == 5:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
-                            elif fEvent82 == 4:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                    run MuseumAfterDonationCommon
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
-                            elif fEvent82 == 2:
-                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
-                            elif fEvent82 == 3:
-                                if event_flags_system['cLand:OwlFoundFossil']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
-entrypoint Event86:
-                                    if MainNpc.OwlDonationFossilIsParts():
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    else:
-                                        if MainNpc.OwlDonationFossilComplete():
-                                            MainNpc.OwlDinosaurTagSet()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                run MuseumAfterDonationCommon
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                MainNpc.OwlOpenItemMessage()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-                                    if event_flags_system['cLand:OwlFoundFossil']:
-                                        run Comp_Check
-                                    else:
-                                        MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-entrypoint Event53:
-                                        if event_flags_system['cPlayerTemp:OwlKnownFossil']:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
-                                        event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-                                        event_flags_system['cLand:OwlFoundFossil'] = true
-                                else:
-                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                            elif fEvent82 == 0:
-                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                else:
-                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                    MainNpc.OwlOpenItemMessage()
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                if fEvent51 == BlathersTent:
-                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                    if EventFlowSystemActor.MuseumComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                    elif MainNpc.OwlMuseumMultiComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                    else:
-                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                        if fEvent120 == 0:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                        elif fEvent120 == 1:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                        elif fEvent120 == 2:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                            event_flags_system['cLand:MuseumFossilComplete'] = true
-                                        elif fEvent120 == 6:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                        elif fEvent120 == 3:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                        elif fEvent120 in (4, 5):
-                                            run SNPC_owl_00_Common::Again
-                    else:
-                        run OwlNoDonationItems
-                elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation'):
+            if fEvent83 == BlathersTent:
+                if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation1'):
                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation', 'cItemFilter', false)
+                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlTentDonation1', 'cItemFilter', false)
 entrypoint Event73:
                     if not EventFlowSystemActor.UIResultMenuDecide():
                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
                     elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                         fEvent11 = MainNpc.OwlDonationFakeRate()
-                        if fEvent11 == 1:
+                        if fEvent11 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                            if MainNpc.OwlDonationSameItem():
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                            run Comp_Check
+                        elif fEvent11 == 1:
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                             event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -226,40 +79,62 @@ entrypoint Event73:
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                             event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                             run SNPC_owl_00_Common::Again
-                        elif fEvent11 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                            if MainNpc.OwlDonationSameItem():
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                            run Comp_Check
                     else:
                         MainNpc.SetDeliveryItem(4, false)
                         EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                         MainNpc.NpcDelivery('Keep', 0)
                         fEvent82 = MainNpc.OwlDonationItemType()
-                        if fEvent82 == 6:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                            MainNpc.NpcDelivery('"Default"', 10)
-                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                            run SNPC_owl_00_Common::Again
-                        elif fEvent82 == 5:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                            MainNpc.NpcDelivery('"Default"', 3)
-                            run Comp_Check
-                        elif fEvent82 == 4:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                run MuseumAfterDonationCommon
+                        if fEvent82 == 0:
+                            if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                             else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                            if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                MainNpc.OwlOpenItemMessage()
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                             MainNpc.NpcDelivery('"Default"', 3)
-                            run Comp_Check
+entrypoint Event36:
+                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                            fEvent51 = EventFlowSystemActor.MuseumLevel()
+                            if fEvent51 == BlathersTent:
+                                run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                            elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                if EventFlowSystemActor.MuseumComplete():
+                                    EventFlowSystemActor.MessageSuspend()
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                    event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                elif MainNpc.OwlMuseumMultiComplete():
+                                    EventFlowSystemActor.MessageSuspend()
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                else:
+                                    fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                    if fEvent120 == 0:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                    elif fEvent120 == 1:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                    elif fEvent120 == 2:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                        event_flags_system['cLand:MuseumFossilComplete'] = true
+                                    elif fEvent120 == 3:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                    elif fEvent120 in (4, 5):
+                                        run SNPC_owl_00_Common::Again
+                                    elif fEvent120 == 6:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                         elif fEvent82 == 2:
                             run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                         elif fEvent82 == 3:
@@ -305,7 +180,217 @@ entrypoint Event53:
                                     event_flags_system['cLand:OwlFoundFossil'] = true
                             else:
                                 run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                        elif fEvent82 == 0:
+                        elif fEvent82 == 4:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                run MuseumAfterDonationCommon
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                            MainNpc.NpcDelivery('"Default"', 3)
+                            run Comp_Check
+                        elif fEvent82 == 5:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                            MainNpc.NpcDelivery('"Default"', 3)
+                            run Comp_Check
+                        elif fEvent82 == 6:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                            MainNpc.NpcDelivery('"Default"', 10)
+                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                            run SNPC_owl_00_Common::Again
+                else:
+                    run OwlNoDonationItems
+            elif fEvent83 == BlathersMuseumNoArt:
+                if event_flags_system['cPlayer:OwlShowDiveFishReport']:
+                    if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_4'):
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
+                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation1_4', 'cItemFilter', false)
+entrypoint Event73:
+                        if not EventFlowSystemActor.UIResultMenuDecide():
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
+                        elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
+                            fEvent11 = MainNpc.OwlDonationFakeRate()
+                            if fEvent11 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 1:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 2:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
+                        else:
+                            MainNpc.SetDeliveryItem(4, false)
+                            EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                            MainNpc.NpcDelivery('Keep', 0)
+                            fEvent82 = MainNpc.OwlDonationItemType()
+                            if fEvent82 == 0:
+                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
+                                else:
+                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                    MainNpc.OwlOpenItemMessage()
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+entrypoint Event36:
+                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                if fEvent51 == BlathersTent:
+                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                    if EventFlowSystemActor.MuseumComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                    elif MainNpc.OwlMuseumMultiComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                    else:
+                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                        if fEvent120 == 0:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                        elif fEvent120 == 1:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                        elif fEvent120 == 2:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                            event_flags_system['cLand:MuseumFossilComplete'] = true
+                                        elif fEvent120 == 3:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                        elif fEvent120 in (4, 5):
+                                            run SNPC_owl_00_Common::Again
+                                        elif fEvent120 == 6:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
+                            elif fEvent82 == 2:
+                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
+                            elif fEvent82 == 3:
+                                if event_flags_system['cLand:OwlFoundFossil']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
+entrypoint Event86:
+                                    if MainNpc.OwlDonationFossilIsParts():
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                    else:
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+                                    if event_flags_system['cLand:OwlFoundFossil']:
+                                        run Comp_Check
+                                    else:
+                                        MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+entrypoint Event53:
+                                        if event_flags_system['cPlayerTemp:OwlKnownFossil']:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
+                                        event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+                                        event_flags_system['cLand:OwlFoundFossil'] = true
+                                else:
+                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
+                            elif fEvent82 == 4:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                    run MuseumAfterDonationCommon
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 5:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 6:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                MainNpc.NpcDelivery('"Default"', 10)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
+                    else:
+                        run OwlNoDonationItems
+                elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
+                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation', 'cItemFilter', false)
+entrypoint Event73:
+                    if not EventFlowSystemActor.UIResultMenuDecide():
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
+                    elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
+                        fEvent11 = MainNpc.OwlDonationFakeRate()
+                        if fEvent11 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                            if MainNpc.OwlDonationSameItem():
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                            run Comp_Check
+                        elif fEvent11 == 1:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
+                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                            if MainNpc.OwlDonationSameItem():
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                            run Comp_Check
+                        elif fEvent11 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
+                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                            run SNPC_owl_00_Common::Again
+                    else:
+                        MainNpc.SetDeliveryItem(4, false)
+                        EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                        MainNpc.NpcDelivery('Keep', 0)
+                        fEvent82 = MainNpc.OwlDonationItemType()
+                        if fEvent82 == 0:
                             if event_flags_system['cPlayer:OwlEverDonatedInsect']:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                             else:
@@ -348,14 +433,82 @@ entrypoint Event36:
                                         EventFlowSystemActor.MessageSuspend()
                                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
                                         event_flags_system['cLand:MuseumFossilComplete'] = true
-                                    elif fEvent120 == 6:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                                     elif fEvent120 == 3:
                                         EventFlowSystemActor.MessageSuspend()
                                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
                                     elif fEvent120 in (4, 5):
                                         run SNPC_owl_00_Common::Again
+                                    elif fEvent120 == 6:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
+                        elif fEvent82 == 2:
+                            run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
+                        elif fEvent82 == 3:
+                            if event_flags_system['cLand:OwlFoundFossil']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
+entrypoint Event86:
+                                if MainNpc.OwlDonationFossilIsParts():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                        run MuseumAfterDonationCommon
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                else:
+                                    if MainNpc.OwlDonationFossilComplete():
+                                        MainNpc.OwlDinosaurTagSet()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            MainNpc.OwlOpenItemMessage()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                if event_flags_system['cLand:OwlFoundFossil']:
+                                    run Comp_Check
+                                else:
+                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+entrypoint Event53:
+                                    if event_flags_system['cPlayerTemp:OwlKnownFossil']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
+                                    event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+                                    event_flags_system['cLand:OwlFoundFossil'] = true
+                            else:
+                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
+                        elif fEvent82 == 4:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                run MuseumAfterDonationCommon
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                            MainNpc.NpcDelivery('"Default"', 3)
+                            run Comp_Check
+                        elif fEvent82 == 5:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                            MainNpc.NpcDelivery('"Default"', 3)
+                            run Comp_Check
+                        elif fEvent82 == 6:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                            MainNpc.NpcDelivery('"Default"', 10)
+                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                            run SNPC_owl_00_Common::Again
                 else:
                     run OwlNoDonationItems
             elif fEvent83 == BlathersMuseumArt:
@@ -369,7 +522,13 @@ entrypoint Event73:
                         elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                             fEvent11 = MainNpc.OwlDonationFakeRate()
-                            if fEvent11 == 1:
+                            if fEvent11 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -380,40 +539,62 @@ entrypoint Event73:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 run SNPC_owl_00_Common::Again
-                            elif fEvent11 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
                         else:
                             MainNpc.SetDeliveryItem(4, false)
                             EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                             MainNpc.NpcDelivery('Keep', 0)
                             fEvent82 = MainNpc.OwlDonationItemType()
-                            if fEvent82 == 6:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                MainNpc.NpcDelivery('"Default"', 10)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent82 == 5:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
-                            elif fEvent82 == 4:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                    run MuseumAfterDonationCommon
+                            if fEvent82 == 0:
+                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                    MainNpc.OwlOpenItemMessage()
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
+entrypoint Event36:
+                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                if fEvent51 == BlathersTent:
+                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                    if EventFlowSystemActor.MuseumComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                    elif MainNpc.OwlMuseumMultiComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                    else:
+                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                        if fEvent120 == 0:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                        elif fEvent120 == 1:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                        elif fEvent120 == 2:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                            event_flags_system['cLand:MuseumFossilComplete'] = true
+                                        elif fEvent120 == 3:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                        elif fEvent120 in (4, 5):
+                                            run SNPC_owl_00_Common::Again
+                                        elif fEvent120 == 6:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                             elif fEvent82 == 2:
                                 run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                             elif fEvent82 == 3:
@@ -459,57 +640,29 @@ entrypoint Event53:
                                         event_flags_system['cLand:OwlFoundFossil'] = true
                                 else:
                                     run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                            elif fEvent82 == 0:
-                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                else:
-                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                            elif fEvent82 == 4:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
                                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                    MainNpc.OwlOpenItemMessage()
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                    run MuseumAfterDonationCommon
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                if fEvent51 == BlathersTent:
-                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                    if EventFlowSystemActor.MuseumComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                    elif MainNpc.OwlMuseumMultiComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                    else:
-                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                        if fEvent120 == 0:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                        elif fEvent120 == 1:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                        elif fEvent120 == 2:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                            event_flags_system['cLand:MuseumFossilComplete'] = true
-                                        elif fEvent120 == 6:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                        elif fEvent120 == 3:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                        elif fEvent120 in (4, 5):
-                                            run SNPC_owl_00_Common::Again
+                                run Comp_Check
+                            elif fEvent82 == 5:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 6:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                MainNpc.NpcDelivery('"Default"', 10)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
                     else:
                         run OwlNoDonationItems
                 elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_2'):
@@ -521,7 +674,13 @@ entrypoint Event73:
                     elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                         fEvent11 = MainNpc.OwlDonationFakeRate()
-                        if fEvent11 == 1:
+                        if fEvent11 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                            if MainNpc.OwlDonationSameItem():
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                            run Comp_Check
+                        elif fEvent11 == 1:
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                             event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -532,40 +691,62 @@ entrypoint Event73:
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                             event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                             run SNPC_owl_00_Common::Again
-                        elif fEvent11 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                            if MainNpc.OwlDonationSameItem():
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                            run Comp_Check
                     else:
                         MainNpc.SetDeliveryItem(4, false)
                         EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                         MainNpc.NpcDelivery('Keep', 0)
                         fEvent82 = MainNpc.OwlDonationItemType()
-                        if fEvent82 == 6:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                            MainNpc.NpcDelivery('"Default"', 10)
-                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                            run SNPC_owl_00_Common::Again
-                        elif fEvent82 == 5:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                            MainNpc.NpcDelivery('"Default"', 3)
-                            run Comp_Check
-                        elif fEvent82 == 4:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                run MuseumAfterDonationCommon
+                        if fEvent82 == 0:
+                            if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                             else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                            if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                MainNpc.OwlOpenItemMessage()
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                             MainNpc.NpcDelivery('"Default"', 3)
-                            run Comp_Check
+entrypoint Event36:
+                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                            fEvent51 = EventFlowSystemActor.MuseumLevel()
+                            if fEvent51 == BlathersTent:
+                                run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                            elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                if EventFlowSystemActor.MuseumComplete():
+                                    EventFlowSystemActor.MessageSuspend()
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                    event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                elif MainNpc.OwlMuseumMultiComplete():
+                                    EventFlowSystemActor.MessageSuspend()
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                else:
+                                    fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                    if fEvent120 == 0:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                    elif fEvent120 == 1:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                    elif fEvent120 == 2:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                        event_flags_system['cLand:MuseumFossilComplete'] = true
+                                    elif fEvent120 == 3:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                    elif fEvent120 in (4, 5):
+                                        run SNPC_owl_00_Common::Again
+                                    elif fEvent120 == 6:
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                         elif fEvent82 == 2:
                             run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                         elif fEvent82 == 3:
@@ -611,104 +792,6 @@ entrypoint Event53:
                                     event_flags_system['cLand:OwlFoundFossil'] = true
                             else:
                                 run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                        elif fEvent82 == 0:
-                            if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                            else:
-                                event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                            if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                MainNpc.OwlOpenItemMessage()
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
-                            MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                            fEvent51 = EventFlowSystemActor.MuseumLevel()
-                            if fEvent51 == BlathersTent:
-                                run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                            elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                if EventFlowSystemActor.MuseumComplete():
-                                    EventFlowSystemActor.MessageSuspend()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                    event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                elif MainNpc.OwlMuseumMultiComplete():
-                                    EventFlowSystemActor.MessageSuspend()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                else:
-                                    fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                    if fEvent120 == 0:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                    elif fEvent120 == 1:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                    elif fEvent120 == 2:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                        event_flags_system['cLand:MuseumFossilComplete'] = true
-                                    elif fEvent120 == 6:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                    elif fEvent120 == 3:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                    elif fEvent120 in (4, 5):
-                                        run SNPC_owl_00_Common::Again
-                else:
-                    run OwlNoDonationItems
-            elif fEvent83 == BlathersTent:
-                if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation1'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlTentDonation1', 'cItemFilter', false)
-entrypoint Event73:
-                    if not EventFlowSystemActor.UIResultMenuDecide():
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
-                    elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
-                        fEvent11 = MainNpc.OwlDonationFakeRate()
-                        if fEvent11 == 1:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
-                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                            if MainNpc.OwlDonationSameItem():
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                            run Comp_Check
-                        elif fEvent11 == 2:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
-                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                            run SNPC_owl_00_Common::Again
-                        elif fEvent11 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                            if MainNpc.OwlDonationSameItem():
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                            run Comp_Check
-                    else:
-                        MainNpc.SetDeliveryItem(4, false)
-                        EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                        MainNpc.NpcDelivery('Keep', 0)
-                        fEvent82 = MainNpc.OwlDonationItemType()
-                        if fEvent82 == 6:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                            MainNpc.NpcDelivery('"Default"', 10)
-                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                            run SNPC_owl_00_Common::Again
-                        elif fEvent82 == 5:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                            MainNpc.NpcDelivery('"Default"', 3)
-                            run Comp_Check
                         elif fEvent82 == 4:
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
@@ -719,102 +802,19 @@ entrypoint Event73:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
                             MainNpc.NpcDelivery('"Default"', 3)
                             run Comp_Check
-                        elif fEvent82 == 2:
-                            run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
-                        elif fEvent82 == 3:
-                            if event_flags_system['cLand:OwlFoundFossil']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
-entrypoint Event86:
-                                if MainNpc.OwlDonationFossilIsParts():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        run MuseumAfterDonationCommon
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                else:
-                                    if MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                if event_flags_system['cLand:OwlFoundFossil']:
-                                    run Comp_Check
-                                else:
-                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-entrypoint Event53:
-                                    if event_flags_system['cPlayerTemp:OwlKnownFossil']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
-                                    event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-                                    event_flags_system['cLand:OwlFoundFossil'] = true
-                            else:
-                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                        elif fEvent82 == 0:
-                            if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                            else:
-                                event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                            if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                MainNpc.OwlOpenItemMessage()
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                        elif fEvent82 == 5:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
                             MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                            fEvent51 = EventFlowSystemActor.MuseumLevel()
-                            if fEvent51 == BlathersTent:
-                                run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                            elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                if EventFlowSystemActor.MuseumComplete():
-                                    EventFlowSystemActor.MessageSuspend()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                    event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                elif MainNpc.OwlMuseumMultiComplete():
-                                    EventFlowSystemActor.MessageSuspend()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                else:
-                                    fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                    if fEvent120 == 0:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                    elif fEvent120 == 1:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                    elif fEvent120 == 2:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                        event_flags_system['cLand:MuseumFossilComplete'] = true
-                                    elif fEvent120 == 6:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                    elif fEvent120 == 3:
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                    elif fEvent120 in (4, 5):
-                                        run SNPC_owl_00_Common::Again
+                            run Comp_Check
+                        elif fEvent82 == 6:
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                            MainNpc.NpcDelivery('"Default"', 10)
+                            event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                            run SNPC_owl_00_Common::Again
                 else:
                     run OwlNoDonationItems
         elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):
@@ -832,170 +832,23 @@ entrypoint Event36:
 entrypoint Event2:
             if event_flags_system['cLand:OwlFoundFossil']:
                 fEvent83 = EventFlowSystemActor.MuseumLevel()
-                if fEvent83 == BlathersMuseumNoArt:
-                    if event_flags_system['cPlayer:OwlShowDiveFishReport']:
-                        if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_4'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation1_4', 'cItemFilter', false)
-entrypoint Event73:
-                            if not EventFlowSystemActor.UIResultMenuDecide():
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
-                            elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
-                                fEvent11 = MainNpc.OwlDonationFakeRate()
-                                if fEvent11 == 1:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
-                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                    if MainNpc.OwlDonationSameItem():
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                    run Comp_Check
-                                elif fEvent11 == 2:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
-                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                    run SNPC_owl_00_Common::Again
-                                elif fEvent11 == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                    if MainNpc.OwlDonationSameItem():
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                    run Comp_Check
-                            else:
-                                MainNpc.SetDeliveryItem(4, false)
-                                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                                MainNpc.NpcDelivery('Keep', 0)
-                                fEvent82 = MainNpc.OwlDonationItemType()
-                                if fEvent82 == 6:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                    MainNpc.NpcDelivery('"Default"', 10)
-                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                    run SNPC_owl_00_Common::Again
-                                elif fEvent82 == 5:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-                                    run Comp_Check
-                                elif fEvent82 == 4:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                        run MuseumAfterDonationCommon
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-                                    run Comp_Check
-                                elif fEvent82 == 2:
-                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
-                                elif fEvent82 == 3:
-                                    if event_flags_system['cLand:OwlFoundFossil']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
-entrypoint Event86:
-                                        if MainNpc.OwlDonationFossilIsParts():
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                run MuseumAfterDonationCommon
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                        else:
-                                            if MainNpc.OwlDonationFossilComplete():
-                                                MainNpc.OwlDinosaurTagSet()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                    run MuseumAfterDonationCommon
-                                                else:
-                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                    MainNpc.OwlOpenItemMessage()
-                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
-                                                else:
-                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
-                                        MainNpc.NpcDelivery('"Default"', 3)
-                                        if event_flags_system['cLand:OwlFoundFossil']:
-                                            run Comp_Check
-                                        else:
-                                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-entrypoint Event53:
-                                            if event_flags_system['cPlayerTemp:OwlKnownFossil']:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
-                                            event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-                                            event_flags_system['cLand:OwlFoundFossil'] = true
-                                    else:
-                                        run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                                elif fEvent82 == 0:
-                                    if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                    else:
-                                        event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                    if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                        MainNpc.OwlOpenItemMessage()
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                    fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                    if fEvent51 == BlathersTent:
-                                        run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                    elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                        if EventFlowSystemActor.MuseumComplete():
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                        elif MainNpc.OwlMuseumMultiComplete():
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                        else:
-                                            fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                            if fEvent120 == 0:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                            elif fEvent120 == 1:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                            elif fEvent120 == 2:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                                event_flags_system['cLand:MuseumFossilComplete'] = true
-                                            elif fEvent120 == 6:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                            elif fEvent120 == 3:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                            elif fEvent120 in (4, 5):
-                                                run SNPC_owl_00_Common::Again
-                        else:
-                            run OwlNoDonationItems
-                    elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation'):
+                if fEvent83 == BlathersTent:
+                    if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation1'):
                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation', 'cItemFilter', false)
+                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlTentDonation1', 'cItemFilter', false)
 entrypoint Event73:
                         if not EventFlowSystemActor.UIResultMenuDecide():
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
                         elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                             fEvent11 = MainNpc.OwlDonationFakeRate()
-                            if fEvent11 == 1:
+                            if fEvent11 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -1006,40 +859,62 @@ entrypoint Event73:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 run SNPC_owl_00_Common::Again
-                            elif fEvent11 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
                         else:
                             MainNpc.SetDeliveryItem(4, false)
                             EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                             MainNpc.NpcDelivery('Keep', 0)
                             fEvent82 = MainNpc.OwlDonationItemType()
-                            if fEvent82 == 6:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                MainNpc.NpcDelivery('"Default"', 10)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent82 == 5:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
-                            elif fEvent82 == 4:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                    run MuseumAfterDonationCommon
+                            if fEvent82 == 0:
+                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                    MainNpc.OwlOpenItemMessage()
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
+entrypoint Event36:
+                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                if fEvent51 == BlathersTent:
+                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                    if EventFlowSystemActor.MuseumComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                    elif MainNpc.OwlMuseumMultiComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                    else:
+                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                        if fEvent120 == 0:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                        elif fEvent120 == 1:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                        elif fEvent120 == 2:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                            event_flags_system['cLand:MuseumFossilComplete'] = true
+                                        elif fEvent120 == 3:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                        elif fEvent120 in (4, 5):
+                                            run SNPC_owl_00_Common::Again
+                                        elif fEvent120 == 6:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                             elif fEvent82 == 2:
                                 run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                             elif fEvent82 == 3:
@@ -1085,7 +960,217 @@ entrypoint Event53:
                                         event_flags_system['cLand:OwlFoundFossil'] = true
                                 else:
                                     run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                            elif fEvent82 == 0:
+                            elif fEvent82 == 4:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                    run MuseumAfterDonationCommon
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 5:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 6:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                MainNpc.NpcDelivery('"Default"', 10)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
+                    else:
+                        run OwlNoDonationItems
+                elif fEvent83 == BlathersMuseumNoArt:
+                    if event_flags_system['cPlayer:OwlShowDiveFishReport']:
+                        if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_4'):
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
+                            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation1_4', 'cItemFilter', false)
+entrypoint Event73:
+                            if not EventFlowSystemActor.UIResultMenuDecide():
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
+                            elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
+                                fEvent11 = MainNpc.OwlDonationFakeRate()
+                                if fEvent11 == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                    if MainNpc.OwlDonationSameItem():
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                    run Comp_Check
+                                elif fEvent11 == 1:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
+                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                    if MainNpc.OwlDonationSameItem():
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                    run Comp_Check
+                                elif fEvent11 == 2:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
+                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                    run SNPC_owl_00_Common::Again
+                            else:
+                                MainNpc.SetDeliveryItem(4, false)
+                                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                                MainNpc.NpcDelivery('Keep', 0)
+                                fEvent82 = MainNpc.OwlDonationItemType()
+                                if fEvent82 == 0:
+                                    if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
+                                    else:
+                                        event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                    if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                        event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                        MainNpc.OwlOpenItemMessage()
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+entrypoint Event36:
+                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                    fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                    if fEvent51 == BlathersTent:
+                                        run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                    elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                        if EventFlowSystemActor.MuseumComplete():
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                        elif MainNpc.OwlMuseumMultiComplete():
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                        else:
+                                            fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                            if fEvent120 == 0:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                            elif fEvent120 == 1:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                            elif fEvent120 == 2:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                                event_flags_system['cLand:MuseumFossilComplete'] = true
+                                            elif fEvent120 == 3:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                            elif fEvent120 in (4, 5):
+                                                run SNPC_owl_00_Common::Again
+                                            elif fEvent120 == 6:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
+                                elif fEvent82 == 2:
+                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
+                                elif fEvent82 == 3:
+                                    if event_flags_system['cLand:OwlFoundFossil']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
+entrypoint Event86:
+                                        if MainNpc.OwlDonationFossilIsParts():
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                        else:
+                                            if MainNpc.OwlDonationFossilComplete():
+                                                MainNpc.OwlDinosaurTagSet()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    run MuseumAfterDonationCommon
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    MainNpc.OwlOpenItemMessage()
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                        MainNpc.NpcDelivery('"Default"', 3)
+                                        if event_flags_system['cLand:OwlFoundFossil']:
+                                            run Comp_Check
+                                        else:
+                                            MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+entrypoint Event53:
+                                            if event_flags_system['cPlayerTemp:OwlKnownFossil']:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
+                                            event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+                                            event_flags_system['cLand:OwlFoundFossil'] = true
+                                    else:
+                                        run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
+                                elif fEvent82 == 4:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                        run MuseumAfterDonationCommon
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+                                    run Comp_Check
+                                elif fEvent82 == 5:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+                                    run Comp_Check
+                                elif fEvent82 == 6:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                    MainNpc.NpcDelivery('"Default"', 10)
+                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                    run SNPC_owl_00_Common::Again
+                        else:
+                            run OwlNoDonationItems
+                    elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation'):
+                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
+                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlDonation', 'cItemFilter', false)
+entrypoint Event73:
+                        if not EventFlowSystemActor.UIResultMenuDecide():
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
+                        elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
+                            fEvent11 = MainNpc.OwlDonationFakeRate()
+                            if fEvent11 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 1:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 2:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
+                        else:
+                            MainNpc.SetDeliveryItem(4, false)
+                            EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
+                            MainNpc.NpcDelivery('Keep', 0)
+                            fEvent82 = MainNpc.OwlDonationItemType()
+                            if fEvent82 == 0:
                                 if event_flags_system['cPlayer:OwlEverDonatedInsect']:
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                                 else:
@@ -1128,14 +1213,82 @@ entrypoint Event36:
                                             EventFlowSystemActor.MessageSuspend()
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
                                             event_flags_system['cLand:MuseumFossilComplete'] = true
-                                        elif fEvent120 == 6:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                                         elif fEvent120 == 3:
                                             EventFlowSystemActor.MessageSuspend()
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
                                         elif fEvent120 in (4, 5):
                                             run SNPC_owl_00_Common::Again
+                                        elif fEvent120 == 6:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
+                            elif fEvent82 == 2:
+                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
+                            elif fEvent82 == 3:
+                                if event_flags_system['cLand:OwlFoundFossil']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
+entrypoint Event86:
+                                    if MainNpc.OwlDonationFossilIsParts():
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                    else:
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+                                    if event_flags_system['cLand:OwlFoundFossil']:
+                                        run Comp_Check
+                                    else:
+                                        MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+entrypoint Event53:
+                                        if event_flags_system['cPlayerTemp:OwlKnownFossil']:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
+                                        event_flags_system['cPlayer:OwlShowFossilMyself'] = true
+                                        event_flags_system['cLand:OwlFoundFossil'] = true
+                                else:
+                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
+                            elif fEvent82 == 4:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                    run MuseumAfterDonationCommon
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 5:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                MainNpc.NpcDelivery('"Default"', 3)
+                                run Comp_Check
+                            elif fEvent82 == 6:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                MainNpc.NpcDelivery('"Default"', 10)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
                     else:
                         run OwlNoDonationItems
                 elif fEvent83 == BlathersMuseumArt:
@@ -1149,7 +1302,13 @@ entrypoint Event73:
                             elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                                 fEvent11 = MainNpc.OwlDonationFakeRate()
-                                if fEvent11 == 1:
+                                if fEvent11 == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                    if MainNpc.OwlDonationSameItem():
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                    run Comp_Check
+                                elif fEvent11 == 1:
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                                     event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -1160,40 +1319,62 @@ entrypoint Event73:
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                                     event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                     run SNPC_owl_00_Common::Again
-                                elif fEvent11 == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                    if MainNpc.OwlDonationSameItem():
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                    run Comp_Check
                             else:
                                 MainNpc.SetDeliveryItem(4, false)
                                 EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                                 MainNpc.NpcDelivery('Keep', 0)
                                 fEvent82 = MainNpc.OwlDonationItemType()
-                                if fEvent82 == 6:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                    MainNpc.NpcDelivery('"Default"', 10)
-                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                    run SNPC_owl_00_Common::Again
-                                elif fEvent82 == 5:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-                                    run Comp_Check
-                                elif fEvent82 == 4:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                        run MuseumAfterDonationCommon
+                                if fEvent82 == 0:
+                                    if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                        event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                    if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                        event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                        MainNpc.OwlOpenItemMessage()
+                                    else:
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
-                                    run Comp_Check
+entrypoint Event36:
+                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                    fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                    if fEvent51 == BlathersTent:
+                                        run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                    elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                        if EventFlowSystemActor.MuseumComplete():
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                        elif MainNpc.OwlMuseumMultiComplete():
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                        else:
+                                            fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                            if fEvent120 == 0:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                            elif fEvent120 == 1:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                            elif fEvent120 == 2:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                                event_flags_system['cLand:MuseumFossilComplete'] = true
+                                            elif fEvent120 == 3:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                            elif fEvent120 in (4, 5):
+                                                run SNPC_owl_00_Common::Again
+                                            elif fEvent120 == 6:
+                                                EventFlowSystemActor.MessageSuspend()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                                 elif fEvent82 == 2:
                                     run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                                 elif fEvent82 == 3:
@@ -1239,57 +1420,29 @@ entrypoint Event53:
                                             event_flags_system['cLand:OwlFoundFossil'] = true
                                     else:
                                         run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                                elif fEvent82 == 0:
-                                    if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                    else:
-                                        event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                    if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                elif fEvent82 == 4:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
                                     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                        MainNpc.OwlOpenItemMessage()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
+                                        run MuseumAfterDonationCommon
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                    MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                    fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                    if fEvent51 == BlathersTent:
-                                        run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                    elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                        if EventFlowSystemActor.MuseumComplete():
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                        elif MainNpc.OwlMuseumMultiComplete():
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                        else:
-                                            fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                            if fEvent120 == 0:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                            elif fEvent120 == 1:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                            elif fEvent120 == 2:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                                event_flags_system['cLand:MuseumFossilComplete'] = true
-                                            elif fEvent120 == 6:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                            elif fEvent120 == 3:
-                                                EventFlowSystemActor.MessageSuspend()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                            elif fEvent120 in (4, 5):
-                                                run SNPC_owl_00_Common::Again
+                                    run Comp_Check
+                                elif fEvent82 == 5:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
+                                    MainNpc.NpcDelivery('"Default"', 3)
+                                    run Comp_Check
+                                elif fEvent82 == 6:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                    MainNpc.NpcDelivery('"Default"', 10)
+                                    event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                    run SNPC_owl_00_Common::Again
                         else:
                             run OwlNoDonationItems
                     elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlDonation1_2'):
@@ -1301,7 +1454,13 @@ entrypoint Event73:
                         elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
                             fEvent11 = MainNpc.OwlDonationFakeRate()
-                            if fEvent11 == 1:
+                            if fEvent11 == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
+                                if MainNpc.OwlDonationSameItem():
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
+                                run Comp_Check
+                            elif fEvent11 == 1:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
@@ -1312,40 +1471,62 @@ entrypoint Event73:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
                                 event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
                                 run SNPC_owl_00_Common::Again
-                            elif fEvent11 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
                         else:
                             MainNpc.SetDeliveryItem(4, false)
                             EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                             MainNpc.NpcDelivery('Keep', 0)
                             fEvent82 = MainNpc.OwlDonationItemType()
-                            if fEvent82 == 6:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                MainNpc.NpcDelivery('"Default"', 10)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent82 == 5:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
-                            elif fEvent82 == 4:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:132', false)
-                                    run MuseumAfterDonationCommon
+                            if fEvent82 == 0:
+                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
+                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
+                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
+                                    MainNpc.OwlOpenItemMessage()
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
+entrypoint Event36:
+                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
+                                fEvent51 = EventFlowSystemActor.MuseumLevel()
+                                if fEvent51 == BlathersTent:
+                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
+                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
+                                    if EventFlowSystemActor.MuseumComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
+                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+                                    elif MainNpc.OwlMuseumMultiComplete():
+                                        EventFlowSystemActor.MessageSuspend()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
+                                    else:
+                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
+                                        if fEvent120 == 0:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
+                                        elif fEvent120 == 1:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
+                                        elif fEvent120 == 2:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
+                                            event_flags_system['cLand:MuseumFossilComplete'] = true
+                                        elif fEvent120 == 3:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
+                                        elif fEvent120 in (4, 5):
+                                            run SNPC_owl_00_Common::Again
+                                        elif fEvent120 == 6:
+                                            EventFlowSystemActor.MessageSuspend()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
                             elif fEvent82 == 2:
                                 run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
                             elif fEvent82 == 3:
@@ -1391,104 +1572,6 @@ entrypoint Event53:
                                         event_flags_system['cLand:OwlFoundFossil'] = true
                                 else:
                                     run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                            elif fEvent82 == 0:
-                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                else:
-                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                    MainNpc.OwlOpenItemMessage()
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                if fEvent51 == BlathersTent:
-                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                    if EventFlowSystemActor.MuseumComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                    elif MainNpc.OwlMuseumMultiComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                    else:
-                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                        if fEvent120 == 0:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                        elif fEvent120 == 1:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                        elif fEvent120 == 2:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                            event_flags_system['cLand:MuseumFossilComplete'] = true
-                                        elif fEvent120 == 6:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                        elif fEvent120 == 3:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                        elif fEvent120 in (4, 5):
-                                            run SNPC_owl_00_Common::Again
-                    else:
-                        run OwlNoDonationItems
-                elif fEvent83 == BlathersTent:
-                    if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation1'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:104', true)
-                        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlTentDonation1', 'cItemFilter', false)
-entrypoint Event73:
-                        if not EventFlowSystemActor.UIResultMenuDecide():
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:105', true)
-                        elif EventFlowSystemActor.UIResultItemWindowNumCheck('cItemSelect', 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:106', false)
-                            fEvent11 = MainNpc.OwlDonationFakeRate()
-                            if fEvent11 == 1:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:108', false)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
-                            elif fEvent11 == 2:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:107', false)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent11 == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:109', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:110', false)
-                                if MainNpc.OwlDonationSameItem():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:111', false)
-                                run Comp_Check
-                        else:
-                            MainNpc.SetDeliveryItem(4, false)
-                            EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                            MainNpc.NpcDelivery('Keep', 0)
-                            fEvent82 = MainNpc.OwlDonationItemType()
-                            if fEvent82 == 6:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
-                                MainNpc.NpcDelivery('"Default"', 10)
-                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
-                                run SNPC_owl_00_Common::Again
-                            elif fEvent82 == 5:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
-                                MainNpc.NpcDelivery('"Default"', 3)
-                                run Comp_Check
                             elif fEvent82 == 4:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:120', false)
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:131', false)
@@ -1499,102 +1582,19 @@ entrypoint Event73:
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:134', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
                                 run Comp_Check
-                            elif fEvent82 == 2:
-                                run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Unknown
-                            elif fEvent82 == 3:
-                                if event_flags_system['cLand:OwlFoundFossil']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:125', false)
-entrypoint Event86:
-                                    if MainNpc.OwlDonationFossilIsParts():
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    else:
-                                        if MainNpc.OwlDonationFossilComplete():
-                                            MainNpc.OwlDinosaurTagSet()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                run MuseumAfterDonationCommon
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                MainNpc.OwlOpenItemMessage()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
-                                    MainNpc.NpcDelivery('"Default"', 3)
-                                    if event_flags_system['cLand:OwlFoundFossil']:
-                                        run Comp_Check
-                                    else:
-                                        MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-entrypoint Event53:
-                                        if event_flags_system['cPlayerTemp:OwlKnownFossil']:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_02', false)
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:155_01', false)
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:156', false)
-                                        event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-                                        event_flags_system['cLand:OwlFoundFossil'] = true
-                                else:
-                                    run SNPC_owl_11_Tent_Entries::owl_DonatedFossil1st_Known
-                            elif fEvent82 == 0:
-                                if event_flags_system['cPlayer:OwlEverDonatedInsect']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_02', false)
-                                else:
-                                    event_flags_system['cPlayer:OwlEverDonatedInsect'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:114_01', false)
-                                if event_flags_system['cPlayer:OwlHeardInsectExplanation']:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:116', false)
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:115', false)
-                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                    event_flags_system['cPlayer:OwlHeardInsectExplanation'] = true
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:117', false)
-                                    MainNpc.OwlOpenItemMessage()
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:118', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:119', false)
+                            elif fEvent82 == 5:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:135', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:147', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
-entrypoint Event36:
-                                MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
-                                fEvent51 = EventFlowSystemActor.MuseumLevel()
-                                if fEvent51 == BlathersTent:
-                                    run SNPC_owl_11_Tent_Entries::owl_Tent_AfterDonation
-                                elif fEvent51 in (BlathersMuseumNoArt, BlathersMuseumArt):
-                                    if EventFlowSystemActor.MuseumComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:401', true)
-                                        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                    elif MainNpc.OwlMuseumMultiComplete():
-                                        EventFlowSystemActor.MessageSuspend()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:402', true)
-                                    else:
-                                        fEvent120 = MainNpc.OwlMuseumCompleteRoomType()
-                                        if fEvent120 == 0:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:403', true)
-                                        elif fEvent120 == 1:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:404', true)
-                                        elif fEvent120 == 2:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:405', false)
-                                            event_flags_system['cLand:MuseumFossilComplete'] = true
-                                        elif fEvent120 == 6:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:410', false)
-                                        elif fEvent120 == 3:
-                                            EventFlowSystemActor.MessageSuspend()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:406', false)
-                                        elif fEvent120 in (4, 5):
-                                            run SNPC_owl_00_Common::Again
+                                run Comp_Check
+                            elif fEvent82 == 6:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:138', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:148', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:139', false)
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:140', false)
+                                MainNpc.NpcDelivery('"Default"', 10)
+                                event_flags_system['cLifeSupportAchievement:DonateFake'] += 1
+                                run SNPC_owl_00_Common::Again
                     else:
                         run OwlNoDonationItems
             elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):

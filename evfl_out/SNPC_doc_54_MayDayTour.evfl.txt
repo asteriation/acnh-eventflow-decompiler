@@ -89,6 +89,8 @@ flow Root:
         fEvent4 = EventFlowSystemActor.GeneralTalkChoice4()
         if fEvent4 == 0:
             run DocHint_MayDay
+        elif fEvent4 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:044', false)
         elif fEvent4 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:051', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -129,8 +131,6 @@ entrypoint Event63:
                     run DocCmnCancel_MayDay
             else:
                 run DocCmnCancel_MayDay
-        elif fEvent4 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/doc/SP_doc_51_MysteryTour:044', false)
         elif fEvent4 == 3:
             run sub_Event6
     return

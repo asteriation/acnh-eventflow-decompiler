@@ -142,7 +142,14 @@ flow A411:
 
 flow Root:
     fEvent0 = MainNpc.NpcInducementType()
-    if fEvent0 == 1:
+    if fEvent0 == 0:
+        if MainNpc.NpcBirthType('cForeign'):
+            MainNpc.NpcSetLastLandWord()
+            if event_flag_npc['cNpcMemory:SameLand']:
+                run A401
+            else:
+                run A411
+    elif fEvent0 == 1:
         MainNpc.NpcSetLastLandWord()
         if MainNpc.NpcIsInducementPlayer():
             run A001
@@ -151,6 +158,14 @@ flow Root:
             run A011
         else:
             run A021
+    elif fEvent0 == 2:
+        if MainNpc.NpcIsInducementPlayer():
+            run A101
+        elif MainNpc.InducePlayerExist():
+            MainNpc.SetPlayerName(0)
+            run A111
+        else:
+            run A121
     elif fEvent0 == 3:
         if MainNpc.NpcIsInducementPlayer():
             run A201
@@ -167,20 +182,5 @@ flow Root:
             run A311
         else:
             run A321
-    elif fEvent0 == 0:
-        if MainNpc.NpcBirthType('cForeign'):
-            MainNpc.NpcSetLastLandWord()
-            if event_flag_npc['cNpcMemory:SameLand']:
-                run A401
-            else:
-                run A411
-    elif fEvent0 == 2:
-        if MainNpc.NpcIsInducementPlayer():
-            run A101
-        elif MainNpc.InducePlayerExist():
-            MainNpc.SetPlayerName(0)
-            run A111
-        else:
-            run A121
     return
 

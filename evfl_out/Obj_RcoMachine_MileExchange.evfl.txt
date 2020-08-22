@@ -72,11 +72,7 @@ flow ExchangeHowToBook:
             EventFlowSystemActor.MessageSuspend()
             EventFlowSystemActor.SonkatsuBuyDone(false)
             fEvent17 = subflow_results[2]
-            if fEvent17 == 1:
-                run MileExchange_GetApp_MyDesignPRO
-            elif fEvent17 == 2:
-                run MileExchange_Get_ToolRecipesData
-            elif fEvent17 == 0:
+            if fEvent17 == 0:
                 run Cmn_PrintOutDemo
                 Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:031', true)
                 Player.PlayerChangeDemoState('cTicketTake')
@@ -94,6 +90,10 @@ flow ExchangeHowToBook:
                 elif fEvent59 == 5:
                     EventFlowSystemActor.ReservePlayerTicketGetDemo('Player_GetDemo_MileExchange', 'Get_ItemRing')
                 EventFlowSystemActor.ExitFlowchart()
+            elif fEvent17 == 1:
+                run MileExchange_GetApp_MyDesignPRO
+            elif fEvent17 == 2:
+                run MileExchange_Get_ToolRecipesData
         else:
             run ReChangeItem
     return

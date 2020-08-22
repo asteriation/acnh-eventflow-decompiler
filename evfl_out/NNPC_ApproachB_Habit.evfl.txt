@@ -24,10 +24,10 @@ entrypoint Event14:
                             fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                             if fEvent33 == 0:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:300', false)
-                            elif fEvent33 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                             elif fEvent33 == 1:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:301', false)
+                            elif fEvent33 == 2:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                             EventFlowSystemActor.SaveSetFromUIResult('cPhrase')
                             event_flags_npc['cNpcSave:InputPhrase'] = true
                         else:
@@ -45,10 +45,10 @@ entrypoint Event14:
                             fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                             if fEvent37 == 0:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:202', false)
-                            elif fEvent37 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                             elif fEvent37 == 1:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:203', false)
+                            elif fEvent37 == 2:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                         else:
                             run Retype
                 else:
@@ -69,10 +69,10 @@ entrypoint Event14:
                             fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                             if fEvent33 == 0:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:300', false)
-                            elif fEvent33 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                             elif fEvent33 == 1:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:301', false)
+                            elif fEvent33 == 2:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                             EventFlowSystemActor.SaveSetFromUIResult('cPhrase')
                             event_flags_npc['cNpcSave:InputPhrase'] = true
                         else:
@@ -90,10 +90,10 @@ entrypoint Event14:
                             fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                             if fEvent37 == 0:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:202', false)
-                            elif fEvent37 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                             elif fEvent37 == 1:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:203', false)
+                            elif fEvent37 == 2:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                         else:
                             run Retype
                 else:
@@ -114,10 +114,10 @@ entrypoint Event14:
                         fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                         if fEvent33 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:300', false)
-                        elif fEvent33 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                         elif fEvent33 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:301', false)
+                        elif fEvent33 == 2:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                         EventFlowSystemActor.SaveSetFromUIResult('cPhrase')
                         event_flags_npc['cNpcSave:InputPhrase'] = true
                     else:
@@ -135,10 +135,10 @@ entrypoint Event14:
                         fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                         if fEvent37 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:202', false)
-                        elif fEvent37 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                         elif fEvent37 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:203', false)
+                        elif fEvent37 == 2:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                     else:
                         run Retype
             else:
@@ -159,10 +159,10 @@ entrypoint Event14:
                         fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                         if fEvent33 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:300', false)
-                        elif fEvent33 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                         elif fEvent33 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:301', false)
+                        elif fEvent33 == 2:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:302', false)
                         EventFlowSystemActor.SaveSetFromUIResult('cPhrase')
                         event_flags_npc['cNpcSave:InputPhrase'] = true
                     else:
@@ -180,10 +180,10 @@ entrypoint Event14:
                         fEvent37 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
                         if fEvent37 == 0:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:202', false)
-                        elif fEvent37 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                         elif fEvent37 == 1:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:203', false)
+                        elif fEvent37 == 2:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Habit:204', false)
                     else:
                         run Retype
             else:

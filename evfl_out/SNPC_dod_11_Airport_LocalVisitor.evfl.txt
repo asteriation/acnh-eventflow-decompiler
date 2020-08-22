@@ -29,24 +29,6 @@ entrypoint Event23:
                 else:
                     EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                     run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-            elif fEvent23 == 2:
-                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
-                event_flags_system['cPlayerTemp:AirportTripListError'] = false
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
-                EventFlowSystemActor.OpenVillageList()
-                EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
-                if event_flags_system['cPlayerTemp:AirportTripListError']:
-                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
-                    if fEvent41 == 2:
-                        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                        run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent41 == 1:
-                        run EntryPoint_ResearchLocal
-                    elif fEvent41 == 0:
-                        run sub_grp!Event68
             elif fEvent23 == 1:
                 if EventFlowSystemActor.NetAllSessionIsFull():
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
@@ -58,13 +40,31 @@ entrypoint Event23:
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:104', false)
                     fEvent35 = EventFlowSystemActor.GeneralTalkChoice3()
-                    if fEvent35 == 1:
+                    if fEvent35 == 0:
+                        run sub_grp!Event68
+                    elif fEvent35 == 1:
                         run EntryPoint_ResearchLocal
                     elif fEvent35 == 2:
                         EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                         run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent35 == 0:
+            elif fEvent23 == 2:
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                event_flags_system['cPlayerTemp:AirportTripListError'] = false
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
+                EventFlowSystemActor.OpenVillageList()
+                EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                if event_flags_system['cPlayerTemp:AirportTripListError']:
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
+                    if fEvent41 == 0:
                         run sub_grp!Event68
+                    elif fEvent41 == 1:
+                        run EntryPoint_ResearchLocal
+                    elif fEvent41 == 2:
+                        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                        run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
         else:
             run SNPC_dod_AirPort::EntryPoint_Cancel
     else:
@@ -95,24 +95,6 @@ entrypoint Event23:
                 else:
                     EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                     run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-            elif fEvent23 == 2:
-                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
-                event_flags_system['cPlayerTemp:AirportTripListError'] = false
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
-                EventFlowSystemActor.OpenVillageList()
-                EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
-                if event_flags_system['cPlayerTemp:AirportTripListError']:
-                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
-                    if fEvent41 == 2:
-                        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-                        run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent41 == 1:
-                        run EntryPoint_ResearchLocal
-                    elif fEvent41 == 0:
-                        run sub_grp!Event68
             elif fEvent23 == 1:
                 if EventFlowSystemActor.NetAllSessionIsFull():
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:105', false)
@@ -124,13 +106,31 @@ entrypoint Event23:
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:104', false)
                     fEvent35 = EventFlowSystemActor.GeneralTalkChoice3()
-                    if fEvent35 == 1:
+                    if fEvent35 == 0:
+                        run sub_grp!Event68
+                    elif fEvent35 == 1:
                         run EntryPoint_ResearchLocal
                     elif fEvent35 == 2:
                         EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
                         run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
-                    elif fEvent35 == 0:
+            elif fEvent23 == 2:
+                EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
+                event_flags_system['cPlayerTemp:AirportTripListError'] = false
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:103', true)
+                EventFlowSystemActor.OpenVillageList()
+                EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
+                if event_flags_system['cPlayerTemp:AirportTripListError']:
+                    EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    fEvent41 = EventFlowSystemActor.NetIsDecidedVillage()
+                    if fEvent41 == 0:
                         run sub_grp!Event68
+                    elif fEvent41 == 1:
+                        run EntryPoint_ResearchLocal
+                    elif fEvent41 == 2:
+                        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+                        run SNPC_dod_AirPort::EntryPoint_Cancel_Nega
         else:
             run SNPC_dod_AirPort::EntryPoint_Cancel
     return

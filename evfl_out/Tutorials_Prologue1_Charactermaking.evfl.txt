@@ -2,15 +2,15 @@ flow 0_FlagSettings:
     if event_flags_system['cLand:ValidateVillageSave']:
         event_flags_system['cLandTemp:CalendarEventStop'] = true
         fEvent123 = EventFlowSystemActor.OfficeLevel()
-        if fEvent123 == ResServiceBuilding:
+        if fEvent123 in (ResServiceTent0, ResServiceTent1):
+            event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
             fEvent115 = EventFlowSystemActor.MuseumLevel()
             if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
                 event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true
                 run sub_grp!Event0
             elif fEvent115 == BlathersNotMovedIn:
                 run sub_grp!Event0
-        elif fEvent123 in (ResServiceTent0, ResServiceTent1):
-            event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading'] = true
+        elif fEvent123 == ResServiceBuilding:
             fEvent115 = EventFlowSystemActor.MuseumLevel()
             if fEvent115 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
                 event_flags_system['cPlayer:2P_CreatedAfterOwlMoving'] = true

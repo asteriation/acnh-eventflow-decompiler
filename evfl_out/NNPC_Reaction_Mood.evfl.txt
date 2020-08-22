@@ -26,49 +26,59 @@ flow FreeDEFG_Clear:
 
 flow Mood_Etc:
     fEvent16 = MainNpc.CheckNowNpcFeel()
-    if fEvent16 == 3:
-        fEvent22 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent22 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:001', false)
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent22 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:003', false)
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent22 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:002', false)
-            EventFlowSystemActor.ExitFlowchart()
-    elif fEvent16 == 2:
-        fEvent26 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent26 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:001', false)
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent26 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:003', false)
-            EventFlowSystemActor.ExitFlowchart()
-        elif fEvent26 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:002', false)
-            EventFlowSystemActor.ExitFlowchart()
-    elif fEvent16 == 0:
+    if fEvent16 == 0:
         if (event_flags_npc['cNpcMemory:Again2Count'] < 4) and (not MainNpc.IsDisableWorry()) and (not MainNpc.IsVisitOtherNpc()):
             fEvent119 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent119 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Talkative:003', false)
+            if fEvent119 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Talkative:001', false)
             elif fEvent119 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Talkative:002', false)
-            elif fEvent119 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Talkative:001', false)
+            elif fEvent119 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Talkative:003', false)
             MainNpc.SetNpcFeel('cWorry', 120)
             MainNpc.NpcSetFeelSource(10)
             event_flags_npc['cNpcMemory:Again2Count'] = 0
             event_flags_npc['cNpcMemory:ContinuousTalkCount'] = 0
             run TalkFlag_Clear
             EventFlowSystemActor.ExitFlowchart()
+    elif fEvent16 == 2:
+        fEvent26 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent26 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:001', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:002', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent26 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:003', false)
+            EventFlowSystemActor.ExitFlowchart()
+    elif fEvent16 == 3:
+        fEvent22 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent22 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:001', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent22 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:002', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif fEvent22 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:003', false)
+            EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Mood_NPC:
     MainNpc.NpcSetFeelSourceActorName()
     fEvent20 = MainNpc.CheckNowNpcFeel()
-    if fEvent20 == 2:
+    if fEvent20 == 1:
+        fEvent32 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent32 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:100', false)
+        elif fEvent32 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:101', false)
+        elif fEvent32 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:102', false)
+        MainNpc.SetNpcFeel('cNormal', 120)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent20 == 2:
         if MainNpc.CheckNpcFavorLevel() in (0, 1, 2):
             if EventFlowSystemActor.PercentChoice(80):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:103', false)
@@ -140,16 +150,6 @@ flow Mood_NPC:
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:105', false)
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent20 == 1:
-        fEvent32 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent32 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:100', false)
-        elif fEvent32 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:102', false)
-        elif fEvent32 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:101', false)
-        MainNpc.SetNpcFeel('cNormal', 120)
-        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Mood_Payer:
@@ -160,34 +160,24 @@ flow Mood_Payer:
         fEvent97 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
         if fEvent97 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:200', false)
-        elif fEvent97 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:202', false)
         elif fEvent97 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:201', false)
+        elif fEvent97 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Happy:202', false)
         MainNpc.NpcAddFriendship(3)
         MainNpc.SetNpcFeel('cNormal', 120)
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent3 == 4:
-        MainNpc.NpcSetReactionType('cWorry')
-        fEvent126 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent126 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:001', false)
-        elif fEvent126 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:003', false)
-        elif fEvent126 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:002', false)
         EventFlowSystemActor.ExitFlowchart()
     elif fEvent3 == 2:
         MainNpc.NpcSetReactionType('cAnger')
         if event_flags_npc['cNpcTemp:ContinuousReactionTalkCount'] >= 2:
             if EventFlowSystemActor.PercentChoice(80):
                 fEvent70 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent70 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:202', false)
+                if fEvent70 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:200', false)
                 elif fEvent70 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:201', false)
-                elif fEvent70 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:200', false)
+                elif fEvent70 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:202', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:203', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -215,24 +205,24 @@ flow Mood_Payer:
                 MainNpc.SetNpcFeel('cNormal', 120)
             else:
                 fEvent70 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent70 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:202', false)
+                if fEvent70 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:200', false)
                 elif fEvent70 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:201', false)
-                elif fEvent70 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:200', false)
+                elif fEvent70 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Anger:202', false)
         EventFlowSystemActor.ExitFlowchart()
     elif fEvent3 == 3:
         MainNpc.NpcSetReactionType('cSad')
         if event_flags_npc['cNpcTemp:ContinuousReactionTalkCount'] >= 2:
             if EventFlowSystemActor.PercentChoice(80):
                 fEvent85 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent85 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:202', false)
+                if fEvent85 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:200', false)
                 elif fEvent85 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:201', false)
-                elif fEvent85 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:200', false)
+                elif fEvent85 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:202', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:203', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -260,24 +250,34 @@ flow Mood_Payer:
                 MainNpc.SetNpcFeel('cNormal', 120)
             else:
                 fEvent85 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent85 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:202', false)
+                if fEvent85 == 0:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:200', false)
                 elif fEvent85 == 1:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:201', false)
-                elif fEvent85 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:200', false)
+                elif fEvent85 == 2:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Sad:202', false)
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent3 == 4:
+        MainNpc.NpcSetReactionType('cWorry')
+        fEvent126 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent126 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:001', false)
+        elif fEvent126 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:002', false)
+        elif fEvent126 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Worry:003', false)
         EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Root:
     fEvent15 = MainNpc.NpcFeelSource()
-    if fEvent15 == 1:
+    if fEvent15 == 0:
+        run Mood_NPC
+    elif fEvent15 == 1:
         run SharingCheck
         run Mood_Payer
     elif fEvent15 == 2:
         run Mood_Etc
-    elif fEvent15 == 0:
-        run Mood_NPC
     return
 
 flow SharingCheck:

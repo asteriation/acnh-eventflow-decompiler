@@ -49,10 +49,10 @@ flow Talk_End:
     fEvent8 = EventFlowSystemActor.RandomChoice3(3)
     if fEvent8 == 0:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:004', true)
-    elif fEvent8 == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:006', true)
     elif fEvent8 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:005', true)
+    elif fEvent8 == 2:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:006', true)
     EventFlowSystemActor.ExitFlowchart()
     return
 

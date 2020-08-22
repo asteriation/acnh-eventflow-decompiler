@@ -9,12 +9,7 @@ flow Root:
     EventFlowSystemActor.UITitleHandling()
     EventFlowSystemActor.UIVersionGuideDisappear('cBackOfFader')
     fEvent23 = EventFlowSystemActor.UITitleResult()
-    if fEvent23 == 2:
-        EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
-    elif fEvent23 == 1:
-        EventFlowSystemActor.WaitFrame(30)
-        EventFlowSystemActor.SystemRequestChangeStage('cCharacterOrder', 'cNormalFader', 'cNormalFader', 'cBlack', 0.800000011920929, 0.800000011920929)
-    elif fEvent23 == 0:
+    if fEvent23 == 0:
         EventFlowSystemActor.WaitFrame(30)
         event_flags_system['cLandTemp:EntryGame'] = true
         if EventFlowSystemActor.PlayAccountIsPlayerVillager():
@@ -30,5 +25,10 @@ flow Root:
             EventFlowSystemActor.SoundDuckingOn(32)
             EventFlowSystemActor.FadeOut('cCircle', 'cNormalFader', 'cBlack', 0.800000011920929, 0.800000011920929, true)
             EventFlowSystemActor.SetNpcAIBlackBoardByLabel('Speak', 1, 'rco', 1)
+    elif fEvent23 == 1:
+        EventFlowSystemActor.WaitFrame(30)
+        EventFlowSystemActor.SystemRequestChangeStage('cCharacterOrder', 'cNormalFader', 'cNormalFader', 'cBlack', 0.800000011920929, 0.800000011920929)
+    elif fEvent23 == 2:
+        EventFlowSystemActor.SystemRequestChangeStage('cGrowUp', 'cCircle', 'cCircle', 'cBlack', 0.800000011920929, 0.800000011920929)
     return
 

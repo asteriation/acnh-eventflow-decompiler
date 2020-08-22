@@ -19,10 +19,10 @@ flow LoadNFP_Error:
     fEvent0 = EventFlowSystemActor.NfpErrorType()
     if fEvent0 == 0:
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1614', false)
-    elif fEvent0 == 2:
-        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1601', true)
     elif fEvent0 == 1:
         EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1613', false)
+    elif fEvent0 == 2:
+        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:1601', true)
     return
 
 flow PhotoStudioCallVillager:

@@ -1,16 +1,16 @@
 flow Root:
     if event_flags_system['cPlayer:XctGerReward']:
         fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-        if fEvent8 == 2:
+        if fEvent8 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_00', false)
+        elif fEvent8 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_01', false)
+        elif fEvent8 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_02', false)
         elif fEvent8 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_03', false)
         elif fEvent8 == 4:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_04', false)
-        elif fEvent8 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_00', false)
-        elif fEvent8 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_01', false)
     else:
         if event_flags_system['cPlayerTemp:XctTalkMayDayTourNow']:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:013', false)

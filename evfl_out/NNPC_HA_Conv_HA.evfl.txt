@@ -40,25 +40,7 @@ flow sub_grp!Event125:
         Player.TurnNeck(0)
         MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:003', false)
         fEvent75 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent75 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:024', false)
-            fork:
-                branch0:
-                branch1:
-                    Player.TurnNeck(1)
-                branch2:
-                    MainNpc.TurnNeck(1)
-                branch3:
-                    SubNpc.TurnBody(10, 0.0)
-            SubNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:025', false)
-            fork:
-                branch0:
-                branch1:
-                    Player.TurnNeck(0)
-                branch2:
-                    SubNpc.TurnNeck(0)
-            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:026', false)
-        elif fEvent75 == 0:
+        if fEvent75 == 0:
             fork:
                 branch0:
                 branch1:
@@ -139,6 +121,24 @@ flow sub_grp!Event125:
             MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:022', false)
             Player.TurnNeck(1)
             SubNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:023', false)
+        elif fEvent75 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:024', false)
+            fork:
+                branch0:
+                branch1:
+                    Player.TurnNeck(1)
+                branch2:
+                    MainNpc.TurnNeck(1)
+                branch3:
+                    SubNpc.TurnBody(10, 0.0)
+            SubNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:025', false)
+            fork:
+                branch0:
+                branch1:
+                    Player.TurnNeck(0)
+                branch2:
+                    SubNpc.TurnNeck(0)
+            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:026', false)
     else:
         Player.TurnNeck(0)
         MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Conv/HA_Conv_HA:101', false)

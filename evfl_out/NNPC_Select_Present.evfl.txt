@@ -34,33 +34,12 @@ flow Root:
             event_flags_system['cLifeSupportDaily:EDSendFlower'] = true
         else:
             fEvent9 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'PitFallSeed', 'PartyPopper', 'Medicine', 'FishBait')
-            if fEvent9 in (3, 4):
-                run NNPC_Select_Etc::Etc_Plural
-                run Select_Finish_Disappear
-            elif fEvent9 == 2:
-                run NNPC_Select_Tool::Nouse_Plural
-                run Select_Finish_Disappear
-            elif fEvent9 == 1:
-                run NNPC_Select_Etc::Etc_Plural
-                run Select_Finish_Disappear
-            elif fEvent9 == 0:
+            if fEvent9 == 0:
                 fEvent50 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'LoveCrystal', 'BlowBubble', 'EasterEgg', 'FierworkHand')
                 if fEvent50 == 0:
                     MainNpc.SetDeliveryItemApplySave()
                     fEvent65 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice4('cItemSelect', 4, 'Fish', 'Insect', 'DiveFish')
-                    if fEvent65 == 1:
-                        run NNPC_Select_Creature::Fish
-                        MainNpc.SetItemToNpcStockList(0, 1)
-                        run Select_Finish
-                    elif fEvent65 == 2:
-                        run NNPC_Select_Creature::Insect
-                        MainNpc.SetItemToNpcStockList(0, 1)
-                        run Select_Finish
-                    elif fEvent65 == 3:
-                        run NNPC_Select_Creature::DiveFish
-                        MainNpc.SetItemToNpcStockList(0, 1)
-                        run Select_Finish
-                    elif fEvent65 == 0:
+                    if fEvent65 == 0:
                         if any ('Ftr', 'DoorDeco', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
                             run NNPC_Select_Furniture::Furniture
                             run Select_Finish
@@ -82,31 +61,52 @@ flow Root:
                             run Select_Finish
                         elif (not any ('Tops', 'OnePiece', 'Cap', 'Accessory', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (not any ('Helmet', 'Bottoms', 'Socks', 'Shoes', 'Bag', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')):
                             fEvent12 = EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Money', 'Trash', 'TurnipExpired', 'Music')
-                            if fEvent12 == 4:
-                                run NNPC_Select_Etc::Music
-                                run Select_Finish
-                            elif fEvent12 == 0:
+                            if fEvent12 == 0:
                                 run NNPC_Select_Etc::Etc
                                 run Select_Finish_Disappear
-                            elif fEvent12 in (2, 3):
-                                run NNPC_Select_Etc::Garbage
                             elif fEvent12 == 1:
                                 run NNPC_Select_Etc::Money
+                            elif fEvent12 in (2, 3):
+                                run NNPC_Select_Etc::Garbage
+                            elif fEvent12 == 4:
+                                run NNPC_Select_Etc::Music
+                                run Select_Finish
                         else:
                             run NNPC_Select_Equipment::Root
                             run Select_Finish
+                    elif fEvent65 == 1:
+                        run NNPC_Select_Creature::Fish
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
+                    elif fEvent65 == 2:
+                        run NNPC_Select_Creature::Insect
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
+                    elif fEvent65 == 3:
+                        run NNPC_Select_Creature::DiveFish
+                        MainNpc.SetItemToNpcStockList(0, 1)
+                        run Select_Finish
                 elif fEvent50 == 1:
                     run NNPC_Select_Etc::Love
                     run Select_Finish_Disappear
-                elif fEvent50 == 4:
-                    run NNPC_Select_Tool::MobileFireWorks
-                    run Select_Finish
                 elif fEvent50 == 2:
                     run NNPC_Select_Tool::Nouse_Plural
                     run Select_Finish_Disappear
                 elif fEvent50 == 3:
                     run NNPC_Select_Etc::Etc_Plural
                     run Select_Finish_Disappear
+                elif fEvent50 == 4:
+                    run NNPC_Select_Tool::MobileFireWorks
+                    run Select_Finish
+            elif fEvent9 == 1:
+                run NNPC_Select_Etc::Etc_Plural
+                run Select_Finish_Disappear
+            elif fEvent9 == 2:
+                run NNPC_Select_Tool::Nouse_Plural
+                run Select_Finish_Disappear
+            elif fEvent9 in (3, 4):
+                run NNPC_Select_Etc::Etc_Plural
+                run Select_Finish_Disappear
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:005', true)
     return

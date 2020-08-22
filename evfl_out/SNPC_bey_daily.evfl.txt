@@ -33,13 +33,13 @@ flow Obj_Entry:
 entrypoint Event81:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:201', false)
         fEvent127 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent127 == 1:
+        if fEvent127 == 0:
+            run sub_grp!Event131
+        elif fEvent127 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:208', false)
             run Explain_ReqOBJ
         elif fEvent127 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:207', false)
-        elif fEvent127 == 0:
-            run sub_grp!Event131
     return
 
 flow Quest_Entry:
@@ -76,10 +76,10 @@ entrypoint Event89:
             elif fEvent15 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:013', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-        elif fEvent95 == 2:
-            run Talk_Always
         elif fEvent95 == 1:
             run ExplainQ_BeforeQ
+        elif fEvent95 == 2:
+            run Talk_Always
     return
 
 flow Quest_Start:
@@ -112,14 +112,14 @@ flow Root:
         run sub_grp!Event192
     elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
         fEvent7 = EventFlowSystemActor.EnvWeather()
-        if fEvent7 in (Snow5, Snow6):
-            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:023', false)
+        if fEvent7 in (Clear0, Clear1, Clear2, Clear7):
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
             run sub_grp!Event5
         elif fEvent7 in (Rain3, Rain4):
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:022', false)
             run sub_grp!Event5
-        elif fEvent7 in (Clear0, Clear1, Clear2, Clear7):
-            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
+        elif fEvent7 in (Snow5, Snow6):
+            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:023', false)
             run sub_grp!Event5
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:020', false)
@@ -197,12 +197,12 @@ flow Tag_daily_SET_HOUR:
 
 flow TalkFirst_ClearQ:
     fEvent3 = MainNpc.BeyDailyFishSize()
-    if fEvent3 in (1, 2):
+    if fEvent3 == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:050', false)
+    elif fEvent3 in (1, 2):
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:051', false)
     elif fEvent3 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:052', false)
-    elif fEvent3 == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:050', false)
     MainNpc.SmartPhone(0)
     MainNpc.SmartPhone(4)
     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:053', false)
@@ -230,10 +230,10 @@ entrypoint Event40:
 
 flow Talk_Always:
     fEvent101 = EventFlowSystemActor.EnvTimeZone()
-    if fEvent101 == Evening1:
-        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:009', false)
-    elif fEvent101 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
+    if fEvent101 in (Morning0, Morning1, Afternoon0, Afternoon1, Evening0):
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:008', false)
+    elif fEvent101 == Evening1:
+        MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:009', false)
     return
 
 flow sub_grp!Event131:
@@ -318,10 +318,10 @@ flow sub_grp!Event192:
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:002', false)
         fEvent84 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent84 == 1:
-            run Obj_Entry
-        elif fEvent84 == 0:
+        if fEvent84 == 0:
             run Quest_Entry
+        elif fEvent84 == 1:
+            run Obj_Entry
         elif fEvent84 == 2:
             run Talk_Always
 
@@ -330,29 +330,29 @@ flow sub_grp!Event5:
         if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:103', false)
             fEvent212 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent212 == 2:
-                run Talk_Always
-            elif fEvent212 == 1:
-                run Obj_Entry
-            elif fEvent212 == 0:
+            if fEvent212 == 0:
                 if EventFlowSystemActor.HasKindItem('cKind', 'Fish', ''):
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:102', true)
                     run SelllFish_daily
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:101', true)
+            elif fEvent212 == 1:
+                run Obj_Entry
+            elif fEvent212 == 2:
+                run Talk_Always
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:100', false)
             fEvent9 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent9 == 1:
-                run Obj_Entry
-            elif fEvent9 == 2:
-                run Talk_Always
-            elif fEvent9 == 0:
+            if fEvent9 == 0:
                 if EventFlowSystemActor.HasKindItem('cKind', 'Fish', ''):
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:102', true)
                     run SelllFish_daily
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:101', true)
+            elif fEvent9 == 1:
+                run Obj_Entry
+            elif fEvent9 == 2:
+                run Talk_Always
     elif not event_flags_system['cPlayer:BeyDaily_QuestStart']:
         if event_flags_system['cPlayer:BeyDaily_ReqObj']:
             if event_flags_system['cPlayer:BeyDaily_ExolainQ_First']:
@@ -367,12 +367,12 @@ flow sub_grp!Event5:
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:021', false)
                 fEvent148 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent148 == 2:
-                    run Talk_Always
+                if fEvent148 == 0:
+                    run Quest_Entry
                 elif fEvent148 == 1:
                     run Obj_Entry
-                elif fEvent148 == 0:
-                    run Quest_Entry
+                elif fEvent148 == 2:
+                    run Talk_Always
         else:
             run sub_grp!Event192
     elif MainNpc.BeyDailyFishSize() in (0, 1, 2):
@@ -383,7 +383,59 @@ flow sub_grp!Event5:
             if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:028', false)
                 fEvent208 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent208 == 1:
+                if fEvent208 == 0:
+                    MainNpc.SmartPhone(0)
+                    MainNpc.SmartPhone(4)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
+                    MainNpc.SmartPhone(5)
+                    EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+                    if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                        fEvent165 = MainNpc.BeyDailyFishSize()
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                        fEvent164 = MainNpc.BeyDailyFishSize()
+                        if fEvent164 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                    else:
+                        fEvent163 = MainNpc.BeyDailyFishSize()
+                        if fEvent163 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                elif fEvent208 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
                     MainNpc.SetItemName(0, 29, 3)
                     fEvent145 = MainNpc.BeyDailyFishSize()
@@ -400,7 +452,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -409,11 +466,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -421,34 +473,37 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                 elif fEvent208 == 2:
                     run Obj_Entry
                 elif fEvent208 == 3:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
-                elif fEvent208 == 0:
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:030', false)
+                fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent63 == 0:
                     MainNpc.SmartPhone(0)
                     MainNpc.SmartPhone(4)
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
@@ -456,7 +511,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -465,11 +525,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -477,33 +532,30 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:030', false)
-                fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent63 == 1:
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                elif fEvent63 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
                     MainNpc.SetItemName(0, 29, 3)
                     fEvent145 = MainNpc.BeyDailyFishSize()
@@ -520,7 +572,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -529,11 +586,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -541,85 +593,33 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                elif fEvent63 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                 elif fEvent63 == 2:
                     run Obj_Entry
-                elif fEvent63 == 0:
-                    MainNpc.SmartPhone(0)
-                    MainNpc.SmartPhone(4)
-                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
-                    MainNpc.SmartPhone(5)
-                    EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
-                    if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
-                        fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent165 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
-                        fEvent164 = MainNpc.BeyDailyFishSize()
-                        if fEvent164 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent164 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                    else:
-                        fEvent163 = MainNpc.BeyDailyFishSize()
-                        if fEvent163 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent163 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent63 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
     else:
         if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
             event_flags_system['cPlayer:BeyDaily_QuestClear'] = true
@@ -628,7 +628,59 @@ flow sub_grp!Event5:
             if (event_flags_system['cPlayer:BeyDaily_ExplainReqObj_First']) and (not event_flags_system['cPlayer:BeyDaily_ReqObj']):
                 MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:028', false)
                 fEvent208 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent208 == 1:
+                if fEvent208 == 0:
+                    MainNpc.SmartPhone(0)
+                    MainNpc.SmartPhone(4)
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
+                    MainNpc.SmartPhone(5)
+                    EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
+                    if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
+                        fEvent165 = MainNpc.BeyDailyFishSize()
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
+                        fEvent164 = MainNpc.BeyDailyFishSize()
+                        if fEvent164 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                    else:
+                        fEvent163 = MainNpc.BeyDailyFishSize()
+                        if fEvent163 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 in (1, 2):
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                elif fEvent208 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
                     MainNpc.SetItemName(0, 29, 3)
                     fEvent145 = MainNpc.BeyDailyFishSize()
@@ -645,7 +697,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -654,11 +711,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -666,34 +718,37 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                 elif fEvent208 == 2:
                     run Obj_Entry
                 elif fEvent208 == 3:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
-                elif fEvent208 == 0:
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:030', false)
+                fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent63 == 0:
                     MainNpc.SmartPhone(0)
                     MainNpc.SmartPhone(4)
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
@@ -701,7 +756,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -710,11 +770,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -722,33 +777,30 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:030', false)
-                fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent63 == 1:
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
+                elif fEvent63 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:031', false)
                     MainNpc.SetItemName(0, 29, 3)
                     fEvent145 = MainNpc.BeyDailyFishSize()
@@ -765,7 +817,12 @@ flow sub_grp!Event5:
                     EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
                     if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
                         fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
+                        if fEvent165 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent165 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
                             MainNpc.SmartPhone(1)
@@ -774,11 +831,6 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
                     elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
                         fEvent164 = MainNpc.BeyDailyFishSize()
                         if fEvent164 == 0:
@@ -786,83 +838,31 @@ flow sub_grp!Event5:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent164 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                        elif fEvent164 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                     else:
                         fEvent163 = MainNpc.BeyDailyFishSize()
                         if fEvent163 == 0:
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                         elif fEvent163 in (1, 2):
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
                             MainNpc.SmartPhone(1)
                             MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                elif fEvent63 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
+                        elif fEvent163 == 3:
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
+                            MainNpc.SmartPhone(1)
+                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
                 elif fEvent63 == 2:
                     run Obj_Entry
-                elif fEvent63 == 0:
-                    MainNpc.SmartPhone(0)
-                    MainNpc.SmartPhone(4)
-                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:048', false)
-                    MainNpc.SmartPhone(5)
-                    EventFlowSystemActor.SetTagFromSystem(1, 'cEventFlag', 'cDegit', 'cPlayer:BeyDaily_QuestCount', 0)
-                    if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
-                        fEvent165 = MainNpc.BeyDailyFishSize()
-                        if fEvent165 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:037', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent165 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:038', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent165 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:036', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:039', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                    elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
-                        fEvent164 = MainNpc.BeyDailyFishSize()
-                        if fEvent164 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:040', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent164 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:042', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent164 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:041', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:043', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                    else:
-                        fEvent163 = MainNpc.BeyDailyFishSize()
-                        if fEvent163 == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:044', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
-                        elif fEvent163 == 3:
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:046', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:049', false)
-                        elif fEvent163 in (1, 2):
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:045', false)
-                            MainNpc.SmartPhone(1)
-                            MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:047', false)
+                elif fEvent63 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/bey/SP_bey_daily:029', false)
 

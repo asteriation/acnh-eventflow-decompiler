@@ -30,15 +30,6 @@ flow DonateMaterials_Remain1:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_05', false)
-    elif fEvent64 == 3:
-        if EventFlowSystemActor.HasTargetItem(2511, 30):
-            run SNPC_rcm_23_MaterialBelongingChk::SetIron
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:052_04', false)
-            run SNPC_rcm_24_MaterialGiveProcess::Root
-            run GotReward
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_04', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_05', false)
     elif fEvent64 == 2:
         if EventFlowSystemActor.HasTargetItem(2767, 30):
             run SNPC_rcm_23_MaterialBelongingChk::SetSoftWood
@@ -47,6 +38,15 @@ flow DonateMaterials_Remain1:
             run GotReward
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_05', false)
+    elif fEvent64 == 3:
+        if EventFlowSystemActor.HasTargetItem(2511, 30):
+            run SNPC_rcm_23_MaterialBelongingChk::SetIron
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:052_04', false)
+            run SNPC_rcm_24_MaterialGiveProcess::Root
+            run GotReward
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_04', false)
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:053_05', false)
     return
 
@@ -120,28 +120,16 @@ entrypoint Event240:
                 run CantGive
         elif fEvent234 == 1:
             fEvent245 = subflow_results[12]
-            if fEvent245 == 4:
-                run CantGive
-            elif fEvent245 in (0, 2):
+            if fEvent245 in (0, 2):
                 subflow_results[11] = 0
-                run Choice_Give1Material
-            elif fEvent245 in (3, 5):
-                subflow_results[11] = 2
                 run Choice_Give1Material
             elif fEvent245 == 1:
                 run Remain2Give2
-        elif fEvent234 == 4:
-            fEvent248 = subflow_results[12]
-            if fEvent248 in (0, 3):
-                subflow_results[11] = 1
+            elif fEvent245 in (3, 5):
+                subflow_results[11] = 2
                 run Choice_Give1Material
-            elif fEvent248 == 4:
-                run Remain2Give2
-            elif fEvent248 == 1:
+            elif fEvent245 == 4:
                 run CantGive
-            elif fEvent248 in (2, 5):
-                subflow_results[11] = 3
-                run Choice_Give1Material
         elif fEvent234 == 2:
             fEvent251 = subflow_results[12]
             if fEvent251 in (0, 1):
@@ -156,75 +144,72 @@ entrypoint Event240:
                 run Choice_Give1Material
         elif fEvent234 == 3:
             fEvent257 = subflow_results[12]
-            if fEvent257 == 2:
-                run CantGive
-            elif fEvent257 in (0, 4):
+            if fEvent257 in (0, 4):
                 subflow_results[11] = 1
                 run Choice_Give1Material
             elif fEvent257 in (1, 5):
                 subflow_results[11] = 2
                 run Choice_Give1Material
+            elif fEvent257 == 2:
+                run CantGive
             elif fEvent257 == 3:
+                run Remain2Give2
+        elif fEvent234 == 4:
+            fEvent248 = subflow_results[12]
+            if fEvent248 in (0, 3):
+                subflow_results[11] = 1
+                run Choice_Give1Material
+            elif fEvent248 == 1:
+                run CantGive
+            elif fEvent248 in (2, 5):
+                subflow_results[11] = 3
+                run Choice_Give1Material
+            elif fEvent248 == 4:
                 run Remain2Give2
         elif fEvent234 == 5:
             fEvent266 = subflow_results[12]
-            if fEvent266 in (2, 4):
-                subflow_results[11] = 3
-                run Choice_Give1Material
-            elif fEvent266 == 0:
+            if fEvent266 == 0:
                 run CantGive
-            elif fEvent266 == 5:
-                run Remain2Give2
             elif fEvent266 in (1, 3):
                 subflow_results[11] = 2
                 run Choice_Give1Material
-    elif fEvent193 == 4:
-        fEvent24 = subflow_results[2]
-        if fEvent24 == 0:
-            subflow_results[12] = 0
-        elif fEvent24 == 1:
-            subflow_results[12] = 1
-        elif fEvent24 == 2:
-            subflow_results[12] = 2
-        elif fEvent24 == 3:
-            subflow_results[12] = 3
-        elif fEvent24 == 4:
-            subflow_results[12] = 4
-        elif fEvent24 == 5:
-            subflow_results[12] = 5
-        run Remain2Give2
+            elif fEvent266 in (2, 4):
+                subflow_results[11] = 3
+                run Choice_Give1Material
+            elif fEvent266 == 5:
+                run Remain2Give2
     elif fEvent193 == 3:
         fEvent271 = subflow_results[2]
         if fEvent271 == 0:
             fEvent270 = subflow_results[13]
-            if fEvent270 in (2, 3):
-                subflow_results[12] = 0
-                run Remain2Give2
-            elif fEvent270 == 0:
+            if fEvent270 == 0:
                 subflow_results[11] = 1
                 run Choice_Give1Material
             elif fEvent270 == 1:
                 subflow_results[11] = 0
                 run Choice_Give1Material
+            elif fEvent270 in (2, 3):
+                subflow_results[12] = 0
+                run Remain2Give2
         elif fEvent271 == 1:
             fEvent276 = subflow_results[13]
-            if fEvent276 in (1, 3):
-                subflow_results[12] = 1
-                run Remain2Give2
-            elif fEvent276 == 0:
+            if fEvent276 == 0:
                 subflow_results[11] = 2
                 run Choice_Give1Material
+            elif fEvent276 in (1, 3):
+                subflow_results[12] = 1
+                run Remain2Give2
             elif fEvent276 == 2:
                 subflow_results[11] = 0
                 run Choice_Give1Material
         elif fEvent271 == 2:
             fEvent281 = subflow_results[13]
-            if fEvent281 in (1, 2):
-                subflow_results[12] = 2
-                run Remain2Give2
-            elif fEvent281 == 0:
+            if fEvent281 == 0:
                 subflow_results[11] = 3
                 run Choice_Give1Material
+            elif fEvent281 in (1, 2):
+                subflow_results[12] = 2
+                run Remain2Give2
             elif fEvent281 == 3:
                 subflow_results[11] = 0
                 run Choice_Give1Material
@@ -261,6 +246,21 @@ entrypoint Event240:
             elif fEvent290 == 3:
                 subflow_results[11] = 2
                 run Choice_Give1Material
+    elif fEvent193 == 4:
+        fEvent24 = subflow_results[2]
+        if fEvent24 == 0:
+            subflow_results[12] = 0
+        elif fEvent24 == 1:
+            subflow_results[12] = 1
+        elif fEvent24 == 2:
+            subflow_results[12] = 2
+        elif fEvent24 == 3:
+            subflow_results[12] = 3
+        elif fEvent24 == 4:
+            subflow_results[12] = 4
+        elif fEvent24 == 5:
+            subflow_results[12] = 5
+        run Remain2Give2
     return
 
 flow DonateMaterials_Remain3:
@@ -276,47 +276,67 @@ flow DonateMaterials_Remain3:
     fEvent180 = subflow_results[10]
     if fEvent180 == 0:
         run CantGive
-    elif fEvent180 == 4:
-        run Remain3Give3HaveAll
+    elif fEvent180 == 1:
+        fEvent187 = subflow_results[3]
+        if fEvent187 == 0:
+            if EventFlowSystemActor.HasTargetItem(2768, 30):
+                run CantGive
+            else:
+                run Choice_Give1Material
+        elif fEvent187 == 1:
+            if EventFlowSystemActor.HasTargetItem(2769, 30):
+                run CantGive
+            else:
+                run Choice_Give1Material
+        elif fEvent187 == 2:
+            if EventFlowSystemActor.HasTargetItem(2767, 30):
+                run CantGive
+            else:
+                run Choice_Give1Material
+        elif fEvent187 == 3:
+            if EventFlowSystemActor.HasTargetItem(2511, 30):
+                run CantGive
+            else:
+                run Choice_Give1Material
     elif fEvent180 == 2:
         fEvent137 = subflow_results[3]
-        if fEvent137 == 1:
-            fEvent104 = subflow_results[12]
-            if fEvent104 == 3:
-                subflow_results[11] = 2
-                run Choice_Give1Material
-            elif fEvent104 == 4:
-                subflow_results[11] = 3
-                run Choice_Give1Material
-            elif fEvent104 in (1, 2, 5):
-                run Choice_Give2Materials
-            elif fEvent104 == 0:
-                subflow_results[11] = 0
-                run Choice_Give1Material
-        elif fEvent137 == 2:
-            fEvent145 = subflow_results[12]
-            if fEvent145 == 1:
-                subflow_results[11] = 0
-                run Choice_Give1Material
-            elif fEvent145 in (0, 2, 4):
-                run Choice_Give2Materials
-            elif fEvent145 == 3:
-                subflow_results[11] = 1
-                run Choice_Give1Material
-            elif fEvent145 == 5:
-                subflow_results[11] = 3
-                run Choice_Give1Material
-        elif fEvent137 == 0:
+        if fEvent137 == 0:
             fEvent138 = subflow_results[12]
-            if fEvent138 in (3, 4, 5):
-                run Choice_Give2Materials
-            elif fEvent138 == 0:
+            if fEvent138 == 0:
                 subflow_results[11] = 1
                 run Choice_Give1Material
             elif fEvent138 == 1:
                 subflow_results[11] = 2
                 run Choice_Give1Material
             elif fEvent138 == 2:
+                subflow_results[11] = 3
+                run Choice_Give1Material
+            elif fEvent138 in (3, 4, 5):
+                run Choice_Give2Materials
+        elif fEvent137 == 1:
+            fEvent104 = subflow_results[12]
+            if fEvent104 == 0:
+                subflow_results[11] = 0
+                run Choice_Give1Material
+            elif fEvent104 in (1, 2, 5):
+                run Choice_Give2Materials
+            elif fEvent104 == 3:
+                subflow_results[11] = 2
+                run Choice_Give1Material
+            elif fEvent104 == 4:
+                subflow_results[11] = 3
+                run Choice_Give1Material
+        elif fEvent137 == 2:
+            fEvent145 = subflow_results[12]
+            if fEvent145 in (0, 2, 4):
+                run Choice_Give2Materials
+            elif fEvent145 == 1:
+                subflow_results[11] = 0
+                run Choice_Give1Material
+            elif fEvent145 == 3:
+                subflow_results[11] = 1
+                run Choice_Give1Material
+            elif fEvent145 == 5:
                 subflow_results[11] = 3
                 run Choice_Give1Material
         elif fEvent137 == 3:
@@ -379,7 +399,10 @@ entrypoint Event184:
                 run Choice_Give2Materials
         elif fEvent148 == 3:
             fEvent208 = subflow_results[13]
-            if fEvent208 == 1:
+            if fEvent208 == 0:
+                subflow_results[12] = 3
+                run Choice_Give2Materials
+            elif fEvent208 == 1:
                 subflow_results[12] = 1
                 run Choice_Give2Materials
             elif fEvent208 == 2:
@@ -387,36 +410,15 @@ entrypoint Event184:
                 run Choice_Give2Materials
             elif fEvent208 == 3:
                 run Remain3Give3
-            elif fEvent208 == 0:
-                subflow_results[12] = 3
-                run Choice_Give2Materials
-    elif fEvent180 == 1:
-        fEvent187 = subflow_results[3]
-        if fEvent187 == 0:
-            if EventFlowSystemActor.HasTargetItem(2768, 30):
-                run CantGive
-            else:
-                run Choice_Give1Material
-        elif fEvent187 == 1:
-            if EventFlowSystemActor.HasTargetItem(2769, 30):
-                run CantGive
-            else:
-                run Choice_Give1Material
-        elif fEvent187 == 3:
-            if EventFlowSystemActor.HasTargetItem(2511, 30):
-                run CantGive
-            else:
-                run Choice_Give1Material
-        elif fEvent187 == 2:
-            if EventFlowSystemActor.HasTargetItem(2767, 30):
-                run CantGive
-            else:
-                run Choice_Give1Material
+    elif fEvent180 == 4:
+        run Remain3Give3HaveAll
     return
 
 flow DonateMaterials_Remain4:
     fEvent113 = subflow_results[10]
-    if fEvent113 == 1:
+    if fEvent113 == 0:
+        run CantGive
+    elif fEvent113 == 1:
 entrypoint Event122:
         fEvent122 = subflow_results[11]
         if fEvent122 == 0:
@@ -429,11 +431,22 @@ entrypoint Event122:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:081_04', false)
         run SNPC_rcm_24_MaterialGiveProcess::Root
         run GotReward
-    elif fEvent113 == 0:
-        run CantGive
-    elif fEvent113 == 4:
-        subflow_results[6] = 3
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:061', false)
+    elif fEvent113 == 2:
+entrypoint Event91:
+        subflow_results[6] = 1
+        fEvent50 = subflow_results[12]
+        if fEvent50 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_01', false)
+        elif fEvent50 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_02', false)
+        elif fEvent50 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_03', false)
+        elif fEvent50 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_04', false)
+        elif fEvent50 == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_05', false)
+        elif fEvent50 == 5:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_06', false)
         run SNPC_rcm_24_MaterialGiveProcess::Root
         run SNPC_rcm_22_MaterialProgressChk::Root
         run GotReward
@@ -451,22 +464,9 @@ entrypoint Event122:
         run SNPC_rcm_24_MaterialGiveProcess::Root
         run SNPC_rcm_22_MaterialProgressChk::Root
         run GotReward
-    elif fEvent113 == 2:
-entrypoint Event91:
-        subflow_results[6] = 1
-        fEvent50 = subflow_results[12]
-        if fEvent50 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_03', false)
-        elif fEvent50 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_01', false)
-        elif fEvent50 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_02', false)
-        elif fEvent50 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_04', false)
-        elif fEvent50 == 4:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_05', false)
-        elif fEvent50 == 5:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:082_06', false)
+    elif fEvent113 == 4:
+        subflow_results[6] = 3
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:061', false)
         run SNPC_rcm_24_MaterialGiveProcess::Root
         run SNPC_rcm_22_MaterialProgressChk::Root
         run GotReward
@@ -478,12 +478,12 @@ flow GotReward:
     if fEvent132 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:092_01', false)
         fEvent112 = subflow_results[6]
-        if fEvent112 == 1:
+        if fEvent112 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
+        elif fEvent112 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_02', true)
         elif fEvent112 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_03', true)
-        elif fEvent112 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
         MainNpc.NpcDelivery('Default', 1)
         run SNPC_rcm_22_MaterialProgressChk::Root
         fEvent111 = subflow_results[0]
@@ -491,40 +491,15 @@ flow GotReward:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:094_01', false)
         elif fEvent111 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:094_02', false)
-    elif fEvent132 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:055', false)
-        fEvent128 = subflow_results[6]
-        if fEvent128 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_01', true)
-            MainNpc.NpcDelivery('Default', 1)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
-        elif fEvent128 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_04', false)
-        elif fEvent128 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_02', true)
-            MainNpc.NpcDelivery('Default', 1)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
-        elif fEvent128 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_03', true)
-            MainNpc.NpcDelivery('Default', 1)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:058_01', true)
-        MainNpc.SetDeliveryItemAtRandom(2756, true, 'cVillageRemakePattern', 0)
-        MainNpc.NpcDelivery('Keep', 1)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:058_02', true)
-        MainNpc.NpcDelivery('Default', 2)
-        event_flags_system['cPlayer:Prologue4RcmGetTent'] = true
-        event_flags_system['cLand:RcmShopMaterialComplete'] = true
-        event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 10
     elif fEvent132 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:092_02', false)
         fEvent112 = subflow_results[6]
-        if fEvent112 == 1:
+        if fEvent112 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
+        elif fEvent112 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_02', true)
         elif fEvent112 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_03', true)
-        elif fEvent112 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
         MainNpc.NpcDelivery('Default', 1)
         run SNPC_rcm_22_MaterialProgressChk::Root
         fEvent111 = subflow_results[0]
@@ -535,12 +510,12 @@ flow GotReward:
     elif fEvent132 == 3:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:092_03', false)
         fEvent112 = subflow_results[6]
-        if fEvent112 == 1:
+        if fEvent112 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
+        elif fEvent112 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_02', true)
         elif fEvent112 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_03', true)
-        elif fEvent112 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:093_01', true)
         MainNpc.NpcDelivery('Default', 1)
         run SNPC_rcm_22_MaterialProgressChk::Root
         fEvent111 = subflow_results[0]
@@ -548,6 +523,31 @@ flow GotReward:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:094_01', false)
         elif fEvent111 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:094_02', false)
+    elif fEvent132 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:055', false)
+        fEvent128 = subflow_results[6]
+        if fEvent128 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_04', false)
+        elif fEvent128 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_03', true)
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
+        elif fEvent128 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_02', true)
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
+        elif fEvent128 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:056_01', true)
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:057', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:058_01', true)
+        MainNpc.SetDeliveryItemAtRandom(2756, true, 'cVillageRemakePattern', 0)
+        MainNpc.NpcDelivery('Keep', 1)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:058_02', true)
+        MainNpc.NpcDelivery('Default', 2)
+        event_flags_system['cPlayer:Prologue4RcmGetTent'] = true
+        event_flags_system['cLand:RcmShopMaterialComplete'] = true
+        event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 10
     return
 
 flow Remain2Give2:
@@ -610,17 +610,6 @@ flow TalkCollectingProgress:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_02_03', false)
         elif fEvent58 == 3:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_02_04', false)
-    elif fEvent47 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_01', false)
-        fEvent41 = subflow_results[1]
-        if fEvent41 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_01', false)
-        elif fEvent41 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_02', false)
-        elif fEvent41 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_03', false)
-        elif fEvent41 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_04', false)
     elif fEvent47 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_01', false)
         fEvent51 = subflow_results[2]
@@ -636,5 +625,16 @@ flow TalkCollectingProgress:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_03_05', false)
         elif fEvent51 == 5:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_03_06', false)
+    elif fEvent47 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_01', false)
+        fEvent41 = subflow_results[1]
+        if fEvent41 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_01', false)
+        elif fEvent41 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_02', false)
+        elif fEvent41 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_03', false)
+        elif fEvent41 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:103_04_04', false)
     return
 

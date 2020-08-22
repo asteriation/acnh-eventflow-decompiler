@@ -35,12 +35,12 @@ flow Furniture_Chk:
 flow RoomN_Chk:
     if EventFlowSystemActor.SystemCountPlayerNum(2):
         fEvent53 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent53 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:009', false)
+        if fEvent53 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:011', false)
         elif fEvent53 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:010', false)
-        elif fEvent53 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:011', false)
+        elif fEvent53 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:009', false)
     else:
         if MainNpc.NpcIsExistOtherNpc():
 entrypoint Event4:

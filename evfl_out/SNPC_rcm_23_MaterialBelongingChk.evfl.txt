@@ -56,10 +56,10 @@ flow Chk_Materials3:
 flow Root:
     run Chk_HowManyType
     fEvent48 = subflow_results[10]
-    if fEvent48 == 3:
-        run Chk_Materials3
-    elif fEvent48 == 2:
+    if fEvent48 == 2:
         run Chk_Materials2
+    elif fEvent48 == 3:
+        run Chk_Materials3
     return
 
 flow SetHardWood:

@@ -108,13 +108,7 @@ flow Flow_NNPC:
             if EventFlowSystemActor.IsAmiiboNpcMigrated():
                 if EventFlowSystemActor.IsAmiiboNpcLiving():
                     fEvent21 = EventFlowSystemActor.IsAmiiboNpcMoveOut()
-                    if fEvent21 == 1:
-                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:524', false)
-                        EventFlowSystemActor.SwapSpeaker('cAmiiboPhone', true)
-                        EventFlowSystemActor.AmiiboNpcOpenMessage('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:001')
-                        EventFlowSystemActor.SwapSpeaker('cNone', true)
-                        run ReloadAmiibo
-                    elif fEvent21 == 0:
+                    if fEvent21 == 0:
                         if (EventFlowSystemActor.IsAcquaintanceAmiiboNPC()) and (not EventFlowSystemActor.IsAmiiboNpcSick()):
                             EventFlowSystemActor.MessageSuspend()
                             EventFlowSystemActor.SoundTriggerEmit('GotoAmiiboPhone', -1)
@@ -122,6 +116,12 @@ flow Flow_NNPC:
                         else:
                             Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:526', false)
                             run ReloadAmiibo
+                    elif fEvent21 == 1:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:524', false)
+                        EventFlowSystemActor.SwapSpeaker('cAmiiboPhone', true)
+                        EventFlowSystemActor.AmiiboNpcOpenMessage('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:001')
+                        EventFlowSystemActor.SwapSpeaker('cNone', true)
+                        run ReloadAmiibo
                     elif fEvent21 == 2:
                         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:526', false)
                         run ReloadAmiibo
@@ -134,13 +134,7 @@ flow Flow_NNPC:
             else:
                 if EventFlowSystemActor.IsAmiiboNpcLiving():
                     fEvent21 = EventFlowSystemActor.IsAmiiboNpcMoveOut()
-                    if fEvent21 == 1:
-                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:524', false)
-                        EventFlowSystemActor.SwapSpeaker('cAmiiboPhone', true)
-                        EventFlowSystemActor.AmiiboNpcOpenMessage('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:001')
-                        EventFlowSystemActor.SwapSpeaker('cNone', true)
-                        run ReloadAmiibo
-                    elif fEvent21 == 0:
+                    if fEvent21 == 0:
                         if (EventFlowSystemActor.IsAcquaintanceAmiiboNPC()) and (not EventFlowSystemActor.IsAmiiboNpcSick()):
                             EventFlowSystemActor.MessageSuspend()
                             EventFlowSystemActor.SoundTriggerEmit('GotoAmiiboPhone', -1)
@@ -148,6 +142,12 @@ flow Flow_NNPC:
                         else:
                             Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:526', false)
                             run ReloadAmiibo
+                    elif fEvent21 == 1:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:524', false)
+                        EventFlowSystemActor.SwapSpeaker('cAmiiboPhone', true)
+                        EventFlowSystemActor.AmiiboNpcOpenMessage('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Amiibo:001')
+                        EventFlowSystemActor.SwapSpeaker('cNone', true)
+                        run ReloadAmiibo
                     elif fEvent21 == 2:
                         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:526', false)
                         run ReloadAmiibo
@@ -175,14 +175,14 @@ flow Flow_SNPC:
     if EventFlowSystemActor.CheckAmiiboNPC('cRcmAndRct'):
         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:523', false)
         fEvent57 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent57 == 2:
-            run ReloadAmiibo
+        if fEvent57 == 0:
+            EventFlowSystemActor.ChangeAmiiboNPC('cRcm')
+            run sub_grp!Event87
         elif fEvent57 == 1:
             EventFlowSystemActor.ChangeAmiiboNPC('cRct')
             run sub_grp!Event87
-        elif fEvent57 == 0:
-            EventFlowSystemActor.ChangeAmiiboNPC('cRcm')
-            run sub_grp!Event87
+        elif fEvent57 == 2:
+            run ReloadAmiibo
     else:
         if EventFlowSystemActor.AmiiboNameWithTitle() == 0:
             Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:530', false)

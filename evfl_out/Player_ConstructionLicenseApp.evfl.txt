@@ -82,46 +82,44 @@ flow Construction_Manual:
     if fEvent52 == 0:
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:251', false)
         fEvent83 = EventFlowSystemActor.GeneralTalkChoice4()
-        if fEvent83 == 3:
-            run Restart
-        elif fEvent83 == 2:
-            run Manual_CleanService
-        elif fEvent83 == 0:
+        if fEvent83 == 0:
             run Manual_Basic
         elif fEvent83 == 1:
             run Manual_Ground
+        elif fEvent83 == 2:
+            run Manual_CleanService
+        elif fEvent83 == 3:
+            run Restart
     elif fEvent52 == 1:
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:251_01', false)
         fEvent81 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent81 == 3:
-            run Manual_CleanService
-        elif fEvent81 == 0:
+        if fEvent81 == 0:
             run Manual_Basic
         elif fEvent81 == 1:
             run Manual_Ground
         elif fEvent81 == 2:
             run Manual_River
+        elif fEvent81 == 3:
+            run Manual_CleanService
         elif fEvent81 == 4:
             run Restart
     elif fEvent52 == 2:
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:251_02', false)
         fEvent82 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent82 == 4:
-            run Restart
-        elif fEvent82 == 3:
-            run Manual_CleanService
-        elif fEvent82 == 0:
+        if fEvent82 == 0:
             run Manual_Basic
         elif fEvent82 == 1:
             run Manual_Ground
         elif fEvent82 == 2:
             run Manual_Cliff
+        elif fEvent82 == 3:
+            run Manual_CleanService
+        elif fEvent82 == 4:
+            run Restart
     elif fEvent52 == 3:
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:251_03', false)
         fEvent73 = EventFlowSystemActor.GeneralTalkChoice6()
-        if fEvent73 == 4:
-            run Manual_CleanService
-        elif fEvent73 == 0:
+        if fEvent73 == 0:
             run Manual_Basic
         elif fEvent73 == 1:
             run Manual_Ground
@@ -129,6 +127,8 @@ flow Construction_Manual:
             run Manual_River
         elif fEvent73 == 3:
             run Manual_Cliff
+        elif fEvent73 == 4:
+            run Manual_CleanService
         elif fEvent73 == 5:
             run Restart
     return
@@ -213,15 +213,15 @@ flow Root:
     if EventFlowSystemActor.IsMyVillage():
         run CheckWhere
         fEvent160 = subflow_results[1]
-        if fEvent160 == 1:
+        if fEvent160 == 0:
+            run sub_grp!Event3
+        elif fEvent160 == 1:
             if event_flags_system['cPlayer:EquipLicenseHelmet']:
                 run sub_grp!Event3
             else:
                 run sub_Event20
         elif fEvent160 == 2:
             run sub_Event20
-        elif fEvent160 == 0:
-            run sub_grp!Event3
     else:
         run sub_Event20
     return
@@ -230,12 +230,12 @@ flow SaveEquipLicense:
     fEvent102 = Player.PlayerOutfitFieldMakeToolKit()
     if fEvent102 == 0:
         event_flags_system['cPlayer:LastUseLicense'] = 0
-    elif fEvent102 == 3:
-        event_flags_system['cPlayer:LastUseLicense'] = 1
-    elif fEvent102 == 2:
-        event_flags_system['cPlayer:LastUseLicense'] = 2
     elif fEvent102 == 1:
         event_flags_system['cPlayer:LastUseLicense'] = 3
+    elif fEvent102 == 2:
+        event_flags_system['cPlayer:LastUseLicense'] = 2
+    elif fEvent102 == 3:
+        event_flags_system['cPlayer:LastUseLicense'] = 1
     return
 
 flow Start_Construction:
@@ -289,19 +289,19 @@ entrypoint Event74:
             run SaveEquipLicense
             Player.OpenMessageWindow('TalkSys/SYS_PhoneApp:205', false)
             fEvent76 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent76 == 1:
-                run CleanService
-            elif fEvent76 == 0:
+            if fEvent76 == 0:
                 run End_Construction
+            elif fEvent76 == 1:
+                run CleanService
             elif fEvent76 == 2:
                 run Construction_Manual
         else:
             Player.OpenMessageWindow('TalkSys/SYS_PhoneApp:201', false)
             fEvent63 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent63 == 1:
-                run CleanService
-            elif fEvent63 == 0:
+            if fEvent63 == 0:
                 run Start_Construction
+            elif fEvent63 == 1:
+                run CleanService
             elif fEvent63 == 2:
                 run Construction_Manual
     else:

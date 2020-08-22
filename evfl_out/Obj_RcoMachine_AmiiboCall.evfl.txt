@@ -4,10 +4,10 @@ flow Root:
         EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Small', '', false, false, false, 0)
     elif fEvent26 == 1:
         EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Normal', '', false, false, false, 0)
-    elif fEvent26 == 3:
-        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'ExtraLarge', '', false, false, false, 0)
     elif fEvent26 == 2:
         EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'Large', '', false, false, false, 0)
+    elif fEvent26 == 3:
+        EventFlowSystemActor.CameraSetDemoParam('CameraTag:Root', 'ExtraLarge', '', false, false, false, 0)
     EventFlowSystemActor.SystemFaderRelease()
     EventFlowSystemActor.WaitFrame(30)
     if EventFlowSystemActor.CheckAmiiboNPC('cSNPC'):

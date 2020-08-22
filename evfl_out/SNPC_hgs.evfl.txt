@@ -49,20 +49,7 @@ flow Hgs11:
         event_flags_system['cLand:NNpcPhoneColorChangeCounter'] += 1
     else:
         fEvent119 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
-        if fEvent119 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:110', true)
-        elif fEvent119 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:120', true)
-        elif fEvent119 == 4:
-            if not event_flags_system['cPlayer:KotonoTalkBeforeFlag']:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:150', false)
-            elif event_flags_system['cPlayer:KotonoQuestCount'] >= 50:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:153', false)
-            elif event_flags_system['cPlayer:KotonoQuestCount'] >= 20:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:152', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:151', false)
-        elif fEvent119 == 0:
+        if fEvent119 == 0:
             fEvent141 = EventFlowSystemActor.RandomChoice4(4)
             if fEvent141 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:100', false)
@@ -76,12 +63,25 @@ flow Hgs11:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:106', false)
             elif fEvent141 == 3:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:107', false)
+        elif fEvent119 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:110', true)
+        elif fEvent119 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:120', true)
         elif fEvent119 == 3:
             fEvent168 = EventFlowSystemActor.EnvWeatherArea()
             if fEvent168 == cWeatherArea_North:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130', true)
             elif fEvent168 == cWeatherArea_South:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:130_01', true)
+        elif fEvent119 == 4:
+            if not event_flags_system['cPlayer:KotonoTalkBeforeFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:150', false)
+            elif event_flags_system['cPlayer:KotonoQuestCount'] >= 50:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:153', false)
+            elif event_flags_system['cPlayer:KotonoQuestCount'] >= 20:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:152', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:151', false)
     return
 
 flow Hgs34:
@@ -173,18 +173,18 @@ flow Hgs_Chat:
 flow Hgs_ChatFixed:
     if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:HgsCloseness'] >= 8):
         fEvent8 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent8 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:005', true)
+        if fEvent8 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:007', true)
         elif fEvent8 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:006', true)
-        elif fEvent8 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:007', true)
+        elif fEvent8 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:005', true)
     else:
         fEvent3 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent3 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:002', true)
-        elif fEvent3 == 0:
+        if fEvent3 == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:003', true)
+        elif fEvent3 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:002', true)
         elif fEvent3 == 2:
             MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:001', true)
     return

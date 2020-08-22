@@ -7,27 +7,27 @@ flow Init:
 
 flow Root:
     fEvent5 = MainNpc.DevideCountDownState()
-    if fEvent5 == 8:
+    if fEvent5 in (0, 1, 2, 3):
+        MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco_GEvent_Countdown', '', false, true, 30, 2, 0, 0, true, false, '', '')
+    elif fEvent5 == 4:
+        run sub_grp!Event12
+    elif fEvent5 in (5, 6):
+        MainNpc.NpcChangeAIState('cCountdownWait', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
+    elif fEvent5 == 7:
+        MainNpc.SetDefaultWaitAs('cNpcStickLightCountdown')
+        fEvent26 = MainNpc.CountdownTalkPrevState()
+        if fEvent26 in (0, 3):
+            run sub_grp!Event12
+        elif fEvent26 == 1:
+            MainNpc.NpcChangeAIState('cSwingStickLight', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
+        elif fEvent26 == 2:
+            MainNpc.NpcChangeAIState('cUseCracker', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
+    elif fEvent5 == 8:
         MainNpc.SetDefaultWaitAs('cDefault')
         if MainNpc.NpcIsEquipedHandTool(1):
             MainNpc.NpcChangeChangeHandToolState('cChangeHandToolSimple', 'Root', 'SNPC_rco_GEvent_Countdown', '', false, false, 65534)
         else:
             MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco_GEvent_Countdown', '', false, true, 30, 2, 0, 0, true, false, '', '')
-    elif fEvent5 == 7:
-        MainNpc.SetDefaultWaitAs('cNpcStickLightCountdown')
-        fEvent26 = MainNpc.CountdownTalkPrevState()
-        if fEvent26 == 1:
-            MainNpc.NpcChangeAIState('cSwingStickLight', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
-        elif fEvent26 == 2:
-            MainNpc.NpcChangeAIState('cUseCracker', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
-        elif fEvent26 in (0, 3):
-            run sub_grp!Event12
-    elif fEvent5 in (0, 1, 2, 3):
-        MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco_GEvent_Countdown', '', false, true, 30, 2, 0, 0, true, false, '', '')
-    elif fEvent5 in (5, 6):
-        MainNpc.NpcChangeAIState('cCountdownWait', 'SNPC_rco_GEvent_Countdown', 'Root', '', false, false)
-    elif fEvent5 == 4:
-        run sub_grp!Event12
     return
 
 flow sub_grp!Event12:

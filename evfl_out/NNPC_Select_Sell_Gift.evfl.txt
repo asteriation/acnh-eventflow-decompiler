@@ -42,37 +42,37 @@ flow Root_Disappear:
 
 flow Root_OverFlow:
     fEvent9 = MainNpc.CheckNpcFavorLevel()
-    if fEvent9 in (2, 3):
+    if fEvent9 in (0, 1):
+        MainNpc.NpcDecideGeneralQuestReward(0, 0)
+        MainNpc.NpcAddFriendship(3)
+    elif fEvent9 in (2, 3):
         MainNpc.NpcDecideGeneralQuestReward(1, 0)
         MainNpc.NpcAddFriendship(2)
     elif fEvent9 in (4, 5):
         MainNpc.NpcDecideGeneralQuestReward(2, 0)
         MainNpc.NpcAddFriendship(1)
-    elif fEvent9 in (0, 1):
-        MainNpc.NpcDecideGeneralQuestReward(0, 0)
-        MainNpc.NpcAddFriendship(3)
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:010', false)
     MainNpc.NpcMailSendRandom('MAIL_XX_OverFlow', 1, 3, 'cNone', 'cReward', 'cFastTomorrow')
     return
 
 flow Trade:
     fEvent30 = MainNpc.CheckNpcFavorLevel()
-    if fEvent30 in (4, 5):
-entrypoint Event25:
-        MainNpc.NpcDecideGeneralQuestReward(2, 0)
-        MainNpc.NpcAddFriendship(1)
+    if fEvent30 in (0, 1):
+        if EventFlowSystemActor.PercentChoice(85):
+            MainNpc.NpcDecideGeneralQuestReward(0, 0)
+        else:
+            MainNpc.NpcDecideRewardFloorWall(4, 0)
+        MainNpc.NpcAddFriendship(3)
     elif fEvent30 in (2, 3):
         if EventFlowSystemActor.PercentChoice(90):
             MainNpc.NpcDecideGeneralQuestReward(1, 0)
         else:
             MainNpc.NpcDecideRewardFloorWall(4, 0)
         MainNpc.NpcAddFriendship(2)
-    elif fEvent30 in (0, 1):
-        if EventFlowSystemActor.PercentChoice(85):
-            MainNpc.NpcDecideGeneralQuestReward(0, 0)
-        else:
-            MainNpc.NpcDecideRewardFloorWall(4, 0)
-        MainNpc.NpcAddFriendship(3)
+    elif fEvent30 in (4, 5):
+entrypoint Event25:
+        MainNpc.NpcDecideGeneralQuestReward(2, 0)
+        MainNpc.NpcAddFriendship(1)
     MainNpc.SetDeliveryItem(1, true)
     MainNpc.SetItemName(0, 1, 4)
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:006', false)

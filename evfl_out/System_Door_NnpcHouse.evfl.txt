@@ -2,23 +2,23 @@ flow Root:
     if event_flags_system['cLand:ValidateVillageSave']:
         GeneralObject.SetTagFromSystem(0, 'cNpcHouseDoor', 'cDegit', '', 0)
         fEvent41 = GeneralObject.CheckLockReason()
-        if fEvent41 == 1:
+        if fEvent41 == 0:
+            run Sys_Door_Sleep
+            EventFlowSystemActor.SetCheckResultStructureDoor(1)
+        elif fEvent41 == 1:
             run Sys_Door_Out
             EventFlowSystemActor.SetCheckResultStructureDoor(1)
-        elif fEvent41 == 0:
-            run Sys_Door_Sleep
+        elif fEvent41 == 2:
+            run Sys_Door_Move
             EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 3:
             run Sys_Door_Sick
             EventFlowSystemActor.SetCheckResultStructureDoor(1)
-        elif fEvent41 == 5:
-            EventFlowSystemActor.SetCheckResultStructureDoor(0)
-        elif fEvent41 == 2:
-            run Sys_Door_Move
-            EventFlowSystemActor.SetCheckResultStructureDoor(1)
         elif fEvent41 == 4:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:VisitN', false)
             EventFlowSystemActor.SetCheckResultStructureDoor(1)
+        elif fEvent41 == 5:
+            EventFlowSystemActor.SetCheckResultStructureDoor(0)
     else:
         EventFlowSystemActor.SetCheckResultStructureDoor(1)
     return
@@ -37,10 +37,10 @@ flow Sys_Door_Move:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_FU', false)
     elif fEvent33 == 5:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_GE', false)
-    elif fEvent33 == 7:
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_AN', false)
     elif fEvent33 == 6:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_OT', false)
+    elif fEvent33 == 7:
+        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Move_AN', false)
     return
 
 flow Sys_Door_Out:
@@ -60,10 +60,10 @@ flow Sys_Door_Out:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_FU', false)
         elif fEvent48 == 5:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_GE', false)
-        elif fEvent48 == 7:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_AN', false)
         elif fEvent48 == 6:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_OT', false)
+        elif fEvent48 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Out_AN', false)
     return
 
 flow Sys_Door_Sick:
@@ -83,10 +83,10 @@ flow Sys_Door_Sick:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_FU', false)
         elif fEvent36 == 5:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_GE', false)
-        elif fEvent36 == 7:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_AN', false)
         elif fEvent36 == 6:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_OT', false)
+        elif fEvent36 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sick_AN', false)
     return
 
 flow Sys_Door_Sleep:
@@ -94,13 +94,7 @@ flow Sys_Door_Sleep:
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_Tent', false)
     else:
         fEvent1 = GeneralObject.HouseOwnerLooks()
-        if fEvent1 == 5:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_GE', false)
-        elif fEvent1 == 7:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_AN', false)
-        elif fEvent1 == 6:
-            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_OT', false)
-        elif fEvent1 == 0:
+        if fEvent1 == 0:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_BO', false)
         elif fEvent1 == 1:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_HA', false)
@@ -110,5 +104,11 @@ flow Sys_Door_Sleep:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_ZK', false)
         elif fEvent1 == 4:
             EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_FU', false)
+        elif fEvent1 == 5:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_GE', false)
+        elif fEvent1 == 6:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_OT', false)
+        elif fEvent1 == 7:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Door:Sleep_AN', false)
     return
 

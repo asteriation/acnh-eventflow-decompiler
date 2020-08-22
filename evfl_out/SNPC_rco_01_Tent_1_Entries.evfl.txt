@@ -43,17 +43,7 @@ flow RcoAskRemakeTrial:
             branch2:
                 DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:101', false)
         fEvent2 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent2 == 1:
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:104', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run DoRemakeTrial
-            else:
-                run CancelRemakeTrial
-        elif fEvent2 == 2:
-entrypoint Event5:
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:102', false)
-            event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = false
-        elif fEvent2 == 0:
+        if fEvent2 == 0:
 entrypoint Event89:
             DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:103', true)
             EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
@@ -76,6 +66,16 @@ entrypoint Event89:
             event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = true
             event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = false
             EventFlowSystemActor.ExitFlowchart()
+        elif fEvent2 == 1:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:104', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run DoRemakeTrial
+            else:
+                run CancelRemakeTrial
+        elif fEvent2 == 2:
+entrypoint Event5:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:102', false)
+            event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = false
     elif EventFlowSystemActor.HasTargetItem(3436, 1):
         if event_flags_system['cPlayer:RcoRemakeTrialGetFurniture']:
             DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:111', false)
@@ -182,11 +182,7 @@ flow RcoTentAboutMyhome:
 flow RcoTentAskDIYtrial:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:201', false)
     fEvent39 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent39 == 1:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:202', false)
-    elif fEvent39 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:203', false)
-    elif fEvent39 == 0:
+    if fEvent39 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:204', true)
         EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, true)
         EventFlowSystemActor.WaitFrame(45)
@@ -195,6 +191,10 @@ flow RcoTentAskDIYtrial:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:206', false)
         event_flags_system['cPlayer:RcoHeardDetailDIYtrial'] = true
         event_flags_system['cPlayer:RcoDIYtrialOngoing'] = true
+    elif fEvent39 == 1:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:202', false)
+    elif fEvent39 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:203', false)
     return
 
 flow RcoTentFishInsect:

@@ -7,20 +7,20 @@ flow Check:
         fEvent67 = subflow_results[1]
         if fEvent67 == 0:
             run SNPC_rcm_00_Common_ItemCheck::Root
-        elif fEvent67 == 5:
-            run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
-        elif fEvent67 == 3:
-            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
-            run SNPC_rcm_00_Common_ItemCheck::Root
         elif fEvent67 == 1:
             run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
-            run SNPC_rcm_00_Common_ItemCheck::Root
-        elif fEvent67 == 4:
-            run SNPC_rcm_00_In::Rcm_Market2_First
             run SNPC_rcm_00_Common_ItemCheck::Root
         elif fEvent67 == 2:
             run SNPC_rcm_00_In::Rcm_Market1_First
             run SNPC_rcm_00_Common_ItemCheck::Root
+        elif fEvent67 == 3:
+            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
+            run SNPC_rcm_00_Common_ItemCheck::Root
+        elif fEvent67 == 4:
+            run SNPC_rcm_00_In::Rcm_Market2_First
+            run SNPC_rcm_00_Common_ItemCheck::Root
+        elif fEvent67 == 5:
+            run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
         run Rcm_SeqClose
     else:
         run SNPC_rcm_00_Common_ItemCheck::Root
@@ -66,40 +66,9 @@ flow Root:
     if EventFlowSystemActor.IsMyVillage():
         run SNPC_rcm_03_RenualOpen::Chk_RenualOpen_Talk
         fEvent36 = subflow_results[1]
-        if fEvent36 == 5:
-            run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
-            run Rcm_SeqClose
-        elif fEvent36 == 2:
-            run SNPC_rcm_00_In::Rcm_Market1_First
-            run Rcm_SeqClose
-        elif fEvent36 == 4:
-            run SNPC_rcm_00_In::Rcm_Market2_First
-            run Rcm_SeqClose
-        elif fEvent36 == 1:
-            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
-            run Rcm_SeqClose
-        elif fEvent36 == 3:
-            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
-            run Rcm_SeqClose
-        elif fEvent36 == 0:
+        if fEvent36 == 0:
             fEvent35 = EventFlowSystemActor.ShopLevel()
-            if fEvent35 == NooksCrannyUpgraded:
-                run SNPC_rcm_00_Common::Root
-                run Rcm_SeqClose
-            elif fEvent35 == NooksCrannyInitial:
-                if event_flags_system['cPlayer:TwinTurnipExplanation']:
-                    run SNPC_rcm_00_Common::Root
-                else:
-                    run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
-entrypoint Event7:
-                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-                EventFlowSystemActor.UIMoneyDisappear()
-                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
-                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
-                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
-                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
-                EventFlowSystemActor.ExitFlowchart()
-            elif fEvent35 == InResServiceTent:
+            if fEvent35 == InResServiceTent:
                 if not event_flags_system['cPlayer:RcmTalked1stAfterPrologue']:
                     run SNPC_rcm_01_Tent_0_1stShopping::Root
 entrypoint Event7:
@@ -167,6 +136,37 @@ entrypoint Event7:
                         EventFlowSystemActor.ExitFlowchart()
                 else:
                     run Not1stPlayer_ShopRequest
+            elif fEvent35 == NooksCrannyInitial:
+                if event_flags_system['cPlayer:TwinTurnipExplanation']:
+                    run SNPC_rcm_00_Common::Root
+                else:
+                    run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
+entrypoint Event7:
+                event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+                EventFlowSystemActor.UIMoneyDisappear()
+                event_flags_system['cPlayer:RcmTalkBeforeFlag'] = true
+                event_flags_system['cPlayerTemp:RcmViaItemCheck'] = false
+                event_flags_system['cPlayerTemp:RcmShopshelfCheck'] = false
+                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = false
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent35 == NooksCrannyUpgraded:
+                run SNPC_rcm_00_Common::Root
+                run Rcm_SeqClose
+        elif fEvent36 == 1:
+            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen1
+            run Rcm_SeqClose
+        elif fEvent36 == 2:
+            run SNPC_rcm_00_In::Rcm_Market1_First
+            run Rcm_SeqClose
+        elif fEvent36 == 3:
+            run SNPC_rcm_03_RenualOpen::Rcm_RenualOpen2
+            run Rcm_SeqClose
+        elif fEvent36 == 4:
+            run SNPC_rcm_00_In::Rcm_Market2_First
+            run Rcm_SeqClose
+        elif fEvent36 == 5:
+            run SNPC_rcm_02_BeforeRenual::Rcm_BeforeRenualFor2
+            run Rcm_SeqClose
     else:
         run SNPC_rcm_00_Common::Root
         run Rcm_SeqClose

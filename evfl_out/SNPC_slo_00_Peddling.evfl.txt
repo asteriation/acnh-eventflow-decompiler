@@ -35,12 +35,12 @@ entrypoint Event40:
             MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:004', false)
             event_flags_system['cPlayer:SloTalkedToday'] = true
         fEvent35 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent35 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', true)
+        if fEvent35 == 0:
+            run slo_Buy
         elif fEvent35 == 1:
             run slo_SellWeed
-        elif fEvent35 == 0:
-            run slo_Buy
+        elif fEvent35 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:008', true)
     elif EventFlowSystemActor.TermEventNow('EarthDay', false):
         run slo_Select
     elif not event_flags_system['cPlayer:SloTalkAboutHedge']:
@@ -70,26 +70,26 @@ flow Slo_Purchase_Processing:
     EventFlowSystemActor.SetTagFromUIResult(1, 'cSloItem5Price')
     MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:038', false)
     fEvent101 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent101 == 1:
+    if fEvent101 == 0:
+        subflow_results[0] = 0
+        run sub_grp!Event108
+    elif fEvent101 == 1:
         subflow_results[0] = 1
         run sub_grp!Event108
     elif fEvent101 == 2:
         MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:039', false)
         run slo_Buy_Again
-    elif fEvent101 == 0:
-        subflow_results[0] = 0
-        run sub_grp!Event108
     return
 
 flow slo_Again:
     MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:029', false)
     fEvent51 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent51 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:031', true)
+    if fEvent51 == 0:
+        run slo_Buy
     elif fEvent51 == 1:
         run slo_SellWeed
-    elif fEvent51 == 0:
-        run slo_Buy
+    elif fEvent51 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/slo/SP_slo:031', true)
     return
 
 flow slo_Buy:

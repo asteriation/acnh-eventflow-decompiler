@@ -99,16 +99,16 @@ flow EntryPoint_SelectTo:
     EventFlowSystemActor.CreateChoiceMailDestination(false)
     DynamicCast_dod.OpenMessageWindow('TalkSNpc/dod/SP_dod_50_PostOffice:081', false)
     fEvent26 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent26 == 3:
-        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
-    elif fEvent26 == 0:
+    if fEvent26 == 0:
         run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
     elif fEvent26 == 1:
         run Obj_MessageCardRack_02_SendFuture::EntryPoint_SendFuture
-    elif fEvent26 == 4:
-        run EntryPoint_CancelNega
     elif fEvent26 == 2:
         run Obj_MessageCardRack_03_SendFriend::EntryPoint_SendFriend
+    elif fEvent26 == 3:
+        run Obj_MessageCardRack_01_SendVillage::EntryPoint_SendVillage
+    elif fEvent26 == 4:
+        run EntryPoint_CancelNega
     return
 
 flow EntryPoint_StartTalk:

@@ -1,24 +1,24 @@
 flow Root:
     if not event_flags_system['cPlayer:BirthdayPCandleFlag']:
         fEvent1 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent1 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:102', true)
-        elif fEvent1 == 0:
+        if fEvent1 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:100', true)
         elif fEvent1 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:101', true)
+        elif fEvent1 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:102', true)
     elif event_flags_system['cLandTemp:PlayerBirthdayPinataEnd']:
         fEvent5 = EventFlowSystemActor.RandomChoiceExcludePrevious5(5, true)
         if fEvent5 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:103', true)
-        elif fEvent5 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:105', true)
-        elif fEvent5 == 4:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:107', true)
-        elif fEvent5 == 3:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:106', true)
         elif fEvent5 == 1:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:104', true)
+        elif fEvent5 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:105', true)
+        elif fEvent5 == 3:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:106', true)
+        elif fEvent5 == 4:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:107', true)
     else:
         run Root_7_Cupcake_1
     return
@@ -91,10 +91,10 @@ flow Root_2_In:
             fEvent77 = EventFlowSystemActor.PlayerBirthdayIsSpecialDay()
             if fEvent77 in (0, 3, 4, 5, 6):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:006', true)
-            elif fEvent77 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:008', true)
             elif fEvent77 == 1:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:007', true)
+            elif fEvent77 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:008', true)
             event_flags_npc['cNpcMemory:BirhdayPTalkFlag'] = true
         branch2:
             Npc_1.TurnBody(10, 0.0)
@@ -253,12 +253,12 @@ flow Root_7_Cupcake_2:
         branch4:
             Npc_2.NpcPinataCheer()
     fEvent221 = MainNpc.PinataResult()
-    if fEvent221 == 2:
-        MainNpc.SetNumCupCake(6)
+    if fEvent221 == 0:
+        MainNpc.SetNumCupCake(10)
     elif fEvent221 == 1:
         MainNpc.SetNumCupCake(8)
-    elif fEvent221 == 0:
-        MainNpc.SetNumCupCake(10)
+    elif fEvent221 == 2:
+        MainNpc.SetNumCupCake(6)
     MainNpc.Pinata(2)
     EventFlowSystemActor.CameraSetDemoParam('CameraTag:Pinata', 'cPlayerBDPinataResult', 'cPinataStart', false, false, true, 0)
     EventFlowSystemActor.WaitFrame(25)
@@ -271,12 +271,12 @@ flow Root_7_Cupcake_2:
         branch3:
             Npc_2.CharacterEmoticonAction('Clapping', '', 30, false, false)
     fEvent60 = MainNpc.PinataResult()
-    if fEvent60 == 1:
+    if fEvent60 == 0:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:027', true)
+    elif fEvent60 == 1:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:026', true)
     elif fEvent60 == 2:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:025', true)
-    elif fEvent60 == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:027', true)
     EventFlowSystemActor.SoundDuckingOn(33)
     EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.0, 1.0, false)
     fork:

@@ -22,28 +22,28 @@ entrypoint Event11:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_04', false)
 entrypoint Event14:
             fEvent14 = EventFlowSystemActor.GeneralTalkChoice5()
-            if fEvent14 == 3:
-                run SNPC_sza_01_Sonmin::Root
-            elif fEvent14 == 0:
+            if fEvent14 == 0:
                 run SNPC_sza_50_IslandEvaluation::Root
-            elif fEvent14 == 4:
-                run Sza_Cmn_Cancel
             elif fEvent14 == 1:
                 run SNPC_sza_01_Towntune::Root
             elif fEvent14 == 2:
                 run SNPC_sza_01_Flag::Root
+            elif fEvent14 == 3:
+                run SNPC_sza_01_Sonmin::Root
+            elif fEvent14 == 4:
+                run Sza_Cmn_Cancel
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002_03', false)
 entrypoint Event15:
             fEvent15 = EventFlowSystemActor.GeneralTalkChoice4()
             if fEvent15 == 0:
                 run SNPC_sza_01_Towntune::Root
+            elif fEvent15 == 1:
+                run SNPC_sza_01_Flag::Root
             elif fEvent15 == 2:
                 run SNPC_sza_01_Sonmin::Root
             elif fEvent15 == 3:
                 run Sza_Cmn_Cancel
-            elif fEvent15 == 1:
-                run SNPC_sza_01_Flag::Root
     elif event_flags_system['cLand:IslandEvaluationUnlock']:
         run SNPC_sza_01_Office_1_Entries::Sza_EvaluationExplanation
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_0_common:002', false)

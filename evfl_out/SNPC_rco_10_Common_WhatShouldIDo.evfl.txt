@@ -48,19 +48,19 @@ flow Rco_Hint_WaitingOpenCampSite:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:163_02', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
+            elif fEvent54 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
             elif fEvent54 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_01_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_02', false)
-            elif fEvent54 == 1:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:164', false)
         else:
             fEvent46 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent46 == 1:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_01_01', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_02', false)
-            elif fEvent46 == 0:
+            if fEvent46 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:163_01_01', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:163_02', false)
+            elif fEvent46 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_01_01', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:162_02', false)
             elif fEvent46 == 2:
                 if event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:161_01', false)
@@ -92,52 +92,23 @@ entrypoint Event96:
                 if fEvent64 == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:152_01', false)
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:152_02', false)
-                elif fEvent64 == 2:
-                    if subflow_results[15] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:154_02', false)
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:154_01', false)
                 elif fEvent64 == 1:
                     if event_flags_system['cPlayer:ImmQGetQuestPrize']:
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:153_01', false)
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:153_02', false)
+                elif fEvent64 == 2:
+                    if subflow_results[15] == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:154_02', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_05_MigrantsQuest:154_01', false)
             else:
                 run Rco_Hint_AboutSetMuseumTent
         elif event_flags_system['cLand:RcmImmQuestRunning']:
             run SNPC_rco_53_MigrantsQuest::Root
         elif event_flags_system['cPlayer:MainmenuRecipe']:
             fEvent75 = EventFlowSystemActor.MuseumLevel()
-            if fEvent75 == BlathersNotMovedIn:
-entrypoint Event1:
-                if not EventFlowSystemActor.MuseumDonationNumCheck(5):
-                    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
-                    else:
-                        run Rco_Hint_AboutLoan
-                elif event_flags_system['cLand:Plorogue4BuiltMuseum']:
-                    if not event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent']:
-                        event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:105', false)
-entrypoint Event6:
-                    if event_flags_system['cPlayer:RcoPaid1stCharge']:
-                        fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
-                        if fEvent34 in (2, 3, 4, 5, 6, 7, 8):
-                            run Rco_Hint_AfterBuildHouse
-                        elif fEvent34 == 1:
-                            if event_flags_system['cHouse:HouseOrder1']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
-                else:
-                    if EventFlowSystemActor.HasTargetItem(2755, 1):
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
-                    else:
-                        run Rco_Hint_AboutLoan
-            elif fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
+            if fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
                 if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
 entrypoint Event1:
                     if not EventFlowSystemActor.MuseumDonationNumCheck(5):
@@ -152,13 +123,13 @@ entrypoint Event1:
 entrypoint Event6:
                         if event_flags_system['cPlayer:RcoPaid1stCharge']:
                             fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
-                            if fEvent34 in (2, 3, 4, 5, 6, 7, 8):
-                                run Rco_Hint_AfterBuildHouse
-                            elif fEvent34 == 1:
+                            if fEvent34 == 1:
                                 if event_flags_system['cHouse:HouseOrder1']:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
                                 else:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
+                            elif fEvent34 in (2, 3, 4, 5, 6, 7, 8):
+                                run Rco_Hint_AfterBuildHouse
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
@@ -182,6 +153,35 @@ entrypoint Event5:
                                 MainNpc.SetDeliveryItemAtRandom(2502, true, 'cVillageRemakePattern', 0)
                                 MainNpc.NpcDelivery('Default', 1)
                                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:140_03', false)
+            elif fEvent75 == BlathersNotMovedIn:
+entrypoint Event1:
+                if not EventFlowSystemActor.MuseumDonationNumCheck(5):
+                    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
+                    else:
+                        run Rco_Hint_AboutLoan
+                elif event_flags_system['cLand:Plorogue4BuiltMuseum']:
+                    if not event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent']:
+                        event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent'] = true
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:105', false)
+entrypoint Event6:
+                    if event_flags_system['cPlayer:RcoPaid1stCharge']:
+                        fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
+                        if fEvent34 == 1:
+                            if event_flags_system['cHouse:HouseOrder1']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
+                        elif fEvent34 in (2, 3, 4, 5, 6, 7, 8):
+                            run Rco_Hint_AfterBuildHouse
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
+                else:
+                    if EventFlowSystemActor.HasTargetItem(2755, 1):
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
+                    else:
+                        run Rco_Hint_AboutLoan
         else:
 entrypoint Event31:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:102', false)

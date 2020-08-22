@@ -237,10 +237,10 @@ flow hgh_Peddler_Sel_3B_Housing:
     if fEvent128 == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:104', false)
         run Hgh_Visit_OpenUI
-    elif fEvent128 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:103', false)
     elif fEvent128 == 1:
         run Hgh_TailorBuildEvent
+    elif fEvent128 == 2:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:103', false)
     return
 
 flow sub_grp!Event93:

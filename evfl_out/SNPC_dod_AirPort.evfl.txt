@@ -61,10 +61,10 @@ flow EntryPoint_Host:
         EventFlowSystemActor.UIVersionGuideAppear('cNormal', 'cOn')
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:110', false)
         fEvent28 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent28 == 1:
-            run SNPC_dod_20_Airport_InetHost::EntryPoint_InetHost
-        elif fEvent28 == 0:
+        if fEvent28 == 0:
             run SNPC_dod_10_Airport_LocalHost::EntryPoint_LocalHost
+        elif fEvent28 == 1:
+            run SNPC_dod_20_Airport_InetHost::EntryPoint_InetHost
         elif fEvent28 == 2:
             run EntryPoint_Cancel
     else:
@@ -108,10 +108,10 @@ flow EntryPoint_Visitor:
         fEvent32 = EventFlowSystemActor.GeneralTalkChoice3()
         if fEvent32 == 0:
             run SNPC_dod_11_Airport_LocalVisitor::EntryPoint_LocalVisitor
-        elif fEvent32 == 2:
-            run EntryPoint_Cancel
         elif fEvent32 == 1:
             run SNPC_dod_21_Airport_InetVisitor::EntryPoint_InetVisitor
+        elif fEvent32 == 2:
+            run EntryPoint_Cancel
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:400', true)
     return
@@ -167,94 +167,94 @@ flow Root:
                     fEvent275 = EventFlowSystemActor.GeneralTalkChoice3()
                     if fEvent275 == 0:
                         run SNPC_dod_02_Airport_GateCheck::Dod_ChangeGate
-                    elif fEvent275 == 2:
-                        run EntryPoint_Cancel
                     elif fEvent275 == 1:
                         run EntryPoint_RememberPassword
+                    elif fEvent275 == 2:
+                        run EntryPoint_Cancel
                 elif fEvent268 == 2:
                     if EventFlowSystemActor.IsVillageGateOpened():
                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:304', false)
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:303', false)
                     fEvent278 = EventFlowSystemActor.GeneralTalkChoice3()
-                    if fEvent278 == 2:
-                        run EntryPoint_Cancel
-                    elif fEvent278 == 0:
+                    if fEvent278 == 0:
                         run SNPC_dod_02_Airport_GateCheck::Dod_ChangeGate
                     elif fEvent278 == 1:
                         run EntryPoint_RememberKeyword
+                    elif fEvent278 == 2:
+                        run EntryPoint_Cancel
             elif EventFlowSystemActor.IsVillageGateOpened():
                 fEvent118 = EventFlowSystemActor.NetSessionCreateSetting()
-                if fEvent118 == 1:
+                if fEvent118 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:210', false)
+                    fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent19 == 0:
+                        run EntryPoint_CloseGateAndResetNetwork
+                    elif fEvent19 == 1:
+                        run EntryPoint_ChangeToJoin
+                    elif fEvent19 == 2:
+                        run EntryPoint_Cancel
+                elif fEvent118 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:211', false)
                     fEvent262 = EventFlowSystemActor.GeneralTalkChoice4()
-                    if fEvent262 == 3:
-                        run EntryPoint_Cancel
-                    elif fEvent262 == 0:
+                    if fEvent262 == 0:
                         run EntryPoint_CloseGateAndResetNetwork
                     elif fEvent262 == 1:
                         run EntryPoint_RememberPassword
                     elif fEvent262 == 2:
                         run EntryPoint_ChangeToJoin
+                    elif fEvent262 == 3:
+                        run EntryPoint_Cancel
                 elif fEvent118 == 2:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:212', false)
                     fEvent263 = EventFlowSystemActor.GeneralTalkChoice4()
-                    if fEvent263 == 3:
-                        run EntryPoint_Cancel
+                    if fEvent263 == 0:
+                        run EntryPoint_CloseGateAndResetNetwork
                     elif fEvent263 == 1:
                         run EntryPoint_RememberKeyword
-                    elif fEvent263 == 0:
-                        run EntryPoint_CloseGateAndResetNetwork
                     elif fEvent263 == 2:
                         run EntryPoint_ChangeToJoin
-                elif fEvent118 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:210', false)
-                    fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
-                    if fEvent19 == 1:
-                        run EntryPoint_ChangeToJoin
-                    elif fEvent19 == 2:
+                    elif fEvent263 == 3:
                         run EntryPoint_Cancel
-                    elif fEvent19 == 0:
-                        run EntryPoint_CloseGateAndResetNetwork
             else:
                 fEvent109 = EventFlowSystemActor.NetSessionCreateSetting()
                 if fEvent109 == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:200', false)
                     fEvent106 = EventFlowSystemActor.GeneralTalkChoice4()
-                    if fEvent106 == 2:
-                        run EntryPoint_ChangeToJoin
+                    if fEvent106 == 0:
+                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
                     elif fEvent106 == 1:
                         run Close_NetworkConnection
+                    elif fEvent106 == 2:
+                        run EntryPoint_ChangeToJoin
                     elif fEvent106 == 3:
                         run EntryPoint_Cancel
-                    elif fEvent106 == 0:
-                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
                 elif fEvent109 == 1:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:201', false)
                     fEvent117 = EventFlowSystemActor.GeneralTalkChoice5()
-                    if fEvent117 == 4:
-                        run EntryPoint_Cancel
-                    elif fEvent117 == 3:
-                        run EntryPoint_ChangeToJoin
+                    if fEvent117 == 0:
+                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
                     elif fEvent117 == 1:
                         run Close_NetworkConnection
                     elif fEvent117 == 2:
                         run EntryPoint_RememberPassword
-                    elif fEvent117 == 0:
-                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
+                    elif fEvent117 == 3:
+                        run EntryPoint_ChangeToJoin
+                    elif fEvent117 == 4:
+                        run EntryPoint_Cancel
                 elif fEvent109 == 2:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:202', false)
                     fEvent115 = EventFlowSystemActor.GeneralTalkChoice5()
-                    if fEvent115 == 4:
-                        run EntryPoint_Cancel
-                    elif fEvent115 == 2:
-                        run EntryPoint_RememberKeyword
+                    if fEvent115 == 0:
+                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
                     elif fEvent115 == 1:
                         run Close_NetworkConnection
+                    elif fEvent115 == 2:
+                        run EntryPoint_RememberKeyword
                     elif fEvent115 == 3:
                         run EntryPoint_ChangeToJoin
-                    elif fEvent115 == 0:
-                        run SNPC_dod_02_Airport_GateCheck::Dod_OpenGate
+                    elif fEvent115 == 4:
+                        run EntryPoint_Cancel
         elif (EventFlowSystemActor.IsSharePlay(0)) and (event_flags_system['cPlayer:OdekakeFirstTalk']):
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:350', false)
         else:
@@ -284,7 +284,9 @@ entrypoint Event84:
             run EntryPoint_PostProcedure
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:108_01', false)
             fEvent307 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent307 == 1:
+            if fEvent307 == 0:
+                run EntryPoint_LockRetryLeave
+            elif fEvent307 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:118_01', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:118_02', false)
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
@@ -293,8 +295,6 @@ entrypoint Event84:
                     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
             elif fEvent307 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:701', true)
-            elif fEvent307 == 0:
-                run EntryPoint_LockRetryLeave
         else:
             MainNpc.MessageSuspend()
             EventFlowSystemActor.NetLeaveSessionVillage('cLeaveSession', false)

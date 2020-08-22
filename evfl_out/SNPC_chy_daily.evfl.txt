@@ -28,12 +28,12 @@ flow Daily_ReqObj:
 entrypoint Event8:
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:102', false)
         fEvent89 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent89 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:110', false)
+        if fEvent89 == 0:
+            run sub_grp!Event87
         elif fEvent89 == 1:
             run Ex_Obj2
-        elif fEvent89 == 0:
-            run sub_grp!Event87
+        elif fEvent89 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:110', false)
     return
 
 flow Daily_SellCancel_Talk:
@@ -114,20 +114,20 @@ flow Root:
         fEvent110 = EventFlowSystemActor.RandomChoice3(3)
         if fEvent110 == 0:
             fEvent1 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent1 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:042', false)
+            if fEvent1 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:040', false)
             elif fEvent1 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:041', false)
-            elif fEvent1 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:040', false)
+            elif fEvent1 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:042', false)
         elif fEvent110 == 1:
             fEvent124 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent124 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:045', false)
-            elif fEvent124 == 0:
+            if fEvent124 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:043', false)
             elif fEvent124 == 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:044', false)
+            elif fEvent124 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:045', false)
         elif fEvent110 == 2:
             fEvent125 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
             if fEvent125 == 0:
@@ -141,12 +141,12 @@ flow Root:
         if event_flags_system['cPlayer:ChyDaily_ReqObj']:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:014', false)
             fEvent44 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent44 == 1:
+            if fEvent44 == 0:
+                run Daily_SellInsect
+            elif fEvent44 == 1:
                 run Daily_ReqObj
             elif fEvent44 == 2:
                 run TalkCancel
-            elif fEvent44 == 0:
-                run Daily_SellInsect
         elif event_flags_system['cPlayer:ChyDaily_ExplainReqObj_First']:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:015', false)
             run sub_grp!Event74
@@ -196,17 +196,17 @@ flow sub_grp!Event4:
     fEvent4 = EventFlowSystemActor.GeneralTalkChoice3()
     if fEvent4 == 0:
         run Daily_SellInsect
-    elif fEvent4 == 2:
-        run TalkCancel
     elif fEvent4 == 1:
         run Daily_ReqObj
+    elif fEvent4 == 2:
+        run TalkCancel
 
 flow sub_grp!Event74:
     fEvent74 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent74 == 1:
-        run Daily_ReqObj
-    elif fEvent74 == 0:
+    if fEvent74 == 0:
         run Daily_SellInsect
+    elif fEvent74 == 1:
+        run Daily_ReqObj
     elif fEvent74 == 2:
         run TalkCancel
 

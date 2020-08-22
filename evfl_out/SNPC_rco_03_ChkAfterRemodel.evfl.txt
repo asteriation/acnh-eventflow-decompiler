@@ -37,6 +37,33 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
+    elif fEvent2 == 4:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_02', false)
+        EventFlowSystemActor.UIMoneyAppear()
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_03', false)
+        EventFlowSystemActor.PlayerSetLoan(348000)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_02', false)
+        EventFlowSystemActor.UIMoneyDisappear()
+        event_flags_system['cPlayer:PlayerLoanRepaying'] = true
+        event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
+        event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
+        EventFlowSystemActor.ExitFlowchart()
+    elif fEvent2 == 5:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_02', false)
+        EventFlowSystemActor.UIMoneyAppear()
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_03', false)
+        EventFlowSystemActor.PlayerSetLoan(548000)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_04', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_02', false)
+        EventFlowSystemActor.UIMoneyDisappear()
+        event_flags_system['cPlayer:PlayerLoanRepaying'] = true
+        event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
+        event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
+        EventFlowSystemActor.ExitFlowchart()
     elif fEvent2 == 6:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:051_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:051_02', false)
@@ -73,33 +100,6 @@ entrypoint Event5:
         EventFlowSystemActor.PlayerSetLoan(2498000)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:071_04', false)
-        EventFlowSystemActor.UIMoneyDisappear()
-        event_flags_system['cPlayer:PlayerLoanRepaying'] = true
-        event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
-        event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_02', false)
-        EventFlowSystemActor.UIMoneyAppear()
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_03', false)
-        EventFlowSystemActor.PlayerSetLoan(348000)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_02', false)
-        EventFlowSystemActor.UIMoneyDisappear()
-        event_flags_system['cPlayer:PlayerLoanRepaying'] = true
-        event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
-        event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
-        EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 5:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_02', false)
-        EventFlowSystemActor.UIMoneyAppear()
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_03', false)
-        EventFlowSystemActor.PlayerSetLoan(548000)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_04', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:081_02', false)
         EventFlowSystemActor.UIMoneyDisappear()
         event_flags_system['cPlayer:PlayerLoanRepaying'] = true
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false

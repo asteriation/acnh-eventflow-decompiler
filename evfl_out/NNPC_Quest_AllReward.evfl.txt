@@ -9,13 +9,13 @@ flow Good:
     fEvent41 = MainNpc.CheckNpcFavorLevel()
     if fEvent41 in (0, 1):
         run Lvel3
-    elif fEvent41 in (4, 5):
-        run Lvel2
     elif fEvent41 in (2, 3):
         if EventFlowSystemActor.PercentChoice(50):
             run Lvel3
         else:
             run Lvel2
+    elif fEvent41 in (4, 5):
+        run Lvel2
     return
 
 flow Level1:
@@ -50,13 +50,13 @@ flow Normal:
     fEvent42 = MainNpc.CheckNpcFavorLevel()
     if fEvent42 in (0, 1):
         run Lvel2
-    elif fEvent42 in (4, 5):
-        run Level1
     elif fEvent42 in (2, 3):
         if EventFlowSystemActor.PercentChoice(50):
             run Lvel2
         else:
             run Level1
+    elif fEvent42 in (4, 5):
+        run Level1
     return
 
 flow Root:

@@ -100,15 +100,11 @@ flow Rco_Select_Buy:
     EventFlowSystemActor.SetTagFromSystem(1, 'cFlow', 'cMoney', '', 300)
     MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:003', false)
     fEvent1 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent1 == 2:
-        run Rco_Common_Cancel
-    elif fEvent1 == 0:
+    if fEvent1 == 0:
         MainNpc.CountdownRctManualChoice()
         MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:009', false)
         fEvent10 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent10 == 4:
-            run Rco_Common_Cancel
-        elif fEvent10 == 0:
+        if fEvent10 == 0:
             MainNpc.RctSetNewYearHat(0)
             run sub_grp!Event27
         elif fEvent10 == 1:
@@ -120,10 +116,14 @@ flow Rco_Select_Buy:
         elif fEvent10 == 3:
             MainNpc.RctSetNewYearHat(3)
             run sub_grp!Event27
+        elif fEvent10 == 4:
+            run Rco_Common_Cancel
     elif fEvent1 == 1:
         subflow_results[1] = 1
         run Rco_Get_Cracker_Chk
         run Rco_Common_ItemFull_Buy
+    elif fEvent1 == 2:
+        run Rco_Common_Cancel
     return
 
 flow Root:

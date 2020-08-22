@@ -25,10 +25,7 @@ flow BocKabuBuyCount:
 flow CheckPhoneCallIslandCreater:
     if (event_flags_system['cLand:TkkFirstLive']) and (not event_flags_system['cPlayer:MainmenuConstructLicense']):
         fEvent212 = EventFlowSystemActor.EventBranch(false, 0)
-        if fEvent212 == 3:
-            event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = false
-            event_flags_system['cPlayer:StandByGameStartPhoneCall'] = false
-        elif fEvent212 in (0, 1, 2, 4, 5, 6, 7):
+        if fEvent212 in (0, 1, 2, 4, 5, 6, 7):
             if not event_flags_system['cPlayer:StandByRcoVisitMyHomeAfterTkkFirstLive']:
                 event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = true
                 event_flags_system['cPlayer:StandByGameStartPhoneCall'] = true
@@ -38,6 +35,9 @@ flow CheckPhoneCallIslandCreater:
                 event_flags_system['cPlayer:StandByGameStartPhoneCall'] = true
                 EventFlowSystemActor.SelectRewardItemDirect(4318, 1, 'cVillageRemakePattern', 0)
                 EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastToday', 'cReward', 'cNone', false, 4)
+        elif fEvent212 == 3:
+            event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = false
+            event_flags_system['cPlayer:StandByGameStartPhoneCall'] = false
     return
 
 flow CheckPhoneCallJuneBride:
@@ -339,7 +339,12 @@ flow SeasonMaterialHintReset:
     fEvent215 = EventFlowSystemActor.EnvWeatherArea()
     if fEvent215 == cWeatherArea_North:
         fEvent214 = EventFlowSystemActor.EnvMonth()
-        if fEvent214 in (March, April, May):
+        if fEvent214 == January:
+            run ResetFlag_Winter
+        elif fEvent214 == February:
+            run Flag_Ornaments
+            run ResetFlag_Winter
+        elif fEvent214 in (March, April, May):
             run ResetFlag_Spring
             run Flag_Ornaments
         elif fEvent214 in (June, July, August):
@@ -348,21 +353,14 @@ flow SeasonMaterialHintReset:
         elif fEvent214 in (September, October, November):
             run ResetFlag_Autumn
             run Flag_Ornaments
-        elif fEvent214 == January:
-            run ResetFlag_Winter
         elif fEvent214 == December:
-            run ResetFlag_Winter
-        elif fEvent214 == February:
-            run Flag_Ornaments
             run ResetFlag_Winter
     elif fEvent215 == cWeatherArea_South:
         fEvent216 = EventFlowSystemActor.EnvMonth()
-        if fEvent216 in (September, October, November):
-            run ResetFlag_Spring
-            run Flag_Ornaments
-        elif fEvent216 == December:
+        if fEvent216 == January:
             run ResetFlag_Summer
-        elif fEvent216 == January:
+        elif fEvent216 == February:
+            run Flag_Ornaments
             run ResetFlag_Summer
         elif fEvent216 in (March, April, May):
             run ResetFlag_Autumn
@@ -370,8 +368,10 @@ flow SeasonMaterialHintReset:
         elif fEvent216 in (June, July, August):
             run ResetFlag_Winter
             run Flag_Ornaments
-        elif fEvent216 == February:
+        elif fEvent216 in (September, October, November):
+            run ResetFlag_Spring
             run Flag_Ornaments
+        elif fEvent216 == December:
             run ResetFlag_Summer
     return
 

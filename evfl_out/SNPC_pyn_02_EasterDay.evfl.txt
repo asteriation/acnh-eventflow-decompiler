@@ -65,27 +65,27 @@ flow ExcEggs_LeafEgg:
 flow ExcEggs_Loop:
     MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:161', false)
     fEvent122 = EventFlowSystemActor.GeneralTalkChoice5()
-    if fEvent122 == 3:
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:162', false)
-        fEvent123 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent123 == 3:
-            run ExcEggs_Loop
-        elif fEvent123 == 4:
-            run ExcEggs_Cancel
-        elif fEvent123 == 2:
-            run ExcEggs_EathEgg
-        elif fEvent123 == 1:
-            run ExcEggs_SkyEgg
-        elif fEvent123 == 0:
-            run ExcEggs_WaterEgg
-    elif fEvent122 == 4:
-        run ExcEggs_Cancel
-    elif fEvent122 == 0:
+    if fEvent122 == 0:
         run ExcEggs_StoneEgg
     elif fEvent122 == 1:
         run ExcEggs_LeafEgg
     elif fEvent122 == 2:
         run ExcEggs_WoodEgg
+    elif fEvent122 == 3:
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:162', false)
+        fEvent123 = EventFlowSystemActor.GeneralTalkChoice5()
+        if fEvent123 == 0:
+            run ExcEggs_WaterEgg
+        elif fEvent123 == 1:
+            run ExcEggs_SkyEgg
+        elif fEvent123 == 2:
+            run ExcEggs_EathEgg
+        elif fEvent123 == 3:
+            run ExcEggs_Loop
+        elif fEvent123 == 4:
+            run ExcEggs_Cancel
+    elif fEvent122 == 4:
+        run ExcEggs_Cancel
     return
 
 flow ExcEggs_SkyEgg:
@@ -144,14 +144,14 @@ flow ExchangeEggs:
     if EventFlowSystemActor.HasKindItem('cKind', 'EasterEgg', ''):
         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:160', false)
         fEvent118 = EventFlowSystemActor.GeneralTalkChoice5()
-        if fEvent118 == 3:
-            run ExcEggs_Loop
-        elif fEvent118 == 2:
-            run ExcEggs_EathEgg
+        if fEvent118 == 0:
+            run ExcEggs_WaterEgg
         elif fEvent118 == 1:
             run ExcEggs_SkyEgg
-        elif fEvent118 == 0:
-            run ExcEggs_WaterEgg
+        elif fEvent118 == 2:
+            run ExcEggs_EathEgg
+        elif fEvent118 == 3:
+            run ExcEggs_Loop
         elif fEvent118 == 4:
             run sub_Event126
     else:
@@ -360,12 +360,12 @@ entrypoint Event73:
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:130', false)
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
         fEvent104 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent104 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:153', false)
-        elif fEvent104 == 0:
+        if fEvent104 == 0:
             run GetEggBasket
         elif fEvent104 == 1:
             run ExchangeEggs
+        elif fEvent104 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:153', false)
     elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
         event_flags_system['cPlayer:PynCannotGetItemFlag'] = false
         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:221', false)
