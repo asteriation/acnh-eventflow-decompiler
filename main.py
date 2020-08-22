@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from cfg import CFG
+import populate_cfg
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
@@ -20,7 +21,9 @@ if __name__ == '__main__':
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
             print(f'converting {fname}')
-            cfg = CFG.read(f.read(), actor_data)
+            cfg = populate_cfg.read(f.read(), actor_data)
+            cfg.restructure()
+
             if args.out_dir:
                 with (Path(args.out_dir) / Path(fname).name.replace('.bfevfl', '.evfl.txt')).open('wt') as of:
                     print(cfg.generate_code(), file=of)
