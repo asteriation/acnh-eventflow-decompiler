@@ -13,19 +13,20 @@ flow Rco_Common_Buy:
             EventFlowSystemActor.ExitFlowchart()
         else:
             run Rco_Common_NoMoney
-    elif EventFlowSystemActor.HasBellCount(300):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:007', false)
-        run Demo_Common::Demo_Rco_Countdown_Shopping
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:008', true)
-        if subflow_results[2] == 0:
-            EventFlowSystemActor.PlayReport(500, 'cCountdownBuyHat')
-            event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 500
-        else:
-            EventFlowSystemActor.PlayReport(300, 'cCountdownBuyCracker')
-            event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 300
-        EventFlowSystemActor.ExitFlowchart()
     else:
-        run Rco_Common_NoMoney
+        if EventFlowSystemActor.HasBellCount(300):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:007', false)
+            run Demo_Common::Demo_Rco_Countdown_Shopping
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/GEvent/SP_rco_GEvent_Countdown:008', true)
+            if subflow_results[2] == 0:
+                EventFlowSystemActor.PlayReport(500, 'cCountdownBuyHat')
+                event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 500
+            else:
+                EventFlowSystemActor.PlayReport(300, 'cCountdownBuyCracker')
+                event_flags_system['cLifeSupportAchievement:HowmuchBuyItem'] += 300
+            EventFlowSystemActor.ExitFlowchart()
+        else:
+            run Rco_Common_NoMoney
     return
 
 flow Rco_Common_Cancel:

@@ -41,16 +41,25 @@ flow ExchangeCancel:
     return
 
 flow ExchangeDIYRecipeCard:
-    if not event_flags_system['cPlayer:MainmenuRecipe']:
+    if event_flags_system['cPlayer:MainmenuRecipe']:
+        if EventFlowSystemActor.HasCraftRecipeSelectFlow('cItemSelect'):
+            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:027', false)
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:028', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+            run ReChangeItem
+        elif EventFlowSystemActor.ShoppingCapacity(5794, 'cItemName'):
+            EventFlowSystemActor.SonkatsuBuyDone(true)
+            run Cmn_PrintOutDemo
+            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:029', true)
+            Player.PlayerChangeDemoState('cTicketTake')
+            run RcoMachineMileExchangeAgain
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:024', false)
+    else:
 entrypoint Event68:
         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:030', false)
         run RcoMachineMileExchangeAgain
-    elif EventFlowSystemActor.HasCraftRecipeSelectFlow('cItemSelect'):
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:027', false)
-        run sub_grp!Event108
-    else:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:028', false)
-        run sub_grp!Event108
     return
 
 flow ExchangeHowToBook:
@@ -194,42 +203,27 @@ entrypoint Event9:
             run ExchangeHowToBook
         elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
             run ExchangeDIYRecipeCard
-        elif any ('LicenseItem', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:013', false)
-            run sub_grp!Event4
         else:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:012', false)
-            run sub_grp!Event4
+            if any ('LicenseItem', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:013', false)
+            else:
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:012', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                run ReChangeItem
+            elif any ('LicenseItem', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                run ReceiveConstructionLisence
+            else:
+                EventFlowSystemActor.SonkatsuBuyDone(false)
+                EventFlowSystemActor.MilagePackageSend()
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:014', false)
+entrypoint Event26:
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:015', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run ReChangeItem
+                else:
+                    run Obj_RcoMachine::SelExit
     else:
         EventFlowSystemActor.UISonkatsuPointDisappear()
         run Obj_RcoMachine::RcoSelSeq
     return
-
-flow sub_grp!Event108:
-    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-        run ReChangeItem
-    elif EventFlowSystemActor.ShoppingCapacity(5794, 'cItemName'):
-        EventFlowSystemActor.SonkatsuBuyDone(true)
-        run Cmn_PrintOutDemo
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:029', true)
-        Player.PlayerChangeDemoState('cTicketTake')
-        run RcoMachineMileExchangeAgain
-    else:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:024', false)
-
-flow sub_grp!Event4:
-    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-        run ReChangeItem
-    elif any ('LicenseItem', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        run ReceiveConstructionLisence
-    else:
-        EventFlowSystemActor.SonkatsuBuyDone(false)
-        EventFlowSystemActor.MilagePackageSend()
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:014', false)
-entrypoint Event26:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:015', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run ReChangeItem
-        else:
-            run Obj_RcoMachine::SelExit
 

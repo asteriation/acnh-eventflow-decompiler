@@ -27,10 +27,11 @@ entrypoint Event20:
                 EventFlowSystemActor.ControllerConnectEnd(true)
                 if EventFlowSystemActor.CountSharePlayerNum(4):
                     EventFlowSystemActor.RequetCtrlConnectSupport(4)
-                elif EventFlowSystemActor.CountSharePlayerNum(3):
-                    EventFlowSystemActor.RequetCtrlConnectSupport(3)
                 else:
-                    EventFlowSystemActor.RequetCtrlConnectSupport(2)
+                    if EventFlowSystemActor.CountSharePlayerNum(3):
+                        EventFlowSystemActor.RequetCtrlConnectSupport(3)
+                    else:
+                        EventFlowSystemActor.RequetCtrlConnectSupport(2)
                 if EventFlowSystemActor.CheckErrorType(1):
                     EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:010', true)
                     run System_SharePlay_Exit::Root
@@ -75,10 +76,11 @@ flow sub_grp!Event31:
             EventFlowSystemActor.ControllerConnectEnd(true)
             if EventFlowSystemActor.CountSharePlayerNum(4):
                 EventFlowSystemActor.RequetCtrlConnectSupport(4)
-            elif EventFlowSystemActor.CountSharePlayerNum(3):
-                EventFlowSystemActor.RequetCtrlConnectSupport(3)
             else:
-                EventFlowSystemActor.RequetCtrlConnectSupport(2)
+                if EventFlowSystemActor.CountSharePlayerNum(3):
+                    EventFlowSystemActor.RequetCtrlConnectSupport(3)
+                else:
+                    EventFlowSystemActor.RequetCtrlConnectSupport(2)
             if EventFlowSystemActor.CheckErrorType(1):
                 EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:010', true)
                 run System_SharePlay_Exit::Root

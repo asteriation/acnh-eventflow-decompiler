@@ -1,12 +1,13 @@
 flow 1P_Lifestart_Conv:
     fEvent1 = MainNpc.CheckNpcLook()
     if fEvent1 == 5:
-        if not event_flags_system['cPlayer:Prologue4HaGetTent']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:002', false)
-        elif EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:001_01', false)
+        if event_flags_system['cPlayer:Prologue4HaGetTent']:
+            if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:001_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:001_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:001_02', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:002', false)
         if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
             run RewardSetHA
             MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:003_01', true)
@@ -18,12 +19,13 @@ flow 1P_Lifestart_Conv:
             run RewardSetHA
             MainNpc.NpcMailSend('MAIL_XX_LifeStart', 'cDeliveryItem', 1, 'cFastToday', 'cNone')
     elif fEvent1 == 3:
-        if not event_flags_system['cPlayer:Prologue4AnGetTent']:
-            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:002', false)
-        elif EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
-            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:001_01', false)
+        if event_flags_system['cPlayer:Prologue4AnGetTent']:
+            if EventFlowSystemActor.SystemCheckNowStage('cTalkingNpcHouse'):
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:001_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:001_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:001_02', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/G4_An/React/AN_React_1P_LifeStart:002', false)
         if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
             MainNpc.NpcSetRewardRecipe(6840, false)
             MainNpc.SetItemName(0, 1, 0)

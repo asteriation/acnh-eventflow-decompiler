@@ -14,10 +14,11 @@ flow Event_Chk:
                 MainNpc.NpcOpenFreeMessage('cFreeEEventFirst')
                 event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
                 EventFlowSystemActor.ExitFlowchart()
-        elif MainNpc.NpcHasFreeMessage('cFreeEEventTerm'):
-            MainNpc.NpcOpenFreeMessage('cFreeEEventTerm')
-            event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
+        else:
+            if MainNpc.NpcHasFreeMessage('cFreeEEventTerm'):
+                MainNpc.NpcOpenFreeMessage('cFreeEEventTerm')
+                event_flags_npc['cNpcMemory:TalkFreeEventNow'] = true
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow FreeF_Chk:
@@ -109,8 +110,9 @@ flow sub_grp!Event9:
                 MainNpc.NpcOpenFreeMessage('cFreeFEto')
                 event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
                 EventFlowSystemActor.ExitFlowchart()
-        elif (EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cGrowUpTime')) and (EventFlowSystemActor.CurrentRegionLanguage('cCurrentVillage') in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)):
-            MainNpc.NpcOpenFreeMessage('cFreeFEto')
-            event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
-            EventFlowSystemActor.ExitFlowchart()
+        else:
+            if (EventFlowSystemActor.EnvSameDate('cLunarNewYear', 'cGrowUpTime')) and (EventFlowSystemActor.CurrentRegionLanguage('cCurrentVillage') in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)):
+                MainNpc.NpcOpenFreeMessage('cFreeFEto')
+                event_flags_npc['cNpcMemory:TalkFreeZodiacNow'] = true
+                EventFlowSystemActor.ExitFlowchart()
 

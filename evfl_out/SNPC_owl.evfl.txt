@@ -27,12 +27,12 @@ flow NoTopic:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:012', false)
         run SNPC_owl_00_Common::Comp_Direct
-    elif event_flags_system['cPlayerTemp:OwlWokeHimUp']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:016', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:017', false)
-        run SNPC_owl_00_Common::Select4_Direct
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:013', false)
+        if event_flags_system['cPlayerTemp:OwlWokeHimUp']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:016', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:017', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:013', false)
         run SNPC_owl_00_Common::Select4_Direct
     return
 
@@ -104,9 +104,10 @@ entrypoint Event32:
                             else:
                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:002_02', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:003', false)
-                            if not event_flags_system['cLand:OwlFoundFossil']:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_02', false)
-                            elif event_flags_system['cPlayer:OwlShowFossilMyself']:
+                            if event_flags_system['cLand:OwlFoundFossil']:
+                                if not event_flags_system['cPlayer:OwlShowFossilMyself']:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_03', false)
+                                    event_flags_system['cPlayer:OwlShowFossilMyself'] = true
                                 if EventFlowSystemActor.MuseumComplete():
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_04', false)
                                     event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
@@ -114,14 +115,7 @@ entrypoint Event32:
                                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_01', false)
                                 event_flags_system['cPlayer:OwlMultiDonateExplain'] = true
                             else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_03', false)
-                                event_flags_system['cPlayer:OwlShowFossilMyself'] = true
-                                if EventFlowSystemActor.MuseumComplete():
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_04', false)
-                                    event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-                                else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_01', false)
-                                event_flags_system['cPlayer:OwlMultiDonateExplain'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_02', false)
                             event_flags_system['cPlayer:Owl1stTalkMuseum1'] = true
                     elif fEvent84 == BlathersMuseumArt:
                         if event_flags_system['cPlayer:Owl1stTalkMuseum2']:

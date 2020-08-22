@@ -22,58 +22,62 @@ flow RcoEntrieChk:
         if fEvent64 in (ResServiceTent0, ResServiceTent1):
             run SNPC_rco_03_ChkAfterRemodel::Root
             run SNPC_rco_04_ChkFinishLoan::Root
-            if not EventFlowSystemActor.NetHasVisitor():
-                run ChkFirstCamperRequest
-                if event_flags_system['cPlayer:RcoDIYtrialOngoing']:
-                    run SNPC_rco_01_Tent_1_Entries::RcoDIYongoing
-                elif event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
-                    run SNPC_rco_01_Tent_1_Entries::RcoTentAboutBuildMuseumTent
-                elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                    run SNPC_rco_53_MigrantsQuest::Rco_ImmQ_ReactTalkEntry
-                    run sub_grp!Event20
-                else:
-                    run sub_grp!Event20
-            elif event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
+            if EventFlowSystemActor.NetHasVisitor():
+                if not event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:801', false)
                 if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_01', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_02', false)
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:801', false)
-                if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_01', false)
+                run ChkFirstCamperRequest
+                if event_flags_system['cPlayer:RcoDIYtrialOngoing']:
+                    run SNPC_rco_01_Tent_1_Entries::RcoDIYongoing
+                elif event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
+                    run SNPC_rco_01_Tent_1_Entries::RcoTentAboutBuildMuseumTent
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_02', false)
+                    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                        run SNPC_rco_53_MigrantsQuest::Rco_ImmQ_ReactTalkEntry
+                    fEvent20 = EventFlowSystemActor.OfficeLevel()
+                    if fEvent20 in (ResServiceTent0, ResServiceTent1):
+                        run sub_grp!Event13
+                    elif fEvent20 == ResServiceBuilding:
+                        if event_flags_system['cPlayer:RcoTalkAboutOfficeWork']:
+                            run CheckInfoMoveMyhome
+                            run sub_grp!Event13
+                        else:
+                            run SNPC_rco_01_Office_1_Entries::IslandDevelopmentIntro
         elif fEvent64 == ResServiceBuilding:
             if event_flags_system['cPlayer:RcoFirstTalkNewOffice']:
                 run SNPC_rco_03_ChkAfterRemodel::Root
                 run SNPC_rco_04_ChkFinishLoan::Root
-                if not EventFlowSystemActor.NetHasVisitor():
+                if EventFlowSystemActor.NetHasVisitor():
+                    if not event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:801', false)
+                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_01', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_02', false)
+                else:
                     run ChkFirstCamperRequest
                     if event_flags_system['cPlayer:RcoDIYtrialOngoing']:
                         run SNPC_rco_01_Tent_1_Entries::RcoDIYongoing
                     elif event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
                         run SNPC_rco_01_Tent_1_Entries::RcoTentAboutBuildMuseumTent
-                    elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                        run SNPC_rco_53_MigrantsQuest::Rco_ImmQ_ReactTalkEntry
-                        run sub_grp!Event20
                     else:
-                        run sub_grp!Event20
-                elif event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:801', false)
-                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_01', false)
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_02', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:801', false)
-                    if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_01', false)
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:802_02', false)
+                        if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                            run SNPC_rco_53_MigrantsQuest::Rco_ImmQ_ReactTalkEntry
+                        fEvent20 = EventFlowSystemActor.OfficeLevel()
+                        if fEvent20 in (ResServiceTent0, ResServiceTent1):
+                            run sub_grp!Event13
+                        elif fEvent20 == ResServiceBuilding:
+                            if event_flags_system['cPlayer:RcoTalkAboutOfficeWork']:
+                                run CheckInfoMoveMyhome
+                                run sub_grp!Event13
+                            else:
+                                run SNPC_rco_01_Office_1_Entries::IslandDevelopmentIntro
             else:
                 run SNPC_rco_01_Office_1_Entries::OfficeOpening_NormalTalk
     else:
@@ -125,30 +129,14 @@ flow Root_Init:
         MainNpc.SmartPhone(2)
     return
 
-flow sub_grp!Event20:
-    fEvent20 = EventFlowSystemActor.OfficeLevel()
-    if fEvent20 in (ResServiceTent0, ResServiceTent1):
-        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-            run SNPC_rco_01_Tent_1_Entries::RcoRemakeTrialIntro
+flow sub_grp!Event13:
+    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+        run SNPC_rco_01_Tent_1_Entries::RcoRemakeTrialIntro
+    else:
+        run SNPC_rco_60_Event::Root
+        if event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
+            pass
         else:
-            run SNPC_rco_60_Event::Root
-            if event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
-                pass
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
-            run SNPC_rco_00_Common::Root
-    elif fEvent20 == ResServiceBuilding:
-        if event_flags_system['cPlayer:RcoTalkAboutOfficeWork']:
-            run CheckInfoMoveMyhome
-            if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                run SNPC_rco_01_Tent_1_Entries::RcoRemakeTrialIntro
-            else:
-                run SNPC_rco_60_Event::Root
-                if event_flags_system['cPlayerTemp:RcoTalkSceneFlag']:
-                    pass
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
-                run SNPC_rco_00_Common::Root
-        else:
-            run SNPC_rco_01_Office_1_Entries::IslandDevelopmentIntro
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
+        run SNPC_rco_00_Common::Root
 

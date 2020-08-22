@@ -89,10 +89,11 @@ flow RcmDIYbookBuySel:
     elif fEvent65 == 1:
         if any (5603, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_01', false)
-        elif any (5604, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_03', false)
+            if any (5604, 65534, 65534, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_01_03', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:106_02', false)
         run RcmDIYbookBuySel
     return

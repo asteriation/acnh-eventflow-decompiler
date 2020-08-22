@@ -100,13 +100,12 @@ entrypoint Event51:
             run Demo_Common::Demo_Cmn_Shopping
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:114_02', false)
             event_flags_system['cPlayer:HghPeddlerPurchaceToday'] = true
-            if not EventFlowSystemActor.IsMyVillage():
-                run Hgh_AfterPurchase
-            elif event_flags_system['cLand:HghPeddlerPurchaceToday']:
+            if EventFlowSystemActor.IsMyVillage():
+                if not event_flags_system['cLand:HghPeddlerPurchaceToday']:
+                    event_flags_system['cLand:CountTailorBuild'] += 1
+                    event_flags_system['cLand:HghPeddlerPurchaceToday'] = true
                 run Hgh_AfterPurchase
             else:
-                event_flags_system['cLand:CountTailorBuild'] += 1
-                event_flags_system['cLand:HghPeddlerPurchaceToday'] = true
                 run Hgh_AfterPurchase
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:113_01', false)
@@ -142,92 +141,95 @@ flow Retry_Request:
     return
 
 flow Root:
-    if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:KinuyoTalkBoforeFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:001', false)
-            if event_flags_system['cPlayer:KinuyoMetShopFlag']:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:002_01', false)
+    if not EventFlowSystemActor.IsMyVillage():
+        if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) == 0:
+            if event_flags_system['cPlayerVisit:HghPeddlerVisitorTalk1st']:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:153', false)
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:002_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:003', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:004', false)
+                event_flags_system['cPlayerVisit:HghPeddlerVisitorTalk1st'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:151', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event50:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:006', false)
-                run Hgh_Visit_OpenUI
+                run Hgh_PeddlerShopping_Visitor
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:005_01', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:152', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:902', false)
+    elif not event_flags_system['cPlayer:KinuyoTalkBoforeFlag']:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:001', false)
+        if event_flags_system['cPlayer:KinuyoMetShopFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:002_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:002_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:003', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:004', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event50:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:006', false)
+            run Hgh_Visit_OpenUI
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:005_01', false)
 entrypoint Event49:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:005_02', false)
-            event_flags_system['cPlayer:KinuyoTalkBoforeFlag'] = true
-            event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
-        elif not ((event_flags_system['cLand:EnableTailorBuild']) and (event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:005_02', false)
+        event_flags_system['cPlayer:KinuyoTalkBoforeFlag'] = true
+        event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
+    elif not ((event_flags_system['cLand:EnableTailorBuild']) and (event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
 entrypoint Event107:
-            run CheckHghSel
-            if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) != 0:
-                run HghPeddlerClosed
-            elif not event_flags_system['cPlayer:KinuyoTalkTodayFlag']:
-                event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
-                fEvent15 = EventFlowSystemActor.EnvTimeZone()
-                if fEvent15 in (Morning0, Morning1):
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_01', false)
+        run CheckHghSel
+        if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) != 0:
+            run HghPeddlerClosed
+        elif not event_flags_system['cPlayer:KinuyoTalkTodayFlag']:
+            event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
+            fEvent15 = EventFlowSystemActor.EnvTimeZone()
+            if fEvent15 in (Morning0, Morning1):
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_01', false)
 entrypoint Event145:
-                    if subflow_results[0] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                        run hgh_Peddler_Sel_3B_Housing
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                        run sub_grp!Event93
-                elif fEvent15 in (Afternoon0, Afternoon1):
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_02', false)
-entrypoint Event145:
-                    if subflow_results[0] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                        run hgh_Peddler_Sel_3B_Housing
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                        run sub_grp!Event93
-                elif fEvent15 in (Evening0, Evening1):
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_03', false)
-entrypoint Event145:
-                    if subflow_results[0] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
-                        run hgh_Peddler_Sel_3B_Housing
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
-                        run sub_grp!Event93
-            elif event_flags_system['cPlayer:HghPeddlerPurchaceToday']:
                 if subflow_results[0] == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:107', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
                     run hgh_Peddler_Sel_3B_Housing
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:105_01', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
                     run sub_grp!Event93
-            elif subflow_results[0] == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:108', false)
+            elif fEvent15 in (Afternoon0, Afternoon1):
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_02', false)
+entrypoint Event145:
+                if subflow_results[0] == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
+                    run hgh_Peddler_Sel_3B_Housing
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
+                    run sub_grp!Event93
+            elif fEvent15 in (Evening0, Evening1):
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:101_03', false)
+entrypoint Event145:
+                if subflow_results[0] == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:106', false)
+                    run hgh_Peddler_Sel_3B_Housing
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:102', false)
+                    run sub_grp!Event93
+        elif event_flags_system['cPlayer:HghPeddlerPurchaceToday']:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:107', false)
                 run hgh_Peddler_Sel_3B_Housing
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:105_02', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:105_01', false)
                 run sub_grp!Event93
-        elif not event_flags_system['cPlayer:HghHeardRequestHousingKit']:
-            run Hgh_TailorBuildEvent
-        elif not event_flags_system['cLand:TailorReserved']:
-            run HghPeddler_NormalSeq
-        elif event_flags_system['cPlayer:HghEndRequestHousingKit']:
-            run HghPeddler_NormalSeq
+        elif subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:108', false)
+            run hgh_Peddler_Sel_3B_Housing
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:222', false)
-            event_flags_system['cPlayer:HghEndRequestHousingKit'] = true
-            event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
-    elif EventFlowSystemActor.EnvHourCompare(22, -1, true, true) != 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:902', false)
-    elif event_flags_system['cPlayerVisit:HghPeddlerVisitorTalk1st']:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:153', false)
-        run sub_grp!Event54
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:105_02', false)
+            run sub_grp!Event93
+    elif not event_flags_system['cPlayer:HghHeardRequestHousingKit']:
+        run Hgh_TailorBuildEvent
+    elif not event_flags_system['cLand:TailorReserved']:
+        run HghPeddler_NormalSeq
+    elif event_flags_system['cPlayer:HghEndRequestHousingKit']:
+        run HghPeddler_NormalSeq
     else:
-        event_flags_system['cPlayerVisit:HghPeddlerVisitorTalk1st'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:151', false)
-        run sub_grp!Event54
+        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:222', false)
+        event_flags_system['cPlayer:HghEndRequestHousingKit'] = true
+        event_flags_system['cPlayer:KinuyoTalkTodayFlag'] = true
     return
 
 flow hgh_Peddler_Sel_3B_Housing:
@@ -240,12 +242,6 @@ flow hgh_Peddler_Sel_3B_Housing:
     elif fEvent128 == 1:
         run Hgh_TailorBuildEvent
     return
-
-flow sub_grp!Event54:
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Hgh_PeddlerShopping_Visitor
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh_00_Peddler:152', false)
 
 flow sub_grp!Event93:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

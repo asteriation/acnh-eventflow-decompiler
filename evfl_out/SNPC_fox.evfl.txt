@@ -1,6 +1,15 @@
 flow FirstTalkInShip:
     event_flags_system['cPlayer:FoxPreVisitWantSellFlag'] = false
-    if not event_flags_system['cPlayer:FoxTalkTodayFlag']:
+    if event_flags_system['cPlayer:FoxTalkTodayFlag']:
+        if event_flags_system['cPlayer:FoxInvitedShipFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:002', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:003', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
+    else:
         event_flags_system['cPlayer:FoxTalkTodayFlag'] = true
         if not event_flags_system['cPlayer:TunekichiTalkBefore']:
             event_flags_system['cPlayer:TunekichiTalkBefore'] = true
@@ -12,56 +21,47 @@ flow FirstTalkInShip:
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:001_04', false)
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:001_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:001_03', false)
-        elif event_flags_system['cPlayer:FoxPreVisitBuyArtFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:004', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:005', false)
+            if event_flags_system['cPlayer:FoxPreVisitBuyArtFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:004', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:005', false)
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_01', false)
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
-    elif event_flags_system['cPlayer:FoxInvitedShipFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:002', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:003', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:006_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:007', false)
     return
 
 flow FirstTalkInShip_Check:
     event_flags_system['cPlayer:FoxPreVisitWantSellFlag'] = false
     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:008', false)
-    if not event_flags_system['cPlayer:TunekichiTalkBefore']:
+    if event_flags_system['cPlayer:TunekichiTalkBefore']:
+        if event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag']:
+            event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag'] = false
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:009_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:011', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:012', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:013', false)
+    else:
         event_flags_system['cPlayer:TunekichiTalkBefore'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:009', false)
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
-    elif event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag']:
-        event_flags_system['cPlayer:FoxTalkOnlyStandShopFlag'] = false
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:009_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:010', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:011', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:012', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:013', false)
     MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:014', false)
     return
 
 flow FirstTalk_Setting:
-    if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:FoxFirstTalkInShipFlag']:
-            subflow_results[0] = 1
-        elif event_flags_system['cPlayer:FoxTalkTodayFlag']:
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayerVisit:FoxTalkFlag']:
             subflow_results[0] = 0
         else:
-            subflow_results[0] = 2
-    elif event_flags_system['cPlayerVisit:FoxTalkFlag']:
+            subflow_results[0] = 3
+    elif not event_flags_system['cPlayer:FoxFirstTalkInShipFlag']:
+        subflow_results[0] = 1
+    elif event_flags_system['cPlayer:FoxTalkTodayFlag']:
         subflow_results[0] = 0
     else:
-        subflow_results[0] = 3
+        subflow_results[0] = 2
     return
 
 flow Root_EnterShop:
@@ -104,12 +104,13 @@ flow Root_LeaveShop:
     MainNpc.NpcSetAIBlackBoard('LeaveMessage', 1)
     event_flags_system['cPlayer:FoxForcedTalk2TodayFlag'] = true
     event_flags_system['cPlayerTemp:FoxExitBalloon'] = true
-    if not event_flags_system['cPlayer:FoxBuyTodayFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:053', true)
-    elif event_flags_system['cPlayerTemp:FoxBuyNowFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:051', true)
+    if event_flags_system['cPlayer:FoxBuyTodayFlag']:
+        if event_flags_system['cPlayerTemp:FoxBuyNowFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:051', true)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:052', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:052', true)
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:053', true)
     EventFlowSystemActor.NextGoTo('Entrance', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
     return
 

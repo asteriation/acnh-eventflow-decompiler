@@ -75,7 +75,12 @@ flow AdviceForNatural:
     if event_flags_system['cPlayer:SzaIslandEvaluationHeardToday']:
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:022', false)
 entrypoint Event102:
-        if EventFlowSystemActor.VillageScoreTreeNum < 180:
+        if EventFlowSystemActor.VillageScoreTreeNum >= 180:
+            if EventFlowSystemActor.RandomChoice2(2) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
+        else:
             fEvent101 = EventFlowSystemActor.RandomChoice3(3)
             if fEvent101 == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
@@ -83,10 +88,6 @@ entrypoint Event102:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
             elif fEvent101 == 2:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_02', false)
-        elif EventFlowSystemActor.RandomChoice2(2) == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:025_01', false)
     else:
         event_flags_system['cPlayer:SzaIslandEvaluationHeardToday'] = true
         if event_flags_system['cLand:SzaIslandEvaluationImprovementNaturalToday']:
@@ -115,8 +116,9 @@ flow ChkTalkAboutSearchLand:
         if EventFlowSystemActor.NpcHouseNum('cConstructed') < 7:
             if not EventFlowSystemActor.NpcHouseNum('cExist') < 8:
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
-        elif not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
+        else:
+            if not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_50_IslandEvaluation:801_01', false)
     return
 
 flow ClearTkkFirstLiveScore:

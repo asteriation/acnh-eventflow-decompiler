@@ -98,76 +98,76 @@ flow Root:
     run Tag_Num_daily
     run Tag_SET_HOUR_daily
     EventFlowSystemActor.SetTagFromSystem(3, 'cNowCatchInsect', 'cDegit', '', 0)
-    if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:ChyDaily_TalkFirstDay']:
-            fEvent110 = EventFlowSystemActor.RandomChoice3(3)
-            if fEvent110 == 0:
-                fEvent1 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent1 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:042', false)
-                elif fEvent1 == 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:041', false)
-                elif fEvent1 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:040', false)
-            elif fEvent110 == 1:
-                fEvent124 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent124 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:045', false)
-                elif fEvent124 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:043', false)
-                elif fEvent124 == 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:044', false)
-            elif fEvent110 == 2:
-                fEvent125 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
-                if fEvent125 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:046', false)
-                elif fEvent125 == 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:047', false)
-                elif fEvent125 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:048', false)
-                elif fEvent125 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:049', false)
-            if event_flags_system['cPlayer:ChyDaily_ReqObj']:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:014', false)
-                fEvent44 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent44 == 1:
-                    run Daily_ReqObj
-                elif fEvent44 == 2:
-                    run TalkCancel
-                elif fEvent44 == 0:
-                    run Daily_SellInsect
-            elif event_flags_system['cPlayer:ChyDaily_ExplainReqObj_First']:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:015', false)
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayerVisit:DC_ChyDaily_TalkFirst']:
+            fEvent76 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent76 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:073', false)
+            elif fEvent76 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:072', false)
+            elif fEvent76 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:071', false)
+        else:
+            event_flags_system['cPlayerVisit:DC_ChyDaily_TalkFirst'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:070', false)
+    elif event_flags_system['cPlayer:ChyDaily_TalkFirstDay']:
+        fEvent110 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent110 == 0:
+            fEvent1 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent1 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:042', false)
+            elif fEvent1 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:041', false)
+            elif fEvent1 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:040', false)
+        elif fEvent110 == 1:
+            fEvent124 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent124 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:045', false)
+            elif fEvent124 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:043', false)
+            elif fEvent124 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:044', false)
+        elif fEvent110 == 2:
+            fEvent125 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, true)
+            if fEvent125 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:046', false)
+            elif fEvent125 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:047', false)
+            elif fEvent125 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:048', false)
+            elif fEvent125 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:049', false)
+        if event_flags_system['cPlayer:ChyDaily_ReqObj']:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:014', false)
+            fEvent44 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent44 == 1:
+                run Daily_ReqObj
+            elif fEvent44 == 2:
+                run TalkCancel
+            elif fEvent44 == 0:
+                run Daily_SellInsect
+        elif event_flags_system['cPlayer:ChyDaily_ExplainReqObj_First']:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:015', false)
+            run sub_grp!Event74
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:010', false)
+            run sub_grp!Event4
+    else:
+        event_flags_system['cPlayer:ChyDaily_TalkFirstDay'] = true
+        if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:004', false)
+            if event_flags_system['cPlayer:ChyDaily_ExplainReqObj_First']:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:006', false)
                 run sub_grp!Event74
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:010', false)
-                run sub_grp!Event4
-        else:
-            event_flags_system['cPlayer:ChyDaily_TalkFirstDay'] = true
-            if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:004', false)
-                if event_flags_system['cPlayer:ChyDaily_ExplainReqObj_First']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:006', false)
-                    run sub_grp!Event74
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:005', false)
-                    run sub_grp!Event4
-            else:
-                event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:000', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:005', false)
                 run sub_grp!Event4
-    elif event_flags_system['cPlayerVisit:DC_ChyDaily_TalkFirst']:
-        fEvent76 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent76 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:073', false)
-        elif fEvent76 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:072', false)
-        elif fEvent76 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:071', false)
-    else:
-        event_flags_system['cPlayerVisit:DC_ChyDaily_TalkFirst'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:070', false)
+        else:
+            event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:000', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_daily:005', false)
+            run sub_grp!Event4
     return
 
 flow Tag_Num_daily:

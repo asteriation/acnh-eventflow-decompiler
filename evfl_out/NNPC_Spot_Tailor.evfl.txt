@@ -26,10 +26,11 @@ flow Root:
 flow Spot_Tailor:
     if EventFlowSystemActor.FacilityOpenPastDays('cTailor', 7):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Tailor:003', false)
-    elif EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Tailor:001', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Tailor:002', false)
+        if EventFlowSystemActor.IsMyVillage():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Tailor:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Tailor:002', false)
     EventFlowSystemActor.ExitFlowchart()
     return
 

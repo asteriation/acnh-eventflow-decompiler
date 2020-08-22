@@ -7,65 +7,65 @@ flow ReSelect:
     return
 
 flow Root:
-    if EventFlowSystemActor.PlayAccountIsPlayerVillager():
-        if EventFlowSystemActor.NetHasPOPID(false):
+    if not EventFlowSystemActor.PlayAccountIsPlayerVillager():
+        if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
+            EventFlowSystemActor.WaitFrame(30)
+            EventFlowSystemActor.UIBootBGChangeDialog()
+entrypoint Event2:
+            if EventFlowSystemActor.IsFullPlayerVillager():
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8009', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run Sel_ExistP
+                elif not EventFlowSystemActor.IsUnconnectedVillageLeader():
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8011', false)
+                    run Sel_Delete_User
+                elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8010', false)
+                    run Sel_Delete_User
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8012', false)
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
+                    EventFlowSystemActor.WaitFrame(-1)
+            else:
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8001', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    run Sel_ExistP
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8002', false)
+    elif EventFlowSystemActor.NetHasPOPID(false):
 entrypoint Event48:
-            if EventFlowSystemActor.NetIsAvailableNA():
-                if not EventFlowSystemActor.NetIsRegisteredSameNA():
-                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8016', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
-                        EventFlowSystemActor.WaitFrame(-1)
-                    else:
-                        run System_Cmn_UserSaveDataAccess::Cmn_UserAcc_ResetOnline
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8019', false)
-            elif subflow_results[0] == 0:
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8018', false)
+        if EventFlowSystemActor.NetIsAvailableNA():
+            if not EventFlowSystemActor.NetIsRegisteredSameNA():
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8016', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
+                    EventFlowSystemActor.WaitFrame(-1)
+                else:
+                    run System_Cmn_UserSaveDataAccess::Cmn_UserAcc_ResetOnline
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8019', false)
+        elif subflow_results[0] == 0:
+            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8018', false)
+            if EventFlowSystemActor.NetMode() not in (0, 2):
+                EventFlowSystemActor.NetShutdown('cNetShutdown', false)
+            EventFlowSystemActor.NetEnsureNSA()
+            subflow_results[0] = 1
+            run NACheckAgain
+        else:
+            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8020', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8017', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
+                    EventFlowSystemActor.WaitFrame(-1)
+                else:
+                    run System_Cmn_UserSaveDataAccess::Cmn_UserAcc_ResetOnline
+                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8019', false)
+            else:
                 if EventFlowSystemActor.NetMode() not in (0, 2):
                     EventFlowSystemActor.NetShutdown('cNetShutdown', false)
                 EventFlowSystemActor.NetEnsureNSA()
                 subflow_results[0] = 1
                 run NACheckAgain
-            else:
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8020', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8017', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
-                        EventFlowSystemActor.WaitFrame(-1)
-                    else:
-                        run System_Cmn_UserSaveDataAccess::Cmn_UserAcc_ResetOnline
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8019', false)
-                else:
-                    if EventFlowSystemActor.NetMode() not in (0, 2):
-                        EventFlowSystemActor.NetShutdown('cNetShutdown', false)
-                    EventFlowSystemActor.NetEnsureNSA()
-                    subflow_results[0] = 1
-                    run NACheckAgain
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
-        EventFlowSystemActor.WaitFrame(30)
-        EventFlowSystemActor.UIBootBGChangeDialog()
-entrypoint Event2:
-        if EventFlowSystemActor.IsFullPlayerVillager():
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8009', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run Sel_ExistP
-            elif not EventFlowSystemActor.IsUnconnectedVillageLeader():
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8011', false)
-                run Sel_Delete_User
-            elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8010', false)
-                run Sel_Delete_User
-            else:
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8012', false)
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8013', false)
-                EventFlowSystemActor.WaitFrame(-1)
-        else:
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8001', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run Sel_ExistP
-            else:
-                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8002', false)
     return
 
 flow Sel_Delete_User:
@@ -92,14 +92,15 @@ flow Sel_ExistP:
     EventFlowSystemActor.UIMsgCardAdrHandling('cAccountChange')
     if EventFlowSystemActor.UIResultMenuDecide():
         EventFlowSystemActor.SetTagFromUIResult(0, 'cVillagerPlayerNameD')
-        if not EventFlowSystemActor.NetIsAvailableNA():
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8015', false)
-            subflow_results[1] = 1
-        elif EventFlowSystemActor.NetIsRegisteredSameNA():
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8007', false)
-            subflow_results[1] = 0
+        if EventFlowSystemActor.NetIsAvailableNA():
+            if EventFlowSystemActor.NetIsRegisteredSameNA():
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8007', false)
+                subflow_results[1] = 0
+            else:
+                EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8014', false)
+                subflow_results[1] = 1
         else:
-            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8014', false)
+            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:8015', false)
             subflow_results[1] = 1
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             run Sel_Rethink

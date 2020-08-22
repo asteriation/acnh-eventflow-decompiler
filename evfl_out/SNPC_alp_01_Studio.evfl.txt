@@ -48,14 +48,14 @@ entrypoint Event39:
                 MainNpc.SetItemName(0, 35, 0)
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cExchangeRequireNum')
                 MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:010', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:011', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        run Event39
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+                        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:013_02', true)
                     else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:004', false)
-                elif MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
-                    MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:013_02', true)
+                        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:013', true)
+                        MainNpc.SetDeliveryItemAtRandom(12546, false, 'cVillageRemakePattern', 0)
+                        MainNpc.NpcDelivery('Default', 0)
+                        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:014', false)
                     EventFlowSystemActor.DeleteRequireExchangeItem()
                     EventFlowSystemActor.CommuneMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 3, 'cFromUICatalogGift', 'cCatalogGift')
                     event_flags_system['cPlayer:AlpJuneBrideExchangeFlag'] = true
@@ -67,20 +67,11 @@ entrypoint Event39:
                             MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:016', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:017', false)
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:013', true)
-                    MainNpc.SetDeliveryItemAtRandom(12546, false, 'cVillageRemakePattern', 0)
-                    MainNpc.NpcDelivery('Default', 0)
-                    MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:014', false)
-                    EventFlowSystemActor.DeleteRequireExchangeItem()
-                    EventFlowSystemActor.CommuneMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 3, 'cFromUICatalogGift', 'cCatalogGift')
-                    event_flags_system['cPlayer:AlpJuneBrideExchangeFlag'] = true
-                    if EventFlowSystemActor.HasTargetItem(12546, 3):
-                        if EventFlowSystemActor.HasFreeInCommuneMail():
-                            MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:015', false)
-                            run Alp_Exchange
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:016', false)
-                            MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:017', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:011', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Event39
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:004', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:005', false)
         else:
@@ -102,17 +93,18 @@ flow sub_grp!Event50:
             pass
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:024', false)
-        if not EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+        if EventFlowSystemActor.ShoppingCapacity(65534, 'cReward'):
+            if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+                MainNpc.SetEventRewardToPlayerBaggage('cFree')
+                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:023', false)
+            else:
+                MainNpc.SetDeliveryItem(1, true)
+                MainNpc.NpcDelivery('Default', 1)
+                MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:021', false)
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:022', false)
             MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:021', false)
             EventFlowSystemActor.SystemMailSend('cAlw_Alp', 'MAIL_SNpc_alw_JuneBride', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
-        elif MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
-            MainNpc.SetEventRewardToPlayerBaggage('cFree')
-            MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:023', false)
-        else:
-            MainNpc.SetDeliveryItem(1, true)
-            MainNpc.NpcDelivery('Default', 1)
-            MainNpc.OpenMessageWindow('TalkSNpc/alp/GEvent/SP_alp_GEvent_JuneBride:021', false)
         event_flags_system['cPlayer:AlpJuneBrideGetStickFrag'] = true
         EventFlowSystemActor.ExitFlowchart()
 

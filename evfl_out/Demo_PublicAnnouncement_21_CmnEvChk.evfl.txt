@@ -4,22 +4,22 @@ flow ChkCampsite:
             subflow_results[9] = 3
             subflow_results[4] = 1
             event_flags_system['cPlayer:PAnnounceCampsite'] = true
-    elif EventFlowSystemActor.FacilityOpenPastDays('cCampSite', 8):
-        if event_flags_system['cLand:CampSiteBuilt']:
-            if event_flags_system['cLand:CampSiteBuiltToday']:
-                subflow_results[9] = 1
-                subflow_results[4] = 1
-                event_flags_system['cPlayer:PAnnounceCampsite'] = true
-            else:
-                subflow_results[9] = 2
-                subflow_results[4] = 1
-                event_flags_system['cPlayer:PAnnounceCampsite'] = true
-    elif EventFlowSystemActor.IsCampSiteOccupied():
-        subflow_results[9] = 3
-        subflow_results[4] = 1
-        event_flags_system['cPlayer:PAnnounceCampsite'] = true
-    else:
-        event_flags_system['cPlayer:PAnnounceCampsite'] = true
+    elif not EventFlowSystemActor.FacilityOpenPastDays('cCampSite', 8):
+        if EventFlowSystemActor.IsCampSiteOccupied():
+            subflow_results[9] = 3
+            subflow_results[4] = 1
+            event_flags_system['cPlayer:PAnnounceCampsite'] = true
+        else:
+            event_flags_system['cPlayer:PAnnounceCampsite'] = true
+    elif event_flags_system['cLand:CampSiteBuilt']:
+        if event_flags_system['cLand:CampSiteBuiltToday']:
+            subflow_results[9] = 1
+            subflow_results[4] = 1
+            event_flags_system['cPlayer:PAnnounceCampsite'] = true
+        else:
+            subflow_results[9] = 2
+            subflow_results[4] = 1
+            event_flags_system['cPlayer:PAnnounceCampsite'] = true
     return
 
 flow ChkMarket:

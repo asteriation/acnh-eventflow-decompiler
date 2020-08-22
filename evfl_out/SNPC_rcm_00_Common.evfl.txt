@@ -63,12 +63,13 @@ entrypoint Event71:
                 run sub_grp!Event84
             else:
                 run NotEnoughMoneySolo
-        elif MainNpc.ShopHasBellCount(5.0):
-            run sub_grp!Event84
         else:
+            if MainNpc.ShopHasBellCount(5.0):
+                run sub_grp!Event84
+            else:
 entrypoint Event33:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:111', false)
-            run sub_grp!Event82
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:111', false)
+                run sub_grp!Event82
     else:
 entrypoint Event21:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:902_01', false)
@@ -131,21 +132,22 @@ entrypoint Event46:
             run SNPC_rcm_12_BuyDIYcard::Root
         elif any ('FlowerSeed', 'TreeSeedling', 'Fruit', 'Medicine', 'WrappingPaper', 'PartyPopper', 'CraftRemake', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
             run SNPC_rcm_13_BuyMultipleItems::Root
-        elif (any ('MarineSuit', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (not event_flags_system['cPlayer:RcmTalkAboutMarinesuitFlag']):
-            run SNPC_rcm_14_BuyMarinesuit::Root
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:094', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event42:
-                run Rcm_Common_BuyCheckUI
-                event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
-entrypoint Event43:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
+            if (any ('MarineSuit', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect')) and (not event_flags_system['cPlayer:RcmTalkAboutMarinesuitFlag']):
+                run SNPC_rcm_14_BuyMarinesuit::Root
             else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:094', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event42:
+                    run Rcm_Common_BuyCheckUI
+                    event_flags_system['cPlayerTemp:RcmBoughtGrocery'] = true
+entrypoint Event43:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:092', false)
+                else:
 entrypoint Event46:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:902_02', false)
-            subflow_results[0] = 0
-            run Rcm_Common_BuyAgain
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:902_02', false)
+                subflow_results[0] = 0
+                run Rcm_Common_BuyAgain
     else:
         run CmnCloseShoppingUI
         if event_flags_system['cPlayerTemp:RcmBoughtGrocery']:
@@ -183,10 +185,11 @@ flow Root:
     if fEvent2 == InResServiceTent:
         if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:003', false)
-        elif EventFlowSystemActor.IsMyVillage():
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:001', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:002', false)
+            if EventFlowSystemActor.IsMyVillage():
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:001', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:002', false)
         fEvent12 = EventFlowSystemActor.GeneralTalkChoice3()
         if fEvent12 == 1:
             run Rcm_Common_Buy
@@ -197,10 +200,11 @@ flow Root:
     elif fEvent2 in (NooksCrannyInitial, NooksCrannyUpgraded):
         if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:013', false)
-        elif EventFlowSystemActor.IsMyVillage():
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:011', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:012', false)
+            if EventFlowSystemActor.IsMyVillage():
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:011', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:012', false)
 entrypoint Event0:
         fEvent0 = EventFlowSystemActor.GeneralTalkChoice4()
         if fEvent0 == 3:
@@ -291,33 +295,61 @@ flow sub_grp!Event84:
                         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
         else:
             run ItemFullBuyRecipecard
-    elif not any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        if subflow_results[0] == 0:
-            if EventFlowSystemActor.ShoppingCapacity(65534, 'cShopping'):
-                if subflow_results[0] == 0:
-                    MainNpc.ShopBuyDone(false, false)
-                    event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 1
-                else:
-                    MainNpc.ShopBuyDone(false, true)
-                    event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 5
-                    EventFlowSystemActor.SetTagFromUIResult(0, 'cItem5Price')
-                if not event_flags_system['cPlayerTemp:RcmShopshelfCheck']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:114', false)
-                elif EventFlowSystemActor.NetIsConnected():
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-                else:
-                    fEvent99 = EventFlowSystemActor.ShopLevel()
-                    if fEvent99 == InResServiceTent:
+    else:
+        if not any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+            if subflow_results[0] == 0:
+                if EventFlowSystemActor.ShoppingCapacity(65534, 'cShopping'):
+                    if subflow_results[0] == 0:
+                        MainNpc.ShopBuyDone(false, false)
+                        event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 1
+                    else:
+                        MainNpc.ShopBuyDone(false, true)
+                        event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 5
+                        EventFlowSystemActor.SetTagFromUIResult(0, 'cItem5Price')
+                    if not event_flags_system['cPlayerTemp:RcmShopshelfCheck']:
                         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-                    elif fEvent99 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                        if any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', true)
-                        else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:114', false)
+                    elif EventFlowSystemActor.NetIsConnected():
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                    else:
+                        fEvent99 = EventFlowSystemActor.ShopLevel()
+                        if fEvent99 == InResServiceTent:
                             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                        elif fEvent99 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                            if any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', true)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                else:
+                    run ItemFullBuySolo
             else:
-                run ItemFullBuySolo
-        elif EventFlowSystemActor.ShoppingCapacity(65534, 'cShopping5'):
+                if EventFlowSystemActor.ShoppingCapacity(65534, 'cShopping5'):
+                    if subflow_results[0] == 0:
+                        MainNpc.ShopBuyDone(false, false)
+                        event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 1
+                    else:
+                        MainNpc.ShopBuyDone(false, true)
+                        event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 5
+                        EventFlowSystemActor.SetTagFromUIResult(0, 'cItem5Price')
+                    if not event_flags_system['cPlayerTemp:RcmShopshelfCheck']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:114', false)
+                    elif EventFlowSystemActor.NetIsConnected():
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                    else:
+                        fEvent99 = EventFlowSystemActor.ShopLevel()
+                        if fEvent99 == InResServiceTent:
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                        elif fEvent99 in (NooksCrannyInitial, NooksCrannyUpgraded):
+                            if any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', true)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
+                else:
+entrypoint Event1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:112', false)
+                    run sub_grp!Event82
+        else:
             if subflow_results[0] == 0:
                 MainNpc.ShopBuyDone(false, false)
                 event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 1
@@ -339,30 +371,4 @@ flow sub_grp!Event84:
                         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', true)
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-        else:
-entrypoint Event1:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:112', false)
-            run sub_grp!Event82
-    else:
-        if subflow_results[0] == 0:
-            MainNpc.ShopBuyDone(false, false)
-            event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 1
-        else:
-            MainNpc.ShopBuyDone(false, true)
-            event_flags_system['cLifeSupportAchievement:BuyItemRcm'] += 5
-            EventFlowSystemActor.SetTagFromUIResult(0, 'cItem5Price')
-        if not event_flags_system['cPlayerTemp:RcmShopshelfCheck']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:114', false)
-        elif EventFlowSystemActor.NetIsConnected():
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-        else:
-            fEvent99 = EventFlowSystemActor.ShopLevel()
-            if fEvent99 == InResServiceTent:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
-            elif fEvent99 in (NooksCrannyInitial, NooksCrannyUpgraded):
-                if any ('DummyRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', true)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:113', false)
 

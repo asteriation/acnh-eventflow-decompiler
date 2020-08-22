@@ -32,13 +32,14 @@ flow Root:
                 MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_03', false)
                 event_flags_system['cPlayer:RctTnx4ConfirmingStorePlace'] = true
         elif event_flags_system['cLand:RcmShopMaterialComplete']:
-            if not event_flags_system['cPlayer:Prologue4RcmGetTent']:
-                run RctHintCmn
-            elif event_flags_system['cPlayer:RctTnx4CollectingMaterials2']:
-                run RctHintCmn
+            if event_flags_system['cPlayer:Prologue4RcmGetTent']:
+                if event_flags_system['cPlayer:RctTnx4CollectingMaterials2']:
+                    run RctHintCmn
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_02', false)
+                    event_flags_system['cPlayer:RctTnx4CollectingMaterials2'] = true
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_02', false)
-                event_flags_system['cPlayer:RctTnx4CollectingMaterials2'] = true
+                run RctHintCmn
         elif event_flags_system['cPlayer:RcmTookQuestReq']:
             if event_flags_system['cPlayer:RctTnx4CollectingMaterials']:
                 run RctHintCmn
@@ -57,17 +58,19 @@ entrypoint Event102:
                         MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:050', false)
             else:
                 run sub_grp!Event7
-        elif EventFlowSystemActor.RandomChoice2(2) == 0:
-            run sub_grp!Event7
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:011', false)
+            if EventFlowSystemActor.RandomChoice2(2) == 0:
+                run sub_grp!Event7
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:011', false)
     else:
         event_flags_system['cPlayer:RctTalkBeforeFalg'] = true
         event_flags_system['cPlayer:RctOutsideHintToday'] = true
-        if not event_flags_system['cLand:TodayCreateVillage']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_02', false)
-        elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_01', false)
+        if event_flags_system['cLand:TodayCreateVillage']:
+            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_02', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:001_02', false)
         if event_flags_system['cLand:Prologue4BuiltShop']:

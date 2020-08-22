@@ -22,14 +22,15 @@ flow TalkFirst:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:001_01', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:001_02', false)
-    elif event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:022', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_01', false)
-        if event_flags_system['cPlayer:FirstPlayAfterPlayerMake']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_02', false)
+        if event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:022', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_01', false)
+            if event_flags_system['cPlayer:FirstPlayAfterPlayerMake']:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:021_03', false)
     MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:002', false)
     if not EventFlowSystemActor.NetHasVisitor():
         MainNpc.OpenMessageWindow('TalkSNpc/sza/SP_sza_2_Office:002_02', false)

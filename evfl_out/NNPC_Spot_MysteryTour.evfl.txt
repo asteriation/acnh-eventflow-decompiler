@@ -28,16 +28,16 @@ flow Root:
             event_flags_system['cPlayerTemp:MysteryTourInviteFlag'] = true
     elif event_flags_system['cPlayerTemp:MysteryTourTalkSceneFlag']:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:004', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:005', false)
-            event_flags_system['cPlayerTemp:MysteryTourTalkSceneFlag'] = true
-        elif event_flags_system['cLand:RcmImmQuestOpen']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:006', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            if event_flags_system['cLand:RcmImmQuestOpen']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:006', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:007', false)
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:008', false)
             MainNpc.SetSettlerQuestInduceNpc()
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:007', false)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:008', false)
-            MainNpc.SetSettlerQuestInduceNpc()
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:005', false)
+            event_flags_system['cPlayerTemp:MysteryTourTalkSceneFlag'] = true
     else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_MysteryTour:001', false)
         event_flags_system['cPlayerTemp:MysteryTourTalkSceneFlag'] = true

@@ -278,12 +278,13 @@ flow Ceremony_Museum_Large:
     Npc_1.TurnNeck(11)
     Npc_1.TurnBody(12, 0.0)
     Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:282', false)
-    if not EventFlowSystemActor.MuseumDonationNumCheck(80):
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:283', false)
-    elif EventFlowSystemActor.MuseumDonationNumCheck(140):
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:285', false)
+    if EventFlowSystemActor.MuseumDonationNumCheck(80):
+        if EventFlowSystemActor.MuseumDonationNumCheck(140):
+            Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:285', false)
+        else:
+            Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:284', false)
     else:
-        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:284', false)
+        Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:283', false)
     Npc_1.OpenMessageWindow('TalkSNPC/Event/SP_Ceremony:286', false)
     fork:
         branch0:

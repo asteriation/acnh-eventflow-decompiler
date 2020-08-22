@@ -10,12 +10,13 @@ flow Root:
             elif fEvent3 == 1:
                 event_flags_npc['cNpcTemp:ReactionTalkLabel'] = 1
         MainNpc.SetItemName(0, 15, 2)
-        if event_flags_npc['cNpcTemp:ReactionTalkLabel'] != 0:
-            run Run_01
-        elif event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 1:
-            run Run_03
+        if event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 0:
+            if event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 1:
+                run Run_03
+            else:
+                run Run_02
         else:
-            run Run_02
+            run Run_01
         MainNpc.SetNpcFeel('cNormal', 120)
         event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
         event_flags_npc['cNpcTemp:ReserveWarningBee'] = true

@@ -21,24 +21,25 @@ entrypoint Event10:
             MainNpc.NpcAISetting(6, false)
             if MainNpc.NpcBlackBoard('BuildingSiteIndex', 0):
                 MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 180.0, 'Thinking')
-            elif MainNpc.NpcBlackBoard('IsForceLife', 1):
-                MainNpc.SetNpcTalkFlowName('TalkEventFlowName', '')
-                if entry_variables['Type'] != 0:
-                    if event_flags_system['cLandTemp:PrologueStartedCampfire']:
-                        MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 1, 'State:cWait')
-                    elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-                        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 180.0, '')
-                    else:
-                        MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', false, true, 0, true, 'NpcSpArrange')
-                elif not event_flags_system['cLandTemp:PrologueStartedCampfire']:
-                    MainNpc.NpcAISetting(8, false)
-                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 0, '')
-                elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, -45.0, '')
-                else:
-                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 3, 'Angle:315')
             else:
-                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
+                if MainNpc.NpcBlackBoard('IsForceLife', 1):
+                    MainNpc.SetNpcTalkFlowName('TalkEventFlowName', '')
+                    if entry_variables['Type'] != 0:
+                        if event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                            MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 1, 'State:cWait')
+                        elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+                            MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 180.0, '')
+                        else:
+                            MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', false, true, 0, true, 'NpcSpArrange')
+                    elif not event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                        MainNpc.NpcAISetting(8, false)
+                        MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 0, '')
+                    elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+                        MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, -45.0, '')
+                    else:
+                        MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 3, 'Angle:315')
+                else:
+                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 'WaitAngle', '')
     else:
         MainNpc.NpcAISetting(6, false)
         if not MainNpc.NpcBlackBoard('IsMove', 1):

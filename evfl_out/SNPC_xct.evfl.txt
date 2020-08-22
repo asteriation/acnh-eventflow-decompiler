@@ -11,18 +11,12 @@ flow Root:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_00', false)
         elif fEvent8 == 1:
             MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:020_01', false)
-    elif event_flags_system['cPlayerTemp:XctTalkMayDayTourNow']:
-        MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:013', false)
-        MainNpc.SetDeliveryItemAtRandom(12472, true, 'cVillageRemakePattern', 0)
-        if EventFlowSystemActor.ShoppingCapacity(65534, 'cNpcTrade'):
-            MainNpc.NpcDelivery('Default', 1)
-            event_flags_system['cPlayer:XctGerReward'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:014', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:012', false)
     else:
-        run Xct_First
-        event_flags_system['cPlayerTemp:XctTalkMayDayTourNow'] = true
+        if event_flags_system['cPlayerTemp:XctTalkMayDayTourNow']:
+            MainNpc.OpenMessageWindow('TalkSNpc/xct/SP_xct:013', false)
+        else:
+            run Xct_First
+            event_flags_system['cPlayerTemp:XctTalkMayDayTourNow'] = true
         MainNpc.SetDeliveryItemAtRandom(12472, true, 'cVillageRemakePattern', 0)
         if EventFlowSystemActor.ShoppingCapacity(65534, 'cNpcTrade'):
             MainNpc.NpcDelivery('Default', 1)

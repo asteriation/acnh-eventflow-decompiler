@@ -54,15 +54,16 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:001', false)
         MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:003', false)
         run sub_grp!Event6
-    elif subflow_results[0] != 0:
-        run Hgc_Quest_Accept
-    elif event_flags_system['cPlayer:KotonoQuestRefuseFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:004', false)
-        run sub_grp!Event6
+    elif subflow_results[0] == 0:
+        if event_flags_system['cPlayer:KotonoQuestRefuseFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:004', false)
+            run sub_grp!Event6
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:002', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:003', false)
+            run sub_grp!Event6
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:002', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:003', false)
-        run sub_grp!Event6
+        run Hgc_Quest_Accept
     return
 
 flow sub_grp!Event6:

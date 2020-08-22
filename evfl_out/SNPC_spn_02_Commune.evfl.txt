@@ -37,39 +37,23 @@ flow Spn_JuneBride_Select:
     return
 
 flow ToJuneBrideStudio:
-    if EventFlowSystemActor.TermEventNow('JuneBride', false):
-        if event_flags_system['cPlayer:CommuneIslandAvailable']:
-            run SNPC_alw_01_Studio::Alw_DayChk
-            if event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
-                if not event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag']:
-                    event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag'] = true
-                    event_flags_system['cPlayer:SpnTalkAtCommuneToday'] = true
-                    fEvent42 = subflow_results[0]
-                    if fEvent42 in (0, 1, 2, 3, 4, 5):
-                        MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014', false)
-                        if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cGrowUpTime'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_02', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_01', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent42 == 6:
-                        MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:015', false)
-                        run Spn_JuneBride_GetFence
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent42 == 7:
-                        MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:016', false)
-                        run Spn_JuneBride_GetFence
-                        if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cGrowUpTime'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_02', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_01', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                elif subflow_results[0] in (0, 1, 2, 3, 4, 5):
-                    run Spn_JuneBride_Select
+    if not EventFlowSystemActor.TermEventNow('JuneBride', false):
+        if (EventFlowSystemActor.EnvCheckBetweenDate(7, 1, 7, 7, 'cGrowUpTime')) and (event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']) and (not event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag']):
+            if event_flags_system['cPlayer:AlwJuneBrideDayCount'] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:023', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:020', false)
+                if event_flags_system['cPlayer:AlwJuneBrideDayCount'] >= 6:
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:021', false)
                 else:
-                    run Spn_JuneBride_GetFence
-                    run Spn_JuneBride_Select
-            elif event_flags_system['cPlayer:SpnTalkAtCommuneToday']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:022', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:024', false)
+            event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+    elif event_flags_system['cPlayer:CommuneIslandAvailable']:
+        run SNPC_alw_01_Studio::Alw_DayChk
+        if not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
+            if event_flags_system['cPlayer:SpnTalkAtCommuneToday']:
                 run Spn_JuneBride_GetFence
                 run Spn_JuneBride_Select
             else:
@@ -77,18 +61,34 @@ flow ToJuneBrideStudio:
                 MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:009', false)
                 run Spn_JuneBride_GetFence
                 run Spn_JuneBride_Select
-    elif (EventFlowSystemActor.EnvCheckBetweenDate(7, 1, 7, 7, 'cGrowUpTime')) and (event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']) and (not event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag']):
-        if event_flags_system['cPlayer:AlwJuneBrideDayCount'] == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:023', false)
+        elif not event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag']:
+            event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag'] = true
+            event_flags_system['cPlayer:SpnTalkAtCommuneToday'] = true
+            fEvent42 = subflow_results[0]
+            if fEvent42 in (0, 1, 2, 3, 4, 5):
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014', false)
+                if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cGrowUpTime'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_01', false)
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent42 == 6:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:015', false)
+                run Spn_JuneBride_GetFence
+                EventFlowSystemActor.ExitFlowchart()
+            elif fEvent42 == 7:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:016', false)
+                run Spn_JuneBride_GetFence
+                if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cGrowUpTime'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:014_01', false)
+                EventFlowSystemActor.ExitFlowchart()
+        elif subflow_results[0] in (0, 1, 2, 3, 4, 5):
+            run Spn_JuneBride_Select
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:020', false)
-            if event_flags_system['cPlayer:AlwJuneBrideDayCount'] >= 6:
-                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:021', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:022', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/GEvent/SP_spn_GEvent_JuneBride:024', false)
-        event_flags_system['cPlayer:SpnJuneBrideClearTalkFrag'] = true
-        EventFlowSystemActor.ExitFlowchart()
+            run Spn_JuneBride_GetFence
+            run Spn_JuneBride_Select
     return
 
 flow sub_grp!Event59:

@@ -19,29 +19,36 @@ flow BuyArt:
     elif event_flags_system['cPlayer:FoxBuyArtTodayFlag']:
         MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:124', false)
         run sub_grp!Event66
-    elif MainNpc.FoxItemCheck():
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:105', false)
-        run sub_grp!Event24
     else:
-        MainNpc.FoxItemCheck()
-        if subflow_results[0] not in (0, 2, 3):
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:106', false)
-            run sub_grp!Event24
-        elif event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:104', false)
-            run sub_grp!Event24
-        elif event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:103', false)
-            event_flags_system['cPlayerTemp:FoxCheckArtCount'] += 1
-            run sub_grp!Event24
-        elif event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:102', false)
-            event_flags_system['cPlayerTemp:FoxCheckArtCount'] += 1
-            run sub_grp!Event24
+        if MainNpc.FoxItemCheck():
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:105', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:101', false)
-            event_flags_system['cPlayerTemp:FoxCheckArtCount'] += 1
-            run sub_grp!Event24
+            MainNpc.FoxItemCheck()
+            if subflow_results[0] not in (0, 2, 3):
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:106', false)
+            elif event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:104', false)
+            else:
+                if event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:103', false)
+                else:
+                    if event_flags_system['cPlayerTemp:FoxCheckArtCount'] >= 1:
+                        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:102', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:101', false)
+                event_flags_system['cPlayerTemp:FoxCheckArtCount'] += 1
+        fEvent24 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent24 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
+        elif fEvent24 == 1:
+            run LookArtMode
+            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:107', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run sub_grp!Event19
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:108', false)
+        elif fEvent24 == 0:
+            run sub_grp!Event19
     return
 
 flow BuyFtr:
@@ -86,47 +93,22 @@ flow LookArtMode:
     EventFlowSystemActor.UIMoneyAppear()
     return
 
-flow sub_grp!Event24:
-    fEvent24 = EventFlowSystemActor.GeneralTalkChoice3()
-    if fEvent24 == 2:
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:109', false)
-    elif fEvent24 == 1:
-        run LookArtMode
-        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:107', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            if MainNpc.ShopHasBellCount(1.0):
-                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:111', true)
-                MainNpc.ShopBuyDone(false, false)
-                EventFlowSystemActor.WaitFrame(20)
-                MainNpc.FoxSoldOutTagVisible()
-                EventFlowSystemActor.WaitFrame(20)
-                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:112', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:113', false)
-                MainNpc.FoxSetBuyItem()
-                event_flags_system['cLand:FoxArtStockCount'] += -1
-                event_flags_system['cPlayer:FoxBuyArtTodayFlag'] = true
-                event_flags_system['cLifeSupportAchievement:BuyatTsunekichiShop'] += 1
-                run EndCommon
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:110', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:108', false)
-    elif fEvent24 == 0:
-        if MainNpc.ShopHasBellCount(1.0):
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:111', true)
-            MainNpc.ShopBuyDone(false, false)
-            EventFlowSystemActor.WaitFrame(20)
-            MainNpc.FoxSoldOutTagVisible()
-            EventFlowSystemActor.WaitFrame(20)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:112', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:113', false)
-            MainNpc.FoxSetBuyItem()
-            event_flags_system['cLand:FoxArtStockCount'] += -1
-            event_flags_system['cPlayer:FoxBuyArtTodayFlag'] = true
-            event_flags_system['cLifeSupportAchievement:BuyatTsunekichiShop'] += 1
-            run EndCommon
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:110', false)
+flow sub_grp!Event19:
+    if MainNpc.ShopHasBellCount(1.0):
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:111', true)
+        MainNpc.ShopBuyDone(false, false)
+        EventFlowSystemActor.WaitFrame(20)
+        MainNpc.FoxSoldOutTagVisible()
+        EventFlowSystemActor.WaitFrame(20)
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:112', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:113', false)
+        MainNpc.FoxSetBuyItem()
+        event_flags_system['cLand:FoxArtStockCount'] += -1
+        event_flags_system['cPlayer:FoxBuyArtTodayFlag'] = true
+        event_flags_system['cLifeSupportAchievement:BuyatTsunekichiShop'] += 1
+        run EndCommon
+    else:
+        MainNpc.OpenMessageWindow('TalkSNpc/fox/SP_fox:110', false)
 
 flow sub_grp!Event66:
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:

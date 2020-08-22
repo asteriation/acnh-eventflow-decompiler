@@ -23,8 +23,9 @@ flow CallGrowUpGameWeatherProcess:
     if EventFlowSystemActor.PassDaysSincePreviousGrowUp():
         run System_GrowUp_GameProcess::Root
         run System_GrowUp_WeatherControl::FirstLive
-    elif EventFlowSystemActor.BackDaysSincePreviousGrowUp():
-        run System_GrowUp_GameProcess::Root_RewindDay
+    else:
+        if EventFlowSystemActor.BackDaysSincePreviousGrowUp():
+            run System_GrowUp_GameProcess::Root_RewindDay
     run System_GrowUp_WeatherControl::Always
     return
 

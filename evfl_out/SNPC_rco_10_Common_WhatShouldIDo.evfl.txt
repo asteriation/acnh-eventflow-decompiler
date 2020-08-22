@@ -110,8 +110,42 @@ entrypoint Event96:
             fEvent75 = EventFlowSystemActor.MuseumLevel()
             if fEvent75 == BlathersNotMovedIn:
 entrypoint Event1:
-                if EventFlowSystemActor.MuseumDonationNumCheck(5):
-                    if event_flags_system['cLand:Plorogue4BuiltMuseum']:
+                if not EventFlowSystemActor.MuseumDonationNumCheck(5):
+                    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
+                    else:
+                        run Rco_Hint_AboutLoan
+                elif event_flags_system['cLand:Plorogue4BuiltMuseum']:
+                    if not event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent']:
+                        event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent'] = true
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:105', false)
+entrypoint Event6:
+                    if event_flags_system['cPlayer:RcoPaid1stCharge']:
+                        fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
+                        if fEvent34 in (2, 3, 4, 5, 6, 7, 8):
+                            run Rco_Hint_AfterBuildHouse
+                        elif fEvent34 == 1:
+                            if event_flags_system['cHouse:HouseOrder1']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
+                else:
+                    if EventFlowSystemActor.HasTargetItem(2755, 1):
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
+                    else:
+                        run Rco_Hint_AboutLoan
+            elif fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
+                if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+entrypoint Event1:
+                    if not EventFlowSystemActor.MuseumDonationNumCheck(5):
+                        if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
+                        else:
+                            run Rco_Hint_AboutLoan
+                    elif event_flags_system['cLand:Plorogue4BuiltMuseum']:
                         if not event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent']:
                             event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent'] = true
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:105', false)
@@ -128,43 +162,11 @@ entrypoint Event6:
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
-                    elif EventFlowSystemActor.HasTargetItem(2755, 1):
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
                     else:
-                        run Rco_Hint_AboutLoan
-                elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
-                else:
-                    run Rco_Hint_AboutLoan
-            elif fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
-                if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
-entrypoint Event1:
-                    if EventFlowSystemActor.MuseumDonationNumCheck(5):
-                        if event_flags_system['cLand:Plorogue4BuiltMuseum']:
-                            if not event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent']:
-                                event_flags_system['cPlayer:RcoHeardThanksForBuiltOwlTent'] = true
-                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:105', false)
-entrypoint Event6:
-                            if event_flags_system['cPlayer:RcoPaid1stCharge']:
-                                fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
-                                if fEvent34 in (2, 3, 4, 5, 6, 7, 8):
-                                    run Rco_Hint_AfterBuildHouse
-                                elif fEvent34 == 1:
-                                    if event_flags_system['cHouse:HouseOrder1']:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
-                                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:107', false)
-                        elif EventFlowSystemActor.HasTargetItem(2755, 1):
+                        if EventFlowSystemActor.HasTargetItem(2755, 1):
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
                         else:
                             run Rco_Hint_AboutLoan
-                    elif event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:103', false)
-                    else:
-                        run Rco_Hint_AboutLoan
                 else:
 entrypoint Event5:
                     if not event_flags_system['cPlayer:RcmTookQuestReq']:

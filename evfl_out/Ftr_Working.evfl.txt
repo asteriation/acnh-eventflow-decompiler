@@ -18,11 +18,10 @@ flow ChkCraftWoodBridge:
 
 flow DIY:
     EventFlowSystemActor.UIWorkingHandling('cCraft')
-    if not EventFlowSystemActor.UIResultMenuDecide():
-        EventFlowSystemActor.SoundDuckingOff(18)
-    elif EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
-        event_flags_system['cPlayer:RcoDoneDIYmyself'] = true
-        event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow'] = true
+    if EventFlowSystemActor.UIResultMenuDecide():
+        if EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi'):
+            event_flags_system['cPlayer:RcoDoneDIYmyself'] = true
+            event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow'] = true
         subflow_results[0] = 0
         subflow_results[1] = 0
         run Workbench_Cmn_DIYdemo
@@ -39,21 +38,7 @@ flow DIY:
         else:
             run Workbench_Cmn_DIYfinish
     else:
-        subflow_results[0] = 0
-        subflow_results[1] = 0
-        run Workbench_Cmn_DIYdemo
-        run ChkCraftWoodBridge
-        run ChkCraftCampKit
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            EventFlowSystemActor.BGMPropertyControl(21)
-            Player.PlayerWorkbenchPutaway(false)
-            Player.PlayerDemoTurnToStarter()
-            EventFlowSystemActor.WaitFrame(10)
-            EventFlowSystemActor.BGMPropertyControl(22)
-            Player.PlayerWorkbenchThinking()
-            run DIY
-        else:
-            run Workbench_Cmn_DIYfinish
+        EventFlowSystemActor.SoundDuckingOff(18)
     return
 
 flow DIY_DisableCancel:
@@ -145,16 +130,15 @@ flow RcoRemakeTrialOngoing:
                 DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:303', false)
                 event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull'] = true
                 EventFlowSystemActor.SoundDuckingOff(18)
-        elif not EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-            run RcoWorkingTableRemakeWorkshop
-        elif event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull']:
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_02', false)
+        elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            if event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull']:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_02', false)
+            else:
+                DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_01', false)
             DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:302', false)
             run sub_grp!Event158
         else:
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:305_01', false)
-            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:302', false)
-            run sub_grp!Event158
+            run RcoWorkingTableRemakeWorkshop
     return
 
 flow RcoWorkingTableNormal:
@@ -231,19 +215,19 @@ flow RemakeWS_SharePlay:
 flow Root:
 entrypoint Event115:
     EventFlowSystemActor.SoundDuckingOn(18)
-    if EventFlowSystemActor.IsMyVillage():
-        if (EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi')) or (EventFlowSystemActor.SystemCheckNowStage('cIdrOffice')):
-            run sub_grp!Event84
-        elif not event_flags_system['cPlayer:MainmenuRecipe']:
-            run RecipeUIDisable
-        elif (not EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (not EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse')):
-            run WorkingTable_Normal
-        else:
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:MainmenuRecipe']:
             run WorkingTable_Borrow
-    elif event_flags_system['cPlayer:MainmenuRecipe']:
-        run WorkingTable_Borrow
-    else:
+        else:
+            run RecipeUIDisable
+    elif (EventFlowSystemActor.SystemCheckNowStage('cIdrTanukichi')) or (EventFlowSystemActor.SystemCheckNowStage('cIdrOffice')):
+        run sub_grp!Event84
+    elif not event_flags_system['cPlayer:MainmenuRecipe']:
         run RecipeUIDisable
+    elif (not EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse')) and (not EventFlowSystemActor.SystemCheckNowStage('cOtherPlayerHouse')):
+        run WorkingTable_Normal
+    else:
+        run WorkingTable_Borrow
     return
 
 flow Root_Tutorial:
@@ -341,11 +325,10 @@ flow WorkingTable_Borrow:
         elif fEvent44 == 1:
             if EventFlowSystemActor.IsMyVillage():
                 run Remake
-            elif event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable']:
-                run Remake
             else:
-                EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_WorkingTable:022', false)
-                event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable'] = true
+                if not event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable']:
+                    EventFlowSystemActor.OpenMessageWindow('TalkFtr/FTR_WorkingTable:022', false)
+                    event_flags_system['cPlayerVisit:VisitorRemakeWorkingTable'] = true
                 run Remake
     else:
         Player.OpenMessageWindow('TalkFtr/FTR_WorkingTable:021_01', false)
@@ -460,15 +443,11 @@ flow sub_grp!Event84:
             run RcoDIYtrialOngoing
     elif EventFlowSystemActor.NetHasVisitor():
         run RecipeUIDisable
-    elif MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:901', false)
-        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
-            MainNpc.RcoStandUpChair()
-            MainNpc.TalkCamera(true, 0)
-        EventFlowSystemActor.SoundDuckingOff(18)
-        run SNPC_rco_01_Tent_1_Entries::RcoTentAskDIYtrial
     else:
-        MainNpc.TalkCamera(true, 0)
+        if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
+            pass
+        else:
+            MainNpc.TalkCamera(true, 0)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:901', false)
         if MainNpc.NpcIsSitting() in (0, 1, 2, 3, 5):
             MainNpc.RcoStandUpChair()

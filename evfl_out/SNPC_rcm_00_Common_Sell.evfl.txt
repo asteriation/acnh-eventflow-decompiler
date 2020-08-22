@@ -7,12 +7,16 @@ flow ChkSellSpecificItem:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:025', false)
         run Sell_Sunday
         EventFlowSystemActor.ExitFlowchart()
-    elif any ('LostQuestDust', 'TreasureQuestDust', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        subflow_results[2] = 1
-        run sub_grp!Event2
     else:
-        subflow_results[2] = 0
-        run sub_grp!Event2
+        if any ('LostQuestDust', 'TreasureQuestDust', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+            subflow_results[2] = 1
+        else:
+            subflow_results[2] = 0
+        if EventFlowSystemActor.IsMyVillage():
+            if (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (any (2287, 2214, 2285, 2286, 2213, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect')):
+                event_flags_system['cPlayerTemp:StoreSellFruitChk'] = true
+            if (EventFlowSystemActor.ShopLevel() == InResServiceTent) and (event_flags_system['cLand:VillageDaysCount'] <= 3) and (any (4081, 1432, 3697, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect')):
+                event_flags_system['cPlayerTemp:RcmSellCampingStuff'] = true
     return
 
 flow Cmn_After_Sell_Confirm:
@@ -147,13 +151,6 @@ entrypoint Event44:
         run Cmn_After_Sell_Confirm
     return
 
-flow sub_grp!Event2:
-    if EventFlowSystemActor.IsMyVillage():
-        if (not event_flags_system['cPlayer:HeardEatingHintAtShop']) and (any (2287, 2214, 2285, 2286, 2213, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect')):
-            event_flags_system['cPlayerTemp:StoreSellFruitChk'] = true
-        if (EventFlowSystemActor.ShopLevel() == InResServiceTent) and (event_flags_system['cLand:VillageDaysCount'] <= 3) and (any (4081, 1432, 3697, 65534, 65534, 65534, 65534, 65534) in EventFlowSystemActor.ItemSelect('cItemSelect')):
-            event_flags_system['cPlayerTemp:RcmSellCampingStuff'] = true
-
 flow sub_grp!Event4:
     if EventFlowSystemActor.UIResultMenuDecide():
         fEvent91 = EventFlowSystemActor.EnvDayOfWeek()
@@ -192,80 +189,52 @@ entrypoint Event105:
                                 else:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
                                     run rcm_Sell_Confirm
-                        elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                            event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
-entrypoint Event105:
-                            if subflow_results[2] == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
-                                run rcm_Sell_Confirm
-                            elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
-                                subflow_results[2] = 0
-                                run rcm_Sell_Confirm
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
-                                run rcm_Sell_Confirm
                         else:
-                            run RcmSellSeveralItemNormal
+                            if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                                event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
+entrypoint Event105:
+                                if subflow_results[2] == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
+                                    run rcm_Sell_Confirm
+                                elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
+                                    subflow_results[2] = 0
+                                    run rcm_Sell_Confirm
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
+                                    run rcm_Sell_Confirm
+                            else:
+                                run RcmSellSeveralItemNormal
                     else:
                         run RcmSellSeveralItemNormal
-                elif any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                    MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
-                    MainNpc.NpcDelivery('Keep', 0)
-                    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                    event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
-                    if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
-                        run RcmSellSingleItemNormal
-                    elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                        run rcm_Sell_Confirm
-                    else:
-entrypoint Event37:
-                        if EventFlowSystemActor.ItemValuables():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                            run rcm_Sell_Confirm
-                        elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                            run rcm_Sell_Confirm
-                        elif EventFlowSystemActor.ExpensivePurchase():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                            run rcm_Sell_Confirm
-                        elif subflow_results[2] == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                            run rcm_Sell_Confirm
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                            run rcm_Sell_Confirm
                 else:
-                    MainNpc.SetDeliveryItem(4, false)
+                    if any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                        MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
+                    else:
+                        MainNpc.SetDeliveryItem(4, false)
                     MainNpc.NpcDelivery('Keep', 0)
                     EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                     event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
                     if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
                         run RcmSellSingleItemNormal
-                    elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                        run rcm_Sell_Confirm
                     else:
-entrypoint Event37:
-                        if EventFlowSystemActor.ItemValuables():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                            run rcm_Sell_Confirm
-                        elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                            run rcm_Sell_Confirm
-                        elif EventFlowSystemActor.ExpensivePurchase():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                            run rcm_Sell_Confirm
-                        elif subflow_results[2] == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                            run rcm_Sell_Confirm
+                        if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                            event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                            run rcm_Sell_Confirm
+entrypoint Event37:
+                            if EventFlowSystemActor.ItemValuables():
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
+                            elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
+                            elif EventFlowSystemActor.ExpensivePurchase():
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
+                            elif subflow_results[2] == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
+                        run rcm_Sell_Confirm
             else:
                 run CannotSellTurnip
         elif fEvent91 in (Monday, Tuesday, Wednesday, Thursday, Friday):
@@ -302,80 +271,52 @@ entrypoint Event105:
                             else:
                                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
                                 run rcm_Sell_Confirm
-                    elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
-entrypoint Event105:
-                        if subflow_results[2] == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
-                            run rcm_Sell_Confirm
-                        elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
-                            subflow_results[2] = 0
-                            run rcm_Sell_Confirm
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
-                            run rcm_Sell_Confirm
                     else:
-                        run RcmSellSeveralItemNormal
+                        if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                            event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
+entrypoint Event105:
+                            if subflow_results[2] == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
+                                run rcm_Sell_Confirm
+                            elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
+                                subflow_results[2] = 0
+                                run rcm_Sell_Confirm
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
+                                run rcm_Sell_Confirm
+                        else:
+                            run RcmSellSeveralItemNormal
                 else:
                     run RcmSellSeveralItemNormal
-            elif any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
-                MainNpc.NpcDelivery('Keep', 0)
-                EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
-                if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
-                    run RcmSellSingleItemNormal
-                elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                    event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                    run rcm_Sell_Confirm
-                else:
-entrypoint Event37:
-                    if EventFlowSystemActor.ItemValuables():
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                        run rcm_Sell_Confirm
-                    elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                        run rcm_Sell_Confirm
-                    elif EventFlowSystemActor.ExpensivePurchase():
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                        run rcm_Sell_Confirm
-                    elif subflow_results[2] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                        run rcm_Sell_Confirm
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                        run rcm_Sell_Confirm
             else:
-                MainNpc.SetDeliveryItem(4, false)
+                if any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                    MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
+                else:
+                    MainNpc.SetDeliveryItem(4, false)
                 MainNpc.NpcDelivery('Keep', 0)
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                 event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
                 if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
                     run RcmSellSingleItemNormal
-                elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                    event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                    run rcm_Sell_Confirm
                 else:
-entrypoint Event37:
-                    if EventFlowSystemActor.ItemValuables():
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                        run rcm_Sell_Confirm
-                    elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                        run rcm_Sell_Confirm
-                    elif EventFlowSystemActor.ExpensivePurchase():
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                        run rcm_Sell_Confirm
-                    elif subflow_results[2] == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                        run rcm_Sell_Confirm
+                    if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
                     else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                        run rcm_Sell_Confirm
+entrypoint Event37:
+                        if EventFlowSystemActor.ItemValuables():
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
+                        elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
+                        elif EventFlowSystemActor.ExpensivePurchase():
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
+                        elif subflow_results[2] == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
+                    run rcm_Sell_Confirm
         elif fEvent91 == Sunday:
 entrypoint Event92:
             if any ('Turnip', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
@@ -415,80 +356,52 @@ entrypoint Event105:
                                 else:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
                                     run rcm_Sell_Confirm
-                        elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                            event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
-entrypoint Event105:
-                            if subflow_results[2] == 0:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
-                                run rcm_Sell_Confirm
-                            elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
-                                subflow_results[2] = 0
-                                run rcm_Sell_Confirm
-                            else:
-                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
-                                run rcm_Sell_Confirm
                         else:
-                            run RcmSellSeveralItemNormal
+                            if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                                event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:041_01', false)
+entrypoint Event105:
+                                if subflow_results[2] == 0:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:042', false)
+                                    run rcm_Sell_Confirm
+                                elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 1):
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:045', false)
+                                    subflow_results[2] = 0
+                                    run rcm_Sell_Confirm
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:046', false)
+                                    run rcm_Sell_Confirm
+                            else:
+                                run RcmSellSeveralItemNormal
                     else:
                         run RcmSellSeveralItemNormal
-                elif any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                    MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
-                    MainNpc.NpcDelivery('Keep', 0)
-                    EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
-                    event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
-                    if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
-                        run RcmSellSingleItemNormal
-                    elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                        run rcm_Sell_Confirm
-                    else:
-entrypoint Event37:
-                        if EventFlowSystemActor.ItemValuables():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                            run rcm_Sell_Confirm
-                        elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                            run rcm_Sell_Confirm
-                        elif EventFlowSystemActor.ExpensivePurchase():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                            run rcm_Sell_Confirm
-                        elif subflow_results[2] == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                            run rcm_Sell_Confirm
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                            run rcm_Sell_Confirm
                 else:
-                    MainNpc.SetDeliveryItem(4, false)
+                    if any ('FlowerBud', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                        MainNpc.SetDeliveryItemAtRandom(2626, false, 'cVillageRemakePattern', 0)
+                    else:
+                        MainNpc.SetDeliveryItem(4, false)
                     MainNpc.NpcDelivery('Keep', 0)
                     EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')
                     event_flags_system['cPlayerTemp:RcmSellItemSingle'] = true
                     if event_flags_system['cPlayer:RcmSellCampingStuffReaction']:
                         run RcmSellSingleItemNormal
-                    elif event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
-                        event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
-                        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
-                        run rcm_Sell_Confirm
                     else:
-entrypoint Event37:
-                        if EventFlowSystemActor.ItemValuables():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
-                            run rcm_Sell_Confirm
-                        elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
-                            run rcm_Sell_Confirm
-                        elif EventFlowSystemActor.ExpensivePurchase():
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
-                            run rcm_Sell_Confirm
-                        elif subflow_results[2] == 0:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
-                            run rcm_Sell_Confirm
+                        if event_flags_system['cPlayerTemp:RcmSellCampingStuff']:
+                            event_flags_system['cPlayer:RcmSellCampingStuffReaction'] = true
+                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:035', false)
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
-                            run rcm_Sell_Confirm
+entrypoint Event37:
+                            if EventFlowSystemActor.ItemValuables():
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:037', false)
+                            elif any ('DIYRecipe', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:036', false)
+                            elif EventFlowSystemActor.ExpensivePurchase():
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:122', false)
+                            elif subflow_results[2] == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:031', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:038', false)
+                        run rcm_Sell_Confirm
     else:
 entrypoint Event29:
         MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:901', false)

@@ -4,8 +4,9 @@ flow EndRestoring:
         EventFlowSystemActor.NetReissuePassword()
         if EventFlowSystemActor.CheckErrorType(2):
             event_flags_system['cLand:NeedUpdatePassword'] = true
-    elif EventFlowSystemActor.NetHasPOLID():
-        event_flags_system['cLand:NeedUpdatePassword'] = true
+    else:
+        if EventFlowSystemActor.NetHasPOLID():
+            event_flags_system['cLand:NeedUpdatePassword'] = true
     EventFlowSystemActor.SaveUpdateDeviceID()
     EventFlowSystemActor.SaveReserveBackupRestoreFlagOff()
     EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:9016', false)

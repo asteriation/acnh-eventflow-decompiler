@@ -66,30 +66,31 @@ entrypoint Event29:
                 EventFlowSystemActor.UIMyDesignExchangeListHandling()
                 if EventFlowSystemActor.MyDesignExchangeNetworkError():
                     run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-                elif EventFlowSystemActor.UIResultMenuDecide():
-                    run Obj_WorldMyDesignGallery_02_SubFlow::WaitForPreview
-entrypoint Event53:
-                    EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cSaveFromNet')
-                    if EventFlowSystemActor.MyDesignExchangeNetworkError():
-                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
-                    elif EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult() == 0:
-                        run BackToList
-                    else:
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
-                        if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
-                            EventFlowSystemActor.UIMyDesignSelectHandling(1, 2, 0, 0, 0)
-                            if EventFlowSystemActor.UIResultMenuDecide():
-                                run BackToList
-                            else:
-                                run BackToAuthorOpus
-                        else:
-                            EventFlowSystemActor.UIMyDesignSelectHandling(1, 1, 0, 0, 0)
-                            if EventFlowSystemActor.UIResultMenuDecide():
-                                run BackToList
-                            else:
-                                run BackToAuthorOpus
                 else:
-                    run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+                    if EventFlowSystemActor.UIResultMenuDecide():
+                        run Obj_WorldMyDesignGallery_02_SubFlow::WaitForPreview
+entrypoint Event53:
+                        EventFlowSystemActor.UIMyDesignExchangeInfoHandling('cSaveFromNet')
+                        if EventFlowSystemActor.MyDesignExchangeNetworkError():
+                            run Obj_WorldMyDesignGallery_01_MainScene::MainUI
+                        elif EventFlowSystemActor.UIMyDesignDownloadWindowChoiceResult() == 0:
+                            run BackToList
+                        else:
+                            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2439', true)
+                            if EventFlowSystemActor.IsMyDesignProInMyDesignExchange():
+                                EventFlowSystemActor.UIMyDesignSelectHandling(1, 2, 0, 0, 0)
+                                if EventFlowSystemActor.UIResultMenuDecide():
+                                    run BackToList
+                                else:
+                                    run BackToAuthorOpus
+                            else:
+                                EventFlowSystemActor.UIMyDesignSelectHandling(1, 1, 0, 0, 0)
+                                if EventFlowSystemActor.UIResultMenuDecide():
+                                    run BackToList
+                                else:
+                                    run BackToAuthorOpus
+                    else:
+                        run Obj_WorldMyDesignGallery_01_MainScene::MainUI
             else:
                 EventFlowSystemActor.SetTagFromUIResult(0, 'cDesignerIDFromSwkbd')
                 EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:2434', false)

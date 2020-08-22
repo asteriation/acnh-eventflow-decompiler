@@ -1,38 +1,38 @@
 flow ChkDiyComplete:
     if not event_flags_system['cPlayer:PynCompleteDiyMissionFlag']:
-        if event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']:
-            if EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 12412, 65534, 65534, 65534, 65534, 65534, 65534, 65534):
-                event_flags_system['cPlayer:PynCompleteDiyMissionFlag'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:204', false)
+        if not event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']:
+            if (EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 12398, 12414, 65534, 65534, 65534, 65534, 65534, 65534)) and (EventFlowSystemActor.IsMadeCraftUnlockRecipe('EasterNpc', 'cAND')) and (EventFlowSystemActor.IsMadeCraftUnlockRecipe('EasterRand', 'cAND')):
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:200', true)
+                EventFlowSystemActor.WaitFrame(10)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:201', false)
                 if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-entrypoint Event220:
-                    MainNpc.NpcSetRewardRecipe(12578, false)
+                    MainNpc.NpcSetRewardRecipe(12412, false)
                     MainNpc.SetDeliveryItem(1, true)
                     MainNpc.NpcDelivery('Default', 1)
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:205', false)
-                    MainNpc.NpcStartAS('NpcSpPynDance', false, False)
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:206', false)
-                    MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:207', false)
-                    event_flags_system['cPlayer:PynCompleteDiyMissionFlag'] = true
+                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:202', false)
+                    event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag'] = true
                     EventFlowSystemActor.ExitFlowchart()
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:208', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:203', false)
                     event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
                     EventFlowSystemActor.ExitFlowchart()
-        elif (EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 12398, 12414, 65534, 65534, 65534, 65534, 65534, 65534)) and (EventFlowSystemActor.IsMadeCraftUnlockRecipe('EasterNpc', 'cAND')) and (EventFlowSystemActor.IsMadeCraftUnlockRecipe('EasterRand', 'cAND')):
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:200', true)
-            EventFlowSystemActor.WaitFrame(10)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:201', false)
+        elif EventFlowSystemActor.PlayerIsMadeCraftRecipe('cAND', 12412, 65534, 65534, 65534, 65534, 65534, 65534, 65534):
+            event_flags_system['cPlayer:PynCompleteDiyMissionFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:204', false)
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-                MainNpc.NpcSetRewardRecipe(12412, false)
+entrypoint Event220:
+                MainNpc.NpcSetRewardRecipe(12578, false)
                 MainNpc.SetDeliveryItem(1, true)
                 MainNpc.NpcDelivery('Default', 1)
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:202', false)
-                event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:205', false)
+                MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:206', false)
+                MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:207', false)
+                event_flags_system['cPlayer:PynCompleteDiyMissionFlag'] = true
                 EventFlowSystemActor.ExitFlowchart()
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:203', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:208', false)
                 event_flags_system['cPlayer:PynCannotGetItemFlag'] = true
                 EventFlowSystemActor.ExitFlowchart()
     return
@@ -229,11 +229,55 @@ flow GetEggBasket:
             subflow_results[0] = 1
         else:
             subflow_results[0] = 0
-    elif event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag']:
-        subflow_results[0] = 1
     else:
-        subflow_results[0] = 0
-    if not EventFlowSystemActor.HasKindItem('cKind', 'EasterEgg', ''):
+        if event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag']:
+            subflow_results[0] = 1
+        else:
+            subflow_results[0] = 0
+    if EventFlowSystemActor.HasKindItem('cKind', 'EasterEgg', ''):
+        if subflow_results[0] == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:180_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:180_02', false)
+        if not ((EventFlowSystemActor.HasTargetItem(12510, 1)) and (EventFlowSystemActor.HasTargetItem(12509, 1)) and (EventFlowSystemActor.HasTargetItem(12513, 1)) and (EventFlowSystemActor.HasTargetItem(12511, 1)) and (EventFlowSystemActor.HasTargetItem(12512, 1)) and (EventFlowSystemActor.HasTargetItem(12514, 1))):
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:191', false)
+            MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:189', false)
+            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:192', false)
+        elif EventFlowSystemActor.IsEnableToGetEggBasket(1):
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:181_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:181_02', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.SetDeliveryItemAtRandom(12510, false, 'cVillageRemakePattern', 0)
+                MainNpc.NpcDelivery('Default', 0)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:182', false)
+                EventFlowSystemActor.DeleteTargetItem(12510, 'EggNum', true)
+                EventFlowSystemActor.DeleteTargetItem(12509, 'EggNum', true)
+                EventFlowSystemActor.DeleteTargetItem(12513, 'EggNum', true)
+                EventFlowSystemActor.DeleteTargetItem(12511, 'EggNum', true)
+                EventFlowSystemActor.DeleteTargetItem(12512, 'EggNum', true)
+                EventFlowSystemActor.DeleteTargetItem(12514, 'EggNum', true)
+                MainNpc.SetDeliveryItemAtRandom(12438, true, 'cVillageRemakePattern', 0)
+                MainNpc.NpcDelivery('Default', 1)
+                if subflow_results[0] == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:183', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:184', false)
+                MainNpc.NpcStartAS('NpcSpPynDance', false, False)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:185', false)
+                MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:186', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:PynGetEggBasketFlag'] = true
+                else:
+                    event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag'] = true
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:194', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:193', false)
+    else:
         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:187', false)
         if subflow_results[0] == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:188_01', false)
@@ -243,12 +287,6 @@ flow GetEggBasket:
         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:189', false)
         MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:190', false)
-    elif subflow_results[0] == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:180_01', false)
-        run sub_grp!Event200
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:180_02', false)
-        run sub_grp!Event200
     return
 
 flow InfoExcEggs:
@@ -260,19 +298,24 @@ flow IntroCommon:
     return
 
 flow Root:
-    if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:PynTalkEasterDayFlag']:
-            run FirstGreeting
-        elif not event_flags_system['cPlayer:PynCannotGetItemFlag']:
-            run ChkDiyComplete
-            if not event_flags_system['cPlayer:PynExplainExchangeEggsFlag']:
-                event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
-                event_flags_system['cPlayer:PynExplainExchangeEggsFlag'] = true
-entrypoint Event73:
-                run SetEggNumExchange
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:130', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
-            elif (not event_flags_system['cPlayer:PynExplainInventRecipeFlag']) and (not event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']) and (event_flags_system['cPlayer:PynInventRecipeFlag']):
+    if not EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayerVisit:DC_PynTalkFlag']:
+            run FirstGreetingV
+        elif event_flags_system['cPlayerTemp:PynTalkNowFlag']:
+            run TalkAgain
+        else:
+            event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
+            if event_flags_system['cPlayerVisit:DC_PynExplainExchangeEggsFlag']:
+                run IntroCommon
+            else:
+                event_flags_system['cPlayerVisit:DC_PynExplainExchangeEggsFlag'] = true
+                run InfoExcEggs
+    elif not event_flags_system['cPlayer:PynTalkEasterDayFlag']:
+        run FirstGreeting
+    elif not event_flags_system['cPlayer:PynCannotGetItemFlag']:
+        run ChkDiyComplete
+        if event_flags_system['cPlayer:PynExplainExchangeEggsFlag']:
+            if (not event_flags_system['cPlayer:PynExplainInventRecipeFlag']) and (not event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']) and (event_flags_system['cPlayer:PynInventRecipeFlag']):
                 event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
                 MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:131', false)
                 event_flags_system['cPlayer:PynExplainInventRecipeFlag'] = true
@@ -309,46 +352,42 @@ entrypoint Event99:
                         EventFlowSystemActor.SetTagFromSystem(0, 'cEasterNoCraftItem', 'cDegit', '', 0)
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:134', false)
                         MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
-            fEvent104 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent104 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:153', false)
-            elif fEvent104 == 0:
-                run GetEggBasket
-            elif fEvent104 == 1:
-                run ExchangeEggs
-        elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-            event_flags_system['cPlayer:PynCannotGetItemFlag'] = false
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:221', false)
-            if not event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag']:
-                MainNpc.NpcSetRewardRecipe(12398, false)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.NpcDelivery('Default', 1)
-                if event_flags_system['cPlayer:PynTalkPreVisitDayFlag']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:222', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:223', false)
-                event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag'] = true
-            elif event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']:
-                run DiyCompleteReward
+        else:
+            event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
+            event_flags_system['cPlayer:PynExplainExchangeEggsFlag'] = true
+entrypoint Event73:
+            run SetEggNumExchange
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:130', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:150', false)
+        fEvent104 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent104 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:153', false)
+        elif fEvent104 == 0:
+            run GetEggBasket
+        elif fEvent104 == 1:
+            run ExchangeEggs
+    elif EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+        event_flags_system['cPlayer:PynCannotGetItemFlag'] = false
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:221', false)
+        if not event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag']:
+            MainNpc.NpcSetRewardRecipe(12398, false)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.NpcDelivery('Default', 1)
+            if event_flags_system['cPlayer:PynTalkPreVisitDayFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:222', false)
             else:
-                MainNpc.NpcSetRewardRecipe(12412, false)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.NpcDelivery('Default', 1)
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:224', false)
-                event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:223', false)
+            event_flags_system['cPlayer:PynGetFirstRecipeEasterDayFlag'] = true
+        elif event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag']:
+            run DiyCompleteReward
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:220', false)
-    elif not event_flags_system['cPlayerVisit:DC_PynTalkFlag']:
-        run FirstGreetingV
-    elif event_flags_system['cPlayerTemp:PynTalkNowFlag']:
-        run TalkAgain
+            MainNpc.NpcSetRewardRecipe(12412, false)
+            MainNpc.SetDeliveryItem(1, true)
+            MainNpc.NpcDelivery('Default', 1)
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:224', false)
+            event_flags_system['cPlayer:PynGetFinalMissionRecipeFlag'] = true
     else:
-        event_flags_system['cPlayerTemp:PynTalkNowFlag'] = true
-        if event_flags_system['cPlayerVisit:DC_PynExplainExchangeEggsFlag']:
-            run IntroCommon
-        else:
-            event_flags_system['cPlayerVisit:DC_PynExplainExchangeEggsFlag'] = true
-            run InfoExcEggs
+        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:220', false)
     return
 
 flow SetEggNumBasket:
@@ -367,68 +406,4 @@ flow TalkAgain:
 flow sub_Event126:
     MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:171', false)
     return
-
-flow sub_grp!Event200:
-    if not ((EventFlowSystemActor.HasTargetItem(12510, 1)) and (EventFlowSystemActor.HasTargetItem(12509, 1)) and (EventFlowSystemActor.HasTargetItem(12513, 1)) and (EventFlowSystemActor.HasTargetItem(12511, 1)) and (EventFlowSystemActor.HasTargetItem(12512, 1)) and (EventFlowSystemActor.HasTargetItem(12514, 1))):
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:191', false)
-        MainNpc.NpcStartAS('NpcSpPynDance', false, False)
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:189', false)
-        MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:192', false)
-    elif not EventFlowSystemActor.IsEnableToGetEggBasket(1):
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:193', false)
-    elif subflow_results[0] == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:181_01', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.SetDeliveryItemAtRandom(12510, false, 'cVillageRemakePattern', 0)
-            MainNpc.NpcDelivery('Default', 0)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:182', false)
-            EventFlowSystemActor.DeleteTargetItem(12510, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12509, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12513, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12511, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12512, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12514, 'EggNum', true)
-            MainNpc.SetDeliveryItemAtRandom(12438, true, 'cVillageRemakePattern', 0)
-            MainNpc.NpcDelivery('Default', 1)
-            if subflow_results[0] == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:183', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:184', false)
-            MainNpc.NpcStartAS('NpcSpPynDance', false, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:185', false)
-            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:186', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:PynGetEggBasketFlag'] = true
-            else:
-                event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:194', false)
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:181_02', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.SetDeliveryItemAtRandom(12510, false, 'cVillageRemakePattern', 0)
-            MainNpc.NpcDelivery('Default', 0)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:182', false)
-            EventFlowSystemActor.DeleteTargetItem(12510, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12509, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12513, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12511, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12512, 'EggNum', true)
-            EventFlowSystemActor.DeleteTargetItem(12514, 'EggNum', true)
-            MainNpc.SetDeliveryItemAtRandom(12438, true, 'cVillageRemakePattern', 0)
-            MainNpc.NpcDelivery('Default', 1)
-            if subflow_results[0] == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:183', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:184', false)
-            MainNpc.NpcStartAS('NpcSpPynDance', false, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:185', false)
-            MainNpc.CharacterEmoticonAction('EmotEnd', '', 0, true, false)
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:186', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:PynGetEggBasketFlag'] = true
-            else:
-                event_flags_system['cPlayerVisit:DC_PynGetEggBasketFlag'] = true
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:194', false)
 

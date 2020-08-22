@@ -65,12 +65,15 @@ entrypoint Event12:
                         if EventFlowSystemActor.MuseumDonationNumCheck(20):
                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:227', false)
                             MainNpc.NpcDelivery('"Default"', 10)
-                        elif EventFlowSystemActor.MuseumDonationNumCheck(19):
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:212', false)
-                            run sub_grp!Event195
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:211', false)
-                            run sub_grp!Event195
+                            if EventFlowSystemActor.MuseumDonationNumCheck(19):
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:212', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:211', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                run Donation_Accept
+                            else:
+                                run Donation_Decline
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:203', false)
             run SNPC_owl_00_Common::Again
@@ -78,12 +81,6 @@ entrypoint Event12:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:201', true)
         run SNPC_owl_00_Common::Again
     return
-
-flow sub_grp!Event195:
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run Donation_Accept
-    else:
-        run Donation_Decline
 
 flow sub_grp!Event20:
     fEvent20 = EventFlowSystemActor.MuseumLevel()

@@ -12,10 +12,11 @@ flow Root:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary3', 'cItemFilter', false)
         else:
             EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary2', 'cItemFilter', false)
-    elif event_flags_system['cPlayer:Owl1stTalkMuseum2']:
-        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary1', 'cItemFilter', false)
     else:
-        EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary', 'cItemFilter', false)
+        if event_flags_system['cPlayer:Owl1stTalkMuseum2']:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary1', 'cItemFilter', false)
+        else:
+            EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'OwlCommentary', 'cItemFilter', false)
     if EventFlowSystemActor.UIResultMenuDecide():
         MainNpc.SetDeliveryItem(4, false)
         EventFlowSystemActor.SetTagFromUIResult(0, 'cItemName')

@@ -7,10 +7,11 @@ flow Root:
     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:111', false)
     if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_01', false)
-    elif event_flags_system['cPlayer:2P_CreatedAfterOwlMoving']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_02', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_03', false)
+        if event_flags_system['cPlayer:2P_CreatedAfterOwlMoving']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:112_03', false)
     fEvent18 = EventFlowSystemActor.MuseumLevel()
     if fEvent18 in (BlathersNotMovedIn, BlathersTent, BlathersMuseumNoArt):
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:113', false)

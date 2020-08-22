@@ -51,10 +51,10 @@ flow CheckWhere:
     return
 
 flow CleanService:
-    if subflow_results[1] != 0:
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:266', false)
-        run Restart
-    elif event_flags_system['cPlayer:1stBootIslandCreaterCleanService']:
+    if subflow_results[1] == 0:
+        if not event_flags_system['cPlayer:1stBootIslandCreaterCleanService']:
+            MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:261', false)
+            event_flags_system['cPlayer:1stBootIslandCreaterCleanService'] = true
         MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:262', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:263', true)
@@ -72,24 +72,8 @@ flow CleanService:
         else:
             run Restart
     else:
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:261', false)
-        event_flags_system['cPlayer:1stBootIslandCreaterCleanService'] = true
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:262', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:263', true)
-            EventFlowSystemActor.FadeOut('cCircle', 'cCircle', 'cBlack', 1.2000000476837158, 1.2000000476837158, true)
-            EventFlowSystemActor.ItemRemove()
-            EventFlowSystemActor.WaitFrame(20)
-            if EventFlowSystemActor.ItemRemove():
-                EventFlowSystemActor.SoundTriggerEmit('CleanFinish', -1)
-            EventFlowSystemActor.FadeIn(true)
-            if EventFlowSystemActor.ItemRemove():
-                MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:264', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:265', false)
-            Player.SmartPhone(1)
-        else:
-            run Restart
+        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:266', false)
+        run Restart
     return
 
 flow Construction_Manual:
@@ -320,10 +304,11 @@ entrypoint Event74:
                 run Start_Construction
             elif fEvent63 == 2:
                 run Construction_Manual
-    elif Player.PlayerCheckWaitType('cSwim'):
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:206', false)
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:207_01', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:206', false)
-        Player.OpenMessageWindow('TalkSys/SYS_PhoneApp:207', false)
+        if Player.PlayerCheckWaitType('cSwim'):
+            MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:206', false)
+            MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:207_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSys/SYS_PhoneApp:206', false)
+            Player.OpenMessageWindow('TalkSys/SYS_PhoneApp:207', false)
 

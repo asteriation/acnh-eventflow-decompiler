@@ -7,12 +7,13 @@ entrypoint Event15:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:413', false)
             MainNpc.NpcAddFriendship(2)
             MainNpc.NpcSetShowFlag()
-        elif (event_flags_system['cPlayer:OwlShowFossilMyself']) and (event_flags_system['cLand:OwlFoundDiveFish']):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:414', false)
-            MainNpc.NpcDelivery('Default', 10)
-            EventFlowSystemActor.ExitFlowchart()
         else:
-            run Donated_DiveFish
+            if (event_flags_system['cPlayer:OwlShowFossilMyself']) and (event_flags_system['cLand:OwlFoundDiveFish']):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:414', false)
+                MainNpc.NpcDelivery('Default', 10)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                run Donated_DiveFish
     else:
         run Donated_DiveFish
     return

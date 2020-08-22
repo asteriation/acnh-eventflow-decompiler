@@ -42,19 +42,18 @@ flow WebSetting_Activate:
                     run WebSetting_Activate_Failed
                 else:
                     EventFlowSystemActor.UploadProfile(False)
-                    if not EventFlowSystemActor.CheckErrorType(2):
+                    if EventFlowSystemActor.CheckErrorType(2):
+                        if EventFlowSystemActor.NetIsAppError('cUploadProfile'):
+                            EventFlowSystemActor.MessageSuspend()
+                            EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
+                        run WebSetting_Activate_Failed
+                    else:
                         EventFlowSystemActor.NotifyUseNSOAppli('cNotifyUseNSOAppli', true)
                         if EventFlowSystemActor.CheckErrorType(2):
                             run WebSetting_Activate_Failed
                         else:
                             EventFlowSystemActor.MessageSuspend()
                             run WebSetting_Activate_Success
-                    elif EventFlowSystemActor.NetIsAppError('cUploadProfile'):
-                        EventFlowSystemActor.MessageSuspend()
-                        EventFlowSystemActor.OpenMessageWindow('Dialog/DIALOG_Msg:0820', true)
-                        run WebSetting_Activate_Failed
-                    else:
-                        run WebSetting_Activate_Failed
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_93_BlancoSettings:151', true)
         run SNPC_rco_92_OtherSettings::Seq_Close

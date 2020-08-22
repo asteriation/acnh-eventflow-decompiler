@@ -8,12 +8,13 @@ flow Cml_Attention_Rug:
             elif event_flags_system['cPlayer:RollanBuySmallCount'] >= 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:025', false)
                 run sub_grp!Event253
-        elif event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:026', false)
-            run sub_grp!Event249
-        elif event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:025', false)
-            run sub_grp!Event253
+        else:
+            if event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:026', false)
+                run sub_grp!Event249
+            elif event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:025', false)
+                run sub_grp!Event253
     elif fEvent266 == 1:
         if EventFlowSystemActor.IsMyVillage():
             if event_flags_system['cPlayer:RollanBuyMediumCount'] >= 2:
@@ -22,12 +23,13 @@ flow Cml_Attention_Rug:
             elif event_flags_system['cPlayer:RollanBuyMediumCount'] >= 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:020', false)
                 run sub_grp!Event253
-        elif event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:021', false)
-            run sub_grp!Event249
-        elif event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:020', false)
-            run sub_grp!Event253
+        else:
+            if event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:021', false)
+                run sub_grp!Event249
+            elif event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:020', false)
+                run sub_grp!Event253
     elif fEvent266 == 2:
         if EventFlowSystemActor.IsMyVillage():
             if event_flags_system['cPlayer:RollanBuyLargeCount'] >= 2:
@@ -36,12 +38,13 @@ flow Cml_Attention_Rug:
             elif event_flags_system['cPlayer:RollanBuyLargeCount'] >= 1:
                 MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:015', false)
                 run sub_grp!Event253
-        elif event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:016', false)
-            run sub_grp!Event249
-        elif event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] >= 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:015', false)
-            run sub_grp!Event253
+        else:
+            if event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:016', false)
+                run sub_grp!Event249
+            elif event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] >= 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:015', false)
+                run sub_grp!Event253
     return
 
 flow Cml_Attention_Wonderful:
@@ -95,7 +98,41 @@ entrypoint Event130:
                                 else:
                                     MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
                                     EventFlowSystemActor.ExitFlowchart()
-                        elif event_flags_system['cPlayer:RollanGotCarpetFlag']:
+                        else:
+                            if event_flags_system['cPlayer:RollanGotCarpetFlag']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    subflow_results[2] = 0
+                                    run Cml__Change
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
+                                    EventFlowSystemActor.ExitFlowchart()
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
+                                fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
+                                if fEvent161 == 2:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
+                                    EventFlowSystemActor.ExitFlowchart()
+                                elif fEvent161 == 0:
+                                    subflow_results[2] = 0
+                                    run Cml__Change
+                                elif fEvent161 == 1:
+                                    subflow_results[2] = 1
+                                    run Cml__Change
+                    elif event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag']:
+                        if event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
+                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:064', false)
+                            EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:062', false)
+                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                subflow_results[2] = 1
+                                run Cml__Change
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
+                                EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        if event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
                             MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                                 subflow_results[2] = 0
@@ -115,6 +152,48 @@ entrypoint Event130:
                             elif fEvent161 == 1:
                                 subflow_results[2] = 1
                                 run Cml__Change
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
+                    run Cml_Buy_Continue
+        else:
+            if not ((event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag']) and (event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag'])):
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:060', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event130:
+                    if EventFlowSystemActor.IsMyVillage():
+                        if event_flags_system['cPlayer:RollanGotWallpaperFlag']:
+                            if event_flags_system['cPlayer:RollanGotCarpetFlag']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:064', false)
+                                EventFlowSystemActor.ExitFlowchart()
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:062', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    subflow_results[2] = 1
+                                    run Cml__Change
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
+                                    EventFlowSystemActor.ExitFlowchart()
+                        else:
+                            if event_flags_system['cPlayer:RollanGotCarpetFlag']:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    subflow_results[2] = 0
+                                    run Cml__Change
+                                else:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
+                                    EventFlowSystemActor.ExitFlowchart()
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
+                                fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
+                                if fEvent161 == 2:
+                                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
+                                    EventFlowSystemActor.ExitFlowchart()
+                                elif fEvent161 == 0:
+                                    subflow_results[2] = 0
+                                    run Cml__Change
+                                elif fEvent161 == 1:
+                                    subflow_results[2] = 1
+                                    run Cml__Change
                     elif event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag']:
                         if event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
                             MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:064', false)
@@ -127,101 +206,30 @@ entrypoint Event130:
                             else:
                                 MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
                                 EventFlowSystemActor.ExitFlowchart()
-                    elif event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            subflow_results[2] = 0
-                            run Cml__Change
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
-                            EventFlowSystemActor.ExitFlowchart()
                     else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
-                        fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
-                        if fEvent161 == 2:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
-                            EventFlowSystemActor.ExitFlowchart()
-                        elif fEvent161 == 0:
-                            subflow_results[2] = 0
-                            run Cml__Change
-                        elif fEvent161 == 1:
-                            subflow_results[2] = 1
-                            run Cml__Change
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
-                    run Cml_Buy_Continue
-        elif not ((event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag']) and (event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag'])):
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:060', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event130:
-                if EventFlowSystemActor.IsMyVillage():
-                    if event_flags_system['cPlayer:RollanGotWallpaperFlag']:
-                        if event_flags_system['cPlayer:RollanGotCarpetFlag']:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:064', false)
-                            EventFlowSystemActor.ExitFlowchart()
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:062', false)
+                        if event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
+                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
                             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                subflow_results[2] = 1
+                                subflow_results[2] = 0
                                 run Cml__Change
                             else:
                                 MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
                                 EventFlowSystemActor.ExitFlowchart()
-                    elif event_flags_system['cPlayer:RollanGotCarpetFlag']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            subflow_results[2] = 0
-                            run Cml__Change
                         else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
-                            EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
-                        fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
-                        if fEvent161 == 2:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
-                            EventFlowSystemActor.ExitFlowchart()
-                        elif fEvent161 == 0:
-                            subflow_results[2] = 0
-                            run Cml__Change
-                        elif fEvent161 == 1:
-                            subflow_results[2] = 1
-                            run Cml__Change
-                elif event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag']:
-                    if event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:064', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:062', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            subflow_results[2] = 1
-                            run Cml__Change
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
-                            EventFlowSystemActor.ExitFlowchart()
-                elif event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:063', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        subflow_results[2] = 0
-                        run Cml__Change
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:066', false)
-                        EventFlowSystemActor.ExitFlowchart()
+                            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
+                            fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
+                            if fEvent161 == 2:
+                                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
+                                EventFlowSystemActor.ExitFlowchart()
+                            elif fEvent161 == 0:
+                                subflow_results[2] = 0
+                                run Cml__Change
+                            elif fEvent161 == 1:
+                                subflow_results[2] = 1
+                                run Cml__Change
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:061', false)
-                    fEvent161 = EventFlowSystemActor.GeneralTalkChoice3()
-                    if fEvent161 == 2:
-                        MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
-                        EventFlowSystemActor.ExitFlowchart()
-                    elif fEvent161 == 0:
-                        subflow_results[2] = 0
-                        run Cml__Change
-                    elif fEvent161 == 1:
-                        subflow_results[2] = 1
-                        run Cml__Change
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
-                run Cml_Buy_Continue
+                    MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:065', false)
+                    run Cml_Buy_Continue
     return
 
 flow Cml_BuyRug:
@@ -287,10 +295,11 @@ flow Cml_BuyWonderful:
                 event_flags_system['cPlayer:RollanBuyWallpaperCount'] = true
             else:
                 event_flags_system['cPlayerVisit:DC_RollanBuyWallpaperCount'] = true
-        elif EventFlowSystemActor.IsMyVillage():
-            event_flags_system['cPlayer:RollanBuyCarpetCount'] = true
         else:
-            event_flags_system['cPlayerVisit:DC_RollanBuyCarpetCount'] = true
+            if EventFlowSystemActor.IsMyVillage():
+                event_flags_system['cPlayer:RollanBuyCarpetCount'] = true
+            else:
+                event_flags_system['cPlayerVisit:DC_RollanBuyCarpetCount'] = true
         run Cml_Buy_Continue
     else:
         run Cml_Select_Cancel
@@ -438,55 +447,56 @@ flow Cml_GetTicket:
                 else:
                     event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] += 1
                 EventFlowSystemActor.SetItemToPocket(9261, 1)
-    elif (event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] < 1) and (event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] < 1) and (event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] < 1):
-        fEvent112 = subflow_results[0]
-        if fEvent112 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:053', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuySmallCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 1)
-        elif fEvent112 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050_pl', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:052', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuyMediumCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 2)
-        elif fEvent112 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050_pl', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:051', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuyLargeCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 3)
     else:
-        fEvent105 = subflow_results[0]
-        if fEvent105 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:055', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuyMediumCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 2)
-        elif fEvent105 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:054', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuyLargeCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 3)
-        elif fEvent105 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:056', false)
-            if EventFlowSystemActor.IsMyVillage():
-                event_flags_system['cPlayer:RollanBuySmallCount'] += 1
-            else:
-                event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] += 1
-            EventFlowSystemActor.SetItemToPocket(9261, 1)
+        if (event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] < 1) and (event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] < 1) and (event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] < 1):
+            fEvent112 = subflow_results[0]
+            if fEvent112 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:053', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuySmallCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 1)
+            elif fEvent112 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050_pl', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:052', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuyMediumCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 2)
+            elif fEvent112 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:050_pl', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:051', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuyLargeCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 3)
+        else:
+            fEvent105 = subflow_results[0]
+            if fEvent105 == 1:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:055', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuyMediumCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuyMediumCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 2)
+            elif fEvent105 == 2:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:054', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuyLargeCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuyLargeCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 3)
+            elif fEvent105 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/cml/SP_cml:056', false)
+                if EventFlowSystemActor.IsMyVillage():
+                    event_flags_system['cPlayer:RollanBuySmallCount'] += 1
+                else:
+                    event_flags_system['cPlayerVisit:DC_RollanBuySmallCount'] += 1
+                EventFlowSystemActor.SetItemToPocket(9261, 1)
     MainNpc.SetDeliveryItemAtRandom(9261, false, 'cVillageRemakePattern', 0)
     MainNpc.NpcDelivery('Default', 1)
     return
@@ -548,10 +558,11 @@ flow Cml__Change:
             event_flags_system['cPlayer:RollanGotWallpaperFlag'] = true
         else:
             event_flags_system['cPlayerVisit:DC_RollanGotWallpaperFlag'] = true
-    elif EventFlowSystemActor.IsMyVillage():
-        event_flags_system['cPlayer:RollanGotCarpetFlag'] = true
     else:
-        event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag'] = true
+        if EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:RollanGotCarpetFlag'] = true
+        else:
+            event_flags_system['cPlayerVisit:DC_RollanGotCarpetFlag'] = true
     run Cml_Buy_Continue
     return
 
@@ -563,11 +574,12 @@ flow Root:
         else:
             event_flags_system['cPlayer:RollanTalkTodayFlag'] = true
             run sub_grp!Event50
-    elif event_flags_system['cPlayerVisit:DC_RollanTalkTodayFlag']:
-        run sub_grp!Event187
     else:
-        event_flags_system['cPlayerVisit:DC_RollanTalkTodayFlag'] = true
-        run sub_grp!Event50
+        if event_flags_system['cPlayerVisit:DC_RollanTalkTodayFlag']:
+            run sub_grp!Event187
+        else:
+            event_flags_system['cPlayerVisit:DC_RollanTalkTodayFlag'] = true
+            run sub_grp!Event50
     return
 
 flow sub_grp!Event187:

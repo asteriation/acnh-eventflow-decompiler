@@ -34,10 +34,11 @@ entrypoint Event27:
                             run Retype
                     else:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:101', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                            run Retype
-                        elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
                             EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
                             event_flags_npc['cNpcMemory:InputGreeting'] = true
                             fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -48,16 +49,7 @@ entrypoint Event27:
                             elif fEvent33 == 2:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
                         else:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
-                            EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
-                            event_flags_npc['cNpcMemory:InputGreeting'] = true
-                            fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                            if fEvent33 == 0:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:202', false)
-                            elif fEvent33 == 1:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:203', false)
-                            elif fEvent33 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
+                            run Retype
                 else:
                     run Cancell
             else:
@@ -86,10 +78,11 @@ entrypoint Event27:
                             run Retype
                     else:
                         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:101', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                            run Retype
-                        elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                            else:
+                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
                             EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
                             event_flags_npc['cNpcMemory:InputGreeting'] = true
                             fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -100,16 +93,7 @@ entrypoint Event27:
                             elif fEvent33 == 2:
                                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
                         else:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
-                            EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
-                            event_flags_npc['cNpcMemory:InputGreeting'] = true
-                            fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                            if fEvent33 == 0:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:202', false)
-                            elif fEvent33 == 1:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:203', false)
-                            elif fEvent33 == 2:
-                                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
+                            run Retype
                 else:
                     run Cancell
             else:
@@ -138,10 +122,11 @@ entrypoint Event27:
                         run Retype
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:101', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                        run Retype
-                    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
                         EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
                         event_flags_npc['cNpcMemory:InputGreeting'] = true
                         fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -152,16 +137,7 @@ entrypoint Event27:
                         elif fEvent33 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
                     else:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
-                        EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
-                        event_flags_npc['cNpcMemory:InputGreeting'] = true
-                        fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                        if fEvent33 == 0:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:202', false)
-                        elif fEvent33 == 1:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:203', false)
-                        elif fEvent33 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
+                        run Retype
             else:
                 run Cancell
         else:
@@ -190,10 +166,11 @@ entrypoint Event27:
                         run Retype
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:101', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                        run Retype
-                    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:200', false)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
                         EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
                         event_flags_npc['cNpcMemory:InputGreeting'] = true
                         fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
@@ -204,16 +181,7 @@ entrypoint Event27:
                         elif fEvent33 == 2:
                             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
                     else:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:201', false)
-                        EventFlowSystemActor.SaveSetFromUIResult('cGreeting')
-                        event_flags_npc['cNpcMemory:InputGreeting'] = true
-                        fEvent33 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                        if fEvent33 == 0:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:202', false)
-                        elif fEvent33 == 1:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:203', false)
-                        elif fEvent33 == 2:
-                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachB_Greeting:204', false)
+                        run Retype
             else:
                 run Cancell
         else:

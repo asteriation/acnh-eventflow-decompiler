@@ -20,27 +20,27 @@ entrypoint Event47:
     return
 
 flow Fossil:
-    if any ('Fossil', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        if not event_flags_system['cLand:MuseumBuilt']:
-entrypoint Event33:
+    if not any ('Fossil', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+        if event_flags_system['cLand:MuseumBuilt']:
             MainNpc.NpcDelivery('"Default"', 3)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:114', false)
-            MainNpc.NpcAddFriendship(1)
-        elif MainNpc.OwlIsDonation('cDeliveryItem'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
-            MainNpc.NpcDelivery('"Default"', 3)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:111', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:112', false)
             MainNpc.NpcAddFriendship(1)
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:113', false)
-            MainNpc.NpcDelivery('Default', 10)
-            EventFlowSystemActor.ExitFlowchart()
-    elif event_flags_system['cLand:MuseumBuilt']:
+            run No_Museum
+    elif not event_flags_system['cLand:MuseumBuilt']:
+entrypoint Event33:
         MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:112', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:114', false)
+        MainNpc.NpcAddFriendship(1)
+    elif MainNpc.OwlIsDonation('cDeliveryItem'):
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:002', false)
+        MainNpc.NpcDelivery('"Default"', 3)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:111', false)
         MainNpc.NpcAddFriendship(1)
     else:
-        run No_Museum
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:113', false)
+        MainNpc.NpcDelivery('Default', 10)
+        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Furniture:
@@ -51,10 +51,11 @@ flow Furniture:
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:100', false)
     if any ('DecorateFtr', '', '', '', '', '', '', '') in EventFlowSystemActor.CategoryItemSelect('cItemSelect'):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:101', false)
-    elif any ('DoorDeco', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:102', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:103', false)
+        if any ('DoorDeco', '', '', '', '', '', '', '') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:102', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:103', false)
     MainNpc.NpcAddFriendship(3)
     MainNpc.NpcSetShowFlag()
     return

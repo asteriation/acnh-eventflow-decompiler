@@ -2,38 +2,37 @@ flow BeyDailyQ_GetFish:
     if (EventFlowSystemActor.IsMyVillage()) and (EventFlowSystemActor.SystemCheckNowStage('cField')):
         run SNPC_bey_daily::Tag_daily_Num
         if event_flags_system['cPlayer:BeyDaily_QuestStart']:
-            if event_flags_system['cLand:BeyRequireFishSize'] < 3:
-                if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
+            if event_flags_system['cLand:BeyRequireFishSize'] >= 3:
+                if event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
                     if not event_flags_system['cPlayer:BeyDaily_GetDemo_Clear']:
-                        if event_flags_system['cLand:BeyRequireFishSize'] == 0:
-                            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:011', false)
-                            event_flags_system['cPlayer:BeyDaily_GetDemo_Clear'] = true
-                        else:
-                            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:021', false)
-                            event_flags_system['cPlayer:BeyDaily_GetDemo_Clear'] = true
+                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:003', false)
+                        event_flags_system['cPlayer:BeyDaily_GetDemo_Clear'] = true
                 elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
-                    if event_flags_system['cLand:BeyRequireFishSize'] == 0:
-                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:010', false)
-                    else:
-                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:020', false)
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:002', false)
                 elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
-                    if event_flags_system['cLand:BeyRequireFishSize'] == 0:
-                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:012', false)
-                    else:
-                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:022', false)
-                elif event_flags_system['cLand:BeyRequireFishSize'] == 0:
-                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:013', false)
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:001', false)
                 else:
-                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:023', false)
-            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 5:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:004', false)
+            elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 3:
                 if not event_flags_system['cPlayer:BeyDaily_GetDemo_Clear']:
-                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:003', false)
+                    if event_flags_system['cLand:BeyRequireFishSize'] == 0:
+                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:011', false)
+                    else:
+                        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:021', false)
                     event_flags_system['cPlayer:BeyDaily_GetDemo_Clear'] = true
             elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 2:
-                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:002', false)
+                if event_flags_system['cLand:BeyRequireFishSize'] == 0:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:010', false)
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:020', false)
             elif event_flags_system['cPlayer:BeyDaily_QuestCount'] >= 1:
-                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:001', false)
+                if event_flags_system['cLand:BeyRequireFishSize'] == 0:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:012', false)
+                else:
+                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:022', false)
+            elif event_flags_system['cLand:BeyRequireFishSize'] == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:013', false)
             else:
-                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:004', false)
+                EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Get_Fish_BeyDailyQ:023', false)
     return
 

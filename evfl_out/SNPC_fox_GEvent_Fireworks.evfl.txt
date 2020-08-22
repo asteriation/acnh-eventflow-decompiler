@@ -36,14 +36,15 @@ entrypoint Event30:
                 EventFlowSystemActor.WaitFrame(35)
                 Player.TurnBody(0, 0.0)
                 MainNpc.OpenMessageWindow('TalkSNpc/fox/GEvent/SP_fox_GEvent_Fireworks:008', false)
-                if not ((EventFlowSystemActor.CatalogItemFrom('FoxStand')) and (EventFlowSystemActor.CatalogItemFrom('FoxStandNonExpendable')) and (EventFlowSystemActor.CatalogItemFrom('FoxStandBalloon'))):
-                    MainNpc.DecideEventReward('cFireWorksFox')
-                elif not EventFlowSystemActor.PercentChoice(80):
-                    MainNpc.DecideEventReward('cFireWorksFoxNonExpendable')
-                elif EventFlowSystemActor.PercentChoice(25):
-                    MainNpc.DecideEventReward('cFireWorksFoxBalloon')
+                if (EventFlowSystemActor.CatalogItemFrom('FoxStand')) and (EventFlowSystemActor.CatalogItemFrom('FoxStandNonExpendable')) and (EventFlowSystemActor.CatalogItemFrom('FoxStandBalloon')):
+                    if not EventFlowSystemActor.PercentChoice(80):
+                        MainNpc.DecideEventReward('cFireWorksFoxNonExpendable')
+                    elif EventFlowSystemActor.PercentChoice(25):
+                        MainNpc.DecideEventReward('cFireWorksFoxBalloon')
+                    else:
+                        MainNpc.DecideEventReward('cFireWorksFoxExpendable')
                 else:
-                    MainNpc.DecideEventReward('cFireWorksFoxExpendable')
+                    MainNpc.DecideEventReward('cFireWorksFox')
                 MainNpc.SetItemName(0, 1, 0)
                 run PrizeComment
                 MainNpc.SetDeliveryItem(1, false)

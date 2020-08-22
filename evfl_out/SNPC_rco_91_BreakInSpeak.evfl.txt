@@ -26,11 +26,12 @@ flow ObjRcoMachineCheck1st:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_03', false)
                 if event_flags_system['cLand:RcmImmQuestComplete']:
                     event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
-            elif event_flags_system['cLand:TanuportAmiiboCampUnlock']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_04', false)
-                event_flags_system['cPlayer:RcoMachineAmiiboCamperUnlock'] = true
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_02', false)
+                if event_flags_system['cLand:TanuportAmiiboCampUnlock']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_04', false)
+                    event_flags_system['cPlayer:RcoMachineAmiiboCamperUnlock'] = true
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_91_BreakInSpeak:001_02', false)
     return
 
 flow ObjRcoMachineCheck1st_Init:

@@ -51,8 +51,12 @@ entrypoint Event7:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_02', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_03', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_04', false)
-            elif event_flags_system['cPlayer:RcmDeclinedQuestReq']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_02', false)
+            else:
+                if event_flags_system['cPlayer:RcmDeclinedQuestReq']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002', false)
+                    event_flags_system['cPlayer:RcmDeclinedQuestReq'] = true
                 EventFlowSystemActor.UIMoneyAppear()
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
 entrypoint Event62:
@@ -65,91 +69,27 @@ entrypoint Event62:
                     run SNPC_rcm_00_Common_Sell::Root
                 elif fEvent62 == 3:
                     run SNPC_rcm_00_Common::rcm_Common_End
+    else:
+        if event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_00', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_01', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_10', false)
+        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event7:
+            event_flags_system['cPlayer:RcmTookQuestReq'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_03', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_04', false)
+        else:
+            if event_flags_system['cPlayer:RcmDeclinedQuestReq']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_02', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002', false)
                 event_flags_system['cPlayer:RcmDeclinedQuestReq'] = true
-                EventFlowSystemActor.UIMoneyAppear()
-                MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
-entrypoint Event62:
-                fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent62 == 2:
-                    run RcmConfirmConsultation
-                elif fEvent62 == 1:
-                    run SNPC_rcm_00_Common::Rcm_Common_Buy
-                elif fEvent62 == 0:
-                    run SNPC_rcm_00_Common_Sell::Root
-                elif fEvent62 == 3:
-                    run SNPC_rcm_00_Common::rcm_Common_End
-    elif event_flags_system['cPlayerTemp:RcmTalkSceneFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_00', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_10', false)
-        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event7:
-            event_flags_system['cPlayer:RcmTookQuestReq'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_03', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_04', false)
-        elif event_flags_system['cPlayer:RcmDeclinedQuestReq']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_02', false)
-            EventFlowSystemActor.UIMoneyAppear()
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
-entrypoint Event62:
-            fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent62 == 2:
-                run RcmConfirmConsultation
-            elif fEvent62 == 1:
-                run SNPC_rcm_00_Common::Rcm_Common_Buy
-            elif fEvent62 == 0:
-                run SNPC_rcm_00_Common_Sell::Root
-            elif fEvent62 == 3:
-                run SNPC_rcm_00_Common::rcm_Common_End
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002', false)
-            event_flags_system['cPlayer:RcmDeclinedQuestReq'] = true
-            EventFlowSystemActor.UIMoneyAppear()
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
-entrypoint Event62:
-            fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent62 == 2:
-                run RcmConfirmConsultation
-            elif fEvent62 == 1:
-                run SNPC_rcm_00_Common::Rcm_Common_Buy
-            elif fEvent62 == 0:
-                run SNPC_rcm_00_Common_Sell::Root
-            elif fEvent62 == 3:
-                run SNPC_rcm_00_Common::rcm_Common_End
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:001_10', false)
-        event_flags_system['cPlayerTemp:RcmTalkSceneFlag'] = true
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-entrypoint Event7:
-            event_flags_system['cPlayer:RcmTookQuestReq'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_03', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:012_04', false)
-        elif event_flags_system['cPlayer:RcmDeclinedQuestReq']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_02', false)
-            EventFlowSystemActor.UIMoneyAppear()
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
-entrypoint Event62:
-            fEvent62 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent62 == 2:
-                run RcmConfirmConsultation
-            elif fEvent62 == 1:
-                run SNPC_rcm_00_Common::Rcm_Common_Buy
-            elif fEvent62 == 0:
-                run SNPC_rcm_00_Common_Sell::Root
-            elif fEvent62 == 3:
-                run SNPC_rcm_00_Common::rcm_Common_End
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002', false)
-            event_flags_system['cPlayer:RcmDeclinedQuestReq'] = true
             EventFlowSystemActor.UIMoneyAppear()
             MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_02_TentRequest:002_01', false)
 entrypoint Event62:

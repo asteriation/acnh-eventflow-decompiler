@@ -76,7 +76,20 @@ entrypoint Event89:
             event_flags_system['cPlayer:RcoRemakeTrialOngoing'] = true
             event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = false
             EventFlowSystemActor.ExitFlowchart()
-    elif not EventFlowSystemActor.HasTargetItem(3436, 1):
+    elif EventFlowSystemActor.HasTargetItem(3436, 1):
+        if event_flags_system['cPlayer:RcoRemakeTrialGetFurniture']:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:111', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:115', false)
+        else:
+            event_flags_system['cPlayer:RcoRemakeTrialGetFurniture'] = true
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:113', false)
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:114_01', false)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:116', false)
+        else:
+            DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:114_02', false)
+            event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull'] = true
+    else:
         DynamicCast_rco.NpcWaitTalkPrepare()
         DynamicCast_rco.TurnBody(10, 0.0)
         DynamicCast_rco.NpcWaitTurn()
@@ -90,15 +103,6 @@ entrypoint Event89:
                 DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:111', false)
         DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:112', false)
         event_flags_system['cPlayerTemp:RcoAccessWorkingTable'] = false
-    elif event_flags_system['cPlayer:RcoRemakeTrialGetFurniture']:
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:111', false)
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:115', false)
-        run sub_grp!Event134
-    else:
-        event_flags_system['cPlayer:RcoRemakeTrialGetFurniture'] = true
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:113', false)
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:114_01', false)
-        run sub_grp!Event134
     return
 
 flow RcoDIYongoing:
@@ -194,12 +198,13 @@ flow RcoTentAskDIYtrial:
     return
 
 flow RcoTentFishInsect:
-    if not event_flags_system['cPlayer:RcoTentDonation']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_01', false)
-    elif event_flags_system['cPlayerTemp:RcoDonationNow']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_03', false)
+    if event_flags_system['cPlayer:RcoTentDonation']:
+        if event_flags_system['cPlayerTemp:RcoDonationNow']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_03', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_02', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_02', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:001_01', false)
     EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cItemSelect', 'RcoDonationForMuseum', 'cItemFilter', false)
     if EventFlowSystemActor.UIResultMenuDecide():
         MainNpc.SetDeliveryItem(4, false)
@@ -212,10 +217,11 @@ flow RcoTentFishInsect:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:004', false)
             if event_flags_system['cPlayer:RcoTentDonation']:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_03', false)
-            elif event_flags_system['cPlayer:RcoTentDonatinDeclined']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_02', false)
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_01', false)
+                if event_flags_system['cPlayer:RcoTentDonatinDeclined']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_02', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:005_01', false)
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 MainNpc.OwlDonationDone('MultiComplete', 'CompleteRoomType')
                 if EventFlowSystemActor.MuseumDonationNumCheck(5):
@@ -283,11 +289,4 @@ flow RcoTent_Force_PlayerPos:
         Player.PlayerMoveToTarget(157.0, 170.0, 0.0, 0.0, '', false, false)
         MainNpc.TalkCamera(true, 0)
     return
-
-flow sub_grp!Event134:
-    if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:116', false)
-    else:
-        DynamicCast_rco.OpenMessageWindow('TalkSNpc/rco/SP_rco_09_RemakeWorkShop:114_02', false)
-        event_flags_system['cPlayer:RemakeWs_TalkWhenItemFull'] = true
 

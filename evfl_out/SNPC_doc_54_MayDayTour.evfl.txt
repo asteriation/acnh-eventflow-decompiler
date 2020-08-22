@@ -103,24 +103,25 @@ entrypoint Event63:
                         EventFlowSystemActor.SelectRewardItemDirect(12472, 1, 'cVillageRemakePattern', 0)
                         EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 20)
                     if EventFlowSystemActor.HasTargetItem(9964, 1):
-                        if not EventFlowSystemActor.HasTargetItem(9964, 2):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 1, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 3):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 2, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 4):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 3, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 5):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 4, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 6):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 5, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 7):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 6, 'cVillageRemakePattern', 0)
-                        elif not EventFlowSystemActor.HasTargetItem(9964, 8):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 7, 'cVillageRemakePattern', 0)
-                        elif EventFlowSystemActor.HasTargetItem(9964, 9):
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 9, 'cVillageRemakePattern', 0)
+                        if EventFlowSystemActor.HasTargetItem(9964, 2):
+                            if not EventFlowSystemActor.HasTargetItem(9964, 3):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 2, 'cVillageRemakePattern', 0)
+                            elif not EventFlowSystemActor.HasTargetItem(9964, 4):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 3, 'cVillageRemakePattern', 0)
+                            elif not EventFlowSystemActor.HasTargetItem(9964, 5):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 4, 'cVillageRemakePattern', 0)
+                            elif not EventFlowSystemActor.HasTargetItem(9964, 6):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 5, 'cVillageRemakePattern', 0)
+                            elif not EventFlowSystemActor.HasTargetItem(9964, 7):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 6, 'cVillageRemakePattern', 0)
+                            elif not EventFlowSystemActor.HasTargetItem(9964, 8):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 7, 'cVillageRemakePattern', 0)
+                            elif EventFlowSystemActor.HasTargetItem(9964, 9):
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 9, 'cVillageRemakePattern', 0)
+                            else:
+                                EventFlowSystemActor.SelectRewardItemDirect(9964, 8, 'cVillageRemakePattern', 0)
                         else:
-                            EventFlowSystemActor.SelectRewardItemDirect(9964, 8, 'cVillageRemakePattern', 0)
+                            EventFlowSystemActor.SelectRewardItemDirect(9964, 1, 'cVillageRemakePattern', 0)
                         EventFlowSystemActor.SystemMailSend('cAirline', 'MAIL_SP_Airline', 'cFastToday', 'cReward', 'cNone', false, 21)
                     EventFlowSystemActor.PlayerBaggageOperationForEvent('cRestore')
                     EventFlowSystemActor.SystemRequestChangeStage('cFromOutlierToHomeland', 'cCircle', 'cDALWithLoadWait', 'cBlack', 1.0, 1.0)

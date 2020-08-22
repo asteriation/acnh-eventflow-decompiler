@@ -305,12 +305,11 @@ flow Root_7_Cupcake_3:
         MainNpc.SetEventRewardToPlayerBaggage('cFree')
         Player.CharacterEmoticonAction('Smiling', '', 0, false, false)
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:029', false)
-    elif event_flags_system['cPlayer:BirthdayPNotPresentFlag']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:030', false)
-        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 4, 6, 'cNone', 'cReward', 'cFastToday')
-        MainNpc.NpcDelivery('Default', 3)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:031', false)
+        if event_flags_system['cPlayer:BirthdayPNotPresentFlag']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:030', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:031', false)
         MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 4, 6, 'cNone', 'cReward', 'cFastToday')
         MainNpc.NpcDelivery('Default', 3)
     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP_H:032', true)

@@ -52,10 +52,11 @@ flow Check_MyDesign:
             EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter3', 'MyDesignCenter', 'cDefault', false, false, false, 0)
         else:
             EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter2', 'MyDesignCenter', 'cDefault', false, false, false, 0)
-    elif MainNpc.NpcBlackBoard('CheckMyDesign', 129):
-        EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter1', 'MyDesignCenter', 'cDefault', false, false, false, 0)
     else:
-        EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter0', 'MyDesignCenter', 'cDefault', false, false, false, 0)
+        if MainNpc.NpcBlackBoard('CheckMyDesign', 129):
+            EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter1', 'MyDesignCenter', 'cDefault', false, false, false, 0)
+        else:
+            EventFlowSystemActor.CameraSetDemoParam('CameraTag:MyDesignCenter0', 'MyDesignCenter', 'cDefault', false, false, false, 0)
     run Hgh_Common_Greetings
     if event_flags_system['cPlayerTemp:TailorChkObject']:
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:021_01', false)
@@ -71,18 +72,17 @@ flow Hgh_BuyAfter:
         event_flags_system['cPlayer:KinuyoTalkInTailorFlag'] = true
         Player.TurnBody(0, 0.0)
         MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:060', false)
-        if not event_flags_system['cPlayer:KinuyoTalkBoforeFlag']:
-            event_flags_system['cPlayer:KinuyoTalkBoforeFlag'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:063', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006', false)
-            EventFlowSystemActor.ExitFlowchart()
-        elif event_flags_system['cPlayer:KinuyoTailorBuildFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:061', false)
+        if event_flags_system['cPlayer:KinuyoTalkBoforeFlag']:
+            if event_flags_system['cPlayer:KinuyoTailorBuildFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:061', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:062', false)
             MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
             EventFlowSystemActor.ExitFlowchart()
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:062', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:004', false)
+            event_flags_system['cPlayer:KinuyoTalkBoforeFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:063', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:006', false)
             EventFlowSystemActor.ExitFlowchart()
     return
 

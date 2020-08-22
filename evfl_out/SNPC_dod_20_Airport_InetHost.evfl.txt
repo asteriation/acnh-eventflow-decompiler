@@ -11,10 +11,9 @@ flow EntryPoint_BestFriend:
 
 flow EntryPoint_Friend:
     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
-    if not EventFlowSystemActor.NetHasFriend():
-        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:220', true)
-    elif event_flags_system['cPlayer:MainmenuFriendList']:
+    if EventFlowSystemActor.NetHasFriend():
+        if not event_flags_system['cPlayer:MainmenuFriendList']:
+            run SNPC_dod_22_Airport_InstallFriendList::Root
         EventFlowSystemActor.NetCreateSessionVillage('cFriend')
         if event_flags_system['cPlayer:EquipLicenseHelmet']:
             run SNPC_dod_AirPort::LandMakingRemove_Host
@@ -23,14 +22,8 @@ flow EntryPoint_Friend:
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:120', true)
         EventFlowSystemActor.OpenVillageGate(false)
     else:
-        run SNPC_dod_22_Airport_InstallFriendList::Root
-        EventFlowSystemActor.NetCreateSessionVillage('cFriend')
-        if event_flags_system['cPlayer:EquipLicenseHelmet']:
-            run SNPC_dod_AirPort::LandMakingRemove_Host
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:120', true)
-        EventFlowSystemActor.OpenVillageGate(false)
+        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:220', true)
     return
 
 flow EntryPoint_InetHost:
@@ -124,10 +117,9 @@ flow EntryPoint_KeywordOnlyBestFriend:
 
 flow EntryPoint_KeywordOnlyFriend:
     EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
-    if not EventFlowSystemActor.NetHasFriend():
-        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:220', true)
-    elif event_flags_system['cPlayer:MainmenuFriendList']:
+    if EventFlowSystemActor.NetHasFriend():
+        if not event_flags_system['cPlayer:MainmenuFriendList']:
+            run SNPC_dod_22_Airport_InstallFriendList::Root
         EventFlowSystemActor.NetCreateSessionVillage('cLimited')
 entrypoint Event112:
         EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
@@ -139,16 +131,7 @@ entrypoint Event112:
         EventFlowSystemActor.OpenVillageGate(false)
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:405', true)
     else:
-        run SNPC_dod_22_Airport_InstallFriendList::Root
-        EventFlowSystemActor.NetCreateSessionVillage('cLimited')
-entrypoint Event112:
-        EventFlowSystemActor.UIVersionGuideDisappear('cNormal')
-        if event_flags_system['cPlayer:EquipLicenseHelmet']:
-            run SNPC_dod_AirPort::LandMakingRemove_Host
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:122', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:120', true)
-        EventFlowSystemActor.OpenVillageGate(false)
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:405', true)
+        EventFlowSystemActor.NetEndSessionVillage('cEndVillageSession', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_41_MultiPlayInet:220', true)
     return
 

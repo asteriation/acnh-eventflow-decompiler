@@ -244,12 +244,13 @@ entrypoint Event1:
             elif fEvent153 == 1:
                 event_flags_system['cPlayer:HeldCeremonyMuseum'] = true
                 EventFlowSystemActor.SystemRequestChangeStage('cMainFieldCeremonyMuseum', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    elif subflow_results[7] in (0, 1, 2, 3, 4, 5):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_01', false)
-        run sub_grp!Event134
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_02', false)
-        run sub_grp!Event134
+        if subflow_results[7] in (0, 1, 2, 3, 4, 5):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_01', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:203_02', false)
+        if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
+            run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
     return
 
 flow Rco_Ceremony_Multi_Cancel:
@@ -278,8 +279,4 @@ flow Tailor:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_08_Ceremony:102_05', false)
     run Event76
     return
-
-flow sub_grp!Event134:
-    if EventFlowSystemActor.OfficeLevel() == ResServiceBuilding:
-        run SNPC_rco_00_Common::Rco_Office_CmnSelAgain
 

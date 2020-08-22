@@ -5,7 +5,23 @@ flow Root:
         MainNpc.NpcDelivery('"Default"', 3)
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:222', false)
         MainNpc.NpcAddFriendship(1)
-    elif not EventFlowSystemActor.UISelectedItemIsEquiped(0, 'cItemSelect', false):
+    elif EventFlowSystemActor.UISelectedItemIsEquiped(0, 'cItemSelect', false):
+        if EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Tops', 'OnePiece', 'Cap', 'Accessory') in (1, 2):
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:100', false)
+            if MainNpc.IsNpcPlayerRelativeItem() != 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:101', false)
+            MainNpc.NpcDelivery('"Default"', 3)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:102', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:110', false)
+            if MainNpc.IsNpcPlayerRelativeItem() != 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:111', false)
+            MainNpc.NpcDelivery('"Default"', 3)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:112', false)
+        MainNpc.NpcAddFriendship(1)
+    else:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:001', false)
         if MainNpc.IsNpcPlayerRelativeItem() != 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
@@ -42,21 +58,5 @@ flow Root:
             MainNpc.NpcAddFriendship(2)
         else:
             MainNpc.NpcAddFriendship(1)
-    elif EventFlowSystemActor.MultiKindItemSelectIncludeChoice5('cItemSelect', 5, 'Tops', 'OnePiece', 'Cap', 'Accessory') in (1, 2):
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:100', false)
-        if MainNpc.IsNpcPlayerRelativeItem() != 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:101', false)
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:102', false)
-        MainNpc.NpcAddFriendship(1)
-    else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:110', false)
-        if MainNpc.IsNpcPlayerRelativeItem() != 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_Present:104', false)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:111', false)
-        MainNpc.NpcDelivery('"Default"', 3)
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Select/BO_Select_General:112', false)
-        MainNpc.NpcAddFriendship(1)
     return
 

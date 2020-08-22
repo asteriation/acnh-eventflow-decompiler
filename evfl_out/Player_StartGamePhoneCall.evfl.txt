@@ -53,14 +53,15 @@ entrypoint Event86:
         if not event_flags_system['cPlayer:PhoneCallByRct']:
             EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:002', false)
             event_flags_system['cPlayer:PhoneCallByRct'] = true
-    if not event_flags_system['cPlayer:DocUsePurchaseServiceFalg']:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:003', false)
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
-    elif event_flags_system['cPlayer:UsePurchaseBOXFalg']:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:006', false)
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004_pl', true)
+    if event_flags_system['cPlayer:DocUsePurchaseServiceFalg']:
+        if event_flags_system['cPlayer:UsePurchaseBOXFalg']:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:006', false)
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004_pl', true)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:005', false)
+            EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:005', false)
+        EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:003', false)
         EventFlowSystemActor.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_80_PhoneCall:004', true)
     event_flags_system['cPlayer:UsePurchaseBOXFalg'] = false
     event_flags_system['cPlayer:DocUsePurchaseServiceFalg'] = false
@@ -170,11 +171,12 @@ flow PhoneUnlock_Continue:
 flow Root:
     run ChkPhoneCall
     event_flags_system['cPlayer:StandByGameStartPhoneCall'] = false
-    if subflow_results[7] != 0:
+    if subflow_results[7] == 0:
+        if subflow_results[2] != 0:
+            run UnlockAmiiboPosterTell
+            subflow_results[1] = 1
+    else:
         run GEvent_JuneBrideTell
-        subflow_results[1] = 1
-    elif subflow_results[2] != 0:
-        run UnlockAmiiboPosterTell
         subflow_results[1] = 1
     if subflow_results[3] != 0:
         if subflow_results[1] == 0:
@@ -196,11 +198,11 @@ flow Root:
             run IslandCreaterTell_Continued
     if subflow_results[5] == 0:
         run PhoneTalkEnd2
-    elif subflow_results[1] == 0:
-        run UnlockSharePlayOn1231
-        run PhoneTalkEnd2
     else:
-        run UnlockSharePlayOn1231_Continued
+        if subflow_results[1] == 0:
+            run UnlockSharePlayOn1231
+        else:
+            run UnlockSharePlayOn1231_Continued
         run PhoneTalkEnd2
     return
 

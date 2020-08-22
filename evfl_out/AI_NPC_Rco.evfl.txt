@@ -14,13 +14,13 @@ flow AI_Rco_ChkForceIslandDevelopment:
     if (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (event_flags_system['cLand:RcoBuildCampsiteOngoing']):
         if not event_flags_system['cLand:RcoBuildCampsiteComplete']:
             pass
-        elif event_flags_system['cLand:CampSiteBuilt']:
-            if event_flags_system['cLand:RcoMeetFirstVisitorRequest']:
-                run Root2CampSiteVisitor
-            elif (event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']) and (not event_flags_system['cPlayer:IslandDevQuestTalkAfterBuildCamp']):
-                run Rco_Force_IslandDev_BuildCampSite
-        elif (event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']) and (not event_flags_system['cPlayer:IslandDevQuestTalkAfterCampSet']):
-            run Rco_Force_IslandDev_SetCampSite
+        elif not event_flags_system['cLand:CampSiteBuilt']:
+            if (event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']) and (not event_flags_system['cPlayer:IslandDevQuestTalkAfterCampSet']):
+                run Rco_Force_IslandDev_SetCampSite
+        elif event_flags_system['cLand:RcoMeetFirstVisitorRequest']:
+            run Root2CampSiteVisitor
+        elif (event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']) and (not event_flags_system['cPlayer:IslandDevQuestTalkAfterBuildCamp']):
+            run Rco_Force_IslandDev_BuildCampSite
     return
 
 flow AI_Rco_Disable_OfficeFirstTalk:
@@ -115,11 +115,12 @@ flow Init:
         MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
         if EventFlowSystemActor.NetIsConnected():
             MainNpc.NpcDisableServiceMotion()
-    elif EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
-        MainNpc.NpcAISetCheckRobFunc('SNPC_rco_91_BreakInSpeak', 'ObjRcoRecycleBox1st', 'CheckRob_LostPropertyBox', 'cTanukichiLostItemBox', false, true)
-        MainNpc.NpcAISetCheckRobFunc('Ftr_Working', 'Root_Tutorial', 'CheckRob_WorkBench', 'cTanukichiTent', false, false)
-        MainNpc.NpcAISetCheckRobFunc('SNPC_rco_91_BreakInSpeak', 'ObjRcoMachineCheck1st', 'CheckRob_ATM', 'cTanukichiATM', false, true)
-        MainNpc.NpcSetTalkDistance(25.0)
+    else:
+        if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
+            MainNpc.NpcAISetCheckRobFunc('SNPC_rco_91_BreakInSpeak', 'ObjRcoRecycleBox1st', 'CheckRob_LostPropertyBox', 'cTanukichiLostItemBox', false, true)
+            MainNpc.NpcAISetCheckRobFunc('Ftr_Working', 'Root_Tutorial', 'CheckRob_WorkBench', 'cTanukichiTent', false, false)
+            MainNpc.NpcAISetCheckRobFunc('SNPC_rco_91_BreakInSpeak', 'ObjRcoMachineCheck1st', 'CheckRob_ATM', 'cTanukichiATM', false, true)
+            MainNpc.NpcSetTalkDistance(25.0)
     MainNpc.NpcAISetting(0, true)
     MainNpc.NpcAISetting(1, true)
     MainNpc.NpcAISetting(8, true)
@@ -241,19 +242,19 @@ flow Root:
     return
 
 flow Root2CampSiteVisitor:
-    if event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
-        if not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
+    if not event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
+        if event_flags_system['cLand:RcoMeetFirstVisitorOngoing']:
             pass
-        elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
-            pass
-        elif (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
-            run Root3IslandEvaluation
-        elif (event_flags_system['cPlayer:SetHousingKitForFirstCamper']) and (not event_flags_system['cPlayer:SzaHeardAboutHousingKit']):
-            run Rco_Force_IslandDev_AfterSetCamperHouse
-    elif event_flags_system['cLand:RcoMeetFirstVisitorOngoing']:
+        else:
+            run Rco_Force_IslandDev_RequestMeetCamper
+    elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
         pass
-    else:
-        run Rco_Force_IslandDev_RequestMeetCamper
+    elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
+        pass
+    elif (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
+        run Root3IslandEvaluation
+    elif (event_flags_system['cPlayer:SetHousingKitForFirstCamper']) and (not event_flags_system['cPlayer:SzaHeardAboutHousingKit']):
+        run Rco_Force_IslandDev_AfterSetCamperHouse
     return
 
 flow Root3IslandEvaluation:
@@ -268,166 +269,20 @@ flow SetOfficeForceTalk:
     return
 
 flow sub_grp!Event18:
-    if MainNpc.NpcCheckStateSelectTiming('cInit'):
-        if EventFlowSystemActor.NetIsConnected():
-            run AI_Rco_NormalTalk
+    if not MainNpc.NpcCheckStateSelectTiming('cInit'):
+        if EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
+            MainNpc.NpcChangeAIState('cOfficeWait', 'SNPC_rco', 'Root', '', true, true)
+            if MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
+                MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
         else:
-            fEvent131 = EventFlowSystemActor.OfficeLevel()
-            if fEvent131 in (ResServiceTent0, ResServiceTent1):
-                if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                    run System_MigrantsQuestProcess::ImmQClearChk
-                    if EventFlowSystemActor.IsSharePlay(0):
-                        run AI_Rco_NormalTalk
-                    elif event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
-                        fEvent108 = EventFlowSystemActor.OfficeLevel()
-                        if fEvent108 == ResServiceBuilding:
-                            if event_flags_system['cPlayer:RcoFirstTalkNewOffice']:
-entrypoint Event78:
-                                if event_flags_system['cPlayer:PlayerLoanFinish1st']:
-                                    run Rco_Force_FinishLoan
-                                elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
-                                    fEvent29 = EventFlowSystemActor.OfficeLevel()
-                                    if fEvent29 == ResServiceBuilding:
-                                        run AI_Rco_ChkForceIslandDevelopment
-                                        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                            run Rco_Force_InviteRemakeWorkshop
-                                        else:
-                                            run AI_Rco_NormalTalk
-                                    elif fEvent29 in (ResServiceTent0, ResServiceTent1):
-                                        if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
-                                            run Rco_Force_OwlTentSet
-                                        else:
-                                            run AI_Rco_ChkForceImmQ
-                                            if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                                run Rco_Force_InviteRemakeWorkshop
-                                            else:
-                                                run AI_Rco_NormalTalk
-                                elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                                    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                                        run Rco_Force_AfterRemodel
-                                    elif event_flags_system['cPlayer:RcmTookQuestReq']:
-                                        run Rco_Force_AfterRemodel
-                                    else:
-                                        run Rco_Force_BuiltHouse_ShopMaterial
-                                else:
-                                    run Rco_Force_AfterRemodel
-                            elif event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
-                                run AI_Rco_Disable_OfficeFirstTalk
-                            else:
-                                fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
-                                if fEvent33 == 3:
-                                    run Rco_Force_OfficeFirstTalk
-                                elif fEvent33 in (0, 1, 2):
-                                    run AI_Rco_Disable_OfficeFirstTalk
-                        elif fEvent108 in (ResServiceTent0, ResServiceTent1):
-entrypoint Event78:
-                            if event_flags_system['cPlayer:PlayerLoanFinish1st']:
-                                run Rco_Force_FinishLoan
-                            elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
-                                fEvent29 = EventFlowSystemActor.OfficeLevel()
-                                if fEvent29 == ResServiceBuilding:
-                                    run AI_Rco_ChkForceIslandDevelopment
-                                    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                        run Rco_Force_InviteRemakeWorkshop
-                                    else:
-                                        run AI_Rco_NormalTalk
-                                elif fEvent29 in (ResServiceTent0, ResServiceTent1):
-                                    if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
-                                        run Rco_Force_OwlTentSet
-                                    else:
-                                        run AI_Rco_ChkForceImmQ
-                                        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                            run Rco_Force_InviteRemakeWorkshop
-                                        else:
-                                            run AI_Rco_NormalTalk
-                            elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                                if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                                    run Rco_Force_AfterRemodel
-                                elif event_flags_system['cPlayer:RcmTookQuestReq']:
-                                    run Rco_Force_AfterRemodel
-                                else:
-                                    run Rco_Force_BuiltHouse_ShopMaterial
-                            else:
-                                run Rco_Force_AfterRemodel
-                    else:
-                        run Rco_Force_FirstVisit
-                else:
-                    if EventFlowSystemActor.IsSharePlay(0):
-                        run AI_Rco_NormalTalk
-                    elif event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
-                        fEvent108 = EventFlowSystemActor.OfficeLevel()
-                        if fEvent108 == ResServiceBuilding:
-                            if event_flags_system['cPlayer:RcoFirstTalkNewOffice']:
-entrypoint Event78:
-                                if event_flags_system['cPlayer:PlayerLoanFinish1st']:
-                                    run Rco_Force_FinishLoan
-                                elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
-                                    fEvent29 = EventFlowSystemActor.OfficeLevel()
-                                    if fEvent29 == ResServiceBuilding:
-                                        run AI_Rco_ChkForceIslandDevelopment
-                                        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                            run Rco_Force_InviteRemakeWorkshop
-                                        else:
-                                            run AI_Rco_NormalTalk
-                                    elif fEvent29 in (ResServiceTent0, ResServiceTent1):
-                                        if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
-                                            run Rco_Force_OwlTentSet
-                                        else:
-                                            run AI_Rco_ChkForceImmQ
-                                            if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                                run Rco_Force_InviteRemakeWorkshop
-                                            else:
-                                                run AI_Rco_NormalTalk
-                                elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                                    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                                        run Rco_Force_AfterRemodel
-                                    elif event_flags_system['cPlayer:RcmTookQuestReq']:
-                                        run Rco_Force_AfterRemodel
-                                    else:
-                                        run Rco_Force_BuiltHouse_ShopMaterial
-                                else:
-                                    run Rco_Force_AfterRemodel
-                            elif event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
-                                run AI_Rco_Disable_OfficeFirstTalk
-                            else:
-                                fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
-                                if fEvent33 == 3:
-                                    run Rco_Force_OfficeFirstTalk
-                                elif fEvent33 in (0, 1, 2):
-                                    run AI_Rco_Disable_OfficeFirstTalk
-                        elif fEvent108 in (ResServiceTent0, ResServiceTent1):
-entrypoint Event78:
-                            if event_flags_system['cPlayer:PlayerLoanFinish1st']:
-                                run Rco_Force_FinishLoan
-                            elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
-                                fEvent29 = EventFlowSystemActor.OfficeLevel()
-                                if fEvent29 == ResServiceBuilding:
-                                    run AI_Rco_ChkForceIslandDevelopment
-                                    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                        run Rco_Force_InviteRemakeWorkshop
-                                    else:
-                                        run AI_Rco_NormalTalk
-                                elif fEvent29 in (ResServiceTent0, ResServiceTent1):
-                                    if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
-                                        run Rco_Force_OwlTentSet
-                                    else:
-                                        run AI_Rco_ChkForceImmQ
-                                        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
-                                            run Rco_Force_InviteRemakeWorkshop
-                                        else:
-                                            run AI_Rco_NormalTalk
-                            elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                                if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                                    run Rco_Force_AfterRemodel
-                                elif event_flags_system['cPlayer:RcmTookQuestReq']:
-                                    run Rco_Force_AfterRemodel
-                                else:
-                                    run Rco_Force_BuiltHouse_ShopMaterial
-                            else:
-                                run Rco_Force_AfterRemodel
-                    else:
-                        run Rco_Force_FirstVisit
-            elif fEvent131 == ResServiceBuilding:
+            MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
+    elif EventFlowSystemActor.NetIsConnected():
+        run AI_Rco_NormalTalk
+    else:
+        fEvent131 = EventFlowSystemActor.OfficeLevel()
+        if fEvent131 in (ResServiceTent0, ResServiceTent1):
+            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                run System_MigrantsQuestProcess::ImmQClearChk
                 if EventFlowSystemActor.IsSharePlay(0):
                     run AI_Rco_NormalTalk
                 elif event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
@@ -455,22 +310,24 @@ entrypoint Event78:
                                         else:
                                             run AI_Rco_NormalTalk
                             elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                                if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
-                                    run Rco_Force_AfterRemodel
-                                elif event_flags_system['cPlayer:RcmTookQuestReq']:
-                                    run Rco_Force_AfterRemodel
+                                if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                                    if event_flags_system['cPlayer:RcmTookQuestReq']:
+                                        run Rco_Force_AfterRemodel
+                                    else:
+                                        run Rco_Force_BuiltHouse_ShopMaterial
                                 else:
-                                    run Rco_Force_BuiltHouse_ShopMaterial
+                                    run Rco_Force_AfterRemodel
                             else:
                                 run Rco_Force_AfterRemodel
-                        elif event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
-                            run AI_Rco_Disable_OfficeFirstTalk
                         else:
-                            fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
-                            if fEvent33 == 3:
-                                run Rco_Force_OfficeFirstTalk
-                            elif fEvent33 in (0, 1, 2):
+                            if event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
                                 run AI_Rco_Disable_OfficeFirstTalk
+                            else:
+                                fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
+                                if fEvent33 == 3:
+                                    run Rco_Force_OfficeFirstTalk
+                                elif fEvent33 in (0, 1, 2):
+                                    run AI_Rco_Disable_OfficeFirstTalk
                     elif fEvent108 in (ResServiceTent0, ResServiceTent1):
 entrypoint Event78:
                         if event_flags_system['cPlayer:PlayerLoanFinish1st']:
@@ -493,20 +350,173 @@ entrypoint Event78:
                                     else:
                                         run AI_Rco_NormalTalk
                         elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
-                            if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                                if event_flags_system['cPlayer:RcmTookQuestReq']:
+                                    run Rco_Force_AfterRemodel
+                                else:
+                                    run Rco_Force_BuiltHouse_ShopMaterial
+                            else:
                                 run Rco_Force_AfterRemodel
-                            elif event_flags_system['cPlayer:RcmTookQuestReq']:
+                        else:
+                            run Rco_Force_AfterRemodel
+                else:
+                    run Rco_Force_FirstVisit
+            else:
+                if EventFlowSystemActor.IsSharePlay(0):
+                    run AI_Rco_NormalTalk
+                elif event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
+                    fEvent108 = EventFlowSystemActor.OfficeLevel()
+                    if fEvent108 == ResServiceBuilding:
+                        if event_flags_system['cPlayer:RcoFirstTalkNewOffice']:
+entrypoint Event78:
+                            if event_flags_system['cPlayer:PlayerLoanFinish1st']:
+                                run Rco_Force_FinishLoan
+                            elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
+                                fEvent29 = EventFlowSystemActor.OfficeLevel()
+                                if fEvent29 == ResServiceBuilding:
+                                    run AI_Rco_ChkForceIslandDevelopment
+                                    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                        run Rco_Force_InviteRemakeWorkshop
+                                    else:
+                                        run AI_Rco_NormalTalk
+                                elif fEvent29 in (ResServiceTent0, ResServiceTent1):
+                                    if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
+                                        run Rco_Force_OwlTentSet
+                                    else:
+                                        run AI_Rco_ChkForceImmQ
+                                        if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                            run Rco_Force_InviteRemakeWorkshop
+                                        else:
+                                            run AI_Rco_NormalTalk
+                            elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
+                                if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                                    if event_flags_system['cPlayer:RcmTookQuestReq']:
+                                        run Rco_Force_AfterRemodel
+                                    else:
+                                        run Rco_Force_BuiltHouse_ShopMaterial
+                                else:
+                                    run Rco_Force_AfterRemodel
+                            else:
+                                run Rco_Force_AfterRemodel
+                        else:
+                            if event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
+                                run AI_Rco_Disable_OfficeFirstTalk
+                            else:
+                                fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
+                                if fEvent33 == 3:
+                                    run Rco_Force_OfficeFirstTalk
+                                elif fEvent33 in (0, 1, 2):
+                                    run AI_Rco_Disable_OfficeFirstTalk
+                    elif fEvent108 in (ResServiceTent0, ResServiceTent1):
+entrypoint Event78:
+                        if event_flags_system['cPlayer:PlayerLoanFinish1st']:
+                            run Rco_Force_FinishLoan
+                        elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
+                            fEvent29 = EventFlowSystemActor.OfficeLevel()
+                            if fEvent29 == ResServiceBuilding:
+                                run AI_Rco_ChkForceIslandDevelopment
+                                if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                    run Rco_Force_InviteRemakeWorkshop
+                                else:
+                                    run AI_Rco_NormalTalk
+                            elif fEvent29 in (ResServiceTent0, ResServiceTent1):
+                                if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
+                                    run Rco_Force_OwlTentSet
+                                else:
+                                    run AI_Rco_ChkForceImmQ
+                                    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                        run Rco_Force_InviteRemakeWorkshop
+                                    else:
+                                        run AI_Rco_NormalTalk
+                        elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
+                            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                                if event_flags_system['cPlayer:RcmTookQuestReq']:
+                                    run Rco_Force_AfterRemodel
+                                else:
+                                    run Rco_Force_BuiltHouse_ShopMaterial
+                            else:
+                                run Rco_Force_AfterRemodel
+                        else:
+                            run Rco_Force_AfterRemodel
+                else:
+                    run Rco_Force_FirstVisit
+        elif fEvent131 == ResServiceBuilding:
+            if EventFlowSystemActor.IsSharePlay(0):
+                run AI_Rco_NormalTalk
+            elif event_flags_system['cPlayer:RcoTalked1stAfterPrologue']:
+                fEvent108 = EventFlowSystemActor.OfficeLevel()
+                if fEvent108 == ResServiceBuilding:
+                    if event_flags_system['cPlayer:RcoFirstTalkNewOffice']:
+entrypoint Event78:
+                        if event_flags_system['cPlayer:PlayerLoanFinish1st']:
+                            run Rco_Force_FinishLoan
+                        elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
+                            fEvent29 = EventFlowSystemActor.OfficeLevel()
+                            if fEvent29 == ResServiceBuilding:
+                                run AI_Rco_ChkForceIslandDevelopment
+                                if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                    run Rco_Force_InviteRemakeWorkshop
+                                else:
+                                    run AI_Rco_NormalTalk
+                            elif fEvent29 in (ResServiceTent0, ResServiceTent1):
+                                if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
+                                    run Rco_Force_OwlTentSet
+                                else:
+                                    run AI_Rco_ChkForceImmQ
+                                    if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                        run Rco_Force_InviteRemakeWorkshop
+                                    else:
+                                        run AI_Rco_NormalTalk
+                        elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
+                            if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                                if event_flags_system['cPlayer:RcmTookQuestReq']:
+                                    run Rco_Force_AfterRemodel
+                                else:
+                                    run Rco_Force_BuiltHouse_ShopMaterial
+                            else:
+                                run Rco_Force_AfterRemodel
+                        else:
+                            run Rco_Force_AfterRemodel
+                    else:
+                        if event_flags_system['cPlayer:SzaTalkFirstNotOffice']:
+                            run AI_Rco_Disable_OfficeFirstTalk
+                        else:
+                            fEvent33 = EventFlowSystemActor.EventCheck('Fireworks')
+                            if fEvent33 == 3:
+                                run Rco_Force_OfficeFirstTalk
+                            elif fEvent33 in (0, 1, 2):
+                                run AI_Rco_Disable_OfficeFirstTalk
+                elif fEvent108 in (ResServiceTent0, ResServiceTent1):
+entrypoint Event78:
+                    if event_flags_system['cPlayer:PlayerLoanFinish1st']:
+                        run Rco_Force_FinishLoan
+                    elif not event_flags_system['cPlayer:RcoAfterHouseRemodel']:
+                        fEvent29 = EventFlowSystemActor.OfficeLevel()
+                        if fEvent29 == ResServiceBuilding:
+                            run AI_Rco_ChkForceIslandDevelopment
+                            if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                run Rco_Force_InviteRemakeWorkshop
+                            else:
+                                run AI_Rco_NormalTalk
+                        elif fEvent29 in (ResServiceTent0, ResServiceTent1):
+                            if event_flags_system['cPlayer:RcoTalkAfterMuseumTent']:
+                                run Rco_Force_OwlTentSet
+                            else:
+                                run AI_Rco_ChkForceImmQ
+                                if event_flags_system['cPlayer:RcoTalkAboutRemakeTrial']:
+                                    run Rco_Force_InviteRemakeWorkshop
+                                else:
+                                    run AI_Rco_NormalTalk
+                    elif not ((event_flags_system['cPlayer:RcoGetTvForCongratsHouse']) or (event_flags_system['cLand:RcoRcmTalkingAboutStoreMaterial'])):
+                        if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+                            if event_flags_system['cPlayer:RcmTookQuestReq']:
                                 run Rco_Force_AfterRemodel
                             else:
                                 run Rco_Force_BuiltHouse_ShopMaterial
                         else:
                             run Rco_Force_AfterRemodel
-                else:
-                    run Rco_Force_FirstVisit
-    elif EventFlowSystemActor.SystemCheckNowStage('cIdrOffice'):
-        MainNpc.NpcChangeAIState('cOfficeWait', 'SNPC_rco', 'Root', '', true, true)
-        if MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-            MainNpc.NpcAISetExitStrc('Greeting', 'cTriggerType_ExitStrc', 0)
-    else:
-        MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_rco', '', true, true, 30, 2, 0, 0, true, false, '', '')
+                    else:
+                        run Rco_Force_AfterRemodel
+            else:
+                run Rco_Force_FirstVisit
 

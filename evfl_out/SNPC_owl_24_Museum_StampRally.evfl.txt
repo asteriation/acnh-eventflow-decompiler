@@ -17,30 +17,32 @@ flow CompCheck:
 
 flow From2ndTime:
     if not ((not EventFlowSystemActor.TermEventNow('InternationalMuseum', false)) or (event_flags_system['cLand:Museum2BuiltToday']) or (event_flags_system['cLand:Museum3BuiltToday'])):
-        if EventFlowSystemActor.IsMyVillage():
-            if event_flags_system['cPlayer:OwlStampPocketWasFull']:
+        if not EventFlowSystemActor.IsMyVillage():
+            if event_flags_system['cPlayerVisit:OwlStampPocketWasFull']:
                 if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                     run Judge
-            elif event_flags_system['cPlayer:StampRallyRunningForPlayer']:
-                run Judge
-            elif event_flags_system['cPlayer:OwlStampPlayed']:
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:004', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:006', false)
-                run QuestJoin
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:001', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:002', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
-                run QuestJoin
-        elif event_flags_system['cPlayerVisit:OwlStampPocketWasFull']:
+                if event_flags_system['cPlayerVisit:StampRallyRunningForPlayer']:
+                    run Judge
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:007', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
+                    run QuestJoin
+        elif event_flags_system['cPlayer:OwlStampPocketWasFull']:
             if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
                 run Judge
-        elif event_flags_system['cPlayerVisit:StampRallyRunningForPlayer']:
-            run Judge
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:007', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
-            run QuestJoin
+            if event_flags_system['cPlayer:StampRallyRunningForPlayer']:
+                run Judge
+            else:
+                if event_flags_system['cPlayer:OwlStampPlayed']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:004', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:006', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:001', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:002', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:003', false)
+                run QuestJoin
     return
 
 flow GotReward:
@@ -69,12 +71,11 @@ flow PocketChk:
             event_flags_system['cPlayer:OwlStampPocketWasFull'] = false
         else:
             event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = false
-    elif EventFlowSystemActor.IsMyVillage():
-        event_flags_system['cPlayer:OwlStampPocketWasFull'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
-        EventFlowSystemActor.ExitFlowchart()
     else:
-        event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = true
+        if EventFlowSystemActor.IsMyVillage():
+            event_flags_system['cPlayer:OwlStampPocketWasFull'] = true
+        else:
+            event_flags_system['cPlayerVisit:OwlStampPocketWasFull'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_24_Museum_StampRally:014', false)
         EventFlowSystemActor.ExitFlowchart()
     return

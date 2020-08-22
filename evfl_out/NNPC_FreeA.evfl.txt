@@ -52,17 +52,19 @@ flow FieldQuestions_Chk:
 
 flow Fireworks_Chk:
     fEvent35 = EventFlowSystemActor.EventCheck('Fireworks')
-    if fEvent35 in (0, 1, 2):
+    if fEvent35 == 3:
+        run ToFreeA_First
+    elif fEvent35 in (0, 1, 2):
         if EventFlowSystemActor.EnvHourCompare(18, 59, true, true) == 0:
             run ToFreeA_First
-        elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) not in (0, 1):
-            run ToFreeA_First
-        elif EventFlowSystemActor.SystemCheckNowStage('cField'):
-            run NNPC_Free_Field::Fireworks_1.4
         else:
-            run NNPC_Free_FieldV::FireworksV_1.4
-    elif fEvent35 == 3:
-        run ToFreeA_First
+            if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) in (0, 1):
+                if EventFlowSystemActor.SystemCheckNowStage('cField'):
+                    run NNPC_Free_Field::Fireworks_1.4
+                else:
+                    run NNPC_Free_FieldV::FireworksV_1.4
+            else:
+                run ToFreeA_First
     return
 
 flow First_Chk:

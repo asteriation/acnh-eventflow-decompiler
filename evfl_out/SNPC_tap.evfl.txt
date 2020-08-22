@@ -367,7 +367,13 @@ flow Root:
         EventFlowSystemActor.WaitFrame(20)
         Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
         EventFlowSystemActor.WaitFrame(10)
-        if not event_flags_system['cPlayer:TapDreamFirstTalk']:
+        if event_flags_system['cPlayer:TapDreamFirstTalk']:
+            if event_flags_system['cPlayer:TapDreamTalkToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_06', false)
+            else:
+                event_flags_system['cPlayer:TapDreamTalkToday'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_05', false)
+        else:
             event_flags_system['cPlayer:TapDreamFirstTalk'] = true
             event_flags_system['cPlayer:TapDreamTalkToday'] = true
             EventFlowSystemActor.WaitFrame(10)
@@ -376,12 +382,22 @@ flow Root:
             MainNpc.NpcChangeNameStatus(0)
             MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_03', false)
             MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_04', false)
-        elif event_flags_system['cPlayer:TapDreamTalkToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_06', false)
+        if (event_flags_system['cLand:EnableMyDream']) and (event_flags_system['cPlayer:TapULFirstExplain']):
+            if event_flags_system['cPlayer:TapSelWhereAreHere']:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_05', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_01', false)
+entrypoint Event42:
+            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent42 == 0:
+                run Download_Dream
+            elif fEvent42 == 1:
+                run About_MyDream
+            elif fEvent42 == 2:
+                run Receive_Explanation
+            elif fEvent42 == 3:
+                run Exit_ThisScene
         else:
-            event_flags_system['cPlayer:TapDreamTalkToday'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_05', false)
-        if not ((event_flags_system['cLand:EnableMyDream']) and (event_flags_system['cPlayer:TapULFirstExplain'])):
             if event_flags_system['cPlayer:TapSelWhereAreHere']:
                 MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_04', false)
             else:
@@ -395,30 +411,6 @@ entrypoint Event3:
             elif fEvent3 == 2:
                 run Receive_Explanation
             elif fEvent3 == 3:
-                run Exit_ThisScene
-        elif event_flags_system['cPlayer:TapSelWhereAreHere']:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_05', false)
-entrypoint Event42:
-            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent42 == 0:
-                run Download_Dream
-            elif fEvent42 == 1:
-                run About_MyDream
-            elif fEvent42 == 2:
-                run Receive_Explanation
-            elif fEvent42 == 3:
-                run Exit_ThisScene
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_01', false)
-entrypoint Event42:
-            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent42 == 0:
-                run Download_Dream
-            elif fEvent42 == 1:
-                run About_MyDream
-            elif fEvent42 == 2:
-                run Receive_Explanation
-            elif fEvent42 == 3:
                 run Exit_ThisScene
     else:
         EventFlowSystemActor.WaitFrame(30)
@@ -435,7 +427,13 @@ entrypoint Event42:
                 EventFlowSystemActor.WaitFrame(30)
                 EventFlowSystemActor.WaitFrame(120)
                 Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
-        if not event_flags_system['cPlayer:TapDreamFirstTalk']:
+        if event_flags_system['cPlayer:TapDreamFirstTalk']:
+            if event_flags_system['cPlayer:TapDreamTalkToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_06', false)
+            else:
+                event_flags_system['cPlayer:TapDreamTalkToday'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_05', false)
+        else:
             event_flags_system['cPlayer:TapDreamFirstTalk'] = true
             event_flags_system['cPlayer:TapDreamTalkToday'] = true
             EventFlowSystemActor.WaitFrame(10)
@@ -444,12 +442,22 @@ entrypoint Event42:
             MainNpc.NpcChangeNameStatus(0)
             MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_03', false)
             MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_04', false)
-        elif event_flags_system['cPlayer:TapDreamTalkToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_06', false)
+        if (event_flags_system['cLand:EnableMyDream']) and (event_flags_system['cPlayer:TapULFirstExplain']):
+            if event_flags_system['cPlayer:TapSelWhereAreHere']:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_05', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_01', false)
+entrypoint Event42:
+            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent42 == 0:
+                run Download_Dream
+            elif fEvent42 == 1:
+                run About_MyDream
+            elif fEvent42 == 2:
+                run Receive_Explanation
+            elif fEvent42 == 3:
+                run Exit_ThisScene
         else:
-            event_flags_system['cPlayer:TapDreamTalkToday'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:001_05', false)
-        if not ((event_flags_system['cLand:EnableMyDream']) and (event_flags_system['cPlayer:TapULFirstExplain'])):
             if event_flags_system['cPlayer:TapSelWhereAreHere']:
                 MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_04', false)
             else:
@@ -463,30 +471,6 @@ entrypoint Event3:
             elif fEvent3 == 2:
                 run Receive_Explanation
             elif fEvent3 == 3:
-                run Exit_ThisScene
-        elif event_flags_system['cPlayer:TapSelWhereAreHere']:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_05', false)
-entrypoint Event42:
-            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent42 == 0:
-                run Download_Dream
-            elif fEvent42 == 1:
-                run About_MyDream
-            elif fEvent42 == 2:
-                run Receive_Explanation
-            elif fEvent42 == 3:
-                run Exit_ThisScene
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:002_01', false)
-entrypoint Event42:
-            fEvent42 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent42 == 0:
-                run Download_Dream
-            elif fEvent42 == 1:
-                run About_MyDream
-            elif fEvent42 == 2:
-                run Receive_Explanation
-            elif fEvent42 == 3:
                 run Exit_ThisScene
     return
 
@@ -657,11 +641,67 @@ entrypoint Event254:
                 run ReturnSelect
     elif event_flags_system['cPlayer:TapTalkAboutMydesignShowcase']:
         run ReturnUpload
-    elif event_flags_system['cPlayer:MyDesignExchangeFirstAccess']:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2034', false)
-        event_flags_system['cPlayer:TapTalkAboutMydesignShowcase'] = true
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2035', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+    else:
+        if event_flags_system['cPlayer:MyDesignExchangeFirstAccess']:
+            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2034', false)
+            event_flags_system['cPlayer:TapTalkAboutMydesignShowcase'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2035', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+entrypoint Event90:
+                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2004', false)
+                subflow_results[1] = 1
+                run Network_Signin_SkipSave
+                if subflow_results[0] == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2005', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2005_01', false)
+                    Player.PlayerStartAnimeBedWait()
+                    EventFlowSystemActor.DreamUploadEffect('cOn')
+                    run ConnectionMsg_Start
+                    if EventFlowSystemActor.HasDreamID():
+entrypoint Event29:
+                        EventFlowSystemActor.NetUploadDream()
+                        if EventFlowSystemActor.CheckErrorType(2):
+entrypoint Event262:
+                            run ConnectionMsg_End
+                            EventFlowSystemActor.DreamUploadEffect('cOff')
+                            Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
+entrypoint Event254:
+                            if EventFlowSystemActor.YMD(2061, 1, 1, 'cNowTime') == 0:
+                                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2031', false)
+                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                    run ReturnUpload
+                                else:
+                                    run ReturnSelect
+                            else:
+                                MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2036', false)
+                                run ReturnSelect
+                        else:
+                            event_flags_system['cPlayer:TapDiscloseDreamLandID'] = true
+                            event_flags_system['cLand:EnableMyDream'] = true
+                            event_flags_system['cPlayer:TapDreamUploadToday'] = true
+                            event_flags_system['cPlayer:TapSendThankyouLetter'] = true
+                            run ConnectionMsg_Save
+                            run ConnectionMsg_End
+                            EventFlowSystemActor.DreamUploadEffect('cOff')
+                            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2006', false)
+                            Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
+                            EventFlowSystemActor.SetTagFromSystem(0, 'cCurrentDreamingAddress', 'cDegit', '', 0)
+                            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2007', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2008', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2009', false)
+                            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2010', false)
+                            run ReturnSelect
+                    else:
+                        EventFlowSystemActor.GetDreamID()
+                        if EventFlowSystemActor.CheckErrorType(2):
+                            run ErrOccur_AdressGet
+                        else:
+                            run UploadMyDream
+                else:
+                    run UL_NetErrorOccur
+            else:
+                run ReturnSelect
+        else:
 entrypoint Event90:
             MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2004', false)
             subflow_results[1] = 1
@@ -714,60 +754,5 @@ entrypoint Event254:
                         run UploadMyDream
             else:
                 run UL_NetErrorOccur
-        else:
-            run ReturnSelect
-    else:
-entrypoint Event90:
-        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2004', false)
-        subflow_results[1] = 1
-        run Network_Signin_SkipSave
-        if subflow_results[0] == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2005', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2005_01', false)
-            Player.PlayerStartAnimeBedWait()
-            EventFlowSystemActor.DreamUploadEffect('cOn')
-            run ConnectionMsg_Start
-            if EventFlowSystemActor.HasDreamID():
-entrypoint Event29:
-                EventFlowSystemActor.NetUploadDream()
-                if EventFlowSystemActor.CheckErrorType(2):
-entrypoint Event262:
-                    run ConnectionMsg_End
-                    EventFlowSystemActor.DreamUploadEffect('cOff')
-                    Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
-entrypoint Event254:
-                    if EventFlowSystemActor.YMD(2061, 1, 1, 'cNowTime') == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2031', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run ReturnUpload
-                        else:
-                            run ReturnSelect
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2036', false)
-                        run ReturnSelect
-                else:
-                    event_flags_system['cPlayer:TapDiscloseDreamLandID'] = true
-                    event_flags_system['cLand:EnableMyDream'] = true
-                    event_flags_system['cPlayer:TapDreamUploadToday'] = true
-                    event_flags_system['cPlayer:TapSendThankyouLetter'] = true
-                    run ConnectionMsg_Save
-                    run ConnectionMsg_End
-                    EventFlowSystemActor.DreamUploadEffect('cOff')
-                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2006', false)
-                    Player.PlayerStartAnimeBedWaitWithHandsClaspedOpenEyes()
-                    EventFlowSystemActor.SetTagFromSystem(0, 'cCurrentDreamingAddress', 'cDegit', '', 0)
-                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2007', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2008', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2009', false)
-                    MainNpc.OpenMessageWindow('TalkSNpc/tap/SP_tap:2010', false)
-                    run ReturnSelect
-            else:
-                EventFlowSystemActor.GetDreamID()
-                if EventFlowSystemActor.CheckErrorType(2):
-                    run ErrOccur_AdressGet
-                else:
-                    run UploadMyDream
-        else:
-            run UL_NetErrorOccur
     return
 

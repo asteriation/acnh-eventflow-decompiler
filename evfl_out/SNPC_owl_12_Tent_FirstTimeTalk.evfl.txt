@@ -79,22 +79,22 @@ flow Root:
     EventFlowSystemActor.SetTagFromSystem(0, 'cEventFlag', 'cDegit', 'cLand:DonationAmountForMuseum', 0)
     event_flags_system['cPlayer:OwlFinished1stTalk'] = true
     event_flags_system['cPlayer:FutaTalkedInMuseumToday'] = true
-    if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
+    if not event_flags_system['cPlayer:MakeVillagePlayerFlag']:
         if event_flags_system['cLand:MuseumGrowupEnable1']:
             event_flags_system['cPlayer:FutaReadyForMuseum'] = true
-            run Root2
+            run Root2_2P
         elif event_flags_system['cLand:OwlTentExplainFor1P']:
-            run Root1
+            run Root1_2P
         else:
-            event_flags_system['cLand:OwlTentExplainFor1P'] = true
-            run Root0
+            run Root0_2P
     elif event_flags_system['cLand:MuseumGrowupEnable1']:
         event_flags_system['cPlayer:FutaReadyForMuseum'] = true
-        run Root2_2P
+        run Root2
     elif event_flags_system['cLand:OwlTentExplainFor1P']:
-        run Root1_2P
+        run Root1
     else:
-        run Root0_2P
+        event_flags_system['cLand:OwlTentExplainFor1P'] = true
+        run Root0
     return
 
 flow Root0:

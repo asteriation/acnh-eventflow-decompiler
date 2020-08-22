@@ -26,10 +26,11 @@ flow Root:
 flow Spot_Gstore:
     if EventFlowSystemActor.FacilityOpenPastDays('cMarket2', 7):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Gstore:003', false)
-    elif EventFlowSystemActor.IsMyVillage():
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Gstore:001', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Gstore:002', false)
+        if EventFlowSystemActor.IsMyVillage():
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Gstore:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Gstore:002', false)
     EventFlowSystemActor.ExitFlowchart()
     return
 

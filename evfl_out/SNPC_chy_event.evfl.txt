@@ -1,54 +1,19 @@
 flow AfterEv:
-    if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:ChmTalkFirst_AfterEv']:
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_AfterEv']:
+            run AfterEv_2nd
+        else:
+            event_flags_system['cPlayerVisit:DC_ChmTalkFirst_AfterEv'] = true
+            if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
+                run AfterEv_First
+            else:
+                run AfterEv_SNPC_First
+    elif event_flags_system['cPlayer:ChmTalkFirst_AfterEv']:
 entrypoint Event76:
-            if event_flags_system['cPlayer:CatchInsectFesCount'] >= 10:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:100', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run PointCheck
-                else:
-entrypoint Event360:
-                    fEvent360 = EventFlowSystemActor.EventCheck('InsectConvention')
-                    if fEvent360 == 3:
-                        run Talk_AfterEv
-                    elif fEvent360 in (0, 1, 2):
-                        fEvent426 = EventFlowSystemActor.EnvWeatherArea()
-                        if fEvent426 == cWeatherArea_North:
-                            fEvent274 = EventFlowSystemActor.EnvMonth()
-                            if fEvent274 in (January, February, March, April, May, June, July, August):
-                                fEvent275 = EventFlowSystemActor.RandomChoice3(3)
-                                if fEvent275 == 1:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
-                                elif fEvent275 == 2:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                                elif fEvent275 == 0:
-                                    run sub_Event276
-                            elif fEvent274 in (September, October, November, December):
-                                fEvent279 = EventFlowSystemActor.RandomChoice3(3)
-                                if fEvent279 == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                                elif fEvent279 == 2:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
-                                elif fEvent279 == 1:
-                                    run sub_Event280
-                        elif fEvent426 == cWeatherArea_South:
-                            fEvent427 = EventFlowSystemActor.EnvMonth()
-                            if fEvent427 in (January, February, March, April, May, June, July, August, September, November):
-                                fEvent275 = EventFlowSystemActor.RandomChoice3(3)
-                                if fEvent275 == 1:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
-                                elif fEvent275 == 2:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                                elif fEvent275 == 0:
-                                    run sub_Event276
-                            elif fEvent427 == December:
-                                fEvent279 = EventFlowSystemActor.RandomChoice3(3)
-                                if fEvent279 == 0:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
-                                elif fEvent279 == 2:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
-                                elif fEvent279 == 1:
-                                    run sub_Event280
+        if event_flags_system['cPlayer:CatchInsectFesCount'] >= 10:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:100', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run PointCheck
             else:
 entrypoint Event360:
                 fEvent360 = EventFlowSystemActor.EventCheck('InsectConvention')
@@ -93,18 +58,52 @@ entrypoint Event360:
                             elif fEvent279 == 1:
                                 run sub_Event280
         else:
-            event_flags_system['cPlayer:ChmTalkFirst_AfterEv'] = true
-            if not event_flags_system['cPlayer:ChyEvent_TalkFirst']:
-                event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
-                if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
-                    run Talk_AfterEv
-                    run sub_grp!Event398
-                else:
-                    event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
-entrypoint Event287:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:090', false)
-                    run sub_grp!Event398
-            elif EventFlowSystemActor.IsSharePlay(0):
+entrypoint Event360:
+            fEvent360 = EventFlowSystemActor.EventCheck('InsectConvention')
+            if fEvent360 == 3:
+                run Talk_AfterEv
+            elif fEvent360 in (0, 1, 2):
+                fEvent426 = EventFlowSystemActor.EnvWeatherArea()
+                if fEvent426 == cWeatherArea_North:
+                    fEvent274 = EventFlowSystemActor.EnvMonth()
+                    if fEvent274 in (January, February, March, April, May, June, July, August):
+                        fEvent275 = EventFlowSystemActor.RandomChoice3(3)
+                        if fEvent275 == 1:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
+                        elif fEvent275 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
+                        elif fEvent275 == 0:
+                            run sub_Event276
+                    elif fEvent274 in (September, October, November, December):
+                        fEvent279 = EventFlowSystemActor.RandomChoice3(3)
+                        if fEvent279 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
+                        elif fEvent279 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
+                        elif fEvent279 == 1:
+                            run sub_Event280
+                elif fEvent426 == cWeatherArea_South:
+                    fEvent427 = EventFlowSystemActor.EnvMonth()
+                    if fEvent427 in (January, February, March, April, May, June, July, August, September, November):
+                        fEvent275 = EventFlowSystemActor.RandomChoice3(3)
+                        if fEvent275 == 1:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:102', false)
+                        elif fEvent275 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
+                        elif fEvent275 == 0:
+                            run sub_Event276
+                    elif fEvent427 == December:
+                        fEvent279 = EventFlowSystemActor.RandomChoice3(3)
+                        if fEvent279 == 0:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:103', false)
+                        elif fEvent279 == 2:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:105', false)
+                        elif fEvent279 == 1:
+                            run sub_Event280
+    else:
+        event_flags_system['cPlayer:ChmTalkFirst_AfterEv'] = true
+        if event_flags_system['cPlayer:ChyEvent_TalkFirst']:
+            if EventFlowSystemActor.IsSharePlay(0):
 entrypoint Event432:
                 fEvent432 = EventFlowSystemActor.EventCheck('InsectConvention')
                 if fEvent432 in (0, 1, 2):
@@ -119,25 +118,28 @@ entrypoint Event432:
                     if event_flags_system['cPlayer:CatchInsectFesCount'] > 10:
                         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:085', false)
                         run sub_grp!Event407
-                    elif event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:084', false)
-                        run sub_grp!Event407
                     else:
-                        run sub_grp!Event430
+                        if event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
+                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:084', false)
+                            run sub_grp!Event407
+                        else:
+                            run sub_grp!Event430
                 elif fEvent432 == 3:
                     run Talk_AfterEv
                     run sub_grp!Event398
             else:
                 run Talk_AfterEv
                 run sub_grp!Event398
-    elif event_flags_system['cPlayerVisit:DC_ChmTalkFirst_AfterEv']:
-        run AfterEv_2nd
-    else:
-        event_flags_system['cPlayerVisit:DC_ChmTalkFirst_AfterEv'] = true
-        if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
-            run AfterEv_First
         else:
-            run AfterEv_SNPC_First
+            event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
+            if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
+                run Talk_AfterEv
+                run sub_grp!Event398
+            else:
+                event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
+entrypoint Event287:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:090', false)
+                run sub_grp!Event398
     return
 
 flow AfterEv_2nd:
@@ -169,54 +171,54 @@ flow BeforeEV_SNPC_First:
     return
 
 flow BeforeEv:
-    if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:ChyEvent_TalkFirst']:
-            event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
-            if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
+    if not EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
+            event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv'] = true
+            run BeforeEV_SNPC_First
+        elif event_flags_system['cPlayer:CatchInsectFesCount'] < 10:
+            run BeforeEv_Always
+        elif event_flags_system['cPlayerVisit:DC_ChmTalkPoint_BeforeEv']:
+            run BeforeEv_2nd
+        else:
+            event_flags_system['cPlayerVisit:DC_ChmTalkPoint_BeforeEv'] = true
+            run BeforeEv_PointCheck
+    elif not event_flags_system['cPlayer:ChyEvent_TalkFirst']:
+        event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
+        if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:169', true)
+        else:
+            event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
+            if EventFlowSystemActor.IsSharePlay(0):
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:169', true)
             else:
-                event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
-                if EventFlowSystemActor.IsSharePlay(0):
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:169', true)
-                else:
-                    run sub_Event20
-        elif event_flags_system['cPlayer:CatchInsectFesCount'] < 10:
-entrypoint Event16:
-            fEvent16 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent16 == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:001', true)
-            elif fEvent16 == 1:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:002', true)
-            elif fEvent16 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:003', true)
-        elif event_flags_system['cPlayer:ChmTalkPoint_BeforeEv']:
-entrypoint Event9:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:006', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run PointExchange
-            else:
-                run BeforeEv_Always
-        else:
-            event_flags_system['cPlayer:ChmTalkPoint_BeforeEv'] = true
-entrypoint Event86:
-            if event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:005', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:004', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                run PointExchange
-            else:
-                run PointExCancel
-    elif not event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
-        event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv'] = true
-        run BeforeEV_SNPC_First
+                run sub_Event20
     elif event_flags_system['cPlayer:CatchInsectFesCount'] < 10:
-        run BeforeEv_Always
-    elif event_flags_system['cPlayerVisit:DC_ChmTalkPoint_BeforeEv']:
-        run BeforeEv_2nd
+entrypoint Event16:
+        fEvent16 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent16 == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:001', true)
+        elif fEvent16 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:002', true)
+        elif fEvent16 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:003', true)
+    elif event_flags_system['cPlayer:ChmTalkPoint_BeforeEv']:
+entrypoint Event9:
+        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:006', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run PointExchange
+        else:
+            run BeforeEv_Always
     else:
-        event_flags_system['cPlayerVisit:DC_ChmTalkPoint_BeforeEv'] = true
-        run BeforeEv_PointCheck
+        event_flags_system['cPlayer:ChmTalkPoint_BeforeEv'] = true
+entrypoint Event86:
+        if event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:005', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:004', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            run PointExchange
+        else:
+            run PointExCancel
     return
 
 flow BeforeEv_2nd:
@@ -312,18 +314,19 @@ entrypoint Event373:
                     MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:209', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:210', false)
-    elif (event_flags_system['cPlayer:ChyEvent_TotalPoint'] >= 100) and (not event_flags_system['cPlayer:ChyEvent_TalkTrophyCopper']):
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:202', false)
-        run TotalPoint_To_oedinaryP
-        event_flags_system['cPlayer:ChyEvent_TalkTrophyCopper'] = true
-entrypoint Event373:
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:208', false)
-        if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:209', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:210', false)
     else:
-        run GetPoint_next
+        if (event_flags_system['cPlayer:ChyEvent_TotalPoint'] >= 100) and (not event_flags_system['cPlayer:ChyEvent_TalkTrophyCopper']):
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:202', false)
+            run TotalPoint_To_oedinaryP
+            event_flags_system['cPlayer:ChyEvent_TalkTrophyCopper'] = true
+entrypoint Event373:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:208', false)
+            if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:209', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:210', false)
+        else:
+            run GetPoint_next
     return
 
 flow Check_pay500:
@@ -335,7 +338,47 @@ flow Check_pay500:
 
 flow EvQ_Entry:
     if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
+        if event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
+            if EventFlowSystemActor.NetHasVisitor():
+entrypoint Event92:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:064', true)
+                MainNpc.MessageSuspend()
+                event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
+                event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
+                event_flags_system['cLandTemp:FesEnterBalloon'] = false
+                MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
+                if EventFlowSystemActor.IsSharePlay(0):
+                    EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:062', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() != 0:
+                    run EvQ_Entry_Cancel
+                elif EventFlowSystemActor.HasBellCount(500):
+                    run Check_pay500
+                    if EventFlowSystemActor.IsSharePlay(0):
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:163', true)
+                        MainNpc.MessageSuspend()
+                        event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
+                        event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
+                        event_flags_system['cLandTemp:FesEnterBalloon'] = false
+                        MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
+                        if EventFlowSystemActor.IsSharePlay(0):
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                        MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:063', true)
+                        MainNpc.MessageSuspend()
+                        event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
+                        event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
+                        event_flags_system['cLandTemp:FesEnterBalloon'] = false
+                        MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
+                        if EventFlowSystemActor.IsSharePlay(0):
+                            EventFlowSystemActor.SetSharePlayChangeCondition(true)
+                        MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:061', true)
+        else:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:065', false)
             if EventFlowSystemActor.NetHasVisitor():
                 run EvQ_Start
@@ -360,23 +403,14 @@ flow EvQ_Entry:
                     if EventFlowSystemActor.IsSharePlay(0):
                         EventFlowSystemActor.SetSharePlayChangeCondition(true)
                     MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
-        elif EventFlowSystemActor.NetHasVisitor():
-entrypoint Event92:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:064', true)
-            MainNpc.MessageSuspend()
-            event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
-            event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
-            event_flags_system['cLandTemp:FesEnterBalloon'] = false
-            MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
-            if EventFlowSystemActor.IsSharePlay(0):
-                EventFlowSystemActor.SetSharePlayChangeCondition(true)
-            MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
+    else:
+        if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_EvQuestFinish']:
+            run EvQ_Start
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:062', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-                run EvQ_Entry_Cancel
-            elif EventFlowSystemActor.HasBellCount(500):
-                run Check_pay500
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:065', false)
+            if EventFlowSystemActor.NetHasVisitor():
+                run EvQ_Start
+            else:
                 if EventFlowSystemActor.IsSharePlay(0):
                     MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:163', true)
                     MainNpc.MessageSuspend()
@@ -397,35 +431,6 @@ entrypoint Event92:
                     if EventFlowSystemActor.IsSharePlay(0):
                         EventFlowSystemActor.SetSharePlayChangeCondition(true)
                     MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:061', true)
-    elif event_flags_system['cPlayerVisit:DC_ChmTalkFirst_EvQuestFinish']:
-        run EvQ_Start
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:065', false)
-        if EventFlowSystemActor.NetHasVisitor():
-            run EvQ_Start
-        else:
-            if EventFlowSystemActor.IsSharePlay(0):
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:163', true)
-                MainNpc.MessageSuspend()
-                event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
-                event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
-                event_flags_system['cLandTemp:FesEnterBalloon'] = false
-                MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
-                if EventFlowSystemActor.IsSharePlay(0):
-                    EventFlowSystemActor.SetSharePlayChangeCondition(true)
-                MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:063', true)
-                MainNpc.MessageSuspend()
-                event_flags_system['cLand:CatchInsectFesGetTotalNum'] = 0
-                event_flags_system['cLandTemp:CatchInsectFesQuestStart'] = true
-                event_flags_system['cLandTemp:FesEnterBalloon'] = false
-                MainNpc.ChmFreeAction('cChmActionType_InsectFesyEntry')
-                if EventFlowSystemActor.IsSharePlay(0):
-                    EventFlowSystemActor.SetSharePlayChangeCondition(true)
-                MainNpc.ChmFreeAction('cChmActionType_InsectFesStart')
     return
 
 flow EvQ_Entry_Cancel:
@@ -441,63 +446,43 @@ flow GetPoint_next:
     return
 
 flow OpenEv:
-    if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
-entrypoint Event234:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:035', false)
-entrypoint Event225:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:047', false)
-            fEvent226 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent226 == 0:
-                run Check_EvQ_Entry
-            elif fEvent226 == 1:
-                run TalkRule
-            elif fEvent226 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:049', false)
-                fEvent230 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent230 == 0:
-                    run SellInsect
-                elif fEvent230 == 1:
-                    run PointCheck
-                elif fEvent230 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:048', false)
-                elif fEvent230 == 2:
-                    run Select_OpenEv_AfterQ
-            elif fEvent226 == 3:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:048', false)
-        elif not event_flags_system['cPlayer:ChmTalkRuleFirst']:
-            event_flags_system['cPlayer:ChmTalkRuleFirst'] = true
-            if event_flags_system['cPlayer:ChyEvent_TalkFirst']:
-                run sub_grp!Event337
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_EvQuestFinish']:
+            run OpenEv_AfterQ
+        elif event_flags_system['cPlayerVisit:DC_ChmTalkRuleFirst']:
+            run OpenEv_BeforeQ
+        else:
+            event_flags_system['cPlayerVisit:DC_ChmTalkRuleFirst'] = true
+            if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
+                run OpenEv_BeforeQ_First
             else:
-                event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
-                if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
-                    run sub_grp!Event337
-                else:
-                    event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
-                    if EventFlowSystemActor.IsSharePlay(0):
-entrypoint Event336:
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:168', false)
-                    else:
-entrypoint Event249:
-                        if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) in (0, 1):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:037', false)
-                        else:
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:036', false)
-                    if EventFlowSystemActor.NetHasVisitor():
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:022', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:032', false)
-                        run sub_grp!Event241
-                    elif EventFlowSystemActor.IsSharePlay(0):
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:161', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:162', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:167', false)
-                        run sub_grp!Event241
-                    else:
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:021', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:023', false)
-                        run sub_grp!Event241
-        elif EventFlowSystemActor.NetHasVisitor():
+                event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv'] = true
+                run OpenEv_SNPC_First
+    elif event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
+entrypoint Event234:
+        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:035', false)
+entrypoint Event225:
+        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:047', false)
+        fEvent226 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent226 == 0:
+            run Check_EvQ_Entry
+        elif fEvent226 == 1:
+            run TalkRule
+        elif fEvent226 == 2:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:049', false)
+            fEvent230 = EventFlowSystemActor.GeneralTalkChoice4()
+            if fEvent230 == 0:
+                run SellInsect
+            elif fEvent230 == 1:
+                run PointCheck
+            elif fEvent230 == 3:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:048', false)
+            elif fEvent230 == 2:
+                run Select_OpenEv_AfterQ
+        elif fEvent226 == 3:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:048', false)
+    elif event_flags_system['cPlayer:ChmTalkRuleFirst']:
+        if EventFlowSystemActor.NetHasVisitor():
 entrypoint Event239:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:034', false)
             run sub_grp!Event241
@@ -507,17 +492,38 @@ entrypoint Event239:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:026', false)
             run sub_grp!Event241
-    elif event_flags_system['cPlayerVisit:DC_ChmTalkFirst_EvQuestFinish']:
-        run OpenEv_AfterQ
-    elif event_flags_system['cPlayerVisit:DC_ChmTalkRuleFirst']:
-        run OpenEv_BeforeQ
     else:
-        event_flags_system['cPlayerVisit:DC_ChmTalkRuleFirst'] = true
-        if event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv']:
-            run OpenEv_BeforeQ_First
+        event_flags_system['cPlayer:ChmTalkRuleFirst'] = true
+        if event_flags_system['cPlayer:ChyEvent_TalkFirst']:
+            run sub_grp!Event337
         else:
-            event_flags_system['cPlayerVisit:DC_ChmTalkFirst_BeforeEv'] = true
-            run OpenEv_SNPC_First
+            event_flags_system['cPlayer:ChyEvent_TalkFirst'] = true
+            if event_flags_system['cPlayer:ChyDaily_TalkFirst']:
+                run sub_grp!Event337
+            else:
+                event_flags_system['cPlayer:ChyDaily_TalkFirst'] = true
+                if EventFlowSystemActor.IsSharePlay(0):
+entrypoint Event336:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:168', false)
+                else:
+entrypoint Event249:
+                    if EventFlowSystemActor.EnvHourCompare(10, -1, true, true) in (0, 1):
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:037', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:036', false)
+                if EventFlowSystemActor.NetHasVisitor():
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:022', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:032', false)
+                    run sub_grp!Event241
+                elif EventFlowSystemActor.IsSharePlay(0):
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:161', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:162', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:167', false)
+                    run sub_grp!Event241
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:021', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:023', false)
+                    run sub_grp!Event241
     return
 
 flow OpenEv_AfterQ:
@@ -644,67 +650,70 @@ entrypoint Event441:
 entrypoint Event181:
                     MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:148', false)
                     run Check_TotaiPoint
-            elif event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
-                if not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
-                    run Result_CatchP-Bonus_DC
-                elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
-                    run Result_CatchPOver_Bornus_DC_C
-                else:
-                    run Result_CatchP-Bonus_DC-C
-            elif not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
-                run Result_CatchP
-            elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
-                run Result_CatchPOver_Bornus_C
             else:
-                run Result_CatchP-Bonus_C
+                if event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
+                    if not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
+                        run Result_CatchP-Bonus_DC
+                    elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
+                        run Result_CatchPOver_Bornus_DC_C
+                    else:
+                        run Result_CatchP-Bonus_DC-C
+                elif not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
+                    run Result_CatchP
+                elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
+                    run Result_CatchPOver_Bornus_C
+                else:
+                    run Result_CatchP-Bonus_C
         else:
             run sub_grp!Event325
-    elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 1:
-        if EventFlowSystemActor.IsSharePlay(0):
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:160', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:146', false)
-        if EventFlowSystemActor.IsMyVillage():
-            if event_flags_system['cPlayer:CatchInsectFes_CooperativeBonus']:
-                if not event_flags_system['cPlayer:CatchInsectFes_Bonus']:
+    else:
+        if event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 1:
+            if EventFlowSystemActor.IsSharePlay(0):
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:160', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:146', false)
+            if EventFlowSystemActor.IsMyVillage():
+                if event_flags_system['cPlayer:CatchInsectFes_CooperativeBonus']:
+                    if not event_flags_system['cPlayer:CatchInsectFes_Bonus']:
 entrypoint Event182:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:149', false)
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:149', false)
+                        run Check_TotaiPoint
+                    elif event_flags_system['cPlayer:ChyEvent_ResultGetInsect'] >= 21:
+entrypoint Event440:
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:152', false)
+                        run Check_TotaiPoint
+                    else:
+entrypoint Event183:
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:150', false)
+                        run Check_TotaiPoint
+                elif not event_flags_system['cPlayer:CatchInsectFes_Bonus']:
+entrypoint Event156:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:147', false)
                     run Check_TotaiPoint
                 elif event_flags_system['cPlayer:ChyEvent_ResultGetInsect'] >= 21:
-entrypoint Event440:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:152', false)
+entrypoint Event441:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:151', false)
                     run Check_TotaiPoint
                 else:
-entrypoint Event183:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:150', false)
-                    run Check_TotaiPoint
-            elif not event_flags_system['cPlayer:CatchInsectFes_Bonus']:
-entrypoint Event156:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:147', false)
-                run Check_TotaiPoint
-            elif event_flags_system['cPlayer:ChyEvent_ResultGetInsect'] >= 21:
-entrypoint Event441:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:151', false)
-                run Check_TotaiPoint
-            else:
 entrypoint Event181:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:148', false)
-                run Check_TotaiPoint
-        elif event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
-            if not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
-                run Result_CatchP-Bonus_DC
-            elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
-                run Result_CatchPOver_Bornus_DC_C
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:148', false)
+                    run Check_TotaiPoint
             else:
-                run Result_CatchP-Bonus_DC-C
-        elif not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
-            run Result_CatchP
-        elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
-            run Result_CatchPOver_Bornus_C
+                if event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
+                    if not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
+                        run Result_CatchP-Bonus_DC
+                    elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
+                        run Result_CatchPOver_Bornus_DC_C
+                    else:
+                        run Result_CatchP-Bonus_DC-C
+                elif not event_flags_system['cPlayerVisit:DC_CatchInsectFes_Bonus']:
+                    run Result_CatchP
+                elif event_flags_system['cPlayerTemp:CatchInsectFesGetNum'] >= 21:
+                    run Result_CatchPOver_Bornus_C
+                else:
+                    run Result_CatchP-Bonus_C
         else:
-            run Result_CatchP-Bonus_C
-    else:
-        run sub_grp!Event325
+            run sub_grp!Event325
     return
 
 flow Result_Bonus_DC:
@@ -773,10 +782,11 @@ flow Root:
             run Quest_Result
         else:
             run sub_grp!Event282
-    elif event_flags_system['cPlayerVisit:DC_ChmQuestFinish']:
-        run Quest_Result
     else:
-        run sub_grp!Event282
+        if event_flags_system['cPlayerVisit:DC_ChmQuestFinish']:
+            run Quest_Result
+        else:
+            run sub_grp!Event282
     return
 
 flow Select_OpenEv_AfterQ:
@@ -800,10 +810,11 @@ entrypoint Event114:
         elif fEvent114 == 2:
             if EventFlowSystemActor.EnvHourCompare(20, -1, true, true) == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:132', true)
-            elif EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:133', true)
             else:
-                run AfterEv_Always
+                if EventFlowSystemActor.EnvHourCompare(0, -1, true, true) == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:133', true)
+                else:
+                    run AfterEv_Always
     elif fEvent101 == 0:
         MainNpc.InsectFishBoxSellCalc('SellTotal', 1.5)
         EventFlowSystemActor.SetTagFromSystem(5, 'cFlow', 'cMoney', '', 'SellTotal')
@@ -930,15 +941,16 @@ flow TalkRule:
             MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:028', false)
     if EventFlowSystemActor.NetHasVisitor():
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:033', false)
-    elif event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
-        if EventFlowSystemActor.IsSharePlay(0):
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:165', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:029', false)
-    elif EventFlowSystemActor.IsSharePlay(0):
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:166', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:030', false)
+        if event_flags_system['cPlayer:ChmTalkFirst_EvQuestFinish']:
+            if EventFlowSystemActor.IsSharePlay(0):
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:165', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:029', false)
+        elif EventFlowSystemActor.IsSharePlay(0):
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:166', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:030', false)
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
         run Check_EvQ_Entry
     else:
@@ -995,67 +1007,51 @@ flow sub_grp!Event282:
             run AfterEv
 
 flow sub_grp!Event325:
-    if EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:CatchInsectFes_CooperativeBonus']:
-entrypoint Event158:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:145', false)
-            run Check_TotaiPoint
+    if not EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
+            run Result_Bonus_DC
         else:
+            run Result_NoPoint
+    elif event_flags_system['cPlayer:CatchInsectFes_CooperativeBonus']:
+entrypoint Event158:
+        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:145', false)
+        run Check_TotaiPoint
+    else:
 entrypoint Event157:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:142', false)
-            if EventFlowSystemActor.NetHasVisitor():
-                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:143', false)
-            if event_flags_system['cPlayer:CatchInsectFesCount'] >= 10:
-                if event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:045', false)
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:046', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run PointExchange
-                else:
-                    run PointExCancel
-            elif event_flags_system['cPlayer:CatchInsectFesCount'] == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:142', false)
+        if EventFlowSystemActor.NetHasVisitor():
+            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:143', false)
+        if event_flags_system['cPlayer:CatchInsectFesCount'] >= 10:
+            if event_flags_system['cPlayer:CatchInsectFesCount'] == 10:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:045', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:046', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run PointExchange
+            else:
+                run PointExCancel
+        else:
+            if event_flags_system['cPlayer:CatchInsectFesCount'] == 0:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:041', false)
-entrypoint Event179:
-                if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:042', true)
-                else:
-                    fEvent402 = EventFlowSystemActor.EnvWeatherArea()
-                    if fEvent402 == cWeatherArea_North:
-                        fEvent185 = EventFlowSystemActor.EnvMonth()
-                        if fEvent185 in (September, October, November, December):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
-                        elif fEvent185 in (January, February, March, April, May, June, July, August):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
-                    elif fEvent402 == cWeatherArea_South:
-                        fEvent425 = EventFlowSystemActor.EnvMonth()
-                        if fEvent425 == December:
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
-                        elif fEvent425 in (January, February, March, April, May, June, July, August, September, October, November):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:040', false)
 entrypoint Event179:
-                if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:042', true)
-                else:
-                    fEvent402 = EventFlowSystemActor.EnvWeatherArea()
-                    if fEvent402 == cWeatherArea_North:
-                        fEvent185 = EventFlowSystemActor.EnvMonth()
-                        if fEvent185 in (September, October, November, December):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
-                        elif fEvent185 in (January, February, March, April, May, June, July, August):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
-                    elif fEvent402 == cWeatherArea_South:
-                        fEvent425 = EventFlowSystemActor.EnvMonth()
-                        if fEvent425 == December:
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
-                        elif fEvent425 in (January, February, March, April, May, June, July, August, September, October, November):
-                            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
-    elif event_flags_system['cPlayerVisit:DC_CatchInsectFes_CooperativeBonus']:
-        run Result_Bonus_DC
-    else:
-        run Result_NoPoint
+            if EventFlowSystemActor.EnvHourCompare(18, -1, true, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:042', true)
+            else:
+                fEvent402 = EventFlowSystemActor.EnvWeatherArea()
+                if fEvent402 == cWeatherArea_North:
+                    fEvent185 = EventFlowSystemActor.EnvMonth()
+                    if fEvent185 in (September, October, November, December):
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
+                    elif fEvent185 in (January, February, March, April, May, June, July, August):
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
+                elif fEvent402 == cWeatherArea_South:
+                    fEvent425 = EventFlowSystemActor.EnvMonth()
+                    if fEvent425 == December:
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:043', true)
+                    elif fEvent425 in (January, February, March, April, May, June, July, August, September, October, November):
+                        MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:044', true)
 
 flow sub_grp!Event337:
     if EventFlowSystemActor.IsSharePlay(0):
@@ -1098,26 +1094,27 @@ flow sub_grp!Event398:
         MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:094', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             run PointCheck
-        elif EventFlowSystemActor.EnvHourCompare(20, -1, true, true) == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:092', false)
         else:
-            fEvent433 = EventFlowSystemActor.EventCheck('InsectConvention')
-            if fEvent433 == 3:
-                EventFlowSystemActor.MessageSuspend()
-            elif fEvent433 in (0, 1, 2):
-                fEvent394 = EventFlowSystemActor.EnvWeatherArea()
-                if fEvent394 == cWeatherArea_North:
-                    fEvent391 = EventFlowSystemActor.EnvMonth()
-                    if fEvent391 in (June, July, August):
-                        run AfterEv_TalkNextMonth
-                    elif fEvent391 == September:
-                        run AfterEv_TalkNextYear
-                elif fEvent394 == cWeatherArea_South:
-                    fEvent395 = EventFlowSystemActor.EnvMonth()
-                    if fEvent395 in (January, February, November):
-                        run AfterEv_TalkNextMonth
-                    elif fEvent395 == December:
-                        run AfterEv_TalkNextYear
+            if EventFlowSystemActor.EnvHourCompare(20, -1, true, true) == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/chy/SP_chy_event:092', false)
+            else:
+                fEvent433 = EventFlowSystemActor.EventCheck('InsectConvention')
+                if fEvent433 == 3:
+                    EventFlowSystemActor.MessageSuspend()
+                elif fEvent433 in (0, 1, 2):
+                    fEvent394 = EventFlowSystemActor.EnvWeatherArea()
+                    if fEvent394 == cWeatherArea_North:
+                        fEvent391 = EventFlowSystemActor.EnvMonth()
+                        if fEvent391 in (June, July, August):
+                            run AfterEv_TalkNextMonth
+                        elif fEvent391 == September:
+                            run AfterEv_TalkNextYear
+                    elif fEvent394 == cWeatherArea_South:
+                        fEvent395 = EventFlowSystemActor.EnvMonth()
+                        if fEvent395 in (January, February, November):
+                            run AfterEv_TalkNextMonth
+                        elif fEvent395 == December:
+                            run AfterEv_TalkNextYear
     else:
         fEvent433 = EventFlowSystemActor.EventCheck('InsectConvention')
         if fEvent433 == 3:

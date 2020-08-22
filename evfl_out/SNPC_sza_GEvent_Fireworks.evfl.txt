@@ -64,20 +64,20 @@ entrypoint Event39:
         else:
             run sub_grp!Event7
     elif fEvent86 == 1:
-        if EventFlowSystemActor.IsMyVillage():
-            if (not event_flags_system['cPlayer:SzaTaled1stTime']) and (not event_flags_system['cPlayer:OfficeSzaIntroduction']) and (not event_flags_system['cPlayer:SzaTalkFirstNotOffice']):
-                event_flags_system['cPlayer:SzaTalkFirstNotOffice'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:052', false)
+        if not EventFlowSystemActor.IsMyVillage():
+            if not event_flags_system['cPlayerVisit:V_Sza_TalkFireworksToday']:
+                event_flags_system['cPlayerVisit:V_Sza_TalkFireworksToday'] = true
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:014', false)
+                run Get_FireworksItem
+            elif event_flags_system['cPlayerVisit:V_Sza_FireworksRewardToday']:
+                run Chat_Fireworks
             else:
-                run sub_grp!Event28
-        elif not event_flags_system['cPlayerVisit:V_Sza_TalkFireworksToday']:
-            event_flags_system['cPlayerVisit:V_Sza_TalkFireworksToday'] = true
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:014', false)
-            run Get_FireworksItem
-        elif event_flags_system['cPlayerVisit:V_Sza_FireworksRewardToday']:
-            run Chat_Fireworks
+                run Talk_Fireworks
+        elif (not event_flags_system['cPlayer:SzaTaled1stTime']) and (not event_flags_system['cPlayer:OfficeSzaIntroduction']) and (not event_flags_system['cPlayer:SzaTalkFirstNotOffice']):
+            event_flags_system['cPlayer:SzaTalkFirstNotOffice'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:052', false)
         else:
-            run Talk_Fireworks
+            run sub_grp!Event28
     return
 
 flow Talk_Fireworks:
@@ -138,20 +138,11 @@ entrypoint Event70:
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:027', false)
         elif EventFlowSystemActor.NetIsConnected():
             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:047', false)
-        elif event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:044', false)
-            EventFlowSystemActor.UIMyDesignFireworksHandling()
-            if not EventFlowSystemActor.UIResultMenuDecide():
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_01', false)
-            elif EventFlowSystemActor.EnvHourCompare(0, 0, true, true) != 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_03', false)
-            elif EventFlowSystemActor.UIIsRegisteredMyDesignFireworks():
-                event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:046_02', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:043', false)
+            if event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:044', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:043', false)
             EventFlowSystemActor.UIMyDesignFireworksHandling()
             if not EventFlowSystemActor.UIResultMenuDecide():
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_01', false)
@@ -196,18 +187,11 @@ flow sub_grp!Event7:
                     MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:003', false)
         elif EventFlowSystemActor.NetIsConnected():
             MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:047', false)
-        elif event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:044', false)
-            EventFlowSystemActor.UIMyDesignFireworksHandling()
-            if not EventFlowSystemActor.UIResultMenuDecide():
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_01', false)
-            elif EventFlowSystemActor.UIIsRegisteredMyDesignFireworks():
-                event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:046_01', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:043', false)
+            if event_flags_system['cPlayer:SzaFireworksSubmitMyDesignToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:044', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:043', false)
             EventFlowSystemActor.UIMyDesignFireworksHandling()
             if not EventFlowSystemActor.UIResultMenuDecide():
                 MainNpc.OpenMessageWindow('TalkSNpc/sza/GEvent/SP_sza_GEvent_Fireworks:045_01', false)

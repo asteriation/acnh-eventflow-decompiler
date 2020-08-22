@@ -49,10 +49,11 @@ flow ChkReact1stPresent:
                         event_flags_npc['cNpcSave:React1stNpcPresent'] = true
                         MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:011', false)
                         EventFlowSystemActor.ExitFlowchart()
-                elif EventFlowSystemActor.PlayerIsEquipItem('cAll', true, false, 5293, 65534, 65534, 65534, 65534, 65534, 65534, 65534):
-                    event_flags_npc['cNpcSave:React1stNpcPresent'] = true
-                    MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:011', false)
-                    EventFlowSystemActor.ExitFlowchart()
+                else:
+                    if EventFlowSystemActor.PlayerIsEquipItem('cAll', true, false, 5293, 65534, 65534, 65534, 65534, 65534, 65534, 65534):
+                        event_flags_npc['cNpcSave:React1stNpcPresent'] = true
+                        MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/React/HA_React_1P_LifeStart:011', false)
+                        EventFlowSystemActor.ExitFlowchart()
     return
 
 flow ForMarketBuilding_Chk:
@@ -60,14 +61,15 @@ flow ForMarketBuilding_Chk:
         event_flags_npc['cNpcSave:MarketBuildingSupport'] = true
         fEvent55 = MainNpc.CheckNpcLook()
         if fEvent55 == 5:
-            if not event_flags_system['cLand:RcmShopMaterialComplete']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:001', false)
-                run NNPC_ApproachE::FromFreeH_HA1
-            elif event_flags_system['cPlayer:DecideShopArea']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:012', false)
-                run NNPC_ApproachE::FromFreeH_HA2
+            if event_flags_system['cLand:RcmShopMaterialComplete']:
+                if event_flags_system['cPlayer:DecideShopArea']:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:012', false)
+                    run NNPC_ApproachE::FromFreeH_HA2
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:011', false)
+                    run NNPC_ApproachE::FromFreeH_HA1
             else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:011', false)
+                MainNpc.OpenMessageWindow('TalkNNpc/B2_Ha/Free/HA_FreeH_ForMarketBuilding:001', false)
                 run NNPC_ApproachE::FromFreeH_HA1
             EventFlowSystemActor.ExitFlowchart()
         elif fEvent55 == 3:
@@ -141,13 +143,14 @@ flow Progress_NpcHouseBuilt:
 
 flow Transition:
     event_flags_npc['cNpcSave:TalkTransitionTimes'] += 1
-    if event_flags_npc['cNpcSave:TalkTransitionTimes'] != 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:001', false)
-    elif event_flags_npc['cNpcSave:TalkTransitionTimes'] == 2:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:003', false)
-        event_flags_npc['cNpcSave:FinishTalkTransition'] = true
+    if event_flags_npc['cNpcSave:TalkTransitionTimes'] == 1:
+        if event_flags_npc['cNpcSave:TalkTransitionTimes'] == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:003', false)
+            event_flags_npc['cNpcSave:FinishTalkTransition'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:002', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:002', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Transition:001', false)
     EventFlowSystemActor.ExitFlowchart()
     return
 

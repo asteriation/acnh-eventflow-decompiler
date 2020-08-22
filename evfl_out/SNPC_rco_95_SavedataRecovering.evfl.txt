@@ -45,38 +45,17 @@ entrypoint Event56:
                 run SearchAgain
             else:
                 run EndRecoveringMenu
-        elif EventFlowSystemActor.SaveIsDownloadableBackupInfoGreaterThan(2):
-            EventFlowSystemActor.DecideRecoverySaveSingle()
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:103', true)
-            EventFlowSystemActor.UIRecoverySaveDataHandling()
-            if EventFlowSystemActor.UIResultMenuDecide():
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:107', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:107_01', false)
-                    EventFlowSystemActor.MessageLockNext(1)
-                    EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_Save:009', false)
-                    EventFlowSystemActor.SaveDownloadBackup()
-                    if EventFlowSystemActor.SaveIsDownloadedBackup():
-                        EventFlowSystemActor.MessageUnlockNext()
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:126', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:131', false)
-                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                            run SearchAgain
-                        else:
-                            run EndRecoveringMenu
-                    else:
-                        run SuccessRecovering
-                else:
-                    run sub_grp!Event29
-            else:
-                run sub_grp!Event29
         else:
-            subflow_results[0] = 1
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:105', false)
+            if EventFlowSystemActor.SaveIsDownloadableBackupInfoGreaterThan(2):
+                EventFlowSystemActor.DecideRecoverySaveSingle()
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:103', true)
+            else:
+                subflow_results[0] = 1
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:105', false)
 entrypoint Event12:
-            EventFlowSystemActor.SetRecoverySaveChoice()
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:106', true)
-            EventFlowSystemActor.DecideRecoverySaveChoice()
+                EventFlowSystemActor.SetRecoverySaveChoice()
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:106', true)
+                EventFlowSystemActor.DecideRecoverySaveChoice()
             EventFlowSystemActor.UIRecoverySaveDataHandling()
             if EventFlowSystemActor.UIResultMenuDecide():
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_94_SavedataRestoring:107', false)

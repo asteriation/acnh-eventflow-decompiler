@@ -99,15 +99,16 @@ flow Flow_Invite:
                     run CheckOffice_Move
                 else:
                     run CheckOffice
-        elif (not MainNpc.CanInduceNpc()) and (not EventFlowSystemActor.NpcHouseNum('cSold') < 10):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:101', false)
-            event_flags_system['cPlayerTemp:CampInviteRejected'] = true
         else:
-            if EventFlowSystemActor.PercentChoice(50):
-                run Talk_InviteGame
-            else:
+            if (not MainNpc.CanInduceNpc()) and (not EventFlowSystemActor.NpcHouseNum('cSold') < 10):
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:101', false)
                 event_flags_system['cPlayerTemp:CampInviteRejected'] = true
+            else:
+                if EventFlowSystemActor.PercentChoice(50):
+                    run Talk_InviteGame
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp_Invite:101', false)
+                    event_flags_system['cPlayerTemp:CampInviteRejected'] = true
     return
 
 flow Flow_ReInvite:

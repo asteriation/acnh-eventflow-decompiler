@@ -2,14 +2,9 @@ flow Get_DiveFish:
     if EventFlowSystemActor.NetIsDreaming():
         EventFlowSystemActor.SetTagFromSystem(0, 'cChachSeafood', 'cDegit', '', 0)
         Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:004', false)
-    elif Player.PlayerGetDemoCollectStatus('cFirstGet'):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:001', false)
-        Player.PlayerOpenDiveFishGetMessage()
-        if Player.PlayerGetDemoCollectStatus('cCompleteThisTime'):
-            Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:002', false)
-            Player.PlayerPlayCompleteAnimation()
-            Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:003', false)
     else:
+        if Player.PlayerGetDemoCollectStatus('cFirstGet'):
+            Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:001', false)
         Player.PlayerOpenDiveFishGetMessage()
         if Player.PlayerGetDemoCollectStatus('cCompleteThisTime'):
             Player.OpenMessageWindow('TalkSys/SYS_Get_DiveFish:002', false)

@@ -50,18 +50,18 @@ entrypoint Event27:
             EventFlowSystemActor.OpenMessageNameBoardArtExplain('LoopNum', 1)
         entry_variables['LoopNum'] += 1
         run Event27
-    elif entry_variables['LoopNum'] == 0:
-        EventFlowSystemActor.StoreNormalCamera(false)
-        return
     else:
-        fEvent23 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
-        if fEvent23 == 0:
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:005', false)
-        elif fEvent23 == 2:
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:006', false)
-        elif fEvent23 in (3, 4, 5):
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:014', false)
-        elif fEvent23 == 1:
-            EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
+        if entry_variables['LoopNum'] == 0:
+            EventFlowSystemActor.StoreNormalCamera(false)
+        else:
+            fEvent23 = EventFlowSystemActor.MuseumNameboardCheckDonateBoardItemKind('LoopNum')
+            if fEvent23 == 0:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:005', false)
+            elif fEvent23 == 2:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:006', false)
+            elif fEvent23 in (3, 4, 5):
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:014', false)
+            elif fEvent23 == 1:
+                EventFlowSystemActor.OpenMessageWindow('TalkObj/OBJ_Nameboard:004', false)
         return
 

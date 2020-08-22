@@ -15,10 +15,11 @@ flow Free_Chk:
             run NNPC_Free_House::Root
     elif EventFlowSystemActor.SystemCheckNowStage('cAnyNpcHouse'):
         run NNPC_Free_House::Free_HouseG
-    elif EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
-        run NNPC_Free_House::Root
     else:
-        run NNPC_Free_Field::Root
+        if EventFlowSystemActor.SystemCheckNowStage('cTalkingPlayerHouse'):
+            run NNPC_Free_House::Root
+        else:
+            run NNPC_Free_Field::Root
     return
 
 flow Root:

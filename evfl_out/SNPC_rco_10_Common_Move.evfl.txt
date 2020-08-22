@@ -15,10 +15,11 @@ flow MoveBuildError:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
-        elif event_flags_system['cPlayer:RcoMoveHouseReserved']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
+            if event_flags_system['cPlayer:RcoMoveHouseReserved']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_13_Infra_MoveStructure:521_01', false)
     return
 
 flow MoveBuildErrorSub:

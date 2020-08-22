@@ -48,15 +48,16 @@ flow Get_Fish:
     elif Player.PlayerGetDemoCollectStatus('cFirstGet'):
         Player.OpenMessageWindow('TalkSys/SYS_Get_Fish:001', false)
         run GetFish_NomalSeq
-    elif not Player.PlayerGetDemoCheckItem('cDojou'):
+    elif Player.PlayerGetDemoCheckItem('cDojou'):
+        if event_flags_system['cPlayer:Got2ndLoach']:
+            run GetFish_NomalSeq
+        else:
+            run Player_GetDemo_20_Fishing::Fishing_Get_2ndLoach
+            run Get_CatchFishCompleteDemo
+            run sub_grp!Event32
+    else:
 entrypoint Event6:
         Player.PlayerOpenFishGetMessage()
-        run Get_CatchFishCompleteDemo
-        run sub_grp!Event32
-    elif event_flags_system['cPlayer:Got2ndLoach']:
-        run GetFish_NomalSeq
-    else:
-        run Player_GetDemo_20_Fishing::Fishing_Get_2ndLoach
         run Get_CatchFishCompleteDemo
         run sub_grp!Event32
     return
@@ -86,19 +87,25 @@ flow Get_Insect:
         run Get_SnowCrystal
     elif Player.PlayerGetDemoCheckItem('cYutaroWisp'):
         run Get_YutaroWisp
-    elif EventFlowSystemActor.NetIsDreaming():
-        EventFlowSystemActor.SetTagFromSystem(0, 'cChachInsect', 'cDegit', '', 0)
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:301', false)
-        run sub_grp!Event41
-    elif Player.PlayerGetDemoCollectStatus('cFirstGet'):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:001', false)
-        Player.PlayerOpenInsectGetMessage()
-        run Get_CatchInsectCompleteDemo
-        run sub_grp!Event41
     else:
-        Player.PlayerOpenInsectGetMessage()
-        run Get_CatchInsectCompleteDemo
-        run sub_grp!Event41
+        if EventFlowSystemActor.NetIsDreaming():
+            EventFlowSystemActor.SetTagFromSystem(0, 'cChachInsect', 'cDegit', '', 0)
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:301', false)
+        else:
+            if Player.PlayerGetDemoCollectStatus('cFirstGet'):
+                Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:001', false)
+            Player.PlayerOpenInsectGetMessage()
+            run Get_CatchInsectCompleteDemo
+        if Player.PlayerCheckAI('cGetDemo_InsectFullItem'):
+            if Player.PlayerGetDemoCheckItem('cSeminonukegara'):
+                run Get_Insect_Nukegara
+            elif Player.PlayerHasExchaneableItem(false, true, true, true):
+                Player.OpenMessageWindow('TalkSys/SYS_Player:004', true)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    Player.PlayerPlayPutawayWaitAnimation()
+                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByHarvest', '', 'cInsectGetFull', false)
+            else:
+                Player.OpenMessageWindow('TalkSys/SYS_Player:007', true)
     return
 
 flow Get_InsectFes:
@@ -172,30 +179,31 @@ entrypoint Event59:
                     run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk_AfterReplace
         else:
             Player.OpenMessageWindow('TalkSys/SYS_Player:007', true)
-    elif Player.PlayerGetDemoCheckItem('cJohnnyQuestByShellFish'):
-        run Get_GulParts
     else:
-        Player.OpenMessageWindow('TalkSys/SYS_Player:002', false)
-        if Player.PlayerGetDemoCheckItem('cGroundEgg'):
-            run Player_GetDemo_Easter::GetEarthEgg
-        elif Player.PlayerGetDemoCheckItem('cPitfallSeed'):
-            run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk
-        elif Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
+        if Player.PlayerGetDemoCheckItem('cJohnnyQuestByShellFish'):
+            run Get_GulParts
+        else:
+            Player.OpenMessageWindow('TalkSys/SYS_Player:002', false)
+            if Player.PlayerGetDemoCheckItem('cGroundEgg'):
+                run Player_GetDemo_Easter::GetEarthEgg
+            elif Player.PlayerGetDemoCheckItem('cPitfallSeed'):
+                run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk
+            elif Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
 entrypoint Event24:
-            Player.OpenMessageWindow('TalkSys/SYS_Player:003', true)
+                Player.OpenMessageWindow('TalkSys/SYS_Player:003', true)
 entrypoint Event18:
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
 entrypoint Event59:
-                Player.PlayerPlayPutawayWaitAnimation()
-                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByScoop', '', 'cScoopDigFull', false)
-                if Player.PlayerGetDemoCheckItem('cGatheringShellfish'):
-                    if EventFlowSystemActor.UIResultMenuDecide():
-                        run Player_GetDemo_Recipe_DIY::ChumDIY_Chk
-                elif Player.PlayerGetDemoCheckItem('cTreasure'):
-                    if EventFlowSystemActor.UIResultMenuDecide():
-                        run TreasureHunt_Finish
-                elif (Player.PlayerGetDemoCheckItem('cPitfallSeed')) and (EventFlowSystemActor.UIResultMenuDecide()):
-                    run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk_AfterReplace
+                    Player.PlayerPlayPutawayWaitAnimation()
+                    EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByScoop', '', 'cScoopDigFull', false)
+                    if Player.PlayerGetDemoCheckItem('cGatheringShellfish'):
+                        if EventFlowSystemActor.UIResultMenuDecide():
+                            run Player_GetDemo_Recipe_DIY::ChumDIY_Chk
+                    elif Player.PlayerGetDemoCheckItem('cTreasure'):
+                        if EventFlowSystemActor.UIResultMenuDecide():
+                            run TreasureHunt_Finish
+                    elif (Player.PlayerGetDemoCheckItem('cPitfallSeed')) and (EventFlowSystemActor.UIResultMenuDecide()):
+                        run Player_GetDemo_Recipe_DIY::PitFallDIY_Chk_AfterReplace
     return
 
 flow Get_SnowCrystal:
@@ -215,10 +223,11 @@ flow Get_SnowCrystal:
     return
 
 flow Get_TreasureHunt:
-    if not EventFlowSystemActor.IsMyVillage():
-        Player.OpenMessageWindow('TalkSys/SYS_Player:100_01', true)
-    elif EventFlowSystemActor.NpcQuestIsLimitOver('cTreasure'):
-        event_flags_system['cPlayer:TreasurePlayerWin'] = false
+    if EventFlowSystemActor.IsMyVillage():
+        if EventFlowSystemActor.NpcQuestIsLimitOver('cTreasure'):
+            event_flags_system['cPlayer:TreasurePlayerWin'] = false
+        else:
+            event_flags_system['cPlayer:TreasurePlayerWin'] = true
         Player.OpenMessageWindow('TalkSys/SYS_Player:100', true)
         if Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
             run FullItem
@@ -229,32 +238,24 @@ entrypoint Event2:
             quest_flags['cTreasureFind'] = true
             EventFlowSystemActor.SetTreasureFindState()
     else:
-        event_flags_system['cPlayer:TreasurePlayerWin'] = true
-        Player.OpenMessageWindow('TalkSys/SYS_Player:100', true)
-        if Player.PlayerCheckAI('cGetDemo_ScoopFullItem'):
-            run FullItem
-        else:
-entrypoint Event2:
-            EventFlowSystemActor.UIMiniGameFinishAppear()
-            EventFlowSystemActor.BGMPropertyControl(13)
-            quest_flags['cTreasureFind'] = true
-            EventFlowSystemActor.SetTreasureFindState()
+        Player.OpenMessageWindow('TalkSys/SYS_Player:100_01', true)
     return
 
 flow Get_YutaroWisp:
     if EventFlowSystemActor.NetIsDreaming():
         EventFlowSystemActor.SetTagFromSystem(0, 'cChachInsect', 'cDegit', '', 0)
         Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:301', false)
-    elif EventFlowSystemActor.HasTargetItem(4702, 4):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:204', false)
-    elif EventFlowSystemActor.HasTargetItem(4702, 3):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:203', false)
-    elif EventFlowSystemActor.HasTargetItem(4702, 2):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:202', false)
-    elif EventFlowSystemActor.HasTargetItem(4702, 1):
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:201', false)
     else:
-        Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:200', false)
+        if EventFlowSystemActor.HasTargetItem(4702, 4):
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:204', false)
+        elif EventFlowSystemActor.HasTargetItem(4702, 3):
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:203', false)
+        elif EventFlowSystemActor.HasTargetItem(4702, 2):
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:202', false)
+        elif EventFlowSystemActor.HasTargetItem(4702, 1):
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:201', false)
+        else:
+            Player.OpenMessageWindow('TalkSys/SYS_Get_Insect:200', false)
     if Player.PlayerCheckAI('cGetDemo_InsectFullItem'):
         if Player.PlayerHasExchaneableItem(false, true, true, true):
             Player.OpenMessageWindow('TalkSys/SYS_Player:006', true)
@@ -286,18 +287,6 @@ flow sub_grp!Event32:
             if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                 Player.PlayerPlayPutawayWaitAnimation()
                 EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByHarvest', '', 'cFishGetFull', false)
-        else:
-            Player.OpenMessageWindow('TalkSys/SYS_Player:007', true)
-
-flow sub_grp!Event41:
-    if Player.PlayerCheckAI('cGetDemo_InsectFullItem'):
-        if Player.PlayerGetDemoCheckItem('cSeminonukegara'):
-            run Get_Insect_Nukegara
-        elif Player.PlayerHasExchaneableItem(false, true, true, true):
-            Player.OpenMessageWindow('TalkSys/SYS_Player:004', true)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                Player.PlayerPlayPutawayWaitAnimation()
-                EventFlowSystemActor.UIItemSelectWindowHandling(65534, '', 'cExchangeByHarvest', '', 'cInsectGetFull', false)
         else:
             Player.OpenMessageWindow('TalkSys/SYS_Player:007', true)
 

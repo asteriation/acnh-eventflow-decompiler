@@ -1062,21 +1062,43 @@ class CFG:
                 if not isinstance(node, IfElseNode) or len(node.rules) != 1:
                     continue
 
-                if isinstance(node.default, IfElseNode) and len(node.default.in_edges) == 1:
+                child_ok = isinstance(node.rules[0].node, IfElseNode) and len(node.rules[0].node.in_edges) == 1
+                default_ok = isinstance(node.default, IfElseNode) and len(node.default.in_edges) == 1
+                if default_ok and not child_ok:
                     predicate = node.rules[0].predicate
                     value_branch = node.rules[0].node
                     else_branch = node.default
-                elif isinstance(node.rules[0].node, IfElseNode) and len(node.rules[0].node.in_edges) == 1:
+                elif child_ok and not default_ok:
                     predicate = ~node.rules[0].predicate
                     value_branch = node.default
                     else_branch = node.rules[0].node
+                elif child_ok and default_ok:
+                    child_score = len(self.__find_postorder(node.rules[0].node))
+                    default_score = len(self.__find_postorder(node.default))
+                    if child_score <= default_score:
+                        predicate = node.rules[0].predicate
+                        value_branch = node.rules[0].node
+                        else_branch = node.default
+                    else:
+                        predicate = ~node.rules[0].predicate
+                        value_branch = node.default
+                        else_branch = node.rules[0].node
                 else:
                     continue
+
+                assert isinstance(else_branch, IfElseNode)
 
                 # try not to join with ifelse block if it would add a noop branch
                 if self.__path_exists(else_branch, value_branch):
                     node.rules[0] = IfElseNode.Rule(~predicate, else_branch)
                     node.default = value_branch
+                    continue
+
+                # don't join with ifelse block if endpoint would change
+                dom = self.__find_dominator_tree(root)
+                cur_end = self.__find_block_end(node, dom)
+                else_end = self.__find_block_end(else_branch, dom)
+                if cur_end != else_end:
                     continue
 
                 ifelse_node = IfElseNode(node.name, [

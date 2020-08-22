@@ -29,16 +29,18 @@ flow NewsCeremony:
     if (subflow_results[0] == 0) or (EventFlowSystemActor.EventCheck('Countdown') == 3):
         if not event_flags_system['cPlayer:PAnnounceExplainCeremony']:
             event_flags_system['cPlayer:PAnnounceExplainCeremony'] = true
-            if not event_flags_system['cLand:PAnnounceCeremony1st']:
+            if event_flags_system['cLand:PAnnounceCeremony1st']:
+                if event_flags_system['cLand:PAnnounceCeremony1stToday']:
+                    run sub_grp!Event96
+                else:
+                    if subflow_results[0] == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:192_01', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:192_01', false)
+            else:
                 event_flags_system['cLand:PAnnounceCeremony1st'] = true
                 event_flags_system['cLand:PAnnounceCeremony1stToday'] = true
                 run sub_grp!Event96
-            elif event_flags_system['cLand:PAnnounceCeremony1stToday']:
-                run sub_grp!Event96
-            elif subflow_results[0] == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:192_01', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:192_01', false)
         elif subflow_results[0] == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:192_02', false)
         else:
@@ -140,10 +142,11 @@ flow NewsMarket:
             run NewsConnect
             if event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfoSza']:
                 MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_01', false)
-            elif event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfo']:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_03', false)
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_02', false)
+                if event_flags_system['cPlayer:PAnnounceHeardMarketUpgradeInfo']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_03', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:129_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:130', false)
             subflow_results[14] = 1
         elif fEvent14 == 5:
@@ -317,12 +320,13 @@ flow Root:
     run NewsMuseum
     run NewsMarket
     run NewsTailor
-    if subflow_results[0] != 0:
+    if subflow_results[0] == 0:
+        if (subflow_results[12] == 1) and (not event_flags_system['cLand:OfficeConstruction1']):
+            run NewsCeremony
+    else:
         run NewsCampsite
         if subflow_results[12] == 1:
             run NewsCeremony
-    elif (subflow_results[12] == 1) and (not event_flags_system['cLand:OfficeConstruction1']):
-        run NewsCeremony
     return
 
 flow sub_grp!Event96:

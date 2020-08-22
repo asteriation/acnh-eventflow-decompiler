@@ -10,11 +10,9 @@ flow Root:
     if MainNpc.NpcBlackBoard('DoneSpeak', 1):
         MainNpc.NpcChangeAIState('cInvisible', '', '', '', false, true)
         MainNpc.NpcReservrForErase()
-    elif (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
-        MainNpc.NpcAISetPos(0.0, 160.0, 165.0, false)
-        MainNpc.NpcSetAIBlackBoard('DoneSpeak', 1)
-        run AI_NPC_Common::ContinueSpeak
     else:
+        if (EventFlowSystemActor.TermEventNow('JuneBride', false)) and (event_flags_system['cPlayer:CommuneIslandAvailable']) and (not event_flags_system['cPlayer:SpnJuneBrideTalkEventFrag']):
+            MainNpc.NpcAISetPos(0.0, 160.0, 165.0, false)
         MainNpc.NpcSetAIBlackBoard('DoneSpeak', 1)
         run AI_NPC_Common::ContinueSpeak
     return

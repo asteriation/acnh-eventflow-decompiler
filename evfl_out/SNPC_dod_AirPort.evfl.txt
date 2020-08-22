@@ -34,13 +34,12 @@ flow EntryPoint_ChangeToJoin:
     return
 
 flow EntryPoint_CheckOpenGateFirst:
-    if subflow_results[0] != 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:126', false)
-    elif event_flags_system['cPlayer:OdekakeFirstOpenGate']:
+    if subflow_results[0] == 0:
+        if not event_flags_system['cPlayer:OdekakeFirstOpenGate']:
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:125', true)
         event_flags_system['cPlayer:OdekakeFirstOpenGate'] = true
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:125', true)
-        event_flags_system['cPlayer:OdekakeFirstOpenGate'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:126', false)
     return
 
 flow EntryPoint_CloseGateAndResetNetwork:

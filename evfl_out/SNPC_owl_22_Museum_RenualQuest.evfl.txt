@@ -4,7 +4,17 @@ flow AfterRenualQuest:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:401', false)
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:402', false)
-    if not event_flags_system['cPlayer:Owl1stTalkMuseum1']:
+    if event_flags_system['cPlayer:Owl1stTalkMuseum1']:
+        if event_flags_system['cPlayer:OwlShowPaintingMyself']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:403', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:404', false)
+        if EventFlowSystemActor.MuseumComplete():
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:405', false)
+            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+        elif event_flags_system['cPlayer:FutaExplanationDonationComp']:
+            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:406', false)
+            event_flags_system['cPlayer:FutaExplanationDonationComp'] = false
+    else:
         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:407', false)
         if not event_flags_system['cPlayer:OwlShowFossilMyself']:
             event_flags_system['cPlayer:OwlShowFossilMyself'] = true
@@ -16,23 +26,6 @@ flow AfterRenualQuest:
             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_11_Museum1stTalk:004_01', false)
         event_flags_system['cPlayer:OwlMultiDonateExplain'] = true
         event_flags_system['cPlayer:Owl1stTalkMuseum1'] = true
-    elif event_flags_system['cPlayer:OwlShowPaintingMyself']:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:403', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:404', false)
-        if EventFlowSystemActor.MuseumComplete():
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:405', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-        elif event_flags_system['cPlayer:FutaExplanationDonationComp']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:406', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = false
-    else:
-        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:404', false)
-        if EventFlowSystemActor.MuseumComplete():
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:405', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-        elif event_flags_system['cPlayer:FutaExplanationDonationComp']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:406', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = false
     event_flags_system['cPlayer:Owl1stTalkMuseum2'] = true
     EventFlowSystemActor.ExitFlowchart()
     return
@@ -116,17 +109,18 @@ flow QuestCheck:
                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:002', false)
                 event_flags_system['cPlayer:FutaReadyForMuseum2'] = true
                 EventFlowSystemActor.ExitFlowchart()
-        elif not event_flags_system['cPlayer:OwlPaintingQuestExplain']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:001', false)
-            event_flags_system['cPlayer:OwlPaintingQuestExplain'] = true
-            event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
-            EventFlowSystemActor.ExitFlowchart()
-        elif EventFlowSystemActor.MuseumComplete():
-            run Select4_Painting
-            EventFlowSystemActor.ExitFlowchart()
         else:
-            run Select5_Painting
-            EventFlowSystemActor.ExitFlowchart()
+            if not event_flags_system['cPlayer:OwlPaintingQuestExplain']:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_22_Museum_RenualQuest:001', false)
+                event_flags_system['cPlayer:OwlPaintingQuestExplain'] = true
+                event_flags_system['cPlayer:OwlPaintingQuestReminder'] = true
+                EventFlowSystemActor.ExitFlowchart()
+            elif EventFlowSystemActor.MuseumComplete():
+                run Select4_Painting
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                run Select5_Painting
+                EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Root:

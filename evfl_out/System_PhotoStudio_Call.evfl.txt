@@ -51,10 +51,11 @@ flow PostLoadNFP:
         else:
             EventFlowSystemActor.ChangeAmiiboNPC('cRct')
             run sub_grp!Event47
-    elif EventFlowSystemActor.CheckAmiiboNPC('cVillager'):
-        run PhotoStudioCallVillager
     else:
-        run sub_grp!Event47
+        if EventFlowSystemActor.CheckAmiiboNPC('cVillager'):
+            run PhotoStudioCallVillager
+        else:
+            run sub_grp!Event47
     return
 
 flow PostOpenNFP:

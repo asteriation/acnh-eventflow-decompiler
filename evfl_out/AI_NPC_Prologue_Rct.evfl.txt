@@ -29,20 +29,20 @@ entrypoint Event6:
         if MainNpc.NpcBlackBoard('PrologueStep', 2):
             MainNpc.NpcAISetting(8, true)
             MainNpc.NpcAISetting(6, false)
-            if MainNpc.NpcBlackBoard('PreCampfire', 1):
-                if entry_variables['Type'] == 0:
-                    MainNpc.NpcAISetting(8, false)
-                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 4, '')
+            if not MainNpc.NpcBlackBoard('PreCampfire', 1):
+                if not event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 0.0, '')
                 elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 'PreCampfireAngle', '')
+                    MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 0.0, '')
                 else:
-                    MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', false, true, 0, true, 'PreCampfireAS')
-            elif not event_flags_system['cLandTemp:PrologueStartedCampfire']:
-                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', true, false, true, 1, 0.0, '')
+                    MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 2, 'Angle:0')
+            elif entry_variables['Type'] == 0:
+                MainNpc.NpcAISetting(8, false)
+                MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 4, '')
             elif MainNpc.NpcCheckStateSelectTiming('cTalkEnd'):
-                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 0.0, '')
+                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'TalkEventFlowName', false, false, false, 1, 'PreCampfireAngle', '')
             else:
-                MainNpc.NpcChangeAIStateCstm('TalkEventFlowName', 'Root', 2, 'Angle:0')
+                MainNpc.NpcChangeWaitState('cWait', 'Root', 'TalkEventFlowName', '', false, true, 0, true, 'PreCampfireAS')
         else:
             MainNpc.NpcAISetting(6, true)
             if MainNpc.NpcBlackBoard('IsMove', 1):

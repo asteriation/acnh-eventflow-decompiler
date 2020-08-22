@@ -73,15 +73,11 @@ flow FirstCamperHouseComplete_Force:
 entrypoint Event131:
     if event_flags_system['cPlayer:SzaHeardAboutHousingKit']:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:551', false)
-    elif event_flags_system['cPlayer:RcoHeardAbout1stCamperToday']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:501', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:502', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:503', false)
-        event_flags_system['cPlayer:SzaHeardAboutHousingKit'] = true
-        event_flags_system['cLand:RcoEnableBuyHousingKit'] = true
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
+        if event_flags_system['cPlayer:RcoHeardAbout1stCamperToday']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:501', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:502', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:503', false)
@@ -195,46 +191,46 @@ flow Root:
         run KkProject_Intro
     elif not event_flags_system['cLand:RcoBuildCampsiteOngoing']:
         run CampSiteRequest
-    elif event_flags_system['cLand:RcoBuildCampsiteComplete']:
-        if event_flags_system['cLand:CampSiteBuilt']:
-            if event_flags_system['cLand:RcoMeetFirstVisitorRequest']:
-                run Root2CampSiteVisitor
-            elif event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']:
-                run CampSiteBuild
-            else:
-                run CampSiteBuild_Others
-        elif event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']:
+    elif not event_flags_system['cLand:RcoBuildCampsiteComplete']:
+        if event_flags_system['cPlayer:IslandDevQuestGetRecipeCampKit']:
+            run CampSiteRequestRunning
+        else:
+            run CampSiteRequest_Others
+    elif not event_flags_system['cLand:CampSiteBuilt']:
+        if event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']:
             run CampSiteRequestComplete
         else:
             run CampSiteComplete_Others
-    elif event_flags_system['cPlayer:IslandDevQuestGetRecipeCampKit']:
-        run CampSiteRequestRunning
+    elif event_flags_system['cLand:RcoMeetFirstVisitorRequest']:
+        run Root2CampSiteVisitor
+    elif event_flags_system['cPlayer:IslandDevQuestCampSetMySelf']:
+        run CampSiteBuild
     else:
-        run CampSiteRequest_Others
+        run CampSiteBuild_Others
     return
 
 flow Root2CampSiteVisitor:
-    if event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
-        if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
-            if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
-                if (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
-                    run Root3IslandEvaluation
-                elif event_flags_system['cPlayer:SetHousingKitForFirstCamper']:
-                    run FirstCamperHouseComplete
-                else:
-                    run FirstCamperHouseComplete_Others
-            elif event_flags_system['cPlayer:GetHousingKitForFirstCamper']:
-                run SetFirstCamperHouseRunning
-            else:
-                run SetFirstCamperHouseRunning_Others
-        elif event_flags_system['cPlayer:IslandDevQuestOrderFirstCamperMyself']:
+    if not event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
+        if event_flags_system['cLand:RcoMeetFirstVisitorOngoing']:
+            run SNPC_rco_10_Common_WhatShouldIDo::Rco_Hint_WaitingInvite1stCamper
+        else:
+            run MeetFirstCamperRequest
+    elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
+        if event_flags_system['cPlayer:IslandDevQuestOrderFirstCamperMyself']:
             run SetFirstCamperHouseRequest
         else:
             run SetFirstCamperHouseRequest_Others
-    elif event_flags_system['cLand:RcoMeetFirstVisitorOngoing']:
-        run SNPC_rco_10_Common_WhatShouldIDo::Rco_Hint_WaitingInvite1stCamper
+    elif not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
+        if event_flags_system['cPlayer:GetHousingKitForFirstCamper']:
+            run SetFirstCamperHouseRunning
+        else:
+            run SetFirstCamperHouseRunning_Others
+    elif (EventFlowSystemActor.NpcHouseNum('cConstructed') < 6) or (event_flags_system['cLand:TanuportAmiiboCampUnlock']):
+        run Root3IslandEvaluation
+    elif event_flags_system['cPlayer:SetHousingKitForFirstCamper']:
+        run FirstCamperHouseComplete
     else:
-        run MeetFirstCamperRequest
+        run FirstCamperHouseComplete_Others
     return
 
 flow Root3IslandEvaluation:
@@ -249,36 +245,11 @@ flow SetFirstCamperHouseRequest:
         if event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper']:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:410', false)
             run Rco_Sel_GetHousingKit4Camper
-        elif event_flags_system['cPlayer:RcoHeardAbout1stCamperToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:401', false)
-            if event_flags_system['cPlayer:IslandDevQuestTalkAfterBuildCamp']:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:403_01', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:403_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:404', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:405', false)
-entrypoint Event92:
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:406', false)
-                if EventFlowSystemActor.ShoppingCapacity(3349, 'cItemName'):
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:407_02', true)
-                    EventFlowSystemActor.FadeOut('cNormalFader', 'cNormalFader', 'cBlack', 0.5, 0.5, true)
-                    EventFlowSystemActor.WaitFrame(30)
-                    EventFlowSystemActor.FadeIn(true)
-                    EventFlowSystemActor.SetItemToPocket(3349, 1)
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:408', false)
-                    event_flags_system['cPlayer:GetHousingKitForFirstCamper'] = true
-                    event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:407_01', false)
-                    event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:409', false)
-                event_flags_system['cPlayer:ItemFullHousingKitForFirstCamper'] = true
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
+            if event_flags_system['cPlayer:RcoHeardAbout1stCamperToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000', false)
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:401', false)
             if event_flags_system['cPlayer:IslandDevQuestTalkAfterBuildCamp']:
                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_07_IslandDevelopment:403_01', false)

@@ -3,10 +3,11 @@ flow Root:
     event_flags_npc['cNpcSave:AppE_Rep_HappenToday'] = true
     if event_flag_npc['cNpcSave:AppE_Happen1st']:
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:111', false)
-        if not EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:112', false)
-        elif event_flag_npc['cNpcSave:AppE_GetItem1st']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:113_02', true)
+        if EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'):
+            if event_flag_npc['cNpcSave:AppE_GetItem1st']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:113_02', true)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:113_01', true)
             if EventFlowSystemActor.RandomChoice2(2) == 0:
                 MainNpc.NpcDecideRewardByCondition(0, 10, false, true)
                 MainNpc.SetItemName(0, 1, 0)
@@ -65,64 +66,7 @@ flow Root:
                     event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
                     event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:113_01', true)
-            if EventFlowSystemActor.RandomChoice2(2) == 0:
-                MainNpc.NpcDecideRewardByCondition(0, 10, false, true)
-                MainNpc.SetItemName(0, 1, 0)
-                MainNpc.SetDeliveryItem(1, true)
-                MainNpc.NpcDelivery('Keep', 1)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:114_03', true)
-                MainNpc.NpcDelivery('Default', 2)
-                event_flags_system['cLand:CountAppE_RepTalk'] += 1
-                event_flags_npc['cNpcSave:AppE_GetItem1st'] = true
-                event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
-                event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
-            else:
-                fEvent23 = EventFlowSystemActor.RandomChoiceExcludePrevious4(4, false)
-                if fEvent23 == 0:
-                    MainNpc.NpcDecideRewardByCondition(0, 6, false, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:114_01', true)
-                    MainNpc.NpcDelivery('Default', 2)
-                    event_flags_system['cLand:CountAppE_RepTalk'] += 1
-                    event_flags_npc['cNpcSave:AppE_GetItem1st'] = true
-                    event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
-                    event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
-                elif fEvent23 == 1:
-                    MainNpc.NpcDecideRewardByCondition(0, 8, false, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:114_01', true)
-                    MainNpc.NpcDelivery('Default', 2)
-                    event_flags_system['cLand:CountAppE_RepTalk'] += 1
-                    event_flags_npc['cNpcSave:AppE_GetItem1st'] = true
-                    event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
-                    event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
-                elif fEvent23 == 2:
-                    MainNpc.NpcDecideRewardByCondition(0, 9, false, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:114_01', true)
-                    MainNpc.NpcDelivery('Default', 2)
-                    event_flags_system['cLand:CountAppE_RepTalk'] += 1
-                    event_flags_npc['cNpcSave:AppE_GetItem1st'] = true
-                    event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
-                    event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
-                elif fEvent23 == 3:
-                    MainNpc.NpcDecideRewardByCondition(0, 7, false, true)
-                    MainNpc.SetItemName(0, 1, 0)
-                    MainNpc.SetDeliveryItem(1, true)
-                    MainNpc.NpcDelivery('Keep', 1)
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:114_02', true)
-                    MainNpc.NpcDelivery('Default', 2)
-                    event_flags_system['cLand:CountAppE_RepTalk'] += 1
-                    event_flags_npc['cNpcSave:AppE_GetItem1st'] = true
-                    event_flags_system['cPlayer:NnpcAppE_Rep_OccuredToday'] = true
-                    event_flags_system['cPlayer:NnpcApproachNoIslandRepCount'] = 0
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Approach/BO_ApproachE_MainSeq:112', false)
     else:
         event_flags_npc['cNpcSave:AppE_Happen1st'] = true
         fEvent1 = MainNpc.CheckNpcLook()

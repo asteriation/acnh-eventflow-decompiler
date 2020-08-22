@@ -12,17 +12,17 @@ flow RcoDonationReward1:
 
 flow RcoDonationReward2:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_01', false)
-    if EventFlowSystemActor.GeneralTalkChoice2() != 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_06', true)
-    elif event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_03', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
-    elif event_flags_system['cPlayer:RcoDoneDIYmyself']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_02', false)
+    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+        if event_flags_system['cPlayerTemp:RcoDoneDIYmeselfNow']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_03', false)
+        else:
+            if event_flags_system['cPlayer:RcoDoneDIYmyself']:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_04', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_04', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_05', true)
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_04_DonationReward:012_06', true)
     MainNpc.SmartPhone(0)
     run Demo_Common_PhoneCall::SendingDataWithP
     EventFlowSystemActor.WaitFrame(5)

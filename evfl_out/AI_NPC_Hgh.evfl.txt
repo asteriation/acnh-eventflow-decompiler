@@ -19,10 +19,11 @@ flow Root:
         if EventFlowSystemActor.SystemCheckNowStage('cTailor'):
             MainNpc.NpcSetAIBlackBoard('CheckItemIndex', -1)
             MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_hgh', true, true, true, 2, 0.0, '')
-        elif MainNpc.NpcIsInvisible():
-            MainNpc.NpcChangeInvisibleState('cInvisible', 'Root', 'SNPC_hgh', '', true, true, 0)
         else:
-            MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_hgh', true, true, true, 2, 0.0, '')
+            if MainNpc.NpcIsInvisible():
+                MainNpc.NpcChangeInvisibleState('cInvisible', 'Root', 'SNPC_hgh', '', true, true, 0)
+            else:
+                MainNpc.NpcChangeTurnDefaultState('cTurn', '', 'Root', 'SNPC_hgh', true, true, true, 2, 0.0, '')
     else:
         MainNpc.NpcChangeWaitState('cWait', 'Root', 'SNPC_hgh', '', true, true, 0, true, '')
     return

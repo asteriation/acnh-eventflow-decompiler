@@ -54,17 +54,18 @@ flow ItemComment:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:031', false)
             MainNpc.NpcDelivery('"Default"', 10)
             EventFlowSystemActor.ExitFlowchart()
-        elif any ('Money', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:027', false)
-            MainNpc.NpcDelivery('"Default"', 10)
-            EventFlowSystemActor.ExitFlowchart()
-        elif any ('LostQuestDust', 'TurnipExpired', 'Trash', 'JohnnyQuestDust', 'TreasureQuestDust', 'Weed', '"指定なし"', '"指定なし"') in EventFlowSystemActor.ItemSelect('cItemSelect'):
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:028', false)
-            MainNpc.NpcAddFriendship(-5)
-            MainNpc.NpcDelivery('"Default"', 10)
-            EventFlowSystemActor.ExitFlowchart()
         else:
-            run sub_grp!Event121
+            if any ('Money', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"', '"指定なし"') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:027', false)
+                MainNpc.NpcDelivery('"Default"', 10)
+                EventFlowSystemActor.ExitFlowchart()
+            elif any ('LostQuestDust', 'TurnipExpired', 'Trash', 'JohnnyQuestDust', 'TreasureQuestDust', 'Weed', '"指定なし"', '"指定なし"') in EventFlowSystemActor.ItemSelect('cItemSelect'):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:028', false)
+                MainNpc.NpcAddFriendship(-5)
+                MainNpc.NpcDelivery('"Default"', 10)
+                EventFlowSystemActor.ExitFlowchart()
+            else:
+                run sub_grp!Event121
     else:
         EventFlowSystemActor.SetCalcPriceBySolo()
         subflow_results[0] = 1
@@ -124,81 +125,64 @@ flow Reward_SuperRere:
 
 flow Root:
     MainNpc.SetNpcName(0, 12)
-    if event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
-        if not event_flag_npc['cNpcMemory:BirhdayNTalkFlag']:
-            event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-            if not MainNpc.IsSameBirthdayNpc():
-                fEvent35 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent35 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:004', false)
-                    run sub_grp!Event38
-                elif fEvent35 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:006', false)
-                    run sub_grp!Event38
-                elif fEvent35 == 1:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:005', false)
-                    run sub_grp!Event38
-            elif MainNpc.IsTargetNpcHouse():
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:100', true)
-                run sub_grp!Event38
+    if not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
+        if EventFlowSystemActor.IsMyVillage():
+            if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:071', true)
             else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:010', true)
+        else:
+            if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:072', true)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:073', true)
+        event_flags_npc['cNpcMemory:BirhdayNTalkInFlag'] = true
+        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
+    elif not event_flag_npc['cNpcMemory:BirhdayNTalkFlag']:
+        event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
+        if MainNpc.IsSameBirthdayNpc():
+            if not MainNpc.IsTargetNpcHouse():
                 MainNpc.SetNpcName(0, 11)
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:100', true)
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:100', true)
+            run sub_grp!Event38
+        else:
+            fEvent35 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent35 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:004', false)
                 run sub_grp!Event38
-        elif not event_flag_npc['cNpcMemory:BirhdayNPresentFlag']:
-            fEvent28 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-            if fEvent28 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:060', false)
+            elif fEvent35 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:006', false)
                 run sub_grp!Event38
-            elif fEvent28 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:062', false)
+            elif fEvent35 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:005', false)
                 run sub_grp!Event38
-            elif fEvent28 == 1:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:061', false)
-                run sub_grp!Event38
-        elif not ((not EventFlowSystemActor.IsMyVillage()) and (event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 0) and (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag'))):
-            run sub_grp!Event21
-        elif event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] != 1:
+    elif not event_flag_npc['cNpcMemory:BirhdayNPresentFlag']:
+        fEvent28 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+        if fEvent28 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:060', false)
+            run sub_grp!Event38
+        elif fEvent28 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:062', false)
+            run sub_grp!Event38
+        elif fEvent28 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:061', false)
+            run sub_grp!Event38
+    elif (not EventFlowSystemActor.IsMyVillage()) and (event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 0) and (EventFlowSystemActor.SystemHasBaggageSpace(1, 'cPocketBag')):
+        if event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 1:
+            if event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 2:
+                MainNpc.NpcDecideGeneralQuestReward(0, 0)
+            else:
+                MainNpc.NpcDecideGeneralQuestReward(1, 0)
+        else:
             MainNpc.NpcDecideGeneralQuestReward(2, 0)
-            MainNpc.SetItemName(0, 1, 4)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:081', false)
-            MainNpc.SetDeliveryItem(1, true)
-            MainNpc.NpcDelivery('"Default"', 1)
-            event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] = 0
-            run sub_grp!Event79
-        elif event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] == 2:
-            MainNpc.NpcDecideGeneralQuestReward(0, 0)
-            MainNpc.SetItemName(0, 1, 4)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:081', false)
-            MainNpc.SetDeliveryItem(1, true)
-            MainNpc.NpcDelivery('"Default"', 1)
-            event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] = 0
-            run sub_grp!Event79
-        else:
-            MainNpc.NpcDecideGeneralQuestReward(1, 0)
-            MainNpc.SetItemName(0, 1, 4)
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:081', false)
-            MainNpc.SetDeliveryItem(1, true)
-            MainNpc.NpcDelivery('"Default"', 1)
-            event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] = 0
-            run sub_grp!Event79
-    elif EventFlowSystemActor.IsMyVillage():
-        if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:071', true)
-            event_flags_npc['cNpcMemory:BirhdayNTalkInFlag'] = true
-            run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:010', true)
-            event_flags_npc['cNpcMemory:BirhdayNTalkInFlag'] = true
-            run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
-    elif event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:072', true)
-        event_flags_npc['cNpcMemory:BirhdayNTalkInFlag'] = true
-        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
+        MainNpc.SetItemName(0, 1, 4)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:081', false)
+        MainNpc.SetDeliveryItem(1, true)
+        MainNpc.NpcDelivery('"Default"', 1)
+        event_flags_npc['cNpcMemory:DC_NPCBirthdayFlag'] = 0
+        run sub_grp!Event79
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:073', true)
-        event_flags_npc['cNpcMemory:BirhdayNTalkInFlag'] = true
-        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
+        run sub_grp!Event21
     return
 
 flow Root_In:
@@ -284,24 +268,25 @@ flow sub_grp!Event121:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:025', false)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:026', false)
-    elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 2000):
-        subflow_results[1] = 0
-        if EventFlowSystemActor.RandomChoice2(2) == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:021', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:022', false)
-    elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 501):
-        subflow_results[1] = 1
-        if EventFlowSystemActor.RandomChoice2(2) == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:023', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:024', false)
     else:
-        subflow_results[1] = 2
-        if EventFlowSystemActor.RandomChoice2(2) == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:025', false)
+        if EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 2000):
+            subflow_results[1] = 0
+            if EventFlowSystemActor.RandomChoice2(2) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:021', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:022', false)
+        elif EventFlowSystemActor.UICheckSelectedItemPrice('cItemSelect', 501):
+            subflow_results[1] = 1
+            if EventFlowSystemActor.RandomChoice2(2) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:023', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:024', false)
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:026', false)
+            subflow_results[1] = 2
+            if EventFlowSystemActor.RandomChoice2(2) == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:025', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_H:026', false)
 
 flow sub_grp!Event137:
     if (not EventFlowSystemActor.ItemIsDecoratedAtTalkNpcHouse('cItemSelect')) and (not EventFlowSystemActor.UISelectedItemIsEquiped(0, 'cItemSelect', false)):

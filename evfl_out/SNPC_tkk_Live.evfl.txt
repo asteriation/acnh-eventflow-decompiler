@@ -81,12 +81,13 @@ flow Tkk_LiveAfter_JudgeGet:
             if not event_flags_system['cLandTemp:Tkk_MusicFlag']:
                 run Tkk_LiveAfter_MusicGet_Multi
                 event_flags_system['cPlayer:TkkGetMusicToday'] = true
-        elif MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
-            run Tkk_LiveAfter_MusicGet_Multi
-            event_flags_system['cPlayer:TkkGetMusicToday'] = true
         else:
-            run Tkk_LiveAfter_MusicGet_Single
-            event_flags_system['cPlayer:TkkGetMusicToday'] = true
+            if MainNpc.TkkFreeQuery2('cTkkQueryType_AudienceMulti'):
+                run Tkk_LiveAfter_MusicGet_Multi
+                event_flags_system['cPlayer:TkkGetMusicToday'] = true
+            else:
+                run Tkk_LiveAfter_MusicGet_Single
+                event_flags_system['cPlayer:TkkGetMusicToday'] = true
     return
 
 flow Tkk_LiveAfter_LastWord:

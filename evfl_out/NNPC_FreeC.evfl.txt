@@ -41,18 +41,19 @@ flow RoomN_Chk:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:010', false)
         elif fEvent53 == 0:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:011', false)
-    elif MainNpc.NpcIsExistOtherNpc():
-entrypoint Event4:
-        MainNpc.SetNpcName(1, 16)
-        fEvent63 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent63 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:006', false)
-        elif fEvent63 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:007', false)
-        elif fEvent63 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:008', false)
     else:
-        MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH', '', '', '', true)
+        if MainNpc.NpcIsExistOtherNpc():
+entrypoint Event4:
+            MainNpc.SetNpcName(1, 16)
+            fEvent63 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent63 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:006', false)
+            elif fEvent63 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:007', false)
+            elif fEvent63 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH:008', false)
+        else:
+            MainNpc.NpcSelectFreeTalk('cWildCard', '', '', '', 'TalkNNpc/B1_Bo/Free/BO_FreeC_RoomH', '', '', '', true)
     EventFlowSystemActor.ExitFlowchart()
     return
 

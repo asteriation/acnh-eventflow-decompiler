@@ -158,78 +158,49 @@ flow GulB_GetUp_NotStart:
         MainNpc.NpcChangeNameStatus(0)
         MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:102', false)
         MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:103', false)
-    elif MainNpc.GulFreeQuery2('cGulQueryType_OtherPlayerClear'):
-        if not event_flags_system['cPlayer:GulBTalkBeforeFlag']:
-            MainNpc.NpcChangeNameStatus(3)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:100', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:101', true)
-        run GulBTalkChk
-        MainNpc.NpcChangeNameStatus(0)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:105', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:106', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:106_01', false)
-        MainNpc.NpcStartAS('GulBLostPhone', true, False)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:107', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:108', false)
-    elif event_flags_system['cPlayer:GulBSitUpBeforeFlag']:
-        fEvent61 = EventFlowSystemActor.RandomChoice4(4)
-        if fEvent61 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:005', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:006', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-            MainNpc.NpcStartAS('GulBLostPhone', true, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
-        elif fEvent61 == 1:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:008', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:009', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-            MainNpc.NpcStartAS('GulBLostPhone', true, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
-        elif fEvent61 == 2:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:011', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:012', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-            MainNpc.NpcStartAS('GulBLostPhone', true, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
-        elif fEvent61 == 3:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:014', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:015', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-            MainNpc.NpcStartAS('GulBLostPhone', true, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
-    elif event_flags_system['cPlayer:GulBTalkBeforeFlag']:
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:002', true)
-        event_flags_system['cPlayer:GulBSitUpBeforeFlag'] = true
-        run GulBTalkChk
-        MainNpc.NpcChangeNameStatus(0)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:003', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:004', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-        MainNpc.NpcStartAS('GulBLostPhone', true, False)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
     else:
-        MainNpc.NpcChangeNameStatus(3)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:002', true)
-        event_flags_system['cPlayer:GulBSitUpBeforeFlag'] = true
-        run GulBTalkChk
-        MainNpc.NpcChangeNameStatus(0)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:003', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:004', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
-        MainNpc.NpcStartAS('GulBLostPhone', true, False)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
+        if MainNpc.GulFreeQuery2('cGulQueryType_OtherPlayerClear'):
+            if not event_flags_system['cPlayer:GulBTalkBeforeFlag']:
+                MainNpc.NpcChangeNameStatus(3)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:100', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:101', true)
+            run GulBTalkChk
+            MainNpc.NpcChangeNameStatus(0)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:105', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:106', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:106_01', false)
+            MainNpc.NpcStartAS('GulBLostPhone', true, False)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:107', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:108', false)
+        else:
+            if event_flags_system['cPlayer:GulBSitUpBeforeFlag']:
+                fEvent61 = EventFlowSystemActor.RandomChoice4(4)
+                if fEvent61 == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:005', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:006', false)
+                elif fEvent61 == 1:
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:008', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:009', false)
+                elif fEvent61 == 2:
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:011', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:012', false)
+                elif fEvent61 == 3:
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:014', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:015', false)
+            else:
+                if not event_flags_system['cPlayer:GulBTalkBeforeFlag']:
+                    MainNpc.NpcChangeNameStatus(3)
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:002', true)
+                event_flags_system['cPlayer:GulBSitUpBeforeFlag'] = true
+                run GulBTalkChk
+                MainNpc.NpcChangeNameStatus(0)
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:003', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:004', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018', false)
+            MainNpc.NpcStartAS('GulBLostPhone', true, False)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_01', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:018_02', false)
+            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:019', false)
     if EventFlowSystemActor.GeneralTalkChoice2() == 0:
         MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:020', false)
     else:
@@ -303,20 +274,13 @@ entrypoint Event158:
                 run GulBQuestNow
         elif event_flags_system['cPlayer:GulBQuestFinishFlag']:
             run GulBAfterQuestChat
-        elif event_flags_system['cPlayer:GulBQuestStartFlag']:
-entrypoint Event163:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:126', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:112', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:127', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:127_01', false)
-            MainNpc.NpcStartAS('GulBLostPhone', true, False)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:128', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:128_01', false)
-            run GulBStart
-            EventFlowSystemActor.ExitFlowchart()
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:121', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:125', false)
+            if event_flags_system['cPlayer:GulBQuestStartFlag']:
+entrypoint Event163:
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:126', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:121', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:125', false)
             MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:112', false)
             MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:127', false)
             MainNpc.OpenMessageWindow('TalkSNpc/gul/SP_gulB:127_01', false)

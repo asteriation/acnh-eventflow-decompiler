@@ -28,25 +28,11 @@ flow Bed_MyHome:
     elif Player.PlayerIsUseCoordinate():
         MainNpc.OpenMessageWindow('TalkObj/OBJ_Bed:007', false)
         run Bed_CancelDream
-    elif event_flags_system['cPlayer:TapDreamFirstTalk']:
-        event_flags_system['cLandTemp:TapIndoorPos'] = true
-        EventFlowSystemActor.MiniGameSilentCancel()
-        EventFlowSystemActor.RevokeTreasureQuest()
-        EventFlowSystemActor.SoundDuckingOn(43)
-        Player.PlayerClearFoodPowerup()
-        EventFlowSystemActor.MessageSuspend()
-        Player.PlayerStartAnimeBedWaitWithHandsClasped()
-        EventFlowSystemActor.WaitFrame(40)
-        EventFlowSystemActor.CameraReserveFirstStateCommand('Demo:InIdrDreamZoomOut')
-        if Player.PlayerBedWaitCanopy():
-            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomInLow', 'ToDreamZoomInOut', false, true, false, 0)
-        else:
-            EventFlowSystemActor.CameraSetDemoParam('Player', 'ToDreamZoomIn', 'ToDreamZoomInOut', false, true, false, 0)
-        EventFlowSystemActor.SoundTriggerEmit('WipeToIdrDream', -1)
-        EventFlowSystemActor.NextLPFadeTime(3.5)
-        EventFlowSystemActor.SystemRequestChangeStage('cDreamHouse', 'cDream', 'cDream', 'cBlack', 1.0, 1.0)
     else:
-        event_flags_system['cLandTemp:TapIndoorPos'] = false
+        if event_flags_system['cPlayer:TapDreamFirstTalk']:
+            event_flags_system['cLandTemp:TapIndoorPos'] = true
+        else:
+            event_flags_system['cLandTemp:TapIndoorPos'] = false
         EventFlowSystemActor.MiniGameSilentCancel()
         EventFlowSystemActor.RevokeTreasureQuest()
         EventFlowSystemActor.SoundDuckingOn(43)

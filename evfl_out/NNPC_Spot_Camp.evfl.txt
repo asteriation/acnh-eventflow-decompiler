@@ -1,50 +1,50 @@
 flow Flow_Amiibo:
-    if event_flags_system['cPlayer:CampFirstTalk']:
-        if MainNpc.CheckNpcMoveIn('cDefault'):
-            if EventFlowSystemActor.PercentChoice(30):
-                run Talk_Move
-            else:
-                run Talk_Free
-        elif MainNpc.CheckCamperNpcMovePoint() in (0, 1, 2):
-            if event_flags_system['cLand:CampQuestClear']:
-                if MainNpc.CheckCamperNpcMovePoint() in (1, 2):
-                    if (EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0) and (not event_flags_system['cPlayer:Camp_InduceFailFlag']):
-                        run Talk_Invite_Amiibo
-                    else:
-                        if EventFlowSystemActor.RandomChoice2(2) == 0:
-                            run NNPC_Spot_Camp_Quest::Talk_Ftr
-                        else:
-                            run Talk_Free
-            elif event_flags_system['cLand:CampQuestInProgress']:
-                if (event_flags_system['cPlayer:CampQuestAccept']) and (MainNpc.HasCamperQuestItem()):
-                    run NNPC_Spot_Camp_Quest::Talk_QuestClear
-                else:
-                    if EventFlowSystemActor.PercentChoice(30):
-                        run NNPC_Spot_Camp_Quest::Talk_QuestProgress
-                    else:
-                        run Talk_Free
-            elif event_flags_system['cPlayer:CampQuestRecipiFailed']:
-                if EventFlowSystemActor.ShoppingCapacity(5794, 'cItemName'):
-                    run NNPC_Spot_Camp_Quest::Talk_QuestStart_Re
-                else:
-                    run Talk_Free
-            elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-                run NNPC_Spot_Camp_Quest::Talk_QuestStart
-            else:
-                run Talk_Free
-        elif (EventFlowSystemActor.NetIsConnected()) or (MainNpc.IsSameNpcLiving()) or (EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0):
+    if not event_flags_system['cPlayer:CampFirstTalk']:
+        if event_flags_system['cPlayer:CampInvite']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:201', false)
+            event_flags_system['cPlayer:CampFirstTalk'] = true
+        else:
+            EventFlowSystemActor.SetPlayerNameCallCamperNpc()
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:202', false)
+            event_flags_system['cPlayer:CampFirstTalk'] = true
+    elif MainNpc.CheckNpcMoveIn('cDefault'):
+        if EventFlowSystemActor.PercentChoice(30):
+            run Talk_Move
+        else:
+            run Talk_Free
+    elif MainNpc.CheckCamperNpcMovePoint() not in (0, 1, 2):
+        if (EventFlowSystemActor.NetIsConnected()) or (MainNpc.IsSameNpcLiving()) or (EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0):
             run Talk_Free
         elif event_flags_system['cPlayer:Camp_InduceFailFlag']:
             run NNPC_Spot_Camp_Invite::Flow_ReInvite
         else:
             run Talk_Invite_Amiibo
-    elif event_flags_system['cPlayer:CampInvite']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:201', false)
-        event_flags_system['cPlayer:CampFirstTalk'] = true
+    elif event_flags_system['cLand:CampQuestClear']:
+        if MainNpc.CheckCamperNpcMovePoint() in (1, 2):
+            if (EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0) and (not event_flags_system['cPlayer:Camp_InduceFailFlag']):
+                run Talk_Invite_Amiibo
+            else:
+                if EventFlowSystemActor.RandomChoice2(2) == 0:
+                    run NNPC_Spot_Camp_Quest::Talk_Ftr
+                else:
+                    run Talk_Free
+    elif event_flags_system['cLand:CampQuestInProgress']:
+        if (event_flags_system['cPlayer:CampQuestAccept']) and (MainNpc.HasCamperQuestItem()):
+            run NNPC_Spot_Camp_Quest::Talk_QuestClear
+        else:
+            if EventFlowSystemActor.PercentChoice(30):
+                run NNPC_Spot_Camp_Quest::Talk_QuestProgress
+            else:
+                run Talk_Free
+    elif event_flags_system['cPlayer:CampQuestRecipiFailed']:
+        if EventFlowSystemActor.ShoppingCapacity(5794, 'cItemName'):
+            run NNPC_Spot_Camp_Quest::Talk_QuestStart_Re
+        else:
+            run Talk_Free
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        run NNPC_Spot_Camp_Quest::Talk_QuestStart
     else:
-        EventFlowSystemActor.SetPlayerNameCallCamperNpc()
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Spot/BO_Spot_Camp:202', false)
-        event_flags_system['cPlayer:CampFirstTalk'] = true
+        run Talk_Free
     return
 
 flow Flow_FirstCamperZK:
@@ -55,22 +55,21 @@ flow Flow_FirstCamperZK:
         MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:001', false)
         MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:001_01', false)
     elif event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitOngoing']:
-        if event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
-            if event_flags_system['cLand:ReportFirstCamperAboutSetHousing']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:007', false)
-            elif event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing']:
+        if not event_flags_system['cLand:RcoBuildFirstVisitorsHousingKitComplete']:
+            if event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:004_02', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:004_01', false)
+                event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing'] = true
+        elif event_flags_system['cLand:ReportFirstCamperAboutSetHousing']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:007', false)
+        else:
+            if event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing']:
                 MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:005_01', false)
-                event_flags_system['cLand:ReportFirstCamperAboutSetHousing'] = true
-                event_flags_system['cPlayer:TalkFirstCamperAfterSetHousing'] = true
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:005', false)
-                event_flags_system['cLand:ReportFirstCamperAboutSetHousing'] = true
-                event_flags_system['cPlayer:TalkFirstCamperAfterSetHousing'] = true
-        elif event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:004_02', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:004_01', false)
-            event_flags_system['cPlayer:TalkFirstCamperAfterRequestSetHousing'] = true
+            event_flags_system['cLand:ReportFirstCamperAboutSetHousing'] = true
+            event_flags_system['cPlayer:TalkFirstCamperAfterSetHousing'] = true
     elif event_flags_system['cLand:RcoMeetFirstVisitorComplete']:
         MainNpc.OpenMessageWindow('TalkNNpc/B4_Zk/Spot/ZK_Spot_Camp_First:004', false)
     elif not EventFlowSystemActor.NetHasVisitor():

@@ -18,9 +18,10 @@ entrypoint Event31:
             MainNpc.SetNpcFeel('cNormal', 120)
             run NNPC_Talk_Situation::Facility_Chk
             EventFlowSystemActor.ExitFlowchart()
-        elif event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-            run NNPC_Reaction_First_V::FirstV_Acquaintance
         else:
-            run NNPC_Reaction_First_V::FirstV_Stranger
+            if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                run NNPC_Reaction_First_V::FirstV_Acquaintance
+            else:
+                run NNPC_Reaction_First_V::FirstV_Stranger
     return
 

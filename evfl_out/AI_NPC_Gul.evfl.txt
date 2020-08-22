@@ -33,27 +33,29 @@ flow InitWakeup:
     return
 
 flow Root:
-    if MainNpc.NpcCheckStateSelectTiming('cInit'):
-        if event_flags_system['cLand:JohnnySitUpFlag']:
-            if MainNpc.CanMoveUnit(true):
+    if not MainNpc.NpcCheckStateSelectTiming('cInit'):
+        if event_flags_system['cLand:JohnnyInvisible']:
+            MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+            event_flags_system['cLand:JohnnyInvisible'] = true
+        else:
+            if event_flags_system['cLand:JohnnySitUpFlag']:
                 run SetStateWakeup
-                event_flags_system['cLand:JohnnyInvisible'] = false
             else:
-                MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
-                event_flags_system['cLand:JohnnyInvisible'] = true
-        elif MainNpc.CanMoveUnit(false):
+                run SetStateSleep
+    elif event_flags_system['cLand:JohnnySitUpFlag']:
+        if MainNpc.CanMoveUnit(true):
+            run SetStateWakeup
+            event_flags_system['cLand:JohnnyInvisible'] = false
+        else:
+            MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
+            event_flags_system['cLand:JohnnyInvisible'] = true
+    else:
+        if MainNpc.CanMoveUnit(false):
             run SetStateSleep
             event_flags_system['cLand:JohnnyInvisible'] = false
         else:
             MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
             event_flags_system['cLand:JohnnyInvisible'] = true
-    elif event_flags_system['cLand:JohnnyInvisible']:
-        MainNpc.NpcChangeInvisibleState('cInvisible', '', '', '', false, true, 0)
-        event_flags_system['cLand:JohnnyInvisible'] = true
-    elif event_flags_system['cLand:JohnnySitUpFlag']:
-        run SetStateWakeup
-    else:
-        run SetStateSleep
     return
 
 flow SetStateSleep:

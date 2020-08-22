@@ -1,41 +1,37 @@
 flow Root:
     MainNpc.SetNpcName(0, 11)
-    if event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
-        if not event_flag_npc['cNpcMemory:BirhdayNTalkFlag']:
-            event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-            fEvent7 = EventFlowSystemActor.RandomChoice3(3)
-            if fEvent7 == 2:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:003', true)
-            elif fEvent7 == 1:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:002', true)
-            elif fEvent7 == 0:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:001', true)
-        elif EventFlowSystemActor.IsMyVillage():
-            if event_flags_system['cPlayer:BirthdayNGavePresentFlag']:
-                run sub_grp!Event9
+    if not event_flag_npc['cNpcMemory:FirstMeetGreetAtThisVillage']:
+        if EventFlowSystemActor.IsMyVillage():
+            if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:014', true)
             else:
-                run sub_grp!Event8
-        elif event_flags_system['cPlayerVisit:BirthdayNGavePresent_DC']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:004', true)
+        else:
+            if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:015', true)
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:016', true)
+        event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
+        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
+    elif not event_flag_npc['cNpcMemory:BirhdayNTalkFlag']:
+        event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
+        fEvent7 = EventFlowSystemActor.RandomChoice3(3)
+        if fEvent7 == 2:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:003', true)
+        elif fEvent7 == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:002', true)
+        elif fEvent7 == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:001', true)
+    elif EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:BirthdayNGavePresentFlag']:
             run sub_grp!Event9
         else:
             run sub_grp!Event8
-    elif EventFlowSystemActor.IsMyVillage():
-        if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:014', true)
-            event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-            run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
-        else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:004', true)
-            event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-            run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
-    elif event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:015', true)
-        event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayN_G:016', true)
-        event_flags_npc['cNpcMemory:BirhdayNTalkFlag'] = true
-        run NNPC_Reaction_First_Root::FirstMeeting_FlagProcess
+        if event_flags_system['cPlayerVisit:BirthdayNGavePresent_DC']:
+            run sub_grp!Event9
+        else:
+            run sub_grp!Event8
     return
 
 flow sub_grp!Event8:

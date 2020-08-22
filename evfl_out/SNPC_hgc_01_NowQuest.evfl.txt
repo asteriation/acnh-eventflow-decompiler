@@ -33,14 +33,14 @@ flow Hgc_Check_Chk:
             MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:168', false)
         EventFlowSystemActor.ExitFlowchart()
     elif (EventFlowSystemActor.PlayerIsEquipItem('cAny', false, false, 7210, 4287, 8228, 4288, 8372, 8370, 8254, 8252)) or (EventFlowSystemActor.PlayerIsEquipItem('cAny', false, false, 8368, 8251, 8367, 8369, 8253, 65534, 65534, 65534)) or (EventFlowSystemActor.PlayerIsEquipItem('cAny', false, false, 5837, 5836, 5822, 9557, 9558, 65534, 65534, 65534)) or (EventFlowSystemActor.PlayerIsEquipItem('cAny', false, false, 9555, 9552, 9556, 9553, 9554, 5530, 65534, 65534)):
-        if not MainNpc.HgcIsChangeOutfit():
-            MainNpc.HgcThemeMessage()
-            EventFlowSystemActor.ExitFlowchart()
-        elif subflow_results[0] == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:160', false)
+        if MainNpc.HgcIsChangeOutfit():
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:160', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:161', false)
             EventFlowSystemActor.ExitFlowchart()
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:161', false)
+            MainNpc.HgcThemeMessage()
             EventFlowSystemActor.ExitFlowchart()
     elif not MainNpc.HgcIsChangeOutfit():
         if MainNpc.HgcFashionCheckResult() in (0, 1, 2):

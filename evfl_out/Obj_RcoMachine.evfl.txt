@@ -139,45 +139,47 @@ flow RcoMachineDailyLogin:
     event_flags_system['cPlayer:RcoGotLoginBonusToday'] = true
     if event_flags_system['cPlayer:ObjRcoMachineCheck1st']:
         fEvent74 = EventFlowSystemActor.OfficeLevel()
-        if fEvent74 == ResServiceBuilding:
+        if fEvent74 in (ResServiceTent0, ResServiceTent1):
+            run LoginNormal
+        elif fEvent74 == ResServiceBuilding:
             if event_flags_system['cLand:BuiltTownOfficeToday']:
                 Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:102_01', false)
                 Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:103_01', false)
                 run Cmn_WabiMilage
                 Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:106_01', false)
-            elif not EventFlowSystemActor.EnvSameDate('cNewYear', 'cGrowUpTime'):
-entrypoint Event103:
-                event_flags_system['cPlayer:RcoMachineDailyLoginCheck'] = true
-                if event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 0:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_01', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(50, false)
-                elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 1:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_02', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(80, false)
-                elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 2:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_03', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(100, false)
-                elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 3:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_04', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(150, false)
-                elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 4:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_05', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(200, false)
-                elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 5:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_06', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(250, false)
-                else:
-                    Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_07', false)
-                    EventFlowSystemActor.LifeSupportPointCountDown(300, false)
-            elif event_flags_system['cLand:CountOfficeAfterBuild'] == 2:
-                run LoginNormal
             else:
-                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:102_02', false)
-                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:103_02', false)
-                run Cmn_WabiMilage
-                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:106_02', false)
-        elif fEvent74 in (ResServiceTent0, ResServiceTent1):
-            run LoginNormal
+                if EventFlowSystemActor.EnvSameDate('cNewYear', 'cGrowUpTime'):
+                    if event_flags_system['cLand:CountOfficeAfterBuild'] == 2:
+                        run LoginNormal
+                    else:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:102_02', false)
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:103_02', false)
+                        run Cmn_WabiMilage
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:106_02', false)
+                else:
+entrypoint Event103:
+                    event_flags_system['cPlayer:RcoMachineDailyLoginCheck'] = true
+                    if event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 0:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_01', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(50, false)
+                    elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 1:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_02', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(80, false)
+                    elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 2:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_03', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(100, false)
+                    elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 3:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_04', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(150, false)
+                    elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 4:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_05', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(200, false)
+                    elif event_flags_system['cPlayer:RcoMachineDailyLoginDays'] == 5:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_06', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(250, false)
+                    else:
+                        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:101_07', false)
+                        EventFlowSystemActor.LifeSupportPointCountDown(300, false)
     else:
 entrypoint Event103:
         event_flags_system['cPlayer:RcoMachineDailyLoginCheck'] = true
@@ -300,34 +302,11 @@ flow Root:
         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_03', false)
     elif EventFlowSystemActor.PlayerHouseLevel() == 0:
         Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_02', false)
-    elif event_flags_system['cPlayer:RcoGotLoginBonusToday']:
-        event_flags_system['cPlayer:ObjRcoMachineCheck1st'] = true
-        if not event_flags_system['cPlayer:RcoPaid1stCharge']:
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:RcoMachineEnableExchange']:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016', false)
-            if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-                event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable'] = true
-            event_flags_system['cPlayer:RcoMachineEnableExchange'] = true
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable']:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016_01', false)
-            event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable'] = true
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:TanuportAmiiboBromideUnlock']:
-            run RcoSelSeq
-        elif event_flags_system['cPlayer:PrintServiceExplain']:
-            run RcoSelSeq
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:581', false)
-            event_flags_system['cPlayer:PrintServiceExplain'] = true
-            run RcoSelSeq
     else:
-        EventFlowSystemActor.UISonkatsuPointAppear()
-        run RcoMachineDailyLogin
-        EventFlowSystemActor.UISonkatsuPointDisappear()
+        if not event_flags_system['cPlayer:RcoGotLoginBonusToday']:
+            EventFlowSystemActor.UISonkatsuPointAppear()
+            run RcoMachineDailyLogin
+            EventFlowSystemActor.UISonkatsuPointDisappear()
         event_flags_system['cPlayer:ObjRcoMachineCheck1st'] = true
         if not event_flags_system['cPlayer:RcoPaid1stCharge']:
             run RcoSelSeq

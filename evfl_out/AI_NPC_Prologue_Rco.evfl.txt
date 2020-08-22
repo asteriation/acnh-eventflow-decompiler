@@ -15,34 +15,16 @@ flow CheckRobTalk2:
 flow Init:
     MainNpc.NpcRegistAIBlackBoard('CheckRobResult', 0)
     MainNpc.NpcRegistAIBlackBoard('Visible', 1)
-    if not event_flags_system['cLandTemp:IsFirstPrologue']:
-        MainNpc.NpcRegistAIBlackBoard('TalkCount', 0)
-        MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
-        MainNpc.NpcAISetting(8, true)
-        MainNpc.NpcAISetting(1, true)
-    elif event_flags_system['cLand:SetPrologueBonfire']:
-        MainNpc.NpcRegistAIBlackBoard('TalkCount', 1)
-        if event_flags_system['cLandTemp:PrologueStartedCampfire']:
-            MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
-            MainNpc.NpcAISetting(8, true)
-            MainNpc.NpcAISetting(1, true)
-            if EventFlowSystemActor.SystemCheckNowStage('cField'):
-                MainNpc.NpcAISetCheckRobFunc('System_Door_TanukichiTent', 'Message', '', 'cTanukichiDoorRob', false, false)
-                MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue3_Orientation1', 'Root', 'CheckRobTalk', 'cTanukichiPrologueTalkRob', false, false)
-                MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue_Rco_Stop', 'Rco_StopBbs', '', 'cTanukichiPrologueBulletinBoard', false, false)
-                MainNpc.NpcAISetRequestSpeakFunc('cKeepBackPlaza', false)
+    if event_flags_system['cLandTemp:IsFirstPrologue']:
+        if event_flags_system['cLand:SetPrologueBonfire']:
+            MainNpc.NpcRegistAIBlackBoard('TalkCount', 1)
+            if event_flags_system['cLandTemp:PrologueStartedCampfire']:
+                MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
+            else:
+                MainNpc.NpcRegistAIBlackBoard('isSpeak', 1)
         else:
-            MainNpc.NpcRegistAIBlackBoard('isSpeak', 1)
-            MainNpc.NpcAISetting(8, true)
-            MainNpc.NpcAISetting(1, true)
-            if EventFlowSystemActor.SystemCheckNowStage('cField'):
-                MainNpc.NpcAISetCheckRobFunc('System_Door_TanukichiTent', 'Message', '', 'cTanukichiDoorRob', false, false)
-                MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue3_Orientation1', 'Root', 'CheckRobTalk', 'cTanukichiPrologueTalkRob', false, false)
-                MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue_Rco_Stop', 'Rco_StopBbs', '', 'cTanukichiPrologueBulletinBoard', false, false)
-                MainNpc.NpcAISetRequestSpeakFunc('cKeepBackPlaza', false)
-    else:
-        MainNpc.NpcRegistAIBlackBoard('TalkCount', 0)
-        MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
+            MainNpc.NpcRegistAIBlackBoard('TalkCount', 0)
+            MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
         MainNpc.NpcAISetting(8, true)
         MainNpc.NpcAISetting(1, true)
         if EventFlowSystemActor.SystemCheckNowStage('cField'):
@@ -50,6 +32,11 @@ flow Init:
             MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue3_Orientation1', 'Root', 'CheckRobTalk', 'cTanukichiPrologueTalkRob', false, false)
             MainNpc.NpcAISetCheckRobFunc('Tutorials_Prologue_Rco_Stop', 'Rco_StopBbs', '', 'cTanukichiPrologueBulletinBoard', false, false)
             MainNpc.NpcAISetRequestSpeakFunc('cKeepBackPlaza', false)
+    else:
+        MainNpc.NpcRegistAIBlackBoard('TalkCount', 0)
+        MainNpc.NpcRegistAIBlackBoard('isSpeak', 0)
+        MainNpc.NpcAISetting(8, true)
+        MainNpc.NpcAISetting(1, true)
     return
 
 flow Root:

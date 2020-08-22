@@ -121,22 +121,23 @@ entrypoint Event86:
                                             run MuseumAfterDonationCommon
                                         else:
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    elif MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
                                     if event_flags_system['cLand:OwlFoundFossil']:
                                         run Comp_Check
@@ -272,22 +273,23 @@ entrypoint Event86:
                                         run MuseumAfterDonationCommon
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                elif MainNpc.OwlDonationFossilComplete():
-                                    MainNpc.OwlDinosaurTagSet()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        run MuseumAfterDonationCommon
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        MainNpc.OwlOpenItemMessage()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                    if MainNpc.OwlDonationFossilComplete():
+                                        MainNpc.OwlDinosaurTagSet()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            MainNpc.OwlOpenItemMessage()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
                                 if event_flags_system['cLand:OwlFoundFossil']:
                                     run Comp_Check
@@ -425,22 +427,23 @@ entrypoint Event86:
                                             run MuseumAfterDonationCommon
                                         else:
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    elif MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
                                     if event_flags_system['cLand:OwlFoundFossil']:
                                         run Comp_Check
@@ -576,22 +579,23 @@ entrypoint Event86:
                                         run MuseumAfterDonationCommon
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                elif MainNpc.OwlDonationFossilComplete():
-                                    MainNpc.OwlDinosaurTagSet()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        run MuseumAfterDonationCommon
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        MainNpc.OwlOpenItemMessage()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                    if MainNpc.OwlDonationFossilComplete():
+                                        MainNpc.OwlDinosaurTagSet()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            MainNpc.OwlOpenItemMessage()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
                                 if event_flags_system['cLand:OwlFoundFossil']:
                                     run Comp_Check
@@ -728,22 +732,23 @@ entrypoint Event86:
                                         run MuseumAfterDonationCommon
                                     else:
                                         MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                elif MainNpc.OwlDonationFossilComplete():
-                                    MainNpc.OwlDinosaurTagSet()
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        run MuseumAfterDonationCommon
-                                    else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                 else:
-                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                        MainNpc.OwlOpenItemMessage()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                    if MainNpc.OwlDonationFossilComplete():
+                                        MainNpc.OwlDinosaurTagSet()
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            run MuseumAfterDonationCommon
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                            MainNpc.OwlOpenItemMessage()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        else:
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                 MainNpc.NpcDelivery('"Default"', 3)
                                 if event_flags_system['cLand:OwlFoundFossil']:
                                     run Comp_Check
@@ -896,22 +901,23 @@ entrypoint Event86:
                                                 run MuseumAfterDonationCommon
                                             else:
                                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                        elif MainNpc.OwlDonationFossilComplete():
-                                            MainNpc.OwlDinosaurTagSet()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                run MuseumAfterDonationCommon
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                MainNpc.OwlOpenItemMessage()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            if MainNpc.OwlDonationFossilComplete():
+                                                MainNpc.OwlDinosaurTagSet()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    run MuseumAfterDonationCommon
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                             else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    MainNpc.OwlOpenItemMessage()
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                         MainNpc.NpcDelivery('"Default"', 3)
                                         if event_flags_system['cLand:OwlFoundFossil']:
                                             run Comp_Check
@@ -1047,22 +1053,23 @@ entrypoint Event86:
                                             run MuseumAfterDonationCommon
                                         else:
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    elif MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
                                     if event_flags_system['cLand:OwlFoundFossil']:
                                         run Comp_Check
@@ -1200,22 +1207,23 @@ entrypoint Event86:
                                                 run MuseumAfterDonationCommon
                                             else:
                                                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                        elif MainNpc.OwlDonationFossilComplete():
-                                            MainNpc.OwlDinosaurTagSet()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                run MuseumAfterDonationCommon
-                                            else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                                MainNpc.OwlOpenItemMessage()
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            if MainNpc.OwlDonationFossilComplete():
+                                                MainNpc.OwlDinosaurTagSet()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    run MuseumAfterDonationCommon
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                             else:
-                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                    MainNpc.OwlOpenItemMessage()
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                                else:
+                                                    MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                         MainNpc.NpcDelivery('"Default"', 3)
                                         if event_flags_system['cLand:OwlFoundFossil']:
                                             run Comp_Check
@@ -1351,22 +1359,23 @@ entrypoint Event86:
                                             run MuseumAfterDonationCommon
                                         else:
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    elif MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
                                     if event_flags_system['cLand:OwlFoundFossil']:
                                         run Comp_Check
@@ -1503,22 +1512,23 @@ entrypoint Event86:
                                             run MuseumAfterDonationCommon
                                         else:
                                             MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
-                                    elif MainNpc.OwlDonationFossilComplete():
-                                        MainNpc.OwlDinosaurTagSet()
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            run MuseumAfterDonationCommon
-                                        else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                     else:
-                                        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
-                                        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
-                                            MainNpc.OwlOpenItemMessage()
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                        if MainNpc.OwlDonationFossilComplete():
+                                            MainNpc.OwlDinosaurTagSet()
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:126', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                run MuseumAfterDonationCommon
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128', false)
                                         else:
-                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
+                                            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:130', false)
+                                            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:127', false)
+                                                MainNpc.OwlOpenItemMessage()
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:129_01', false)
+                                            else:
+                                                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:128_01', false)
                                     MainNpc.NpcDelivery('"Default"', 3)
                                     if event_flags_system['cLand:OwlFoundFossil']:
                                         run Comp_Check

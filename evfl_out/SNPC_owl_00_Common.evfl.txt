@@ -32,21 +32,21 @@ flow CmnTodayTalk1st:
     run SNPC_owl_23_Museum_DiveFish::ChkCompReport
     run SNPC_owl_24_Museum_StampRally::Root
 entrypoint Event2:
-    if EventFlowSystemActor.MuseumComplete():
-        if not event_flags_system['cPlayer:FutaExplanationDonationComp']:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:014', false)
-            event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
-            run Comp_Direct
-        elif not event_flags_system['cLand:OwlWantsPainting']:
-            run Select3_Comp
-        elif (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']):
-            run SNPC_owl_22_Museum_RenualQuest::Select4_Painting
+    if not EventFlowSystemActor.MuseumComplete():
+        if event_flags_system['cLand:OwlFoundFossil']:
+            run Select45
         else:
-            run Select3_Comp
-    elif event_flags_system['cLand:OwlFoundFossil']:
-        run Select45
+            run SNPC_owl_10_Tent::Sel_NoFoundFossil
+    elif not event_flags_system['cPlayer:FutaExplanationDonationComp']:
+        MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_00_Common:014', false)
+        event_flags_system['cPlayer:FutaExplanationDonationComp'] = true
+        run Comp_Direct
+    elif not event_flags_system['cLand:OwlWantsPainting']:
+        run Select3_Comp
+    elif (not event_flags_system['cLand:MuseumGrowupEnable2']) and (not event_flags_system['cLand:Museum3Built']):
+        run SNPC_owl_22_Museum_RenualQuest::Select4_Painting
     else:
-        run SNPC_owl_10_Tent::Sel_NoFoundFossil
+        run Select3_Comp
     return
 
 flow Comp_Again:

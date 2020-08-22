@@ -46,104 +46,106 @@ flow MoveIn:
 
 flow MoveOut:
     if MainNpc.NpcIsMovingRoom() == 1:
-        if event_flag_npc['cNpcMemory:TalkMoveOut']:
-            if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0:
-entrypoint Event32:
-                fEvent32 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent32 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:106', false)
-                elif fEvent32 == 1:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:107', false)
-                elif fEvent32 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:108', false)
-                EventFlowSystemActor.ExitFlowchart()
-            elif EventFlowSystemActor.IsMyVillage():
-                if MainNpc.NpcMoveOutState() in (0, 1, 2, 3):
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:102', false)
+        if not event_flag_npc['cNpcMemory:TalkMoveOut']:
+            if EventFlowSystemActor.IsMyVillage():
+                if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:005', false)
+                    run HaveAcquaintance
+                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+                elif (event_flag_npc['cNpcMemory:NextMoveOutTalk']) and (not event_flag_npc['cNpcMemory:ChokeOffMoveOut']):
+                    fEvent27 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+                    if fEvent27 == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:001', false)
+                        event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent27 == 1:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:002', false)
+                        event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                    elif fEvent27 == 2:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:003', false)
+                        event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:004', false)
+                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+            elif MainNpc.NpcMoveOutState() in (0, 1, 2, 3):
+                if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:007', false)
+                    run HaveAcquaintance
+                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+                elif (event_flags_system['cPlayer:EnableInviteMoveoutNPC']) and (not MainNpc.NpcInviteCheck(0)):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:006', false)
+                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                        run Scout
+                        event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:008', false)
+                        event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                        EventFlowSystemActor.ExitFlowchart()
+                else:
+entrypoint Event63:
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:006_01', false)
+                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+            else:
+                if event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+                    run MoveOut_Acquaintance
                 else:
                     MainNpc.NpcSetMoveLandWord()
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:101', false)
-                EventFlowSystemActor.ExitFlowchart()
-            elif MainNpc.NpcMoveOutState() not in (0, 1, 2, 3):
+                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:007_01', false)
+                    run HaveAcquaintance
+                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                    EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0:
+entrypoint Event32:
+            fEvent32 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent32 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:106', false)
+            elif fEvent32 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:107', false)
+            elif fEvent32 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:108', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.IsMyVillage():
+            if MainNpc.NpcMoveOutState() in (0, 1, 2, 3):
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:102', false)
+            else:
+                MainNpc.NpcSetMoveLandWord()
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:101', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif MainNpc.NpcMoveOutState() not in (0, 1, 2, 3):
 entrypoint Event69:
-                if not MainNpc.NpcIsInducementPlayer():
-                    MainNpc.NpcSetMoveLandWord()
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:105', false)
-                elif event_flag_npc['cNpcMemory:SameLand']:
+            if MainNpc.NpcIsInducementPlayer():
+                if event_flag_npc['cNpcMemory:SameLand']:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:103', false)
                 else:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:104', false)
-                EventFlowSystemActor.ExitFlowchart()
-            elif not event_flags_system['cPlayer:EnableInviteMoveoutNPC']:
-                run Free_Moveout
-            elif MainNpc.NpcInviteCheck(0):
-                run Free_Moveout
-            elif not event_flag_npc['cNpcMemory:InduceFailFlag']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:200', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run Scout
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:203', false)
-                EventFlowSystemActor.ExitFlowchart()
-            elif event_flag_npc['cNpcMemory:InduceFailVillagerMax']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:213', false)
-                run sub_grp!Event79
-            elif event_flag_npc['cNpcMemory:InduceFailSellPlaceNothing']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:214', false)
-                run sub_grp!Event79
-        elif EventFlowSystemActor.IsMyVillage():
-            if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:005', false)
-                run HaveAcquaintance
-                event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                EventFlowSystemActor.ExitFlowchart()
-            elif (event_flag_npc['cNpcMemory:NextMoveOutTalk']) and (not event_flag_npc['cNpcMemory:ChokeOffMoveOut']):
-                fEvent27 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-                if fEvent27 == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:001', false)
-                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent27 == 1:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:002', false)
-                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-                elif fEvent27 == 2:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:003', false)
-                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                    EventFlowSystemActor.ExitFlowchart()
             else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:004', false)
-                event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                EventFlowSystemActor.ExitFlowchart()
-        elif MainNpc.NpcMoveOutState() in (0, 1, 2, 3):
-            if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:007', false)
-                run HaveAcquaintance
-                event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                EventFlowSystemActor.ExitFlowchart()
-            elif (event_flags_system['cPlayer:EnableInviteMoveoutNPC']) and (not MainNpc.NpcInviteCheck(0)):
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:006', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    run Scout
-                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-                else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:008', false)
-                    event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                    EventFlowSystemActor.ExitFlowchart()
-            else:
-entrypoint Event63:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:006_01', false)
-                event_flags_npc['cNpcMemory:TalkMoveOut'] = true
-                EventFlowSystemActor.ExitFlowchart()
-        elif event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-            run MoveOut_Acquaintance
-        else:
-            MainNpc.NpcSetMoveLandWord()
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:007_01', false)
-            run HaveAcquaintance
-            event_flags_npc['cNpcMemory:TalkMoveOut'] = true
+                MainNpc.NpcSetMoveLandWord()
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:105', false)
             EventFlowSystemActor.ExitFlowchart()
+        elif not event_flags_system['cPlayer:EnableInviteMoveoutNPC']:
+            run Free_Moveout
+        elif MainNpc.NpcInviteCheck(0):
+            run Free_Moveout
+        elif not event_flag_npc['cNpcMemory:InduceFailFlag']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:200', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run Scout
+            else:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:203', false)
+            EventFlowSystemActor.ExitFlowchart()
+        elif event_flag_npc['cNpcMemory:InduceFailVillagerMax']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:213', false)
+            run sub_grp!Event79
+        elif event_flag_npc['cNpcMemory:InduceFailSellPlaceNothing']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_MoveOut:214', false)
+            run sub_grp!Event79
     return
 
 flow MoveOut_Acquaintance:

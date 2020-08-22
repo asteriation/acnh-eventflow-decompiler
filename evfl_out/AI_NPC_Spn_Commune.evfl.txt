@@ -23,10 +23,11 @@ flow Root:
                 MainNpc.NpcAISetPos(69.0, 7.0, 14.0, true)
                 MainNpc.NpcDisableServiceMotion()
                 MainNpc.NpcChangeAIState('cWait', '', 'Root', '', false, true)
-            elif (EventFlowSystemActor.IsReturnJuneBridePhotoStudio()) and (MainNpc.NpcCheckStateSelectTiming('cInit')):
-                MainNpc.NpcChangeAIState('cSpnReturnJB', 'SNPC_spn', 'Root', '', false, true)
             else:
-                MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
+                if (EventFlowSystemActor.IsReturnJuneBridePhotoStudio()) and (MainNpc.NpcCheckStateSelectTiming('cInit')):
+                    MainNpc.NpcChangeAIState('cSpnReturnJB', 'SNPC_spn', 'Root', '', false, true)
+                else:
+                    MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
         else:
             MainNpc.NpcChangeSpNpcTurnState('cSpNpcTurn', 'Root', 'SNPC_spn', '', false, true, 30, 2, 0, 0, true, false, '', '')
     return

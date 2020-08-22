@@ -79,11 +79,11 @@ flow SharePlay_AppOpen_Solo:
     if EventFlowSystemActor.CountWaitingPlayerNum(1):
         Player.SmartPhone(2)
         run Choice
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:020', false)
-        EventFlowSystemActor.CancelSharePlayEntry()
     else:
-        EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:002', true)
+        if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:020', false)
+        else:
+            EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_SharePlay:002', true)
         EventFlowSystemActor.CancelSharePlayEntry()
     return
 

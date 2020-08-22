@@ -65,24 +65,23 @@ flow Alw_Camera:
         if not EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 1):
             run Alw_Advice_Set_Theme
             EventFlowSystemActor.ExitFlowchart()
-        elif EventFlowSystemActor.CheckCalledNpcNumNormal(1):
-            if EventFlowSystemActor.AlwAlpIsOnBedJuneBride():
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:074', false)
-                EventFlowSystemActor.ExitFlowchart()
+        elif not EventFlowSystemActor.CheckCalledNpcNumNormal(1):
+            if (event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']) and (EventFlowSystemActor.PercentChoice(70)):
+                run Alw_Advice_Set_Theme
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:070', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:071', false)
-                    run System_JuneBrideParty::PartyStart_Wipe
-                else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:032', false)
-                EventFlowSystemActor.ExitFlowchart()
-        elif (event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']) and (EventFlowSystemActor.PercentChoice(70)):
-            run Alw_Advice_Set_Theme
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:072', false)
+                event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag'] = true
+            EventFlowSystemActor.ExitFlowchart()
+        elif EventFlowSystemActor.AlwAlpIsOnBedJuneBride():
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:074', false)
             EventFlowSystemActor.ExitFlowchart()
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:072', false)
-            event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:070', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:071', false)
+                run System_JuneBrideParty::PartyStart_Wipe
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:032', false)
             EventFlowSystemActor.ExitFlowchart()
     elif fEvent175 == 0:
         if event_flags_system['cPlayer:AlwJuneBridePleaseShootFlag']:
@@ -288,12 +287,13 @@ flow Alw_NewFtr:
 flow Alw_ScoreCount:
     event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] = 0
     if subflow_results[0] in (0, 1, 2, 3, 4, 5):
-        if not EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 17000):
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 1
-        elif EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 23000):
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 3
+        if EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 17000):
+            if EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 23000):
+                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 3
+            else:
+                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
         else:
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
+            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 1
         if EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 8):
             subflow_results[2] = 0
             if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 70):
@@ -323,79 +323,20 @@ flow Alw_ScoreCount:
                 subflow_results[1] = 0
             else:
                 subflow_results[1] = 1
-        elif subflow_results[0] in (0, 1, 2):
-            subflow_results[1] = 1
         else:
-            subflow_results[1] = 2
+            if subflow_results[0] in (0, 1, 2):
+                subflow_results[1] = 1
+            else:
+                subflow_results[1] = 2
         event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
-    elif not EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 17000):
-        event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 1
-        if EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 8):
-            subflow_results[2] = 0
-            if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 70):
-                subflow_results[3] = 0
-                if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 90):
-                    event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
-                else:
-                    event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
-            else:
-                subflow_results[3] = 1
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        else:
-            subflow_results[2] = 1
-            subflow_results[3] = 1
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        if EventFlowSystemActor.JuneBrideScoreCheck('cThemeSituationRatio', 8):
-            subflow_results[4] = 0
-            if EventFlowSystemActor.JuneBrideScoreCheck('cThemeSituationRatio', 12):
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
-            else:
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
-        else:
-            subflow_results[4] = 1
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] < 5:
-            subflow_results[1] = 2
-        elif event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 8:
-            subflow_results[1] = 0
-        else:
-            subflow_results[1] = 1
-        event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 3
-    elif EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 23000):
-        event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
-        if EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 8):
-            subflow_results[2] = 0
-            if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 70):
-                subflow_results[3] = 0
-                if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 90):
-                    event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
-                else:
-                    event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
-            else:
-                subflow_results[3] = 1
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        else:
-            subflow_results[2] = 1
-            subflow_results[3] = 1
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        if EventFlowSystemActor.JuneBrideScoreCheck('cThemeSituationRatio', 8):
-            subflow_results[4] = 0
-            if EventFlowSystemActor.JuneBrideScoreCheck('cThemeSituationRatio', 12):
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
-            else:
-                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
-        else:
-            subflow_results[4] = 1
-            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] < 5:
-            subflow_results[1] = 2
-        elif event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 8:
-            subflow_results[1] = 0
-        else:
-            subflow_results[1] = 1
-        event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 3
     else:
-        event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
+        if EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 17000):
+            if EventFlowSystemActor.JuneBrideScoreCheck('cHHAScore', 23000):
+                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 4
+            else:
+                event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 2
+        else:
+            event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 1
         if EventFlowSystemActor.JuneBrideScoreCheck('cFurnitureNum', 8):
             subflow_results[2] = 0
             if EventFlowSystemActor.JuneBrideScoreCheck('cThemeColorRatio', 70):
@@ -420,12 +361,13 @@ flow Alw_ScoreCount:
         else:
             subflow_results[4] = 1
             event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 0
-        if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] < 5:
-            subflow_results[1] = 2
-        elif event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 8:
-            subflow_results[1] = 0
+        if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 5:
+            if event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] >= 8:
+                subflow_results[1] = 0
+            else:
+                subflow_results[1] = 1
         else:
-            subflow_results[1] = 1
+            subflow_results[1] = 2
         event_flags_system['cPlayerTemp:AlwJuneBrideDayScoreCount'] += 3
     return
 
@@ -526,12 +468,11 @@ flow Alw_Start:
                 EventFlowSystemActor.SystemRequestChangeStage('cJuneBrideStudio', 'cHeartWipe', 'cHeartWipe', 'cBlack', 1.0, 1.0)
                 event_flags_system['cPlayer:AlwJuneBrideBalloonFlag'] = true
                 EventFlowSystemActor.UIGuideBalloonWeddingParty(2)
-            elif EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cLastGrowUpTime'):
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:024_01', false)
-                event_flags_system['cPlayer:AlwJuneBrideQuestStartFlag'] = false
-                event_flags_system['cPlayer:AlwJuneBrideBalloonFlag'] = false
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:024', false)
+                if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cLastGrowUpTime'):
+                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:024_01', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:024', false)
                 event_flags_system['cPlayer:AlwJuneBrideQuestStartFlag'] = false
                 event_flags_system['cPlayer:AlwJuneBrideBalloonFlag'] = false
         elif event_flags_system['cPlayer:EnableDiyRemake']:
@@ -657,30 +598,31 @@ flow Alw_Start_day2_5:
     return
 
 flow Alw_ThanksMsg:
-    if (event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']) or (event_flags_system['cLandTemp:RemakeJuneBrideTalkTimeAfterNow']):
+    if (not event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']) and (not event_flags_system['cLandTemp:RemakeJuneBrideTalkTimeAfterNow']):
+        if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cLastGrowUpTime'):
+            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
+            if not event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag']:
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:109', false)
+                event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag'] = true
+        else:
+            fEvent90 = subflow_results[0]
+            if fEvent90 in (2, 3, 4, 5, 6, 7):
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
+            elif fEvent90 == 1:
+                if event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
+            elif fEvent90 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
+    else:
         if EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cLastGrowUpTime'):
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:109', false)
             event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag'] = true
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:108', false)
-    elif EventFlowSystemActor.EnvCheckBetweenDate(6, 30, 6, 30, 'cLastGrowUpTime'):
-        MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
-        if not event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag']:
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:109', false)
-            event_flags_system['cPlayer:AlwJuneBrideLastDayTalkFlag'] = true
-    else:
-        fEvent90 = subflow_results[0]
-        if fEvent90 in (2, 3, 4, 5, 6, 7):
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
-        elif fEvent90 == 1:
-            if event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag']:
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:058', false)
-        elif fEvent90 == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:056', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/alw/GEvent/SP_alw_GEvent_JuneBride:057', false)
     event_flags_system['cPlayer:AlwJuneBrideQuestClearFlag'] = true
     if event_flags_system['cPlayerTemp:AlwJuneBrideBouquetFlag']:
         MainNpc.NpcChangeHandTool(false, 'cNone', 12732)

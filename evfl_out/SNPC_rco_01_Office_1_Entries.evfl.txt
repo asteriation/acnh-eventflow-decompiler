@@ -1,22 +1,22 @@
 flow ChkGetHousing:
-    if EventFlowSystemActor.NpcHouseNum('cExist') < 7:
-        if EventFlowSystemActor.NpcHouseNum('cExist') < 8:
-            if EventFlowSystemActor.NpcHouseNum('cExist') < 9:
-                if EventFlowSystemActor.NpcHouseNum('cExist') < 10:
-                    subflow_results[0] = 1
-                elif event_flags_system['cLand:HaveHousingKitCount'] >= 1:
-                    subflow_results[0] = 1
-                else:
-                    subflow_results[0] = 0
-            elif event_flags_system['cLand:HaveHousingKitCount'] >= 2:
-                subflow_results[0] = 1
-            else:
-                subflow_results[0] = 0
-        elif event_flags_system['cLand:HaveHousingKitCount'] >= 3:
+    if not EventFlowSystemActor.NpcHouseNum('cExist') < 7:
+        if event_flags_system['cLand:HaveHousingKitCount'] >= 4:
             subflow_results[0] = 1
         else:
             subflow_results[0] = 0
-    elif event_flags_system['cLand:HaveHousingKitCount'] >= 4:
+    elif not EventFlowSystemActor.NpcHouseNum('cExist') < 8:
+        if event_flags_system['cLand:HaveHousingKitCount'] >= 3:
+            subflow_results[0] = 1
+        else:
+            subflow_results[0] = 0
+    elif not EventFlowSystemActor.NpcHouseNum('cExist') < 9:
+        if event_flags_system['cLand:HaveHousingKitCount'] >= 2:
+            subflow_results[0] = 1
+        else:
+            subflow_results[0] = 0
+    elif EventFlowSystemActor.NpcHouseNum('cExist') < 10:
+        subflow_results[0] = 1
+    elif event_flags_system['cLand:HaveHousingKitCount'] >= 1:
         subflow_results[0] = 1
     else:
         subflow_results[0] = 0
@@ -39,25 +39,15 @@ flow IslandDevelopmentIntro:
             run SNPC_rco_54_IslandDevelopment::Root
         elif fEvent16 == 2:
             run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-    elif not event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_03', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-            run SNPC_rco_00_Common::Root
-        else:
-            run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
-    elif EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
-            run SNPC_rco_00_Common::Root
-        else:
-            run SNPC_rco_00_Common_Entries::Rco_CmnSel_Cancel
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02', false)
-        event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
+        if event_flags_system['cPlayer:ThisPCcreatedbeforeOfficeUpgrading']:
+            if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02_01', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_02', false)
+                event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:012_03', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:013_02', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:014_02', false)
@@ -75,10 +65,11 @@ flow OfficeOpening_Force:
     SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:004', false)
     if event_flags_system['cLand:BuiltTownOfficeToday']:
         SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:005_01', false)
-    elif EventFlowSystemActor.FacilityOpenPastDays('cOffice', 7):
-        SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:005_02', false)
     else:
-        SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:005_03', false)
+        if EventFlowSystemActor.FacilityOpenPastDays('cOffice', 7):
+            SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:005_02', false)
+        else:
+            SubNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:005_03', false)
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:006', false)
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_06_Office:007', false)
     if event_flags_system['cPlayer:MakeVillagePlayerFlag']:

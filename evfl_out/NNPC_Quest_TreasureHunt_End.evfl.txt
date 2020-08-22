@@ -12,35 +12,26 @@ flow End_Lose:
         if MainNpc.NpcIsTreasureHuntLimitOver2():
             MainNpc.NpcAddFriendship(1)
         run End_Lose_HasTreasure
-    elif MainNpc.NpcIsTreasureHuntLimitOver2():
-        fEvent14 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent14 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:301', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
-        elif fEvent14 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:302', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
-        elif fEvent14 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:300', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
     else:
-        MainNpc.NpcAddFriendship(-1)
-        fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
-        if fEvent57 == 2:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:202', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
-        elif fEvent57 == 1:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:201', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
-        elif fEvent57 == 0:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:200', true)
-            event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
-            run Treasure_Finish
+        if MainNpc.NpcIsTreasureHuntLimitOver2():
+            fEvent14 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent14 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:301', true)
+            elif fEvent14 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:302', true)
+            elif fEvent14 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:300', true)
+        else:
+            MainNpc.NpcAddFriendship(-1)
+            fEvent57 = EventFlowSystemActor.RandomChoiceExcludePrevious3(true, 3)
+            if fEvent57 == 2:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:202', true)
+            elif fEvent57 == 1:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:201', true)
+            elif fEvent57 == 0:
+                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:200', true)
+        event_flags_npc['cNpcMemory:UncollectedFishishTreasureHunt'] = true
+        run Treasure_Finish
     return
 
 flow End_Lose_HasTreasure:
@@ -93,11 +84,11 @@ flow End_Win:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:101', true)
         MainNpc.NpcSetQuestRewardToPlayerBaggage('cSwap')
         run Treasure_Finish
-    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:010', false)
-        event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:011', false)
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:010', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_TreasureHunt_End:011', false)
         event_flags_npc['cNpcTemp:TreasureHuntGiveCancel'] = true
     return
 

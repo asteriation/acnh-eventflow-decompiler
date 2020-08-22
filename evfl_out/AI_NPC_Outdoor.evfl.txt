@@ -85,17 +85,16 @@ flow ApproachNormal:
     if MainNpc.CheckCurrentNpcAIState('cPreActiveApproach') == 0:
         run ToActiveApproachNotice
         EventFlowSystemActor.ExitFlowchart()
-    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) != 0:
-        MainNpc.SetIsStartNeedActivity('cOff')
-        MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
-        EventFlowSystemActor.ExitFlowchart()
-    elif MainNpc.CheckNpcTool() in (0, 1, 2, 3, 4):
-        MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, true)
-        run PassiveBln
-        EventFlowSystemActor.ExitFlowchart()
     else:
-        MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, false)
-        run PassiveBln
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            if MainNpc.CheckNpcTool() in (0, 1, 2, 3, 4):
+                MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, true)
+            else:
+                MainNpc.NpcChangeAIState('cPassiveApproach', 'NNPC_Approach', '', '', false, false)
+            run PassiveBln
+        else:
+            MainNpc.SetIsStartNeedActivity('cOff')
+            MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
         EventFlowSystemActor.ExitFlowchart()
     return
 
@@ -204,12 +203,12 @@ flow Countdown:
                     else:
                         MainNpc.NpcChangeAIState('cCountdownWait', '', '', '', false, false)
                         EventFlowSystemActor.ExitFlowchart()
-                elif event_flag_npc['cNpcTemp:GotoCountdownBoard']:
-                    MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 3, -1, -1)
-                    EventFlowSystemActor.ExitFlowchart()
                 else:
-                    event_flags_npc['cNpcTemp:GotoCountdownBoard'] = true
-                    MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', true, false, 3, -1, -1)
+                    if event_flag_npc['cNpcTemp:GotoCountdownBoard']:
+                        MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', false, false, 3, -1, -1)
+                    else:
+                        event_flags_npc['cNpcTemp:GotoCountdownBoard'] = true
+                        MainNpc.NpcChangeGoToDestinationState('cGoToDestination', '', '', '', true, false, 3, -1, -1)
                     EventFlowSystemActor.ExitFlowchart()
     return
 
@@ -239,21 +238,19 @@ flow Fireworks:
                 MainNpc.NpcChangeAIState('cFireworksSitBench', 'NNPC_Talk_Sequence', 'Root', '', false, false)
                 EventFlowSystemActor.ExitFlowchart()
             elif fEvent224 == 0:
-                if MainNpc.NpcNowPosture() not in (0, 2, 3):
-                    MainNpc.NpcChangeAIState('cFireworksSitBench', 'NNPC_Talk_Sequence', 'Root', '', false, false)
-                    EventFlowSystemActor.ExitFlowchart()
-                elif event_flag_npc['cNpcTemp:FireworksAroundWater']:
+                if MainNpc.NpcNowPosture() in (0, 2, 3):
+                    if not event_flag_npc['cNpcTemp:FireworksAroundWater']:
+                        if MainNpc.IsInEventPlazaArea(false):
+                            event_flags_npc['cNpcTemp:FireworksAroundWater'] = false
+                            event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
+                        else:
+                            MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'NNPC_Talk_Sequence', '', false, true, 2, -1, -1)
+                            EventFlowSystemActor.ExitFlowchart()
                     MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', 'Root', '', false, true)
                     EventFlowSystemActor.ExitFlowchart()
                 else:
-                    if MainNpc.IsInEventPlazaArea(false):
-                        event_flags_npc['cNpcTemp:FireworksAroundWater'] = false
-                        event_flags_npc['cNpcTemp:ArrivedInEventPlaza'] = true
-                        MainNpc.NpcChangeAIState('cFireworksWanderWait', 'NNPC_Talk_Sequence', 'Root', '', false, true)
-                        EventFlowSystemActor.ExitFlowchart()
-                    else:
-                        MainNpc.NpcChangeGoToDestinationState('cGoToDestination', 'Root', 'NNPC_Talk_Sequence', '', false, true, 2, -1, -1)
-                        EventFlowSystemActor.ExitFlowchart()
+                    MainNpc.NpcChangeAIState('cFireworksSitBench', 'NNPC_Talk_Sequence', 'Root', '', false, false)
+                    EventFlowSystemActor.ExitFlowchart()
     elif fEvent210 == 4:
         MainNpc.SetDefaultWaitAs('cDefault')
         MainNpc.NpcChangeAIState('cFireworksStartReaction', 'NNPC_Talk_Sequence', '', '', false, false)
@@ -311,7 +308,17 @@ flow Fireworks:
     return
 
 flow Hit:
-    if not ((MainNpc.NpcIsHitByNet()) and (MainNpc.NpcIsFleaHolder())):
+    if (MainNpc.NpcIsHitByNet()) and (MainNpc.NpcIsFleaHolder()):
+        if (event_flag_npc['cNpcTemp:HitMainPlayer']) and (event_flag_npc['cNpcMemory:HasAcquaintanceship']):
+            MainNpc.NpcChangeAIState('cHit', 'NNPC_Talk_Force', 'Flea', 'Flea', false, false)
+            MainNpc.NpcAISetting(8, true)
+            MainNpc.SetNpcFeel('cNormal', -1)
+            MainNpc.NpcSetAIBlackBoard('WeightReset', 1)
+            run SitDisableTurn
+            MainNpc.NpcClearHitParam()
+        else:
+            MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
+    else:
         if (MainNpc.NpcHitNum(3)) and (event_flag_npc['cNpcMemory:HasAcquaintanceship']):
             MainNpc.NpcChangeAIState('cHit', 'NNPC_Talk_Force', 'Hit', 'Hit', false, false)
             MainNpc.NpcAISetting(8, true)
@@ -321,15 +328,6 @@ flow Hit:
             MainNpc.NpcClearHitParam()
         else:
             MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
-    elif (event_flag_npc['cNpcTemp:HitMainPlayer']) and (event_flag_npc['cNpcMemory:HasAcquaintanceship']):
-        MainNpc.NpcChangeAIState('cHit', 'NNPC_Talk_Force', 'Flea', 'Flea', false, false)
-        MainNpc.NpcAISetting(8, true)
-        MainNpc.SetNpcFeel('cNormal', -1)
-        MainNpc.NpcSetAIBlackBoard('WeightReset', 1)
-        run SitDisableTurn
-        MainNpc.NpcClearHitParam()
-    else:
-        MainNpc.NpcChangeAIState('cHit', '', '', '', false, false)
     return
 
 flow Init:
@@ -381,42 +379,42 @@ flow Root:
             else:
                 run Countdown
                 run Fireworks
-                if MainNpc.IsApproachAllowed():
-                    if MainNpc.CheckCurrentNpcAIState('cPassiveApproach') == 1:
-                        if MainNpc.CheckCurrentNpcAIState('cPreActiveApproach') != 0:
-                            run ApproachMoveinGift
-                            run ApproachIslandRep
-                            run ApproachWelcomeMigrant
-                            run ApproachBuildMarket
-                            run ApproachMoving
+                if not MainNpc.IsApproachAllowed():
+                    if MainNpc.ToCatnap():
+                        MainNpc.NpcAISetting(2, false)
+                        MainNpc.NpcAISetting(3, false)
+                        MainNpc.NpcAISetting(14, true)
+                        MainNpc.NpcChangeAIState('cStandSleep', 'NNPC_Reaction_Napping', '', '', false, false)
+                    elif event_flags_npc['cNpcSave:OutdoorCatnap'] != 3:
+                        MainNpc.NpcChangeAIState('cGoHome', 'NNPC_Talk_Sequence', '', '', true, false)
+                    elif MainNpc.LookToSky():
+                        MainNpc.NpcChangeAIState('cLookToSky', 'NNPC_Talk_Sequence', '', '', true, false)
+                    else:
+                        MainNpc.NpcChangeHeadCtrlMode('cNormal', true)
+                        MainNpc.SetIsStartNeedActivity('cOn')
+                elif MainNpc.CheckCurrentNpcAIState('cPassiveApproach') == 1:
+                    if MainNpc.CheckCurrentNpcAIState('cPreActiveApproach') != 0:
+                        run ApproachMoveinGift
+                        run ApproachIslandRep
+                        run ApproachWelcomeMigrant
+                        run ApproachBuildMarket
+                        run ApproachMoving
+                        run ApproachEaster
+                        run ApproachEmoticons
+                        run ApproachNormal
+                    elif MainNpc.NpcCanStartApproach():
+                        run ApproachMoveinGift
+                        run ApproachIslandRep
+                        run ApproachWelcomeMigrant
+                        run ApproachBuildMarket
+                        if (MainNpc.NpcMoveOutState() not in (0, 1, 3, 4)) and (not event_flag_npc['cNpcMemory:MoveCancelTalk']) and (event_flag_npc['cNpcMemory:NextMoveOutTalk']) and (not event_flag_npc['cNpcMemory:ChokeOffMoveOut']):
+                            run ToActiveApproachNotice
+                        else:
                             run ApproachEaster
                             run ApproachEmoticons
                             run ApproachNormal
-                        elif MainNpc.NpcCanStartApproach():
-                            run ApproachMoveinGift
-                            run ApproachIslandRep
-                            run ApproachWelcomeMigrant
-                            run ApproachBuildMarket
-                            if (MainNpc.NpcMoveOutState() not in (0, 1, 3, 4)) and (not event_flag_npc['cNpcMemory:MoveCancelTalk']) and (event_flag_npc['cNpcMemory:NextMoveOutTalk']) and (not event_flag_npc['cNpcMemory:ChokeOffMoveOut']):
-                                run ToActiveApproachNotice
-                            else:
-                                run ApproachEaster
-                                run ApproachEmoticons
-                                run ApproachNormal
-                        else:
-                            MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
-                elif MainNpc.ToCatnap():
-                    MainNpc.NpcAISetting(2, false)
-                    MainNpc.NpcAISetting(3, false)
-                    MainNpc.NpcAISetting(14, true)
-                    MainNpc.NpcChangeAIState('cStandSleep', 'NNPC_Reaction_Napping', '', '', false, false)
-                elif event_flags_npc['cNpcSave:OutdoorCatnap'] != 3:
-                    MainNpc.NpcChangeAIState('cGoHome', 'NNPC_Talk_Sequence', '', '', true, false)
-                elif MainNpc.LookToSky():
-                    MainNpc.NpcChangeAIState('cLookToSky', 'NNPC_Talk_Sequence', '', '', true, false)
-                else:
-                    MainNpc.NpcChangeHeadCtrlMode('cNormal', true)
-                    MainNpc.SetIsStartNeedActivity('cOn')
+                    else:
+                        MainNpc.NpcChangeAIState('cPreActiveApproach', '', '', '', false, false)
     return
 
 flow SitDisableTurn:

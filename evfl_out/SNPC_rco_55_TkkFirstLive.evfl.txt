@@ -11,13 +11,11 @@ flow InvitePlayerHouse:
         MainNpc.SetDeliveryItemAtRandom(4318, true, 'cVillageRemakePattern', 0)
         MainNpc.NpcDelivery('Default', 1)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_01', false)
-    elif event_flags_system['cLand:TkkFirstLiveReserved']:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_02', false)
-        EventFlowSystemActor.SelectRewardItemDirect(4318, 1, 'cVillageRemakePattern', 0)
-        EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 4)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_00', false)
+        if event_flags_system['cLand:TkkFirstLiveReserved']:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_00', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_11_TkkFirstLive:003_02', false)
         EventFlowSystemActor.SelectRewardItemDirect(4318, 1, 'cVillageRemakePattern', 0)
         EventFlowSystemActor.SystemMailSend('cRco', 'MAIL_SNpc_rco', 'cFastTomorrow', 'cReward', 'cNone', false, 4)

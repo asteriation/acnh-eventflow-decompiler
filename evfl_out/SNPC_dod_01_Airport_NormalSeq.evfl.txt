@@ -23,8 +23,9 @@ flow ChkTourTicket:
     else:
         if event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
             subflow_results[0] = 1
-        elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-            run sub_grp!Event144
+        else:
+            if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+                run sub_grp!Event144
     return
 
 flow Cmn_UGC_Notification:
@@ -321,71 +322,73 @@ flow SelectIsland:
     MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005', false)
     if (EventFlowSystemActor.TermEventNow('MayDay', false)) and (event_flags_system['cPlayer:GetMayDayTicket']) and (not event_flags_system['cPlayer:UseMayDayTicket']):
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1300', false)
-        if event_flags_system['cPlayer:CommuneIslandAvailable']:
+        if not event_flags_system['cPlayer:CommuneIslandAvailable']:
             if event_flags_system['cPlayer:DodUseFirstFreeTour']:
-entrypoint Event251:
-                if EventFlowSystemActor.HasTargetItem(5851, 1):
-                    run Dod_Go_Sel5B_MayDay
-                else:
-entrypoint Event280:
-                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_02', false)
-                    fEvent281 = EventFlowSystemActor.GeneralTalkChoice4()
-                    if fEvent281 == 3:
-                        run SNPC_dod_AirPort::EntryPoint_Cancel
-                    elif fEvent281 == 0:
-                        run Airport_DestinationSel_Pisland
-                    elif fEvent281 == 2:
-                        run GoToCommune
-                    elif fEvent281 == 1:
-                        run MayDayTour
-            elif event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
-entrypoint Event288:
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_06', false)
-                fEvent255 = EventFlowSystemActor.GeneralTalkChoice5()
-                if fEvent255 == 4:
-                    run SNPC_dod_AirPort::EntryPoint_Cancel
-                elif fEvent255 == 2:
-                    run MysteryTour
-                elif fEvent255 == 0:
-                    run Airport_DestinationSel_Pisland
-                elif fEvent255 == 3:
-                    run GoToCommune
-                elif fEvent255 == 1:
-                    run MayDayTour
-            elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-                run SelDestinationWOticket_MayDay
-            else:
-                run Dod_Go_Sel3B
-        elif event_flags_system['cPlayer:DodUseFirstFreeTour']:
 entrypoint Event289:
-            if EventFlowSystemActor.HasTargetItem(5851, 1):
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_04', false)
-                fEvent266 = EventFlowSystemActor.GeneralTalkChoice4()
-                if fEvent266 == 3:
-                    run SNPC_dod_AirPort::EntryPoint_Cancel
-                elif fEvent266 == 2:
-                    run MysteryTour
-                elif fEvent266 == 0:
-                    run Airport_DestinationSel_Pisland
-                elif fEvent266 == 1:
-                    run MayDayTour
+                if EventFlowSystemActor.HasTargetItem(5851, 1):
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_04', false)
+                    fEvent266 = EventFlowSystemActor.GeneralTalkChoice4()
+                    if fEvent266 == 3:
+                        run SNPC_dod_AirPort::EntryPoint_Cancel
+                    elif fEvent266 == 2:
+                        run MysteryTour
+                    elif fEvent266 == 0:
+                        run Airport_DestinationSel_Pisland
+                    elif fEvent266 == 1:
+                        run MayDayTour
+                else:
+                    run Dod_Go_Sel3B_MayDay
             else:
-                run Dod_Go_Sel3B_MayDay
+                if event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
+                    MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_04', false)
+                    fEvent266 = EventFlowSystemActor.GeneralTalkChoice4()
+                    if fEvent266 == 3:
+                        run SNPC_dod_AirPort::EntryPoint_Cancel
+                    elif fEvent266 == 2:
+                        run MysteryTour
+                    elif fEvent266 == 0:
+                        run Airport_DestinationSel_Pisland
+                    elif fEvent266 == 1:
+                        run MayDayTour
+                else:
+                    if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+                        run SelDestWOticket_NoSpn_MayDay
+                    else:
+                        run Dod_Go_Sel3B_MayDay
+        elif event_flags_system['cPlayer:DodUseFirstFreeTour']:
+entrypoint Event251:
+            if EventFlowSystemActor.HasTargetItem(5851, 1):
+                run Dod_Go_Sel5B_MayDay
+            else:
+entrypoint Event280:
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_02', false)
+                fEvent281 = EventFlowSystemActor.GeneralTalkChoice4()
+                if fEvent281 == 3:
+                    run SNPC_dod_AirPort::EntryPoint_Cancel
+                elif fEvent281 == 0:
+                    run Airport_DestinationSel_Pisland
+                elif fEvent281 == 2:
+                    run GoToCommune
+                elif fEvent281 == 1:
+                    run MayDayTour
         elif event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_04', false)
-            fEvent266 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent266 == 3:
+entrypoint Event288:
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:1302_06', false)
+            fEvent255 = EventFlowSystemActor.GeneralTalkChoice5()
+            if fEvent255 == 4:
                 run SNPC_dod_AirPort::EntryPoint_Cancel
-            elif fEvent266 == 2:
+            elif fEvent255 == 2:
                 run MysteryTour
-            elif fEvent266 == 0:
+            elif fEvent255 == 0:
                 run Airport_DestinationSel_Pisland
-            elif fEvent266 == 1:
+            elif fEvent255 == 3:
+                run GoToCommune
+            elif fEvent255 == 1:
                 run MayDayTour
         elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-            run SelDestWOticket_NoSpn_MayDay
+            run SelDestinationWOticket_MayDay
         else:
-            run Dod_Go_Sel3B_MayDay
+            run Dod_Go_Sel3B
     else:
         run sub_grp!Event117
     return
@@ -434,43 +437,23 @@ flow sub_Event56:
     return
 
 flow sub_grp!Event117:
-    if event_flags_system['cPlayer:CommuneIslandAvailable']:
+    if not event_flags_system['cPlayer:CommuneIslandAvailable']:
         if event_flags_system['cPlayer:DodUseFirstFreeTour']:
-entrypoint Event39:
+entrypoint Event74:
             if EventFlowSystemActor.HasTargetItem(5851, 1):
                 MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005_02', false)
-                run Dod_Go_Sel4B
-            else:
-entrypoint Event55:
-                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_03', false)
-                fEvent60 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent60 == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_01', false)
+                fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
+                if fEvent19 == 0:
                     run Airport_DestinationSel_Pisland
-                elif fEvent60 == 2:
+                elif fEvent19 == 2:
                     run SNPC_dod_AirPort::EntryPoint_Cancel
-                elif fEvent60 == 1:
-                    run GoToCommune
+                elif fEvent19 == 1:
+                    run MysteryTour
+            else:
+                run Airport_DestinationSel_Pisland
         elif event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005_01', false)
-entrypoint Event46:
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_04', false)
-            fEvent54 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent54 == 2:
-                run GoToCommune
-            elif fEvent54 == 1:
-                run MysteryTour
-            elif fEvent54 == 3:
-                run SNPC_dod_AirPort::EntryPoint_Cancel
-            elif fEvent54 == 0:
-                run Airport_DestinationSel_Pisland
-        elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-            run SelDestinationWOticket
-        else:
-            run Dod_Go_Sel3B
-    elif event_flags_system['cPlayer:DodUseFirstFreeTour']:
-entrypoint Event74:
-        if EventFlowSystemActor.HasTargetItem(5851, 1):
-            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005_02', false)
             MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_01', false)
             fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
             if fEvent19 == 0:
@@ -479,22 +462,42 @@ entrypoint Event74:
                 run SNPC_dod_AirPort::EntryPoint_Cancel
             elif fEvent19 == 1:
                 run MysteryTour
+        elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+            run SelDestWOticket_NoSpn
         else:
             run Airport_DestinationSel_Pisland
+    elif event_flags_system['cPlayer:DodUseFirstFreeTour']:
+entrypoint Event39:
+        if EventFlowSystemActor.HasTargetItem(5851, 1):
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005_02', false)
+            run Dod_Go_Sel4B
+        else:
+entrypoint Event55:
+            MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_03', false)
+            fEvent60 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent60 == 0:
+                run Airport_DestinationSel_Pisland
+            elif fEvent60 == 2:
+                run SNPC_dod_AirPort::EntryPoint_Cancel
+            elif fEvent60 == 1:
+                run GoToCommune
     elif event_flags_system['cPlayer:RcoGetTvForCongratsHouse']:
         MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:005_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_01', false)
-        fEvent19 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent19 == 0:
-            run Airport_DestinationSel_Pisland
-        elif fEvent19 == 2:
-            run SNPC_dod_AirPort::EntryPoint_Cancel
-        elif fEvent19 == 1:
+entrypoint Event46:
+        MainNpc.OpenMessageWindow('TalkSNpc/dod/SP_dod_AirPort:006_04', false)
+        fEvent54 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent54 == 2:
+            run GoToCommune
+        elif fEvent54 == 1:
             run MysteryTour
+        elif fEvent54 == 3:
+            run SNPC_dod_AirPort::EntryPoint_Cancel
+        elif fEvent54 == 0:
+            run Airport_DestinationSel_Pisland
     elif event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-        run SelDestWOticket_NoSpn
+        run SelDestinationWOticket
     else:
-        run Airport_DestinationSel_Pisland
+        run Dod_Go_Sel3B
 
 flow sub_grp!Event139:
     if EventFlowSystemActor.IsSharePlay(0):

@@ -30,12 +30,16 @@ entrypoint Event15:
                 run SNPC_owl_00_Common::Again
             else:
                 run SNPC_owl_01_Museum_Donation::Eplanation_ExpertOpinion
-        elif EventFlowSystemActor.MuseumDonationNumCheck(19):
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:154', false)
-            run sub_grp!Event12
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:153', false)
-            run sub_grp!Event12
+            if EventFlowSystemActor.MuseumDonationNumCheck(19):
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:154', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:153', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                run SNPC_owl_02_Museum_Judgment::Donation_Accept
+                run owl_Tent_AfterDonation
+            else:
+                run SNPC_owl_02_Museum_Judgment::Donation_Decline
     elif fEvent42 in (BlathersMuseumNoArt, BlathersMuseumArt):
         run SNPC_owl_01_Museum_Donation::Fossil_DonationTypeChk
     return
@@ -67,16 +71,10 @@ entrypoint Event29:
                     MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
-        elif EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):
-            run Owl_TentDonationAgainAsk
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
+            if EventFlowSystemActor.HasKindItem('cFilter', '', 'OwlTentDonation0'):
+                run Owl_TentDonationAgainAsk
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/owl/SP_owl_01_MuseumTent:111', false)
     return
-
-flow sub_grp!Event12:
-    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-        run SNPC_owl_02_Museum_Judgment::Donation_Accept
-        run owl_Tent_AfterDonation
-    else:
-        run SNPC_owl_02_Museum_Judgment::Donation_Decline
 

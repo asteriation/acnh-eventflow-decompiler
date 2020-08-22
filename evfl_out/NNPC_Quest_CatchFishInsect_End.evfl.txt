@@ -127,11 +127,11 @@ flow End:
                 if EventFlowSystemActor.GeneralTalkChoice2() == 0:
                     MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:025', false)
                     run Give
-                elif MainNpc.NpcCatchQuestFishNormalType() == 0:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:026', false)
-                    MainNpc.NpcDelivery('Default', 10)
                 else:
-                    MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:027', false)
+                    if MainNpc.NpcCatchQuestFishNormalType() == 0:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:026', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:027', false)
                     MainNpc.NpcDelivery('Default', 10)
             else:
                 MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:023', false)
@@ -157,10 +157,11 @@ flow Give:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:031', false)
         else:
             MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:032', false)
-    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:033', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:034', false)
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:033', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Quest/BO_Quest_CatchFishInsect_End:034', false)
     MainNpc.SetDeliveryItem(1, true)
     MainNpc.NpcDelivery('Default', 1)
     fEvent62 = MainNpc.NpcQuestReward()

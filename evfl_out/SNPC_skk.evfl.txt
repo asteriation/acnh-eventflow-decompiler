@@ -10,20 +10,21 @@ flow Root:
     if EventFlowSystemActor.EnvHourCompare(22, -1, true, true) == 0:
         EventFlowSystemActor.UIMoneyAppear()
         if EventFlowSystemActor.IsMyVillage():
-            if not event_flags_system['cPlayer:SkkTalkBeforeFlag']:
+            if event_flags_system['cPlayer:SkkTalkBeforeFlag']:
+                if not event_flags_system['cPlayer:SkkTalkTodayFlag']:
+                    event_flags_system['cPlayer:SkkTalkTodayFlag'] = true
+entrypoint Event4:
+                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:003', false)
+                elif event_flags_system['cPlayer:SkkPurchaseToday']:
+entrypoint Event34:
+                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:005', false)
+                else:
+entrypoint Event33:
+                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:004', false)
+            else:
                 event_flags_system['cPlayer:SkkTalkBeforeFlag'] = true
                 MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:001', false)
                 MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:002', false)
-            elif not event_flags_system['cPlayer:SkkTalkTodayFlag']:
-                event_flags_system['cPlayer:SkkTalkTodayFlag'] = true
-entrypoint Event4:
-                MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:003', false)
-            elif event_flags_system['cPlayer:SkkPurchaseToday']:
-entrypoint Event34:
-                MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:005', false)
-            else:
-entrypoint Event33:
-                MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:004', false)
             EventFlowSystemActor.UIShopBuyAppear('cShoes')
 entrypoint Event10:
             if EventFlowSystemActor.UIResultMenuDecide():
@@ -66,17 +67,19 @@ entrypoint Event10:
                         MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
-                elif event_flags_system['cPlayerVisit:DC_SkkBuyFlag']:
-                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
                 else:
-                    MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
-        elif not event_flags_system['cPlayerVisit:DC_SkkTalkFlag']:
-            event_flags_system['cPlayerVisit:DC_SkkTalkFlag'] = true
-            run Boc_DC_1st
-        elif event_flags_system['cPlayerVisit:DC_SkkBuyFlag']:
-            run Skk_DC_Buy_Again
+                    if event_flags_system['cPlayerVisit:DC_SkkBuyFlag']:
+                        MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:008', false)
+                    else:
+                        MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:007', false)
         else:
-            run Boc_DC_Buy
+            if not event_flags_system['cPlayerVisit:DC_SkkTalkFlag']:
+                event_flags_system['cPlayerVisit:DC_SkkTalkFlag'] = true
+                run Boc_DC_1st
+            elif event_flags_system['cPlayerVisit:DC_SkkBuyFlag']:
+                run Skk_DC_Buy_Again
+            else:
+                run Boc_DC_Buy
     else:
         MainNpc.OpenMessageWindow('TalkSNpc/skk/SP_skk:040', false)
     return

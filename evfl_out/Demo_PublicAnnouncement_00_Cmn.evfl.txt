@@ -41,99 +41,17 @@ entrypoint Event4:
             run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
         else:
             run Demo_PublicAnnouncement_40_CmnNoNews::Root
-    elif subflow_results[15] == 0:
-        if subflow_results[0] == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:021', false)
-            run Demo_PublicAnnouncement_32_CmnNewsMoveIn::Root
-            run Demo_PublicAnnouncement_33_CmnNewsFacilities::Root
-            run Demo_PublicAnnouncement_34_CmnNewsMoveOut::Root
-            run Demo_PublicAnnouncement_35_CmnNewsVisit::FirstVisitFox
-            if subflow_results[0] == 0:
-                fEvent9 = subflow_results[13]
-                if fEvent9 == 1:
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_HouseBuild
-                elif fEvent9 == 0:
-entrypoint Event19:
-                    if subflow_results[4] in (1, 2, 3):
-                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:901', true)
-                elif fEvent9 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                    run Rco_EndMess
-                elif fEvent9 == 4:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
-                elif fEvent9 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                    run Rco_EndMess
-            elif event_flags_system['cLand:TkkFirstLiveReserved']:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
-                run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
-            elif subflow_results[4] in (1, 2, 3):
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:021', false)
-            run Demo_PublicAnnouncement_32_CmnNewsMoveIn::Root
-            run Demo_PublicAnnouncement_33_CmnNewsFacilities::Root
-            run Demo_PublicAnnouncement_34_CmnNewsMoveOut::Root
-            run Demo_PublicAnnouncement_35_CmnNewsVisit::FirstVisitFox
-            if subflow_results[0] == 0:
-                fEvent9 = subflow_results[13]
-                if fEvent9 == 1:
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_HouseBuild
-                elif fEvent9 == 0:
-entrypoint Event19:
-                    if subflow_results[4] in (1, 2, 3):
-                        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:901', true)
-                elif fEvent9 == 3:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                    run Rco_EndMess
-                elif fEvent9 == 4:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
-                elif fEvent9 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
-                    run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                    run Rco_EndMess
-            elif event_flags_system['cLand:TkkFirstLiveReserved']:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
-                run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
-            elif subflow_results[4] in (1, 2, 3):
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
-    elif subflow_results[0] == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:022', false)
-        run Demo_PublicAnnouncement_32_CmnNewsMoveIn::Root
-        run Demo_PublicAnnouncement_33_CmnNewsFacilities::Root
-        run Demo_PublicAnnouncement_34_CmnNewsMoveOut::Root
-        run Demo_PublicAnnouncement_35_CmnNewsVisit::FirstVisitFox
-        if subflow_results[0] == 0:
-            fEvent9 = subflow_results[13]
-            if fEvent9 == 1:
-                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_HouseBuild
-            elif fEvent9 == 0:
-entrypoint Event19:
-                if subflow_results[4] in (1, 2, 3):
-                    MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:901', true)
-            elif fEvent9 == 3:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeRenual
-                run Rco_EndMess
-            elif fEvent9 == 4:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:161_01', false)
-                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_OfficeOpen
-            elif fEvent9 == 2:
-                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_10_Rco_Once:210', false)
-                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Rco_RemakeWorkshop
-                run Rco_EndMess
-        elif event_flags_system['cLand:TkkFirstLiveReserved']:
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_11_Sza_Once:301_01', false)
-            run Demo_PublicAnnouncement_13_Sza_Once::TownNews_KK1stLive
-        elif subflow_results[4] in (1, 2, 3):
-            MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:901', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:022', false)
+        if subflow_results[15] == 0:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:021', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:021', false)
+        else:
+            if subflow_results[0] == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_00_Rco:022', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/PublicAnnouncement/SP_PublicAnnouncement_01_Sza:022', false)
         run Demo_PublicAnnouncement_32_CmnNewsMoveIn::Root
         run Demo_PublicAnnouncement_33_CmnNewsFacilities::Root
         run Demo_PublicAnnouncement_34_CmnNewsMoveOut::Root

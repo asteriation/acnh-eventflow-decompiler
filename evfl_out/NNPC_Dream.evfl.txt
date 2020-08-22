@@ -1,22 +1,22 @@
 flow NNPC_Dream:
-    if EventFlowSystemActor.SystemCheckNowStage('cField'):
-        if not event_flag_npc['cNpcMemory:TalkInDream']:
-            event_flags_npc['cNpcMemory:TalkInDream'] = true
-            if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:001', false)
-            elif event_flag_npc['cNpcMemory:TalkedAsSameVillageResident']:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:003', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:002', false)
-        elif event_flag_npc['cNpcMemory:TalkedAsSameVillageResident']:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:005', false)
+    if not EventFlowSystemActor.SystemCheckNowStage('cField'):
+        if event_flag_npc['cNpcMemory:TalkInDream']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Room:002', false)
         else:
-            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:004', false)
-    elif event_flag_npc['cNpcMemory:TalkInDream']:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Room:002', false)
-    else:
+            event_flags_npc['cNpcMemory:TalkInDream'] = true
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Room:001', false)
+    elif not event_flag_npc['cNpcMemory:TalkInDream']:
         event_flags_npc['cNpcMemory:TalkInDream'] = true
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Room:001', false)
+        if not event_flag_npc['cNpcMemory:HasAcquaintanceship']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:001', false)
+        elif event_flag_npc['cNpcMemory:TalkedAsSameVillageResident']:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:003', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:002', false)
+    elif event_flag_npc['cNpcMemory:TalkedAsSameVillageResident']:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:005', false)
+    else:
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Dream/BO_Dream_Field:004', false)
     return
 
 flow PlayerGhost_Dream:

@@ -12,10 +12,11 @@ flow Cel_OtherP:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_04', false)
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_03', false)
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_02', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_01', true)
+        if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_02', true)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:105_01', true)
     EventFlowSystemActor.UIMsgCardAdrHandling('cPlayerRemove')
     if EventFlowSystemActor.UIResultMenuDecide():
         EventFlowSystemActor.SetTagFromUIResult(0, 'cSelectPlayerName')
@@ -136,23 +137,19 @@ entrypoint Event42:
         else:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:071_01', false)
             run Explain_DeleteMainP
-    elif not EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:203', false)
-        run Cmn_MainP_Sel
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:204_02', false)
+    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(1):
+        if EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:204_02', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:204_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:205', false)
         if EventFlowSystemActor.GeneralTalkChoice2() == 0:
             run Cel_OtherP
         else:
             run Delete_Cancel
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:204_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:205', false)
-        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-            run Cel_OtherP
-        else:
-            run Delete_Cancel
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:203', false)
+        run Cmn_MainP_Sel
     return
 
 flow Root_Delete_OtherP:
@@ -175,45 +172,45 @@ entrypoint Event57:
                 run Process_Delete
             else:
                 run Delete_Cancel
-    elif EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
+    elif not EventFlowSystemActor.IsUnconnectedPlayerVillagerGreaterThan(2):
         if EventFlowSystemActor.IsUnconnectedVillageLeader():
-entrypoint Event83:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:112', false)
-            fEvent84 = EventFlowSystemActor.GeneralTalkChoice4()
-            if fEvent84 == 1:
-                run Cel_OtherP
-            elif fEvent84 == 2:
-                run ExplainDeleteManPc
-                run AfterMainPcDeleteExplain_Pl
-            elif fEvent84 == 0:
-                run Sel_CurrentP
-            elif fEvent84 == 3:
-                run Delete_Cancel
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_02', false)
-entrypoint Event94:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:104', false)
-            fEvent59 = EventFlowSystemActor.GeneralTalkChoice3()
-            if fEvent59 == 1:
-                run Cel_OtherP
-            elif fEvent59 == 2:
-                run Delete_Cancel
-            elif fEvent59 == 0:
-                run Sel_CurrentP
-    elif EventFlowSystemActor.IsUnconnectedVillageLeader():
 entrypoint Event24:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:111', false)
-        fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-        if fEvent26 == 1:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:111', false)
+            fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
+            if fEvent26 == 1:
+                run ExplainDeleteManPc
+                run AfterMainPcDeleteExplain_Sg
+            elif fEvent26 == 2:
+                run Delete_Cancel
+            elif fEvent26 == 0:
+                run Sel_CurrentP
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_01', false)
+            run Cmn_NormalSel
+    elif EventFlowSystemActor.IsUnconnectedVillageLeader():
+entrypoint Event83:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:112', false)
+        fEvent84 = EventFlowSystemActor.GeneralTalkChoice4()
+        if fEvent84 == 1:
+            run Cel_OtherP
+        elif fEvent84 == 2:
             run ExplainDeleteManPc
-            run AfterMainPcDeleteExplain_Sg
-        elif fEvent26 == 2:
-            run Delete_Cancel
-        elif fEvent26 == 0:
+            run AfterMainPcDeleteExplain_Pl
+        elif fEvent84 == 0:
             run Sel_CurrentP
+        elif fEvent84 == 3:
+            run Delete_Cancel
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_01', false)
-        run Cmn_NormalSel
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:103_02', false)
+entrypoint Event94:
+        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_92_OtherSettings:104', false)
+        fEvent59 = EventFlowSystemActor.GeneralTalkChoice3()
+        if fEvent59 == 1:
+            run Cel_OtherP
+        elif fEvent59 == 2:
+            run Delete_Cancel
+        elif fEvent59 == 0:
+            run Sel_CurrentP
     return
 
 flow SaveSetting_Main:

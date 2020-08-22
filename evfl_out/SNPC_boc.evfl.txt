@@ -31,49 +31,49 @@ flow Boc_DC_Buy_Again:
 flow Root:
     MainNpc.BoaFirstTagSet(0)
     EventFlowSystemActor.UIMoneyAppear()
-    if EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:KaburibaTalkBeforeFlag']:
-            event_flags_system['cPlayer:KaburibaTalkBeforeFlag'] = true
-            event_flags_system['cPlayer:KaburibaTalkTodayFlag'] = true
-            if (not event_flags_system['cPlayer:KaburibaConditionFlag']) and (EventFlowSystemActor.FacilityOpenPastDays('cMarket1', 8)):
-                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:001', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:034', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:003', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:005', false)
-                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:007', false)
-                    if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:008', false)
-                        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:010', false)
-                        run boc_Select
-                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:006', false)
-            else:
-                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:004', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:010', false)
-            run boc_Select
-        elif not event_flags_system['cPlayer:KaburibaTalkTodayFlag']:
-            event_flags_system['cPlayer:KaburibaTalkTodayFlag'] = true
-entrypoint Event44:
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:002', false)
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:011', false)
-            run boc_Select
-        elif event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag']:
-entrypoint Event37:
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:013', false)
-            run boc_Select
+    if not EventFlowSystemActor.IsMyVillage():
+        if not event_flags_system['cPlayerVisit:DC_KaburibaTalkFlag']:
+            event_flags_system['cPlayerVisit:DC_KaburibaTalkFlag'] = true
+            run Boc_DC_1st
+        elif event_flags_system['cPlayerVisit:DC_KaburibaBuyFlag']:
+            run Boc_DC_Buy_Again
         else:
-entrypoint Event48:
-            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:012', false)
-            run boc_Select
-    elif not event_flags_system['cPlayerVisit:DC_KaburibaTalkFlag']:
-        event_flags_system['cPlayerVisit:DC_KaburibaTalkFlag'] = true
-        run Boc_DC_1st
-    elif event_flags_system['cPlayerVisit:DC_KaburibaBuyFlag']:
-        run Boc_DC_Buy_Again
+            run Boc_DC_Buy
+    elif not event_flags_system['cPlayer:KaburibaTalkBeforeFlag']:
+        event_flags_system['cPlayer:KaburibaTalkBeforeFlag'] = true
+        event_flags_system['cPlayer:KaburibaTalkTodayFlag'] = true
+        if (not event_flags_system['cPlayer:KaburibaConditionFlag']) and (EventFlowSystemActor.FacilityOpenPastDays('cMarket1', 8)):
+            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:001', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:034', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:003', false)
+        if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:005', false)
+            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:007', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:008', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:010', false)
+                    run boc_Select
+            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:006', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:004', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:010', false)
+        run boc_Select
+    elif not event_flags_system['cPlayer:KaburibaTalkTodayFlag']:
+        event_flags_system['cPlayer:KaburibaTalkTodayFlag'] = true
+entrypoint Event44:
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:002', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:011', false)
+        run boc_Select
+    elif event_flags_system['cPlayer:KaburibaBuyKabuTodayFlag']:
+entrypoint Event37:
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:013', false)
+        run boc_Select
     else:
-        run Boc_DC_Buy
+entrypoint Event48:
+        MainNpc.OpenMessageWindow('TalkSNpc/boc/SP_boc:012', false)
+        run boc_Select
     return
 
 flow boc_Buy:

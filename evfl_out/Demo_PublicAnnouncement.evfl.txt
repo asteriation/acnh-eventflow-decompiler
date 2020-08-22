@@ -33,14 +33,15 @@ flow PAnnounceRco:
     EventFlowSystemActor.SoundDuckingOn(38)
     if event_flags_system['cLandTemp:ReserveMemErrorReenter']:
         run MemoryShortageRco
-    elif event_flags_system['cPlayer:TownNewsHeard1st']:
-        run Demo_PublicAnnouncement_00_Cmn::Root
     else:
-        event_flags_system['cPlayer:TownNewsHeard1st'] = true
-        if event_flags_system['cLand:VillageDaysCount'] == 1:
-            run Demo_PublicAnnouncement_03_Rco_Once::TownNews_OnThe2ndDay
+        if event_flags_system['cPlayer:TownNewsHeard1st']:
+            run Demo_PublicAnnouncement_00_Cmn::Root
         else:
-            run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Heard1stTime
+            event_flags_system['cPlayer:TownNewsHeard1st'] = true
+            if event_flags_system['cLand:VillageDaysCount'] == 1:
+                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_OnThe2ndDay
+            else:
+                run Demo_PublicAnnouncement_03_Rco_Once::TownNews_Heard1stTime
     EventFlowSystemActor.MessageSuspend()
     event_flags_system['cLand:PAnnounceToday'] = true
     EventFlowSystemActor.BGMPropertyControl(51)

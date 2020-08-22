@@ -12,10 +12,11 @@ flow Hgc_Chat1:
                 run Hgc_Chat1
             else:
                 MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:106', true)
-    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:100', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:101', true)
+        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:100', true)
+        else:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgc/SP_hgc:101', true)
     return
 
 flow Hgc_Chat2:

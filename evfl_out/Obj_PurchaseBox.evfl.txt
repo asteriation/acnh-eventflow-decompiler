@@ -34,17 +34,19 @@ flow Root:
     if EventFlowSystemActor.NetIsDreaming():
         Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:911', false)
     elif EventFlowSystemActor.IsMyVillage():
-        if not event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
+        if event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
+            if event_flags_system['cPlayer:PurchaseBoxUseTodayFlag']:
+                Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:002', false)
+            else:
+                Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:001', false)
+        else:
             event_flags_system['cPlayer:PurchaseBoxUseOnceFlag'] = true
             Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:010', false)
-        elif event_flags_system['cPlayer:PurchaseBoxUseTodayFlag']:
-            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:002', false)
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:001', false)
         run BeginningChoice
-    elif event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
-        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:901', false)
     else:
-        Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:902', false)
+        if event_flags_system['cPlayer:PurchaseBoxUseOnceFlag']:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:901', false)
+        else:
+            Player.OpenMessageWindow('TalkObj/OBJ_PurchaseBox:902', false)
     return
 

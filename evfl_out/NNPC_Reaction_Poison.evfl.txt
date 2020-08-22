@@ -9,12 +9,13 @@ flow Root:
         elif fEvent3 == 1:
             event_flags_npc['cNpcTemp:ReactionTalkLabel'] = 1
     MainNpc.SetItemName(0, 15, 2)
-    if event_flags_npc['cNpcTemp:ReactionTalkLabel'] != 0:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:001', false)
-    elif event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 1:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:003', false)
+    if event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 0:
+        if event_flags_npc['cNpcTemp:ReactionTalkLabel'] == 1:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:003', false)
+        else:
+            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:002', false)
     else:
-        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:002', false)
+        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/React/BO_React_Poison:001', false)
     event_flags_npc['cNpcMemory:AcquaintanceshipFlagOff'] = true
     EventFlowSystemActor.ExitFlowchart()
     return

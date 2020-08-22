@@ -92,13 +92,11 @@ entrypoint Event16:
                         MainNpc.SetBirthdayPresentFlag()
                         MainNpc.RegistToReleaseItemList(5)
                         run Talk_End
-                    elif EventFlowSystemActor.RandomChoice2(2) == 0:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:012', false)
-                        MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 7, 9, 'cNone', 'cReward', 'cFastTomorrow')
-                        MainNpc.SetBirthdayPresentFlag()
-                        run Talk_End
                     else:
-                        MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:013', false)
+                        if EventFlowSystemActor.RandomChoice2(2) == 0:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:012', false)
+                        else:
+                            MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/GEvent/BO_GEvent_BirthdayP:013', false)
                         MainNpc.NpcMailSendRandom('MAIL_XX_BirthDayP', 7, 9, 'cNone', 'cReward', 'cFastTomorrow')
                         MainNpc.SetBirthdayPresentFlag()
                         run Talk_End

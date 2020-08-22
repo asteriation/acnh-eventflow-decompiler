@@ -1,20 +1,21 @@
 flow Root:
-    if MainNpc.NpcIsTalkedFromBehind():
-        if EventFlowSystemActor.IsMyVillage():
-            if event_flags_system['cPlayer:PynTalkBackTodayFlag']:
-                run sub_grp!Event2
-            else:
-                event_flags_system['cPlayer:PynTalkBackTodayFlag'] = true
-                MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
-        elif event_flags_system['cPlayerVisit:DC_PynTalkBackTodayFlag']:
+    if not MainNpc.NpcIsTalkedFromBehind():
+        if event_flags_system['cLand:PynVisitToday']:
+            run SNPC_pyn_01_EasterPreVisit::Root
+        else:
+            run SNPC_pyn_02_EasterDay::Root
+    elif EventFlowSystemActor.IsMyVillage():
+        if event_flags_system['cPlayer:PynTalkBackTodayFlag']:
+            run sub_grp!Event2
+        else:
+            event_flags_system['cPlayer:PynTalkBackTodayFlag'] = true
+            MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
+    else:
+        if event_flags_system['cPlayerVisit:DC_PynTalkBackTodayFlag']:
             run sub_grp!Event2
         else:
             event_flags_system['cPlayerVisit:DC_PynTalkBackTodayFlag'] = true
             MainNpc.OpenMessageWindow('TalkSNpc/pyn/SP_pyn:001', false)
-    elif event_flags_system['cLand:PynVisitToday']:
-        run SNPC_pyn_01_EasterPreVisit::Root
-    else:
-        run SNPC_pyn_02_EasterDay::Root
     return
 
 flow sub_grp!Event2:

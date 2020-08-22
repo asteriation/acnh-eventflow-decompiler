@@ -12,8 +12,9 @@ flow CountUp:
     elif event_flags_system['cPlayer:DodPresentCounterToday'] == 1:
         event_flags_system['cPlayer:DodPresentCounter'] += 1
         run sub_grp!Event6
-    elif event_flags_system['cPlayer:DodPresentCounterToday'] == 0:
-        run sub_grp!Event6
+    else:
+        if event_flags_system['cPlayer:DodPresentCounterToday'] == 0:
+            run sub_grp!Event6
     return
 
 flow NoveltySendChk0:

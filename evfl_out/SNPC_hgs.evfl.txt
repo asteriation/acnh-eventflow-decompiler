@@ -85,16 +85,16 @@ flow Hgs11:
     return
 
 flow Hgs34:
-    if event_flags_system['cPlayer:HgsTalkTodayFlag']:
-        if EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:026', true)
-            SubNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:027', true)
+    if not event_flags_system['cPlayer:HgsTalkTodayFlag']:
+        if event_flags_system['cPlayer:HgsCloseness'] == 4:
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:021', true)
         else:
-            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:025', true)
-    elif event_flags_system['cPlayer:HgsCloseness'] == 4:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:021', true)
+            MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:020', true)
+    elif EventFlowSystemActor.RandomChoiceExcludePrevious2(2, true) == 0:
+        MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:026', true)
+        SubNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:027', true)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:020', true)
+        MainNpc.OpenMessageWindow('TalkSNpc/hgs/SP_hgs:025', true)
     return
 
 flow Hgs7:
@@ -150,22 +150,23 @@ flow HgsEnd:
 flow Hgs_Chat:
     if event_flags_system['cPlayer:HgsCloseness'] >= 11:
         run Hgs11
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 10:
-        run Hgs10
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 9:
-        run Hgs9
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 8:
-        run Hgs8
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 7:
-        run Hgs7
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 6:
-        run hgs6
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 5:
-        run hgs5
-    elif event_flags_system['cPlayer:HgsCloseness'] >= 3:
-        run Hgs34
     else:
-        run Hgs02
+        if event_flags_system['cPlayer:HgsCloseness'] >= 10:
+            run Hgs10
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 9:
+            run Hgs9
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 8:
+            run Hgs8
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 7:
+            run Hgs7
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 6:
+            run hgs6
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 5:
+            run hgs5
+        elif event_flags_system['cPlayer:HgsCloseness'] >= 3:
+            run Hgs34
+        else:
+            run Hgs02
     run HgsEnd
     return
 
@@ -218,8 +219,9 @@ flow Root_Init:
         elif event_flags_system['cPlayer:HgsTalkTodayFlag']:
             if event_flags_system['cPlayer:HgsCloseness'] > 5:
                 MainNpc.SetDefaultWaitAs('cDefault')
-        elif event_flags_system['cPlayer:HgsCloseness'] >= 5:
-            MainNpc.SetDefaultWaitAs('cDefault')
+        else:
+            if event_flags_system['cPlayer:HgsCloseness'] >= 5:
+                MainNpc.SetDefaultWaitAs('cDefault')
     return
 
 flow hgs5:
