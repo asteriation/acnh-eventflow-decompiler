@@ -40,11 +40,11 @@ flow ChkEscapeTo:
             run sub_grp!Event150
         else:
             fEvent151 = EventFlowSystemActor.PlayerHouseLevel()
-            if fEvent151 == 0:
+            if fEvent151 == Homeless:
                 subflow_results[0] = 3
-            elif fEvent151 == 1:
+            elif fEvent151 == PlacedTent:
                 subflow_results[0] = 4
-            elif fEvent151 in (2, 3, 4, 5, 6, 7, 8):
+            elif fEvent151 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
                 subflow_results[0] = 5
     return
 
@@ -68,11 +68,13 @@ flow EscapeToMarket:
     return
 
 flow EscapeToMyhome:
-    if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+    fEvent41 = EventFlowSystemActor.PlayerHouseLevel()
+    if fEvent41 in (Homeless, PlacedTent):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_01', true)
-    else:
+        run PlayerWarpTo
+    elif fEvent41 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
         EventFlowSystemActor.OpenMessageWindow('TalkSys/SYS_PhoneApp:050_02', true)
-    run PlayerWarpTo
+        run PlayerWarpTo
     return
 
 flow EscapeToPlaza:
@@ -304,11 +306,11 @@ flow sub_grp!Event1:
 
 flow sub_grp!Event150:
     fEvent150 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent150 == 0:
+    if fEvent150 == Homeless:
         subflow_results[0] = 0
-    elif fEvent150 == 1:
+    elif fEvent150 == PlacedTent:
         subflow_results[0] = 1
-    elif fEvent150 in (2, 3, 4, 5, 6, 7, 8):
+    elif fEvent150 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
         subflow_results[0] = 2
 
 flow sub_grp!Event38:
@@ -366,9 +368,10 @@ entrypoint Event18:
             if fEvent91 == 0:
                 run PlayerWarpTo
             elif fEvent91 == 1:
-                if EventFlowSystemActor.PlayerHouseLevel() == 0:
+                fEvent169 = EventFlowSystemActor.PlayerHouseLevel()
+                if fEvent169 == Homeless:
                     run PlayerWarpTo
-                else:
+                elif fEvent169 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
                     run PlayerWarpTo
             elif fEvent91 == 2:
                 fEvent189 = EventFlowSystemActor.ShopLevel()

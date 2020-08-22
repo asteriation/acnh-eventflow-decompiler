@@ -109,7 +109,8 @@ entrypoint Event96:
         elif event_flags_system['cPlayer:MainmenuRecipe']:
             fEvent75 = EventFlowSystemActor.MuseumLevel()
             if fEvent75 in (BlathersTent, BlathersMuseumNoArt, BlathersMuseumArt):
-                if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+                fEvent30 = EventFlowSystemActor.PlayerHouseLevel()
+                if fEvent30 in (Homeless, PlacedTent):
 entrypoint Event1:
                     if not EventFlowSystemActor.MuseumDonationNumCheck(5):
                         if event_flags_system['cPlayer:MakeVillagePlayerFlag']:
@@ -123,12 +124,12 @@ entrypoint Event1:
 entrypoint Event6:
                         if event_flags_system['cPlayer:RcoPaid1stCharge']:
                             fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
-                            if fEvent34 == 1:
+                            if fEvent34 == PlacedTent:
                                 if event_flags_system['cHouse:HouseOrder1']:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
                                 else:
                                     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
-                            elif fEvent34 in (2, 3, 4, 5, 6, 7, 8):
+                            elif fEvent34 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
                                 run Rco_Hint_AfterBuildHouse
                         else:
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
@@ -138,7 +139,7 @@ entrypoint Event6:
                             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:104', false)
                         else:
                             run Rco_Hint_AboutLoan
-                else:
+                elif fEvent30 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
 entrypoint Event5:
                     if not event_flags_system['cPlayer:RcmTookQuestReq']:
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:130', false)
@@ -167,12 +168,12 @@ entrypoint Event1:
 entrypoint Event6:
                     if event_flags_system['cPlayer:RcoPaid1stCharge']:
                         fEvent34 = EventFlowSystemActor.PlayerHouseLevel()
-                        if fEvent34 == 1:
+                        if fEvent34 == PlacedTent:
                             if event_flags_system['cHouse:HouseOrder1']:
                                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:109', false)
                             else:
                                 MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:108', false)
-                        elif fEvent34 in (2, 3, 4, 5, 6, 7, 8):
+                        elif fEvent34 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
                             run Rco_Hint_AfterBuildHouse
                     else:
                         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:106', false)
@@ -191,14 +192,14 @@ entrypoint Event31:
 flow Root_SubPlayer:
     run Connect_DayOnce
     fEvent100 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent100 == 0:
+    if fEvent100 == Homeless:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:110', false)
-    elif fEvent100 == 1:
+    elif fEvent100 == PlacedTent:
         if event_flags_system['cPlayer:MainmenuRecipe']:
             run Rco_Hint_AboutLoan
         else:
             run Rco_Hint_AboutDIYWS
-    elif fEvent100 in (2, 3, 4, 5, 6, 7, 8):
+    elif fEvent100 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
         if not event_flags_system['cPlayer:MainmenuRecipe']:
             run Rco_Hint_AboutDIYWS
         elif event_flags_system['cPlayer:EnableDiyRemake']:

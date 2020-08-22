@@ -476,7 +476,7 @@ queries:
 - EnvSeason() -> enum[Spring,Summer,Autumn,Winter]
 - EnvConstellation(ConstellationCheckType: str) -> enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]
 - IsSettlerQuestOutsideComplete(SettlerType: int, OutsideCheckType: int) -> bool (inverted)
-- PlayerHouseLevel() -> int9
+- PlayerHouseLevel() -> enum[Homeless,PlacedTent,BaseHouse,HouseExpansion1,BackRoom,LeftRoom,RightRoom,SecondFloor,Basement]
 - PlayerVillagerCount(Count: int) -> bool (inverted)
 - PlayerPastDaysFromLastPlay(Border: int) -> bool (inverted)
 - UIResultMenuDecide() -> bool (inverted)

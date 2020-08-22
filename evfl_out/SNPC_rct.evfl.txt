@@ -1,5 +1,5 @@
 flow RctCongratMyhome:
-    if (EventFlowSystemActor.PlayerHouseLevel() == 2) and (not event_flags_system['cPlayer:RctHintCongratsMyhome']):
+    if (EventFlowSystemActor.PlayerHouseLevel() == BaseHouse) and (not event_flags_system['cPlayer:RctHintCongratsMyhome']):
         event_flags_system['cPlayer:RctOutsideHintToday'] = true
         event_flags_system['cPlayer:RctHintCongratsMyhome'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rct/SP_rct:061_04_01', false)

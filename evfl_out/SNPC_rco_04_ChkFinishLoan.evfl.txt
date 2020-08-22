@@ -4,37 +4,37 @@ flow FinishLoan_Force:
 entrypoint Event1:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:001', false)
     fEvent5 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent5 == 2:
+    if fEvent5 == BaseHouse:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:003', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 3:
+    elif fEvent5 == HouseExpansion1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:004', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 4:
+    elif fEvent5 == BackRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:005', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 5:
+    elif fEvent5 == LeftRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:006', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 6:
+    elif fEvent5 == RightRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:007', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 7:
+    elif fEvent5 == SecondFloor:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:008', false)
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true
         event_flags_system['cPlayer:PlayerLoanFinish1st'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent5 == 8:
+    elif fEvent5 == Basement:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:009', false)
         event_flags_system['cPlayer:PcHousingLoanFinish'] = true
         event_flags_system['cPlayer:RcoHeardRemodel1'] = true

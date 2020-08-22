@@ -3,7 +3,7 @@ flow BGMChangeCheck:
         event_flags_system['cLand:SzaTaled1stTimeAnyPlayer'] = true
         event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 99
     elif event_flags_system['cLand:OpeningSeqBGMChangeCounter'] <= 8:
-        if EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7, 8):
+        if EventFlowSystemActor.PlayerHouseLevel() in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
             event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 9
     elif not EventFlowSystemActor.NpcHouseNum('cConstructed') < 3:
         if EventFlowSystemActor.ShopLevel() in (NooksCrannyInitial, NooksCrannyUpgraded):
@@ -29,7 +29,7 @@ flow CheckPhoneCallIslandCreater:
             if not event_flags_system['cPlayer:StandByRcoVisitMyHomeAfterTkkFirstLive']:
                 event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = true
                 event_flags_system['cPlayer:StandByGameStartPhoneCall'] = true
-            elif EventFlowSystemActor.PlayerHouseLevel() == 0:
+            elif EventFlowSystemActor.PlayerHouseLevel() == Homeless:
                 event_flags_system['cPlayer:StandByRcoVisitMyHomeAfterTkkFirstLive'] = false
                 event_flags_system['cPlayer:StandByPhoneCallIslandCreater'] = true
                 event_flags_system['cPlayer:StandByGameStartPhoneCall'] = true
@@ -193,7 +193,7 @@ flow MuseumGrouUpChk:
     return
 
 flow MyHomeChk:
-    if EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7, 8):
+    if EventFlowSystemActor.PlayerHouseLevel() in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
         event_flags_system['cPlayer:BuiltMyHome'] = true
     return
 
@@ -376,7 +376,7 @@ flow SeasonMaterialHintReset:
     return
 
 flow SendTapBedLetter:
-    if (not event_flags_system['cPlayer:ReceiveTapBedLetter']) and (EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7, 8)) and (not event_flags_system['cPlayer:PlayerHouseBuiltToday']):
+    if (not event_flags_system['cPlayer:ReceiveTapBedLetter']) and (EventFlowSystemActor.PlayerHouseLevel() in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement)) and (not event_flags_system['cPlayer:PlayerHouseBuiltToday']):
         EventFlowSystemActor.SelectRewardItemDirect(13221, 1, 'cVillageRemakePattern', 0)
         if event_flags_system['cPlayer:TapDreamFirstTalk']:
             EventFlowSystemActor.SystemMailSend('cTap', 'MAIL_SNpc_tap', 'cFastToday', 'cReward', 'cNone', false, 3)

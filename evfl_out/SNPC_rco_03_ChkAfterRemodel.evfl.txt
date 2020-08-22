@@ -4,7 +4,7 @@ flow AfterRemodel_Force:
 entrypoint Event5:
     MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:011', false)
     fEvent2 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent2 == 2:
+    if fEvent2 == BaseHouse:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:012_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:012_02', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:012_02_01', false)
@@ -24,7 +24,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 3:
+    elif fEvent2 == HouseExpansion1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:021_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:021_02', false)
         EventFlowSystemActor.UIMoneyAppear()
@@ -37,7 +37,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 4:
+    elif fEvent2 == BackRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:031_02', false)
         EventFlowSystemActor.UIMoneyAppear()
@@ -50,7 +50,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 5:
+    elif fEvent2 == LeftRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:041_02', false)
         EventFlowSystemActor.UIMoneyAppear()
@@ -64,7 +64,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 6:
+    elif fEvent2 == RightRoom:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:051_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:051_02', false)
         EventFlowSystemActor.UIMoneyAppear()
@@ -78,7 +78,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 7:
+    elif fEvent2 == SecondFloor:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:061_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:061_02', false)
         EventFlowSystemActor.UIMoneyAppear()
@@ -92,7 +92,7 @@ entrypoint Event5:
         event_flags_system['cPlayer:RcoAfterHouseRemodel'] = false
         event_flags_system['cPlayer:RcoWallFtrRemoveHouseRemodel'] = false
         EventFlowSystemActor.ExitFlowchart()
-    elif fEvent2 == 8:
+    elif fEvent2 == Basement:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:071_01', false)
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_02_Loan:071_02', false)
         EventFlowSystemActor.UIMoneyAppear()

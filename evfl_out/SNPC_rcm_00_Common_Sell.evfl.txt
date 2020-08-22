@@ -124,11 +124,12 @@ entrypoint Event44:
                 event_flags_system['cPlayer:HeardEatingHintAtShop'] = true
                 event_flags_system['cPlayerTemp:StoreSellFruitChk'] = false
         elif fEvent15 == 2:
-            if EventFlowSystemActor.PlayerHouseLevel() == 0:
+            fEvent62 = EventFlowSystemActor.PlayerHouseLevel()
+            if fEvent62 == Homeless:
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:054', true)
                 if event_flags_system['cPlayerTemp:RcmSellItemSingle']:
                     MainNpc.NpcDelivery('Default', 10)
-            else:
+            elif fEvent62 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
                 MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:053', true)
                 MainNpc.ShopSellDone(1.0, false)
                 event_flags_system['cLifeSupportAchievement:SellItemRcm'] += 1

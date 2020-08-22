@@ -2328,7 +2328,7 @@
             },
             "PlayerHouseLevel": {
                 "params": {},
-                "return": "int9"
+                "return": "enum[Homeless,PlacedTent,BaseHouse,HouseExpansion1,BackRoom,LeftRoom,RightRoom,SecondFloor,Basement]"
             },
             "PlayerVillagerCount": {
                 "params": {

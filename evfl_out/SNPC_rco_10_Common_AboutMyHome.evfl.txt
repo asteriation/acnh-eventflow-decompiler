@@ -7,21 +7,21 @@ flow RcoCheckUpgradeMyHome:
 
 flow RcoChkAboutMyHomeSel:
     fEvent23 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent23 == 1:
+    if fEvent23 == PlacedTent:
         subflow_results[0] = 0
-    elif fEvent23 in (2, 3, 4):
+    elif fEvent23 in (BaseHouse, HouseExpansion1, BackRoom):
         fEvent37 = EventFlowSystemActor.OfficeLevel()
         if fEvent37 in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 0
         elif fEvent37 == ResServiceBuilding:
             subflow_results[0] = 3
-    elif fEvent23 in (5, 6, 7):
+    elif fEvent23 in (LeftRoom, RightRoom, SecondFloor):
         fEvent45 = EventFlowSystemActor.OfficeLevel()
         if fEvent45 in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 2
         elif fEvent45 == ResServiceBuilding:
             subflow_results[0] = 5
-    elif fEvent23 == 8:
+    elif fEvent23 == Basement:
         fEvent48 = EventFlowSystemActor.OfficeLevel()
         if fEvent48 in (ResServiceTent0, ResServiceTent1):
             subflow_results[0] = 1
@@ -77,9 +77,9 @@ flow Root:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:010', false)
     elif event_flags_system['cPlayer:RcoOrderedHouseBuilt']:
         fEvent22 = EventFlowSystemActor.PlayerHouseLevel()
-        if fEvent22 == 1:
+        if fEvent22 == PlacedTent:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261_01', false)
-        elif fEvent22 in (2, 3, 4, 5, 6, 7, 8):
+        elif fEvent22 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:261', false)
     else:
         run RcoChkAboutMyHomeSel

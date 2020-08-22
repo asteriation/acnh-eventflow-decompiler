@@ -1,5 +1,5 @@
 flow CheckInfoMoveMyhome:
-    if (not event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']) and (not event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7, 8)):
+    if (not event_flags_system['cPlayer:RcoTalkAboutMoveMyHome']) and (not event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (EventFlowSystemActor.PlayerHouseLevel() in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement)):
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:031', false)
         event_flags_system['cPlayer:RcoTalkAboutMoveMyHome'] = true
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_00_Common:000_03', false)

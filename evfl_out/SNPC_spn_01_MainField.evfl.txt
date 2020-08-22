@@ -1,24 +1,26 @@
 flow Root:
-    if not EventFlowSystemActor.IsMyVillage():
-        if event_flags_system['cPlayer:CommuneIslandAvailable']:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:004', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:003', false)
-    elif EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
-        if event_flags_system['cPlayer:SpnTalkBeforeGotHouseToday']:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:006', false)
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:005', false)
-            event_flags_system['cPlayer:SpnTalkBeforeGotHouseToday'] = true
+    if EventFlowSystemActor.IsMyVillage():
+        fEvent13 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent13 in (Homeless, PlacedTent):
+            if event_flags_system['cPlayer:SpnTalkBeforeGotHouseToday']:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:006', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:005', false)
+                event_flags_system['cPlayer:SpnTalkBeforeGotHouseToday'] = true
+        elif fEvent13 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+            if event_flags_system['cPlayer:CommuneIslandAvailable']:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:002', false)
+            else:
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_01', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_02', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_03', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_04', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_05', false)
+                event_flags_system['cPlayer:CommuneIslandAvailable'] = true
+                event_flags_system['cPlayer:SpnTalkAtHomelandToday'] = true
     elif event_flags_system['cPlayer:CommuneIslandAvailable']:
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:002', false)
+        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:004', false)
     else:
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_01', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_02', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_03', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_04', false)
-        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:001_05', false)
-        event_flags_system['cPlayer:CommuneIslandAvailable'] = true
-        event_flags_system['cPlayer:SpnTalkAtHomelandToday'] = true
+        MainNpc.OpenMessageWindow('TalkSNpc/spn/SP_spn_01_MainField:003', false)
     return
 

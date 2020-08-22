@@ -14,11 +14,11 @@ flow Get_FinishLoan:
     event_flags_system['cPlayer:PlayerLoanRepaying'] = false
     event_flags_system['cPlayer:PlayerLoanFinish1st'] = true
     fEvent30 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent30 in (1, 2, 3, 4, 5, 6, 7):
+    if fEvent30 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor):
         MainNpc.OpenMessageWindow('TalkSys/SYS_Player:204_02', false)
         event_flags_system['cLifeSupportAchievement:RepayLoan'] += 1
         EventFlowSystemActor.NpcPlayerActivity('cActivityType_ReturnLoan')
-    elif fEvent30 == 8:
+    elif fEvent30 == Basement:
         MainNpc.OpenMessageWindow('TalkSys/SYS_Player:204_03', false)
         event_flags_system['cLifeSupportAchievement:RepayLoan'] += 1
         EventFlowSystemActor.NpcPlayerActivity('cActivityType_ReturnLoan')

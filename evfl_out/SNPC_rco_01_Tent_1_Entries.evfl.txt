@@ -144,39 +144,41 @@ flow RcoTentAboutBuildMuseumTent:
 flow RcoTentAboutMyhome:
     if event_flags_system['cPlayer:RcoPaid1stCharge']:
         run SNPC_rco_10_Common_AboutMyHome::Root
-    elif EventFlowSystemActor.PlayerHouseLevel() == 0:
-        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:400', false)
     else:
-        EventFlowSystemActor.UISonkatsuPointAppear()
-        EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', '', 5000)
-        if EventFlowSystemActor.HasLifeSupportPoint('Now', 5000):
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:402', false)
-            if EventFlowSystemActor.GeneralTalkChoice2() == 0:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:404', false)
-                EventFlowSystemActor.LifeSupportPointCountDown(-5000, false)
-                event_flags_system['cPlayer:RcoPaid1stCharge'] = true
-                event_flags_system['cLifeSupportAchievement:PayImmigrationCost'] += 1
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:405', false)
-                EventFlowSystemActor.UISonkatsuPointDisappear()
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:406', false)
-                fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
-                if fEvent26 == 0:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_01', false)
-                elif fEvent26 == 1:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_02', false)
-                elif fEvent26 == 2:
-                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_03', false)
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_05', false)
-                if event_flags_system['cLand:RcmImmQuestComplete']:
-                    event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
-                if event_flags_system['cLand:OpeningSeqBGMChangeCounter'] <= 8:
-                    event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 8
+        fEvent11 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent11 == Homeless:
+            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:400', false)
+        elif fEvent11 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+            EventFlowSystemActor.UISonkatsuPointAppear()
+            EventFlowSystemActor.SetTagFromSystem(0, 'cFlow', 'cDegit', '', 5000)
+            if EventFlowSystemActor.HasLifeSupportPoint('Now', 5000):
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:402', false)
+                if EventFlowSystemActor.GeneralTalkChoice2() == 0:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:404', false)
+                    EventFlowSystemActor.LifeSupportPointCountDown(-5000, false)
+                    event_flags_system['cPlayer:RcoPaid1stCharge'] = true
+                    event_flags_system['cLifeSupportAchievement:PayImmigrationCost'] += 1
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:405', false)
+                    EventFlowSystemActor.UISonkatsuPointDisappear()
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:406', false)
+                    fEvent26 = EventFlowSystemActor.GeneralTalkChoice3()
+                    if fEvent26 == 0:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_01', false)
+                    elif fEvent26 == 1:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_02', false)
+                    elif fEvent26 == 2:
+                        MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_03', false)
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:407_05', false)
+                    if event_flags_system['cLand:RcmImmQuestComplete']:
+                        event_flags_system['cPlayer:ObjRcoMachineHeardFenceRecipe'] = true
+                    if event_flags_system['cLand:OpeningSeqBGMChangeCounter'] <= 8:
+                        event_flags_system['cLand:OpeningSeqBGMChangeCounter'] = 8
+                else:
+                    MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:403', false)
+                    EventFlowSystemActor.UISonkatsuPointDisappear()
             else:
-                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:403', false)
+                MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:401', false)
                 EventFlowSystemActor.UISonkatsuPointDisappear()
-        else:
-            MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_03_PcHouseTent:401', false)
-            EventFlowSystemActor.UISonkatsuPointDisappear()
     return
 
 flow RcoTentAskDIYtrial:

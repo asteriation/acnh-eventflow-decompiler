@@ -298,38 +298,40 @@ flow RetryDeliverFriend:
 
 flow Root:
     Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001', false)
-    if not EventFlowSystemActor.IsMyVillage():
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_03', false)
-    elif EventFlowSystemActor.PlayerHouseLevel() == 0:
-        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_02', false)
-    else:
-        if not event_flags_system['cPlayer:RcoGotLoginBonusToday']:
-            EventFlowSystemActor.UISonkatsuPointAppear()
-            run RcoMachineDailyLogin
-            EventFlowSystemActor.UISonkatsuPointDisappear()
-        event_flags_system['cPlayer:ObjRcoMachineCheck1st'] = true
-        if not event_flags_system['cPlayer:RcoPaid1stCharge']:
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:RcoMachineEnableExchange']:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016', false)
-            if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+    if EventFlowSystemActor.IsMyVillage():
+        fEvent164 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent164 == Homeless:
+            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_02', false)
+        elif fEvent164 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+            if not event_flags_system['cPlayer:RcoGotLoginBonusToday']:
+                EventFlowSystemActor.UISonkatsuPointAppear()
+                run RcoMachineDailyLogin
+                EventFlowSystemActor.UISonkatsuPointDisappear()
+            event_flags_system['cPlayer:ObjRcoMachineCheck1st'] = true
+            if not event_flags_system['cPlayer:RcoPaid1stCharge']:
+                run RcoSelSeq
+            elif not event_flags_system['cPlayer:RcoMachineEnableExchange']:
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016', false)
+                if event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+                    event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable'] = true
+                event_flags_system['cPlayer:RcoMachineEnableExchange'] = true
+                run RcoSelSeq
+            elif not event_flags_system['cPlayer:MainmenuRndDailyQuest']:
+                run RcoSelSeq
+            elif not event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable']:
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016_01', false)
                 event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable'] = true
-            event_flags_system['cPlayer:RcoMachineEnableExchange'] = true
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:MainmenuRndDailyQuest']:
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable']:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:016_01', false)
-            event_flags_system['cPlayer:OBJRcoMachineChkPlusEnable'] = true
-            run RcoSelSeq
-        elif not event_flags_system['cPlayer:TanuportAmiiboBromideUnlock']:
-            run RcoSelSeq
-        elif event_flags_system['cPlayer:PrintServiceExplain']:
-            run RcoSelSeq
-        else:
-            Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:581', false)
-            event_flags_system['cPlayer:PrintServiceExplain'] = true
-            run RcoSelSeq
+                run RcoSelSeq
+            elif not event_flags_system['cPlayer:TanuportAmiiboBromideUnlock']:
+                run RcoSelSeq
+            elif event_flags_system['cPlayer:PrintServiceExplain']:
+                run RcoSelSeq
+            else:
+                Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:581', false)
+                event_flags_system['cPlayer:PrintServiceExplain'] = true
+                run RcoSelSeq
+    else:
+        Player.OpenMessageWindow('TalkObj/OBJ_RcoMachine:001_03', false)
     return
 
 flow SelExit:

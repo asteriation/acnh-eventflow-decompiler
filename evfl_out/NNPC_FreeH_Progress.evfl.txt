@@ -11,9 +11,9 @@ flow Conceal_MuseumBuilt:
 
 flow Conceal_MyHouseBuilt:
     fEvent86 = EventFlowSystemActor.PlayerHouseLevel()
-    if fEvent86 in (2, 3, 4, 5, 6, 7):
+    if fEvent86 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor):
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
-    elif fEvent86 == 8:
+    elif fEvent86 == Basement:
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
     return
@@ -69,14 +69,14 @@ flow Progress_MuseumTent:
     return
 
 flow Progress_MyHouseBuilt:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt']) and (EventFlowSystemActor.PlayerHouseLevel() in (2, 3, 4, 5, 6, 7)) and (EventFlowSystemActor.FacilityOpenPastDays('cPlayerHouse', 7)) and ((MainNpc.NpcBirthType('cFirst')) or (not event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
+    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt']) and (EventFlowSystemActor.PlayerHouseLevel() in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor)) and (EventFlowSystemActor.FacilityOpenPastDays('cPlayerHouse', 7)) and ((MainNpc.NpcBirthType('cFirst')) or (not event_flags_system['cPlayer:MakeVillagePlayerFlag'])):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:002', false)
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true
         EventFlowSystemActor.ExitFlowchart()
     return
 
 flow Progress_MyHouseBuilt2:
-    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt2']) and (EventFlowSystemActor.PlayerHouseLevel() == 8) and (EventFlowSystemActor.FacilityOpenPastDays('cUnderGround', 7)):
+    if (not event_flag_npc['cNpcMemory:TalkProgressMyHouseBuilt2']) and (EventFlowSystemActor.PlayerHouseLevel() == Basement) and (EventFlowSystemActor.FacilityOpenPastDays('cUnderGround', 7)):
         MainNpc.OpenMessageWindow('TalkNNpc/B1_Bo/Free/BO_FreeH_Progress:003', false)
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt2'] = true
         event_flags_npc['cNpcMemory:TalkProgressMyHouseBuilt'] = true

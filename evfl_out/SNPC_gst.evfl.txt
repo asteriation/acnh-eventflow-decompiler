@@ -3,21 +3,23 @@ flow GstGiveSpirits:
     return
 
 flow Gst_Choose_Category:
-    if EventFlowSystemActor.PlayerHouseLevel() in (0, 1):
+    fEvent111 = EventFlowSystemActor.PlayerHouseLevel()
+    if fEvent111 in (Homeless, PlacedTent):
         if EventFlowSystemActor.PercentChoice(75):
             subflow_results[0] = 0
         else:
             subflow_results[0] = 3
-    elif EventFlowSystemActor.PercentChoice(40):
-        subflow_results[0] = 0
-    else:
-        fEvent97 = EventFlowSystemActor.PercentChoice3(40, 40, 20)
-        if fEvent97 == 0:
-            subflow_results[0] = 1
-        elif fEvent97 == 1:
-            subflow_results[0] = 2
-        elif fEvent97 == 2:
-            subflow_results[0] = 3
+    elif fEvent111 in (BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
+        if EventFlowSystemActor.PercentChoice(40):
+            subflow_results[0] = 0
+        else:
+            fEvent97 = EventFlowSystemActor.PercentChoice3(40, 40, 20)
+            if fEvent97 == 0:
+                subflow_results[0] = 1
+            elif fEvent97 == 1:
+                subflow_results[0] = 2
+            elif fEvent97 == 2:
+                subflow_results[0] = 3
     return
 
 flow Gst_Choose_Item_NotHave:

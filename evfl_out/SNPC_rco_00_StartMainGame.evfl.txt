@@ -45,9 +45,10 @@ flow Rco_GetSmartPhone:
     elif fEvent57 == 1:
         MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:006_02', false)
     elif fEvent57 == 2:
-        if EventFlowSystemActor.PlayerHouseLevel() == 0:
+        fEvent27 = EventFlowSystemActor.PlayerHouseLevel()
+        if fEvent27 == Homeless:
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:006_04', false)
-        else:
+        elif fEvent27 in (PlacedTent, BaseHouse, HouseExpansion1, BackRoom, LeftRoom, RightRoom, SecondFloor, Basement):
             MainNpc.OpenMessageWindow('TalkSNpc/rco/SP_rco_01_StartingMaingame:006_03', false)
     return
 

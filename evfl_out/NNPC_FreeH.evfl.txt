@@ -83,7 +83,7 @@ flow ForMarketBuilding_Chk:
     return
 
 flow HintTalkChk:
-    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst')) and (EventFlowSystemActor.PlayerHouseLevel() in (0, 1)):
+    if (EventFlowSystemActor.IsMyVillage()) and (event_flags_system['cPlayer:MakeVillagePlayerFlag']) and (MainNpc.NpcBirthType('cFirst')) and (EventFlowSystemActor.PlayerHouseLevel() in (Homeless, PlacedTent)):
         run ChkReact1stPresent
         if not event_flags_system['cPlayer:NnpcFinishHintTalk']:
             run LifeStartHint
