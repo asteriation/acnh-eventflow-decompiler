@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from collections import OrderedDict
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Tuple, Union
 
 from bitstring import ConstBitStream
 
 from actors import Param, Action, Query, Actor
 from nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
-from datatype import IntType
+from datatype import BoolType, FloatType, IntType, Type, Argument
 from cfg import CFG
 
 @dataclass
@@ -28,10 +28,6 @@ class BFEVFL:
     nodes: List[Node] = field(default_factory=list)
     roots: List[RootNode] = field(default_factory=list)
     edges: List[Tuple[str, str]] = field(default_factory=list)
-
-class Argument(str):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        str.__init__(*args, **kwargs)
 
 class read_at_offset:
     def __init__(self, bs: ConstBitStream, offset: int, offset_in_bits: bool = False, restore: bool = True) -> None:
@@ -278,9 +274,14 @@ def _load_events(bs: ConstBitStream, offset: int, num_events: int, actors: List[
                 container_ptr = bs.read('uintle:64')
                 flowchart_name = _load_str(bs, bs.read('uintle:64'))
                 entrypoint_name = _load_str(bs, bs.read('uintle:64'))
-                # TODO: params
 
-                events.append(SubflowNode(name, flowchart_name, entrypoint_name, next_))
+                if container_ptr:
+                    container = _load_container_item(bs, container_ptr)
+                    assert isinstance(container, dict)
+                else:
+                    container = {}
+
+                events.append(SubflowNode(name, flowchart_name, entrypoint_name, next_, container))
             else:
                 raise ValueError(f'unknown event type {event_type}')
     return events
@@ -297,23 +298,36 @@ def _load_entrypoints(bs: ConstBitStream, offset: int, num_entrypoints: int, nam
             main_event_index = bs.read('uintle:16')
             bs.read('pad:16') # padding
 
-            ep_name = names[index]
-            node = RootNode(ep_name)
-
+            vardefs: List[RootNode.VarDef] = []
             if num_vardefs > 0:
                 vardef_names = _load_dictionary(bs, vardef_name_ptr)
                 with read_at_offset(bs, vardef_ptr):
                     for name in vardef_names:
-                        initial_value = bs.read('uintle:64')
+                        initial_value_raw = bs.read('bits:64')
                         assert bs.read('uintle:16') == 1 # number of items
-                        type_ = bs.read('uintle:16')
-                        assert type_ in (2, 3, 4) # 2 = int, 3 = bool, 4 = float - others unsupported
+                        type_enum = bs.read('uintle:16')
+
+                        type_: Type
+                        initial_value: Union[int, bool, float]
+                        if type_enum == 2:
+                            type_ = IntType
+                            initial_value = initial_value_raw.read('intle:32')
+                        elif type_enum == 3:
+                            type_ = BoolType
+                            initial_value = bool(initial_value_raw.read('uintle:8'))
+                        elif type_enum == 4:
+                            type_ = FloatType
+                            initial_value = initial_value_raw.read('floatle:32')
+                        else:
+                            raise RuntimeError(f'unsupported type for vardef: {type_enum}')
                         bs.read('pad:32') # padding
 
-                        # print(ep_name, name, ('int', 'bool', 'float')[type_ - 2])
-                # TODO actually use it
+                        vardefs.append(RootNode.VarDef(name, type_, initial_value))
 
+            ep_name = names[index]
+            node = RootNode(ep_name, vardefs)
             roots.append((node, main_event_index))
+
     return roots
 
 def parse_bfevfl(data: bytes) -> BFEVFL:

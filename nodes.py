@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, NamedTuple, Optional
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, NamedTuple, Optional, Union
 
-from datatype import BoolType
+from datatype import AnyType, BoolType, Type
 from indent import indent
 from predicates import Predicate, NotPredicate, QueryPredicate
 from actors import Param, Action, Query, Actor
@@ -50,17 +51,29 @@ class Node(ABC):
             ']'
 
 class RootNode(Node):
-    def __init__(self, name: str) -> None:
+    @dataclass
+    class VarDef:
+        name: str
+        type_: Type
+        initial_value: Union[int, bool, float]
+
+        def __str__(self) -> str:
+            return f'{self.name}: {self.type_} = {self.initial_value}'
+
+    def __init__(self, name: str, vardefs: List[VarDef] = []) -> None:
         Node.__init__(self, name)
+        self.vardefs = vardefs[:]
 
     def add_in_edge(self, src: Node) -> None:
         pass
 
     def generate_code(self, indent_level: int = 0) -> str:
-        return f'{indent(indent_level)}flow {self.name}:\n' + '\n'.join(n.generate_code(indent_level + 1) for n in self.out_edges)
+        return f'{indent(indent_level)}flow {self.name}({", ".join(str(v) for v in self.vardefs)}):\n' + \
+                '\n'.join(n.generate_code(indent_level + 1) for n in self.out_edges)
 
     def __str__(self) -> str:
         return f'RootNode[name={self.name}' + \
+            f', vardefs=[{", ".join(str(v) for v in self.vardefs)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
@@ -262,20 +275,24 @@ class JoinNode(Node):
             ']'
 
 class SubflowNode(Node):
-    def __init__(self, name: str, ns: str, called_root_name: str, nxt: Optional[str] = None) -> None:
+    def __init__(self, name: str, ns: str, called_root_name: str, nxt: Optional[str] = None, params: Optional[Dict[str, Any]] = None) -> None:
         Node.__init__(self, name)
         self.ns = ns
         self.called_root_name = called_root_name
         self.nxt = nxt
+        self.params = params.copy() if params else {}
 
     def generate_code(self, indent_level: int = 0) -> str:
         ns = f'{self.ns}::' if self.ns else ''
-        return f'{indent(indent_level)}run {ns}{self.called_root_name}\n' + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
+        # todo: type-checked subflow params
+        param_s = ', '.join(f'{name}={AnyType.format(value)}' for name, value in self.params.items())
+        return f'{indent(indent_level)}run {ns}{self.called_root_name}({param_s})\n' + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
         return f'SubflowNode[name={self.name}' + \
             f', ns={self.ns}' + \
             f', called_root_name={self.called_root_name}' + \
+            f', params={self.params}' + \
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'

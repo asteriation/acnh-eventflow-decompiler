@@ -136,7 +136,7 @@
             },
             "SetupActorPosition": {
                 "params": {
-                    "Type": "any"
+                    "Type": "int"
                 }
             },
             "UIDemoClock": {
@@ -221,7 +221,7 @@
                     "TagType": "str",
                     "SetTagType": "str",
                     "AccessKey": "str",
-                    "Value": "any"
+                    "Value": "int"
                 }
             },
             "NpcSelectMessage": {
@@ -338,8 +338,8 @@
             },
             "BellCountDown": {
                 "params": {
-                    "Money": "any",
-                    "Reverse": "any"
+                    "Money": "int",
+                    "Reverse": "bool"
                 }
             },
             "UIMoneyAppear": {
@@ -617,7 +617,7 @@
                     "Key": "str",
                     "SetValue": "any"
                 },
-                "conversion": "entry_variables[<Key>] = <SetValue>"
+                "conversion": "<<Key>> = <SetValue>"
             },
             "SetAmiiboCamperNPC": {
                 "params": {}
@@ -843,7 +843,7 @@
             "DeleteTargetItem": {
                 "params": {
                     "ItemUniqueId": "int",
-                    "DeleteNum": "any",
+                    "DeleteNum": "int",
                     "IsPriorityFewItems": "bool"
                 }
             },
@@ -1000,7 +1000,7 @@
                     "Key": "str",
                     "AddValue": "int"
                 },
-                "conversion": "entry_variables[<Key>] += <AddValue>"
+                "conversion": "<<Key>> += <AddValue>"
             },
             "ReserveNpcCommand": {
                 "params": {
@@ -1042,7 +1042,7 @@
             },
             "UploadProfile": {
                 "params": {
-                    "IsSkipError": "any"
+                    "IsSkipError": "bool"
                 }
             },
             "NotifyUseNSOAppli": {
@@ -2039,7 +2039,7 @@
             },
             "HasBellCount": {
                 "params": {
-                    "Money": "any"
+                    "Money": "int"
                 },
                 "inverted": true,
                 "return": "bool"
@@ -2139,23 +2139,23 @@
                 "conversion": {
                     "key": "CheckType",
                     "values": [
-                        "entry_variables[<Value>] == <CheckValue>",
-                        "entry_variables[<Value>] != <CheckValue>",
-                        "entry_variables[<Value>] > <CheckValue>",
-                        "entry_variables[<Value>] >= <CheckValue>",
-                        "entry_variables[<Value>] < <CheckValue>",
-                        "entry_variables[<Value>] <= CheckValue>>"
+                        "<<Value>> == <CheckValue>",
+                        "<<Value>> != <CheckValue>",
+                        "<<Value>> > <CheckValue>",
+                        "<<Value>> >= <CheckValue>",
+                        "<<Value>> < <CheckValue>",
+                        "<<Value>> <= CheckValue>>"
                     ]
                 },
                 "neg_conversion": {
                     "key": "CheckType",
                     "values": [
-                        "entry_variables[<Value>] != <CheckValue>",
-                        "entry_variables[<Value>] == <CheckValue>",
-                        "entry_variables[<Value>] <= <CheckValue>",
-                        "entry_variables[<Value>] < <CheckValue>",
-                        "entry_variables[<Value>] >= <CheckValue>",
-                        "entry_variables[<Value>] > CheckValue>>"
+                        "<<Value>> != <CheckValue>",
+                        "<<Value>> == <CheckValue>",
+                        "<<Value>> <= <CheckValue>",
+                        "<<Value>> < <CheckValue>",
+                        "<<Value>> >= <CheckValue>",
+                        "<<Value>> > CheckValue>>"
                     ]
                 },
                 "return": "bool"
@@ -3086,7 +3086,7 @@
             },
             "MoneyCapacity": {
                 "params": {
-                    "AddMoney": "any",
+                    "AddMoney": "int",
                     "SellType": "str"
                 },
                 "return": "int3"
@@ -3108,7 +3108,7 @@
             "PurchaseBoxFreeQuery2": {
                 "params": {
                     "PurchaseBoxQueryType": "str",
-                    "SellTotal": "any"
+                    "SellTotal": "int"
                 },
                 "inverted": true,
                 "return": "bool"
@@ -3423,7 +3423,7 @@
                     "Value": "str"
                 },
                 "inverted": true,
-                "conversion": "entry_variables[<Value>]",
+                "conversion": "<<Value>>",
                 "return": "bool"
             },
             "ControllerConnectNum": {
@@ -3704,7 +3704,7 @@
                     "IsChangeSameState": "bool",
                     "ArgFlag0": "bool",
                     "ArgInt0": "int",
-                    "ArgFloat0": "any",
+                    "ArgFloat0": "float",
                     "ArgStr1": "str"
                 }
             },
@@ -3835,7 +3835,7 @@
                     "SubEntryName": "str",
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
-                    "ArgInt0": "any",
+                    "ArgInt0": "int",
                     "ArgFlag0": "bool",
                     "ArgStr0": "str"
                 }
@@ -3951,8 +3951,8 @@
                     "IsChangeSameState": "bool",
                     "IsChangePreState": "bool",
                     "ArgInt0": "int",
-                    "ArgInt1": "any",
-                    "ArgInt2": "any"
+                    "ArgInt1": "int",
+                    "ArgInt2": "int"
                 }
             },
             "NpcChangeChangeHandToolState": {
@@ -4532,7 +4532,7 @@
                 "params": {
                     "ASType": "str",
                     "IsWaitEnd": "bool",
-                    "IsContinueEmot": "any"
+                    "IsContinueEmot": "bool"
                 }
             },
             "ShopSellDone": {
@@ -5892,7 +5892,7 @@
             },
             "NpcRumorIsEqualNpcChoice": {
                 "params": {
-                    "RumorFavoriteChoiceTarget": "any"
+                    "RumorFavoriteChoiceTarget": "str"
                 },
                 "return": "int4"
             },
@@ -6177,7 +6177,7 @@
             },
             "SetDefaultWaitAs": {
                 "params": {
-                    "NpcWaitAsType": "any"
+                    "NpcWaitAsType": "str"
                 }
             }
         },
@@ -6337,8 +6337,8 @@
             },
             "PlayerMoveToTarget": {
                 "params": {
-                    "TargetX": "any",
-                    "TargetZ": "any",
+                    "TargetX": "float",
+                    "TargetZ": "float",
                     "MiddleTargetX": "float",
                     "MiddleTargetZ": "float",
                     "StateAfterWait": "str",
@@ -6646,7 +6646,7 @@
                     "TagType": "str",
                     "SetTagType": "str",
                     "AccessKey": "str",
-                    "Value": "any"
+                    "Value": "int"
                 }
             }
         },
@@ -6837,7 +6837,7 @@
                 "params": {
                     "ASType": "str",
                     "IsWaitEnd": "bool",
-                    "IsContinueEmot": "any"
+                    "IsContinueEmot": "bool"
                 }
             },
             "TurnNeck": {

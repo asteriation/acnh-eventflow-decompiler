@@ -22,10 +22,17 @@ class Action:
         for p in self.params:
             assert p.name in params
             try:
-                value = p.type.format(params[p.name])
+                # some places do this with a string value instead of an Argument value
+                if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
+                    p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
+                    p.name == f'EntryVariableKeyFloat_{params[p.name]}':
+                    value = params[p.name]
+                else:
+                    value = p.type.format(params[p.name])
             except:
                 print(self, p, params)
                 raise
+            conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
 
@@ -35,6 +42,7 @@ class Action:
             auto_s = ' (auto)' if self.auto else ''
             conv = self.conversion.replace('<.name>', name)
             for p in self.params:
+                conv = conv.replace(f'<<{p.name}>>', f'{p.name}: {p.type}')
                 conv = conv.replace(f'<{p.name}>', f'{p.name}: {p.type}')
             return conv + auto_s
         else:
@@ -88,10 +96,17 @@ class Query:
         for p in self.params:
             assert p.name in params
             try:
-                value = p.type.format(params[p.name])
+                # some places do this with a string value instead of an Argument value
+                if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
+                    p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
+                    p.name == f'EntryVariableKeyFloat_{params[p.name]}':
+                    value = params[p.name]
+                else:
+                    value = p.type.format(params[p.name])
             except:
                 print(self, p, params)
                 raise
+            conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
 
@@ -103,6 +118,7 @@ class Query:
             auto_s = ' (auto)' if self.auto else ''
             conv = self.conversion.replace('<.name>', name)
             for p in self.params:
+                conv = conv.replace(f'<<{p.name}>>', f'{p.name}: {p.type}')
                 conv = conv.replace(f'<{p.name}>', f'{p.name}: {p.type}')
             rv_s = f' -> {self.rv}'
             return conv + rv_s + inv_s + auto_s

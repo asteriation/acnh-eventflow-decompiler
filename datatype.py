@@ -2,11 +2,18 @@ from __future__ import annotations
 
 from typing import Any
 
+class Argument(str):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        str.__init__(*args, **kwargs)
+
 class Type:
     def __init__(self, type_: str) -> None:
         self.type = type_
 
     def format(self, value: Any) -> str:
+        if isinstance(value, Argument):
+            return str(value)
+
         if self.type.startswith('int'):
             assert isinstance(value, int)
             if self.type != 'int':
@@ -55,6 +62,7 @@ class Type:
 
 AnyType = Type('any')
 BoolType = Type('bool')
+FloatType = Type('float')
 IntType = Type('int')
 StrType = Type('str')
 
