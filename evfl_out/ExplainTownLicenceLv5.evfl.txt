@@ -1,4 +1,0 @@
-flow Root:
-    EventFlowSystemActor.ReservePlayerMutterDemo('GetRecipe_DIY_Ladder', 'cNowDemoEnd', 'Player_GetDemo_Recipe_DIY', false)
-    return
-

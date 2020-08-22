@@ -1,7 +1,0 @@
-Actor DynamicCast_LandReadjustNpc
-actions:
-- TurnNeck(TurnTarget: int)
-- NpcReservrForErase()
-- OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
-- SetNpcName(ID: int, NpcNameType: int)
-queries:

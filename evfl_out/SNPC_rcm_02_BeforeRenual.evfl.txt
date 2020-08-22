@@ -1,7 +1,0 @@
-flow Rcm_BeforeRenualFor2:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_10_Renual:101', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_10_Renual:102', false)
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_10_Renual:103', false)
-    event_flags_system['cPlayer:RcmHeardAboutRenual'] = true
-    return
-

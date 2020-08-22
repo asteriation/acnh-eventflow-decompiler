@@ -1,4 +1,0 @@
-Actor HaniwaKun
-actions:
-- OpenMessageWindow(MessageID: str, IsCloseMessageWindow: bool)
-queries:

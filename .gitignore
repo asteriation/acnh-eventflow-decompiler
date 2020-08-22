@@ -1,8 +1,6 @@
 .*.s??
 .*.un~
 _unused
-bfevfl_*
-Info
-evfl
+bfevfl
 __pycache__
 env

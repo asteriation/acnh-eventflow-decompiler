@@ -1,4 +1,0 @@
-Actor Npc_5
-actions:
-- ChangeNpcPlace(NpcPlace: str)
-queries:

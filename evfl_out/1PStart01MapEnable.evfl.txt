@@ -1,4 +1,0 @@
-flow Root:
-    EventFlowSystemActor.ReservePlayerMutterDemo('Get_MapApp', 'cNowDemoEnd', 'Player_GetDemo_Once', false)
-    return
-

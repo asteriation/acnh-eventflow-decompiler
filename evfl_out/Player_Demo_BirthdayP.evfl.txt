@@ -1,7 +1,0 @@
-flow Root:
-    Player.OpenMessageWindow('TalkSys/SYS_Player:700', true)
-    EventFlowSystemActor.PlayerBirthdayRestoreBGM()
-    EventFlowSystemActor.PlayerBirthdayScheduleEnd()
-    EventFlowSystemActor.SystemRequestChangeStage('cMainFieldPlayerHouse', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    return
-

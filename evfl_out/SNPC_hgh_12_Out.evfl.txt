@@ -1,7 +1,0 @@
-flow Root:
-    event_flags_system['cPlayer:KinuyoForcedTalk2TodayFlag'] = true
-    event_flags_system['cLandTemp:HghExitBalloon'] = true
-    MainNpc.OpenMessageWindow('TalkSNpc/hgh/SP_hgh:007', true)
-    EventFlowSystemActor.NextGoTo('Entrance', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    return
-

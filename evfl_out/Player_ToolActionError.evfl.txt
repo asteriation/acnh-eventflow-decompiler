@@ -1,8 +1,0 @@
-flow ChangeStick_unregistered:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:152', false)
-    return
-
-flow DisableLadder:
-    Player.OpenMessageWindow('TalkSys/SYS_Telepathy:151', false)
-    return
-

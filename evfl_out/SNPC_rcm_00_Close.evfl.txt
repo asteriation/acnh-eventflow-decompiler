@@ -1,9 +1,0 @@
-flow Root:
-    MainNpc.OpenMessageWindow('TalkSNpc/rcm/SP_rcm_00_common:207', true)
-    EventFlowSystemActor.NextGoTo('Entrance', 'cCircle', 'cCircle', 'cBlack', 1.0, 1.0)
-    return
-
-flow Root_Init:
-    run SNPC_rcm::EntrySubCast
-    return
-

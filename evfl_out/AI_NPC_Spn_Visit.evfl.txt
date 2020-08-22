@@ -1,8 +1,0 @@
-flow Init:
-    MainNpc.NpcChangeHeadCtrlMode('cPlayer', true)
-    return
-
-flow Root:
-    MainNpc.NpcChangeBlockWanderState('cBlockWander', 'Root', 'SNPC_spn', '', false, true, false, 0, 1, 0, 0)
-    return
-
