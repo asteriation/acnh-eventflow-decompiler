@@ -1,101 +1,409 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from collections import OrderedDict
+from dataclasses import dataclass, field
+from typing import Any, Dict, Iterable, List, Tuple
 
-import evfl
+from bitstring import ConstBitStream
 
 from actors import Param, Action, Query, Actor
 from nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
+from datatype import IntType
 from cfg import CFG
 
+@dataclass
+class BFEVFLActor:
+    name: str
+    secondary_name: str
+    argument_name: str
+    actions: List[Action]
+    queries: List[Query]
+    entry_point_index: int
 
-def read(data: bytes, actor_data: Dict[str, Any]) -> CFG:
-    flow = evfl.EventFlow()
-    flow.read(data)
+@dataclass
+class BFEVFL:
+    filename: str = ''
+    flowchart_name: str = ''
+    actors: List[BFEVFLActor] = field(default_factory=list)
+    nodes: List[Node] = field(default_factory=list)
+    roots: List[RootNode] = field(default_factory=list)
+    edges: List[Tuple[str, str]] = field(default_factory=list)
 
-    flowchart = flow.flowchart
+class Argument(str):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        str.__init__(*args, **kwargs)
 
-    cfg = CFG(flowchart.name)
-    cfg.import_actors(actor_data)
-    for r in flowchart.actors:
-        cfg.add_actor(Actor(r.identifier.name))
+class read_at_offset:
+    def __init__(self, bs: ConstBitStream, offset: int, offset_in_bits: bool = False, restore: bool = True) -> None:
+        self.bs = bs
+        self.offset = offset * (1 if offset_in_bits else 8)
+        self.old_pos = 0
+        self.restore = restore
 
-    node: Node
+    def __enter__(self) -> None:
+        self.old_pos = self.bs.pos
+        self.bs.pos = self.offset
 
-    for event in flowchart.events:
-        name = event.name
-        event = event.data
+    def __exit__(self, *args: Any) -> None:
+        if self.restore:
+            self.bs.pos = self.old_pos
 
-        if isinstance(event, evfl.event.ActionEvent):
-            actor = event.actor.v.identifier.name
-            action = event.actor_action.v.v[15:]
-            params = event.params.data if event.params else {}
-            nxt = event.nxt.v.name if event.nxt.v else None
+def check_and_update_action(action: Action, params: Dict[str, Any]):
+    # todo
+    pass
 
-            cfg.actors[actor].register_action(Action(action, [Param(p) for p in params.keys()]))
-            act = cfg.actors[actor].actions[action]
+def check_and_update_query(query: Query, params: Dict[str, Any], rvs: Iterable[int]):
+    # todo
+    pass
 
-            node = ActionNode(name, act, params, nxt)
-        elif isinstance(event, evfl.event.SwitchEvent):
-            actor = event.actor.v.identifier.name
-            query = event.actor_query.v.v[14:]
-            params = event.params.data if event.params else {}
-            cases = event.cases
+def _load_str(bs: ConstBitStream, offset: int, len_skipped: bool = False, **kwargs: Any) -> str:
+    with read_at_offset(bs, offset - (2 if len_skipped else 0), **kwargs):
+        length = bs.read('uintle:16')
+        return bs.read(f'bytes:{length}').decode('utf-8')
 
-            cfg.actors[actor].register_query(Query(query, [Param(p) for p in params.keys()]))
-            q = cfg.actors[actor].queries[query]
+def _load_dictionary(bs: ConstBitStream, offset: int, **kwargs: Any) -> List[str]:
+    values = []
 
-            node = SwitchNode(name, q, params)
-            for value, ev in cases.items():
-                node.add_case(ev.v.name, value)
-        elif isinstance(event, evfl.event.ForkEvent):
-            join = event.join.v.name
-            forks = [f.v.name for f in event.forks] if event.forks else []
+    with read_at_offset(bs, offset, **kwargs):
+        assert bs.read('bytes:4') == b'DIC ' # magic
+        num_entries = bs.read('uintle:32')
 
-            join_node = JoinNode(join, None) if join not in cfg.nodes else cfg.nodes[join]
-            assert isinstance(join_node, JoinNode)
-            cfg.add_node(join_node)
+        # skip root
+        bs.read('pad:128')
 
-            node = ForkNode(name, join_node, forks)
-            node.add_out_edge(join_node)
-            join_node.add_in_edge(node)
-        elif isinstance(event, evfl.JoinEvent):
-            if name not in cfg.nodes:
-                node = JoinNode(name, event.nxt.v.name if event.nxt.v else None)
-            else:
-                node = cfg.nodes[name]
-                assert isinstance(node, JoinNode)
-                node.nxt = event.nxt.v.name if event.nxt.v else None
-        elif isinstance(event, evfl.event.SubFlowEvent):
-            ns = event.res_flowchart_name
-            called = event.entry_point_name
-            nxt = event.nxt.v.name if event.nxt.v else None
+        for i in range(num_entries):
+            bs.read('pad:64') # skip search stuff, just fetch string
+            values.append(_load_str(bs, bs.read('uintle:64')))
 
-            node = SubflowNode(name, ns, called, nxt)
+        return values
+
+def _load_container_item(bs: ConstBitStream, offset: int, **kwargs: Any) -> Any:
+    rv: Any
+    with read_at_offset(bs, offset, **kwargs):
+        data_type = bs.read('uintle:16')
+        num_items = bs.read('uintle:16')
+        bs.read('pad:32') # padding
+        dict_ptr = bs.read('uintle:64')
+
+        if data_type == 0: # Argument
+            assert num_items == 1
+            rv = Argument(_load_str(bs, bs.read('uintle:64')))
+        elif data_type == 1: # Container
+            dict_ = _load_dictionary(bs, dict_ptr)
+            assert len(dict_) == num_items
+
+            rv = OrderedDict()
+            for name in dict_:
+                rv[name] = _load_container_item(bs, bs.read('uintle:64'))
+        elif data_type in (2, 7): # Int
+            assert num_items == 1 or data_type > 6
+
+            rv = [bs.read('intle:32') for _ in range(num_items)]
+            bs.read(f'pad:{64 - 32 * num_items % 64}')
+            if data_type <= 6:
+                rv = rv[0]
+        elif data_type in (3, 8): # Bool
+            assert num_items == 1 or data_type > 6
+
+            rv = [bool(bs.read('uintle:8')) for _ in range(num_items)]
+            bs.read(f'pad:{64 - 8 * num_items % 64}')
+            if data_type <= 6:
+                rv = rv[0]
+        elif data_type in (4, 9): # Float
+            assert num_items == 1 or data_type > 6
+
+            rv = [bs.read('floatle:32') for _ in range(num_items)]
+            bs.read(f'pad:{64 - 32 * num_items % 64}')
+            if data_type <= 6:
+                rv = rv[0]
+        elif data_type in (5, 10): # String
+            assert num_items == 1 or data_type > 6
+
+            rv = [_load_str(bs, bs.read('uintle:64')) for _ in range(num_items)]
+            if data_type <= 6:
+                rv = rv[0]
+        elif data_type == (6, 11): # wstring
+            raise RuntimeError(f'wstring unsupported')
+        elif data_type == 12: # Actor identifier
+            assert num_items == 2
+            raise RuntimeError(f'actor id unsupported')
         else:
-            raise ValueError(f'unknown event: {event}')
+            raise ValueError(f'bad data type: {data_type}')
 
-        cfg.add_node(node)
+        return rv
 
-    for name, node in cfg.nodes.items():
+def _dereference(bs: ConstBitStream, ptr: int, data_type: str = 'uintle:64', **kwargs: Any) -> Any:
+    with read_at_offset(bs, ptr, **kwargs):
+        return bs.read(data_type)
+
+def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any) -> List[BFEVFLActor]:
+    actors: List[BFEVFLActor] = []
+    with read_at_offset(bs, offset, **kwargs):
+        for _ in range(num_actors):
+            name = _load_str(bs, bs.read('uintle:64'))
+            secondary_name = _load_str(bs, bs.read('uintle:64'))
+            argument_name = _load_str(bs, bs.read('uintle:64'))
+            actions_ptr = bs.read('uintle:64')
+            queries_ptr = bs.read('uintle:64')
+            parameters_ptr = bs.read('uintle:64')
+            parameters = _load_container_item(bs, parameters_ptr) if parameters_ptr else None
+            num_actions = bs.read('uintle:16')
+            num_queries = bs.read('uintle:16')
+            ep_index = bs.read('uintle:16')
+            bs.read('pad:16')
+
+            if actions_ptr:
+                with read_at_offset(bs, actions_ptr):
+                    actions = [Action(name, _load_str(bs, bs.read('uintle:64'))[15:], []) for _ in range(num_actions)]
+            else:
+                actions = []
+
+            if queries_ptr:
+                with read_at_offset(bs, queries_ptr):
+                    queries = [Query(name, _load_str(bs, bs.read('uintle:64'))[14:], [], IntType) for _ in range(num_queries)]
+            else:
+                queries = []
+
+            actor = BFEVFLActor(name, secondary_name, argument_name, actions, queries, ep_index)
+            actors.append(actor)
+    return actors
+
+def _load_events(bs: ConstBitStream, offset: int, num_events: int, actors: List[BFEVFLActor], **kwargs: Any) -> List[Node]:
+    names: List[str] = []
+    events: List[Node] = []
+    join_nodes: Dict[int, JoinNode] = {}
+
+    with read_at_offset(bs, offset, **kwargs):
+        for _ in range(num_events):
+            names.append(_load_str(bs, bs.read('uintle:64')))
+            bs.read('pad:256')
+
+    with read_at_offset(bs, offset, **kwargs):
+        for index in range(num_events):
+            name = names[index]
+            bs.read('pad:64')
+            event_type = bs.read('uintle:8')
+            bs.read('pad:8') # padding
+
+            if event_type == 0: # Action
+                event_index = bs.read('uintle:16')
+                next_ = names[event_index] if event_index != 0xFFFF else None
+                actor_index = bs.read('uintle:16')
+                actor_action_index = bs.read('uintle:16')
+                container_ptr = bs.read('uintle:64')
+                bs.read('pad:128')
+
+                if container_ptr:
+                    container = _load_container_item(bs, container_ptr)
+                    assert isinstance(container, dict)
+                else:
+                    container = {}
+
+                actor = actors[actor_index]
+                action = actor.actions[actor_action_index]
+                check_and_update_action(action, container)
+
+                events.append(ActionNode(name, action, container, next_))
+            elif event_type == 1: # Switch
+                num_cases = bs.read('uintle:16')
+                actor_index = bs.read('uintle:16')
+                actor_query_index = bs.read('uintle:16')
+                container_ptr = bs.read('uintle:64')
+                swcase_ptr = bs.read('uintle:64')
+                bs.read('pad:64')
+
+                if container_ptr:
+                    container = _load_container_item(bs, container_ptr)
+                    assert isinstance(container, dict)
+                else:
+                    container = {}
+
+                cases: Dict[int, str] = OrderedDict()
+                if swcase_ptr:
+                    with read_at_offset(bs, swcase_ptr):
+                        for _ in range(num_cases):
+                            # value, event index
+                            value = bs.read('uintle:32')
+                            event_index = bs.read('uintle:16')
+                            cases[value] = names[event_index]
+                            bs.read('pad:16')
+
+                actor = actors[actor_index]
+                query = actor.queries[actor_query_index]
+                check_and_update_query(query, container, cases.keys())
+
+                switch_node = SwitchNode(name, query, container)
+                for value, ev in cases.items():
+                    switch_node.add_case(ev, value)
+                events.append(switch_node)
+            elif event_type == 2: # fork
+                num_forks = bs.read('uintle:16')
+                join_index = bs.read('uintle:16')
+                bs.read('pad:16')
+                fork_array_ptr = bs.read('uintle:64')
+                bs.read('pad:128')
+
+                forks: List[str] = []
+                if fork_array_ptr:
+                    with read_at_offset(bs, fork_array_ptr):
+                        forks = [names[bs.read('uintle:16')] for _ in range(num_forks)]
+
+                join_node = JoinNode(names[join_index], None) if join_index > index else events[join_index]
+                assert isinstance(join_node, JoinNode)
+                join_nodes[join_index] = join_node
+
+                node = ForkNode(name, join_node, forks)
+                node.add_out_edge(join_node)
+                join_node.add_in_edge(node)
+
+                events.append(node)
+            elif event_type == 3: # join
+                event_index = bs.read('uintle:16')
+                next_ = names[event_index] if event_index != 0xFFFF else None
+                bs.read(f'pad:224')
+
+                if index not in join_nodes:
+                    join_node = JoinNode(name, next_)
+                else:
+                    join_node_ = join_nodes[index]
+                    assert isinstance(join_node_, JoinNode)
+                    join_node = join_node_
+                join_node.nxt = next_
+
+                events.append(join_node)
+            elif event_type == 4: # subflow
+                event_index = bs.read('uintle:16')
+                next_ = names[event_index] if event_index != 0xFFFF else None
+                bs.read('pad:32')
+                container_ptr = bs.read('uintle:64')
+                flowchart_name = _load_str(bs, bs.read('uintle:64'))
+                entrypoint_name = _load_str(bs, bs.read('uintle:64'))
+                # TODO: params
+
+                events.append(SubflowNode(name, flowchart_name, entrypoint_name, next_))
+            else:
+                raise ValueError(f'unknown event type {event_type}')
+    return events
+
+def _load_entrypoints(bs: ConstBitStream, offset: int, num_entrypoints: int, names: List[str], **kwargs: Any) -> List[Tuple[RootNode, int]]:
+    roots: List[Tuple[RootNode, int]] = []
+    with read_at_offset(bs, offset, **kwargs):
+        for index in range(num_entrypoints):
+            bs.read('pad:64') # subflow event index array ptr
+            vardef_name_ptr = bs.read('uintle:64')
+            vardef_ptr = bs.read('uintle:64')
+            bs.read('pad:16') # subflow event index array length
+            num_vardefs = bs.read('uintle:16')
+            main_event_index = bs.read('uintle:16')
+            bs.read('pad:16') # padding
+
+            ep_name = names[index]
+            node = RootNode(ep_name)
+
+            if num_vardefs > 0:
+                vardef_names = _load_dictionary(bs, vardef_name_ptr)
+                with read_at_offset(bs, vardef_ptr):
+                    for name in vardef_names:
+                        initial_value = bs.read('uintle:64')
+                        assert bs.read('uintle:16') == 1 # number of items
+                        type_ = bs.read('uintle:16')
+                        assert type_ in (2, 3, 4) # 2 = int, 3 = bool, 4 = float - others unsupported
+                        bs.read('pad:32') # padding
+
+                        # print(ep_name, name, ('int', 'bool', 'float')[type_ - 2])
+                # TODO actually use it
+
+            roots.append((node, main_event_index))
+    return roots
+
+def parse_bfevfl(data: bytes) -> BFEVFL:
+    # format details: https://zeldamods.org/wiki/BFEVFL
+
+    bs = ConstBitStream(bytes=data)
+    bfevfl = BFEVFL()
+
+    # header
+    assert bs.read('bytes:8') == b'BFEVFL\0\0' # magic
+    assert bs.read('uintle:16') == 0x0300 # version
+    assert bs.read('uintle:8') == 0
+    bs.read('pad:8')
+    assert bs.read('uintle:16') == 0xFEFF # BOM, assume little endian
+    alignment = 1 << bs.read('uintle:8')
+    bs.read('pad:8')
+    file_name_offset = bs.read('uintle:32')
+    bs.read('pad:16') # is relocated flag
+    first_block_offset = bs.read('uintle:16')
+    reloc_table_offset = bs.read('uintle:32')
+    assert bs.read('uintle:32') == len(data) # file size
+    assert bs.read('uintle:16') == 1 # num flowcharts
+    assert bs.read('uintle:16') == 0 # num timelines
+    bs.read('pad:32')
+    flowchart_array_ptr = bs.read('uintle:64')
+    bs.read('pad:64') # flowchart name dict
+    bs.read('pad:128') # timeline array ptr/name dict
+
+    bfevfl.filename = _load_str(bs, file_name_offset, True)
+
+    bs.pos = flowchart_array_ptr * 8
+    bs.pos = bs.read('uintle:64') * 8 # flowchart_array[0]
+
+    assert bs.read('bytes:4') == b'EVFL' # magic
+    bs.read('pad:32') # string pool offset
+    bs.read('pad:64') # padding
+    num_actors = bs.read('uintle:16')
+    bs.read('pad:32') # num_actions, num_queries
+    num_events = bs.read('uintle:16')
+    num_entrypoints = bs.read('uintle:16')
+    bs.read('pad:48') # padding
+    bfevfl.flowchart_name = _load_str(bs, bs.read('uintle:64'))
+    actors_ptr = bs.read('uintle:64')
+    events_ptr = bs.read('uintle:64')
+    entrypoint_dict_ptr = bs.read('uintle:64')
+    entrypoints_ptr = bs.read('uintle:64')
+
+    bfevfl.actors = _load_actors(bs, actors_ptr, num_actors)
+    entrypoint_dict = _load_dictionary(bs, entrypoint_dict_ptr)
+    bfevfl.nodes = _load_events(bs, events_ptr, num_events, bfevfl.actors)
+
+    for node in bfevfl.nodes:
         if isinstance(node, (ActionNode, SubflowNode, JoinNode)):
             if node.nxt is not None:
-                cfg.add_edge(name, node.nxt)
+                bfevfl.edges.append((node.name, node.nxt))
         elif isinstance(node, SwitchNode):
             for out_name in node.cases.keys():
-                cfg.add_edge(name, out_name)
+                bfevfl.edges.append((node.name, out_name))
         elif isinstance(node, ForkNode):
             for out_name in node.forks:
-                cfg.add_edge(name, out_name)
-        else:
-            raise RuntimeError('bad node type')
+                bfevfl.edges.append((node.name, out_name))
 
-    for entry_point in flowchart.entry_points:
-        node = RootNode(entry_point.name)
+    for root, event_index in _load_entrypoints(bs, entrypoints_ptr, num_entrypoints, entrypoint_dict):
+        bfevfl.roots.append(root)
+        if event_index != 0xffff:
+            bfevfl.edges.append((root.name, bfevfl.nodes[event_index].name))
+
+    return bfevfl
+
+def read(data: bytes, actor_data: Dict[str, Any]) -> CFG:
+    bfevfl = parse_bfevfl(data)
+
+    cfg = CFG(bfevfl.flowchart_name)
+    for r in bfevfl.actors:
+        actor = Actor(r.name) # secondary_name, argument_name, entry_point_index?
+        for action in r.actions:
+            actor.register_action(action)
+        for query in r.queries:
+            actor.register_query(query)
+    cfg.import_actors(actor_data)
+
+    for node in bfevfl.nodes + bfevfl.roots: # type: ignore
+        if isinstance(node, ActionNode):
+            node.action = cfg.actors[node.action.actor_name].actions[node.action.name]
+        elif isinstance(node, SwitchNode):
+            node.query = cfg.actors[node.query.actor_name].queries[node.query.name]
         cfg.add_node(node)
-        if entry_point.main_event.v is not None:
-            main_event = entry_point.main_event.v.name
-            cfg.add_edge(node.name, main_event)
+
+    for src, dest in bfevfl.edges:
+        cfg.add_edge(src, dest)
 
     return cfg
 

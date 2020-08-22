@@ -21,6 +21,7 @@ if __name__ == '__main__':
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
             print(f'converting {fname}')
+            # populate_cfg.parse_bfevfl(f.read())
             cfg = populate_cfg.read(f.read(), actor_data)
             cfg.restructure()
 

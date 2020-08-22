@@ -9,7 +9,8 @@ class Param(NamedTuple):
     type: Type = AnyType
 
 class Action:
-    def __init__(self, name: str, params: List[Param], conversion: Optional[str] = None) -> None:
+    def __init__(self, actor_name: str, name: str, params: List[Param], conversion: Optional[str] = None) -> None:
+        self.actor_name = actor_name
         self.name = name
         self.params = params
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
@@ -17,7 +18,7 @@ class Action:
         self.auto = False
 
     def format(self, params: Dict[str, Any]) -> str:
-        conversion = self.conversion.replace('<.name>', self.name)
+        conversion = self.conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
         for p in self.params:
             assert p.name in params
             try:
@@ -30,8 +31,6 @@ class Action:
 
     def __str__(self) -> str:
         name = self.name
-        if '.' in name:
-            name = name[name.index('.') + 1:]
         if self.default:
             auto_s = ' (auto)' if self.auto else ''
             conv = self.conversion.replace('<.name>', name)
@@ -48,14 +47,13 @@ class Action:
         if not self.default:
             e['conversion'] = self.conversion
         name = self.name
-        if '.' in name:
-            name = name[name.index('.') + 1:]
         return {
             name: e
         }
 
 class Query:
-    def __init__(self, name: str, params: List[Param], rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
+    def __init__(self, actor_name: str, name: str, params: List[Param], rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
+        self.actor_name = actor_name
         self.name = name
         self.params = params
         self.rv = rv
@@ -86,7 +84,7 @@ class Query:
             conversion = conversion_used['values'][pivot]
         else:
             conversion = conversion_used
-        conversion = conversion.replace('<.name>', self.name)
+        conversion = conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
         for p in self.params:
             assert p.name in params
             try:
@@ -99,8 +97,6 @@ class Query:
 
     def __str__(self) -> str:
         name = self.name
-        if '.' in name:
-            name = name[name.index('.') + 1:]
         if self.default:
             assert isinstance(self.conversion, str)
             inv_s = ' (inverted)' if self.inverted else ''
@@ -125,8 +121,6 @@ class Query:
             e['neg_conversion'] = self.neg_conversion
         e['return'] = self.rv
         name = self.name
-        if '.' in name:
-            name = name[name.index('.') + 1:]
         return {
             name: e
         }
@@ -139,16 +133,14 @@ class Actor:
         self.locked = False
 
     def register_action(self, action: Action) -> None:
-        if action.name not in self.actions:
+        if action.name not in self.actions or True:
             self.actions[action.name] = action
-            action.name = f'{self.name}.{action.name}'
             if self.locked:
                 action.auto = True
 
     def register_query(self, query: Query) -> None:
-        if query.name not in self.queries:
+        if query.name not in self.queries or True: # TODO
             self.queries[query.name] = query
-            query.name = f'{self.name}.{query.name}'
             if self.locked:
                 query.auto = True
 

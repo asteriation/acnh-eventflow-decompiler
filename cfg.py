@@ -531,12 +531,14 @@ class CFG:
                 self.actors[actor_name] = Actor(actor_name)
             for action, info in d['actions'].items():
                 self.actors[actor_name].register_action(Action(
+                    actor_name,
                     action,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
                     info.get('conversion', None),
                 ))
             for query, info in d['queries'].items():
                 self.actors[actor_name].register_query(Query(
+                    actor_name,
                     query,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
                     Type(info.get('return', 'any')),
