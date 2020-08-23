@@ -22,8 +22,8 @@ class Action:
     def format(self, params: Dict[str, Any]) -> str:
         conversion = self.conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
         for p in self.params:
-            assert p.name in params
             try:
+                assert p.name in params
                 # some places do this with a string value instead of an Argument value
                 if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
                     p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
@@ -99,8 +99,8 @@ class Query:
             conversion = conversion_used
         conversion = conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
         for p in self.params:
-            assert p.name in params
             try:
+                assert p.name in params
                 # some places do this with a string value instead of an Argument value
                 if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
                     p.name == f'EntryVariableKeyBool_{params[p.name]}' or \

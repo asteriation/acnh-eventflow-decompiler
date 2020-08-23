@@ -407,6 +407,7 @@ def read(data: bytes, actor_data: Dict[str, Any]) -> CFG:
             actor.register_action(action)
         for query in r.queries:
             actor.register_query(query)
+        cfg.add_actor(actor)
     cfg.import_actors(actor_data)
 
     for node in bfevfl.nodes + bfevfl.roots: # type: ignore
