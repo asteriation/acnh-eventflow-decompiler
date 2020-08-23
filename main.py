@@ -2,6 +2,7 @@ import argparse
 import json
 from pathlib import Path
 
+from actors import HINTS
 from cfg import CFG
 import populate_cfg
 
@@ -9,12 +10,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
     parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
     parser.add_argument('--actors', default='actors.json', help='actors.json file for actors\' actions and queries')
+    parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
     parser.add_argument('--dump-actors', help='dump actors to text files in the specified directory')
     parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
     args = parser.parse_args()
 
     with Path(args.actors).open('rt') as af:
         actor_data = json.load(af)
+
+    if args.hints:
+        with Path(args.hints).open('rt') as hf:
+            HINTS.update(json.load(hf))
 
     actors_dumped = False
     for fname in args.bfevfl_files:

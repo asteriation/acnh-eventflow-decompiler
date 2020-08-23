@@ -4,6 +4,8 @@ from typing import Any, Dict, List, NamedTuple, Optional, Union
 
 from datatype import AnyType, Type
 
+HINTS: Dict[str, str] = {}
+
 class Param(NamedTuple):
     name: str
     type: Type = AnyType
@@ -35,6 +37,9 @@ class Action:
             conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
+
+    def hint(self, params: Dict[str, Any]) -> List[str]:
+        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
 
     def __str__(self) -> str:
         name = self.name
@@ -109,6 +114,9 @@ class Query:
             conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
             conversion = conversion.replace(f'<{p.name}>', value)
         return conversion
+
+    def hint(self, params: Dict[str, Any]) -> List[str]:
+        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
 
     def __str__(self) -> str:
         name = self.name

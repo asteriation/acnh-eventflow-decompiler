@@ -11,6 +11,9 @@ class Predicate(ABC):
     def generate_code(self) -> str:
         pass
 
+    def hint(self) -> List[str]:
+        return []
+
     def __invert__(self) -> Predicate:
         return NotPredicate(self)
 
@@ -70,6 +73,9 @@ class QueryPredicate(Predicate):
                     print(self.query, self.values)
                     raise
                 return f'{self.query.format(self.params, False)} {op} ({", ".join(vals_s)})'
+
+    def hint(self) -> List[str]:
+        return self.query.hint(self.params)
 
     def __invert__(self) -> Predicate:
         qp = QueryPredicate(self.query, self.params, self.values)

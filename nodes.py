@@ -85,7 +85,8 @@ class ActionNode(Node):
         self.nxt = nxt
 
     def generate_code(self, indent_level: int = 0) -> str:
-        return f'{indent(indent_level)}{self.action.format(self.params)}\n' + '\n'.join(n.generate_code(indent_level) for n in self.out_edges)
+        hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.action.hint(self.params))
+        return hint_s + f'{indent(indent_level)}{self.action.format(self.params)}\n' + '\n'.join(n.generate_code(indent_level) for n in self.out_edges)
 
     def __str__(self) -> str:
         return f'ActionNode[name={self.name}' + \
@@ -144,6 +145,7 @@ class SwitchNode(Node):
             else:
                 return ''
 
+        hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.query.hint(self.params))
         if self.query.rv == BoolType:
             if len(self.cases) == 1:
                 values = [*self.cases.values()][0]
@@ -155,11 +157,11 @@ class SwitchNode(Node):
                     assert self.terminal_node is not None
 
                     if isinstance(self.terminal_node, GotoNode):
-                        return f'{indent(indent_level)}if {self.query.format(self.params, not values[0])}:\n' + \
+                        return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, not values[0])}:\n' + \
                                 self.out_edges[0].generate_code(indent_level + 1)
                     else:
                         __invert__s = '' if not values[0] else 'not '
-                        return f'{indent(indent_level)}if k{self.query.format(self.params, values[0])}):\n' + \
+                        return hint_s + f'{indent(indent_level)}if k{self.query.format(self.params, values[0])}):\n' + \
                                 self.terminal_node.generate_code(indent_level + 1) + \
                                 self.out_edges[0].generate_code(indent_level)
             else:
@@ -171,7 +173,7 @@ class SwitchNode(Node):
                     true_node, false_node = self.out_edges
                 else:
                     false_node, true_node = self.out_edges
-                return f'{indent(indent_level)}if {self.query.format(self.params, False)}:\n' + \
+                return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)}:\n' + \
                         true_node.generate_code(indent_level + 1) + \
                         f'{indent(indent_level)}else:\n' + \
                         false_node.generate_code(indent_level + 1)
@@ -188,12 +190,12 @@ class SwitchNode(Node):
                 if isinstance(self.terminal_node, GotoNode):
                     op = f'== {self.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self.query.rv.format(v) for v in values) + ')'
 
-                    return f'{indent(indent_level)}if {self.query.format(self.params, False)} {op}:\n' + \
+                    return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)} {op}:\n' + \
                             self.out_edges[0].generate_code(indent_level + 1)
                 else:
                     __invert__op = f'!= {self.query.rv.format(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(self.query.rv.format(v) for v in values) + ')'
 
-                    return f'{indent(indent_level)}if {self.query.format(self.params, False)} {__invert__op}:\n' + \
+                    return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)} {__invert__op}:\n' + \
                             self.terminal_node.generate_code(indent_level + 1) + \
                             self.out_edges[0].generate_code(indent_level)
             except:
@@ -218,7 +220,7 @@ class SwitchNode(Node):
                     print(self.query, self.cases.values())
                     raise
 
-            return f'{indent(indent_level)}{vname} = {self.query.format(self.params, False)}\n' + ''.join(cases)
+            return hint_s + f'{indent(indent_level)}{vname} = {self.query.format(self.params, False)}\n' + ''.join(cases)
 
     def __str__(self) -> str:
         return f'SwitchNode[name={self.name}' + \
@@ -285,6 +287,7 @@ class SubflowNode(Node):
     def generate_code(self, indent_level: int = 0) -> str:
         ns = f'{self.ns}::' if self.ns else ''
         # todo: type-checked subflow params
+        # todo: hints
         param_s = ', '.join(f'{name}={AnyType.format(value)}' for name, value in self.params.items())
         return f'{indent(indent_level)}run {ns}{self.called_root_name}({param_s})\n' + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
@@ -425,7 +428,9 @@ class IfElseNode(Node):
     def generate_code(self, indent_level: int = 0) -> str:
         code = ''
         for predicate, node in self.rules:
+            hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in predicate.hint())
             el_s = 'el' if code else ''
+            code += hint_s
             code += indent(indent_level) + f'{el_s}if {predicate.generate_code()}:\n' + \
                     node.generate_code(indent_level + 1)
         if not isinstance(self.default, NoopNode):
@@ -460,7 +465,8 @@ class WhileNode(Node):
         self.loop_exit = loop_exit
 
     def generate_code(self, indent_level: int = 0) -> str:
-        code = ''
+        hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.loop_cond.hint())
+        code = hint_s
         code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}:\n'
         code += self.loop_body.generate_code(indent_level + 1)
         code += self.loop_exit.generate_code(indent_level)
@@ -493,9 +499,11 @@ class DoWhileNode(Node):
         self.loop_exit = loop_exit
 
     def generate_code(self, indent_level: int = 0) -> str:
+        hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.loop_cond.hint())
         code = ''
         code += f'{indent(indent_level)}do:\n'
         code += self.loop_body.generate_code(indent_level + 1)
+        code += hint_s
         code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}\n'
         code += self.loop_exit.generate_code(indent_level)
         return code
