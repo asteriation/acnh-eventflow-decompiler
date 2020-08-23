@@ -437,3 +437,76 @@ class IfElseNode(Node):
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
+class WhileNode(Node):
+    def __init__(self, name: str, loop_cond: Predicate, loop_body: Node, loop_exit: Node) -> None:
+        Node.__init__(self, name)
+        self.loop_cond = loop_cond
+        self.loop_body = loop_body # should be detached from root (self)
+        self.loop_exit = loop_exit
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        code = ''
+        code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}:\n'
+        code += self.loop_body.generate_code(indent_level + 1)
+        code += self.loop_exit.generate_code(indent_level)
+        return code
+
+    def del_out_edge(self, dest: Node) -> None:
+        if dest == self.loop_body:
+            self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
+        else:
+            raise RuntimeError('deleting exit edge of while')
+
+    def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
+        if old_dest == self.loop_body:
+            self.loop_body = new_dest
+        else:
+            self.loop_exit = new_dest
+        Node.reroute_out_edge(self, old_dest, new_dest)
+
+    def __str__(self) -> str:
+        return f'WhileNode[name={self.name}' + \
+            f', loop_cond={self.loop_cond}' + \
+            f', loop_body={self.loop_body}' + \
+            f', loop_exit={self.loop_exit}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
+            ']'
+
+class DoWhileNode(Node):
+    def __init__(self, name: str, loop_cond: Predicate, loop_body: Node, loop_exit: Node) -> None:
+        Node.__init__(self, name)
+        self.loop_cond = loop_cond
+        self.loop_body = loop_body
+        self.loop_exit = loop_exit
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        code = ''
+        code += f'{indent(indent_level)}do:\n'
+        code += self.loop_body.generate_code(indent_level + 1)
+        code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}\n'
+        code += self.loop_exit.generate_code(indent_level)
+        return code
+
+    def del_out_edge(self, dest: Node) -> None:
+        if dest == self.loop_body:
+            self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
+        else:
+            raise RuntimeError('deleting exit edge of while')
+
+    def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
+        if old_dest == self.loop_body:
+            self.loop_body = new_dest
+        else:
+            self.loop_exit = new_dest
+        Node.reroute_out_edge(self, old_dest, new_dest)
+
+    def __str__(self) -> str:
+        return f'DoWhileNode[name={self.name}' + \
+            f', loop_cond={self.loop_cond}' + \
+            f', loop_body={self.loop_body}' + \
+            f', loop_exit={self.loop_exit}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
+            ']'
+

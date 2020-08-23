@@ -4,9 +4,9 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
 from datatype import Type
-from predicates import QueryPredicate
+from predicates import Predicate, QueryPredicate
 from actors import Param, Action, Query, Actor
-from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, GotoNode, NoopNode, EntryPointNode, GroupNode, IfElseNode
+from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, GotoNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
 
 class CFG:
     def __init__(self, name: str) -> None:
@@ -213,24 +213,128 @@ class CFG:
         # todo: don't be this dumb
         return dest in self.__find_postorder(src)
 
-    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], added_entrypoints: Dict[Node, Node]) -> None:
+    def __dominates(self, dominator: Node, dominatee: Node, tree: Dict[Node, Node]) -> bool:
+        if dominator == dominatee:
+            return True
+
+        node = dominatee
+        while node != tree[node]:
+            if tree[node] == dominator:
+                return True
+            node = tree[node]
+
+        return False
+
+    def __is_contained_subgraph(self, src: Node, dest: Node) -> bool:
+        # check that dest dominates all reachable nodes via paths not through src,
+        # in the dominator tree rooted at src
+        # we create a pointer node to src, so that src <--> X loops do not result in
+        # mutual dominance
+        ptr_node = NoopNode('temp')
+        ptr_node.add_out_edge(src)
+        src.add_in_edge(ptr_node)
+        # ptr_node = src
+
+        dom = self.__find_dominator_tree(ptr_node)
+        rv = True
+        for node in self.__find_postorder(dest, lambda n: n != src):
+            if not self.__dominates(dest, node, dom):
+                rv = False
+                break
+
+        src.del_in_edge(ptr_node)
+        return rv
+
+    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], replacement_nodes: Dict[Node, Node]) -> None:
         active.add(node)
 
         for nxt in node.out_edges[:]:
             if nxt not in visited and nxt not in active:
-                self.__split_loops_helper(nxt, active, visited, added_entrypoints)
+                self.__split_loops_helper(nxt, active, visited, replacement_nodes)
             elif nxt in active and nxt not in visited:
+                # loop starting at nxt, with a final node -> nxt edge to complete cycle
+                # while (...) {...} loop conditions
+                # - node has 1 child
+                # - nxt 2 children A and B, with path from A -> B and not B -> A
+                # - every node reachable from A without going through node has a path to node
+                # -> A is body, B is exit
+                # do { ...} while (...) loop conditions
+                # - 1 child (body), exit branch node must be node
+                # - every node reachable from nxt without going through node has a path to node
+                # - node should have two children (nxt, out), out should not have a path to nxt
+                loop_cond: Predicate
+                if len(node.out_edges) == 1 and len(nxt.out_edges) == 2 and isinstance(nxt, SwitchNode):
+                    # check for while pattern
+                    A, B = nxt.out_edges
+                    if self.__path_exists(B, A):
+                        A, B = B, A
+                    if self.__path_exists(A, B) and not self.__path_exists(B, A):
+                        if self.__is_contained_subgraph(A, nxt):
+                            # detach node -> nxt and convert nxt to WhileNode
+                            node.del_out_edge(nxt)
+
+                            if A.name in nxt.cases:
+                                loop_cond = QueryPredicate(nxt.query, nxt.params, nxt.cases[A.name])
+                            else:
+                                assert B.name in nxt.cases and len(nxt.cases) == 1
+                                loop_cond = ~QueryPredicate(nxt.query, nxt.params, nxt.cases[B.name])
+                            while_node = WhileNode(nxt.name, loop_cond, A, B)
+
+                            for in_edge in nxt.in_edges:
+                                in_edge.reroute_out_edge(nxt, while_node)
+                                while_node.add_in_edge(in_edge)
+                            for out_edge in nxt.out_edges:
+                                out_edge.reroute_in_edge(nxt, while_node)
+                                while_node.add_out_edge(out_edge)
+
+                            self.nodes[nxt.name] = while_node
+                            active.add(while_node)
+                            replacement_nodes[nxt] = while_node
+                            break
+                elif len(node.out_edges) == 2 and isinstance(node, SwitchNode):
+                    # check for do-while pattern
+                    A, B = node.out_edges
+                    if B == nxt:
+                        A, B = B, A
+                    if not self.__path_exists(B, A):
+                        if self.__is_contained_subgraph(A, node):
+                            # delete node and funnel nxt inputs through a DoWhileNode
+                            for in_edge in node.in_edges:
+                                in_edge.del_out_edge(node)
+                            del self.nodes[node.name]
+
+                            if A.name in node.cases:
+                                loop_cond = QueryPredicate(node.query, node.params, node.cases[A.name])
+                            else:
+                                assert B.name in node.cases and len(node.cases) == 1
+                                loop_cond = ~QueryPredicate(node.query, node.params, node.cases[B.name])
+                            do_while_node = DoWhileNode(f'dw!{nxt.name}', loop_cond, nxt, B)
+
+                            for in_edge in nxt.in_edges:
+                                in_edge.reroute_out_edge(nxt, do_while_node)
+                                do_while_node.add_in_edge(in_edge)
+                                nxt.del_in_edge(in_edge)
+                            do_while_node.add_out_edge(A)
+                            A.reroute_in_edge(node, do_while_node)
+                            do_while_node.add_out_edge(B)
+                            B.reroute_in_edge(node, do_while_node)
+                            self.nodes[do_while_node.name] = do_while_node
+                            active.add(do_while_node)
+                            replacement_nodes[nxt] = do_while_node
+                            break
+
+                # doesn't match our loop patterns, so rewrite with goto
                 entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
                 self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label)
 
                 active.add(entrypoint)
-                added_entrypoints[nxt] = entrypoint
+                replacement_nodes[nxt] = entrypoint
 
         active.remove(node)
         visited.add(node)
-        if node in added_entrypoints:
-            active.remove(added_entrypoints[node])
-            visited.add(added_entrypoints[node])
+        if node in replacement_nodes:
+            active.remove(replacement_nodes[node])
+            visited.add(replacement_nodes[node])
 
     def __split_loops(self) -> None:
         for root in self.roots:
