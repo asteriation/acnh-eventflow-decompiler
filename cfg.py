@@ -4,9 +4,9 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
 from datatype import Type
-from predicates import Predicate, QueryPredicate
+from predicates import Predicate, ConstPredicate, QueryPredicate
 from actors import Param, Action, Query, Actor
-from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, GotoNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
+from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, GotoNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
 
 class CFG:
     def __init__(self, name: str) -> None:
@@ -270,27 +270,32 @@ class CFG:
                         A, B = B, A
                     if self.__path_exists(A, B) and not self.__path_exists(B, A):
                         if self.__is_contained_subgraph(A, nxt):
-                            # detach node -> nxt and convert nxt to WhileNode
-                            node.del_out_edge(nxt)
-
                             if A.name in nxt.cases:
                                 loop_cond = QueryPredicate(nxt.query, nxt.params, nxt.cases[A.name])
                             else:
                                 assert B.name in nxt.cases and len(nxt.cases) == 1
                                 loop_cond = ~QueryPredicate(nxt.query, nxt.params, nxt.cases[B.name])
-                            while_node = WhileNode(nxt.name, loop_cond, A, B)
-
-                            for in_edge in nxt.in_edges:
-                                in_edge.reroute_out_edge(nxt, while_node)
-                                while_node.add_in_edge(in_edge)
-                            for out_edge in nxt.out_edges:
-                                out_edge.reroute_in_edge(nxt, while_node)
-                                while_node.add_out_edge(out_edge)
-
-                            self.nodes[nxt.name] = while_node
+                            node.del_out_edge(nxt)
+                            while_node = self.__inject_while(nxt, loop_cond, A, B)
                             active.add(while_node)
                             replacement_nodes[nxt] = while_node
                             break
+                elif len(node.out_edges) == 1 and len(nxt.out_edges) == 1:
+                    # check for while true pattern
+                    if self.__is_contained_subgraph(nxt.out_edges[0], nxt):
+                        print('inf loop')
+
+                        A = nxt.out_edges[0]
+                        node.del_out_edge(nxt)
+                        inf_terminal = DeadendTerminalNode(f'infloop!{nxt.name}')
+                        nxt.add_out_edge(inf_terminal)
+                        inf_terminal.add_in_edge(nxt)
+                        self.nodes[inf_terminal.name] = inf_terminal
+
+                        while_node = self.__inject_while(nxt, ConstPredicate(True), A, inf_terminal)
+                        active.add(while_node)
+                        replacement_nodes[nxt] = while_node
+                        break
                 elif len(node.out_edges) == 2 and isinstance(node, SwitchNode):
                     # check for do-while pattern
                     A, B = node.out_edges
@@ -335,6 +340,19 @@ class CFG:
         if node in replacement_nodes:
             active.remove(replacement_nodes[node])
             visited.add(replacement_nodes[node])
+
+    def __inject_while(self, loop_head, loop_cond, loop_body, loop_tail) -> WhileNode:
+        while_node = WhileNode(loop_head.name, loop_cond, loop_body, loop_tail)
+
+        for in_edge in loop_head.in_edges:
+            in_edge.reroute_out_edge(loop_head, while_node)
+            while_node.add_in_edge(in_edge)
+        for out_edge in loop_head.out_edges:
+            out_edge.reroute_in_edge(loop_head, while_node)
+            while_node.add_out_edge(out_edge)
+
+        self.nodes[loop_head.name] = while_node
+        return while_node
 
     def __split_loops(self) -> None:
         for root in self.roots:

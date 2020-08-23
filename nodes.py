@@ -312,6 +312,21 @@ class TerminalNode(Node):
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             ']'
 
+class DeadendTerminalNode(Node):
+    def __init__(self, name: str) -> None:
+        Node.__init__(self, name)
+
+    def add_out_edge(self, src: Node) -> None:
+        pass
+
+    def generate_code(self, indent_level: int = 0) -> str:
+        return ''
+
+    def __str__(self) -> str:
+        return f'DeadendTerminalNode[name={self.name}' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            ']'
+
 class GotoNode(TerminalNode):
     def __init__(self, name: str) -> None:
         TerminalNode.__init__(self, name)
@@ -452,10 +467,7 @@ class WhileNode(Node):
         return code
 
     def del_out_edge(self, dest: Node) -> None:
-        if dest == self.loop_body:
-            self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
-        else:
-            raise RuntimeError('deleting exit edge of while')
+        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:
@@ -489,10 +501,7 @@ class DoWhileNode(Node):
         return code
 
     def del_out_edge(self, dest: Node) -> None:
-        if dest == self.loop_body:
-            self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
-        else:
-            raise RuntimeError('deleting exit edge of while')
+        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:
