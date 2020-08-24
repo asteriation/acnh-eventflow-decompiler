@@ -241,10 +241,8 @@ class ForkNode(Node):
 
     def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         s = f'{indent(indent_level)}fork:\n'
-        self.join_node.disable()
-        for i, e in enumerate(self.out_edges):
+        for i, e in enumerate(e for e in self.out_edges if e != self.join_node):
             s += f'{indent(indent_level + 1)}branch{i}:\n{e.generate_code(indent_level + 2, True)}'
-        self.join_node.enable()
         return s + self.join_node.generate_code(indent_level)
 
     def __str__(self) -> str:
@@ -258,19 +256,9 @@ class JoinNode(Node):
     def __init__(self, name: str, nxt: Optional[str]) -> None:
         Node.__init__(self, name)
         self.nxt = nxt
-        self.disabled = False
-
-    def disable(self) -> None:
-        self.disabled = True
-
-    def enable(self) -> None:
-        self.disabled = False
 
     def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
-        if not self.disabled:
-            return "\n".join(e.generate_code(indent_level) for e in self.out_edges)
-        else:
-            return ''
+        return "\n".join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
         return f'JoinNode[name={self.name}' + \
