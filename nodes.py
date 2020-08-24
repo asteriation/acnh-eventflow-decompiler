@@ -41,7 +41,7 @@ class Node(ABC):
         pass
 
     @abstractmethod
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         pass
 
     def __str__(self) -> str:
@@ -67,7 +67,7 @@ class RootNode(Node):
     def add_in_edge(self, src: Node) -> None:
         pass
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         return f'{indent(indent_level)}flow {self.name}({", ".join(str(v) for v in self.vardefs)}):\n' + \
                 '\n'.join(n.generate_code(indent_level + 1) for n in self.out_edges)
 
@@ -84,7 +84,7 @@ class ActionNode(Node):
         self.params = params
         self.nxt = nxt
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.action.hint(self.params))
         return hint_s + f'{indent(indent_level)}{self.action.format(self.params)}\n' + '\n'.join(n.generate_code(indent_level) for n in self.out_edges)
 
@@ -138,12 +138,10 @@ class SwitchNode(Node):
 
         self.terminal_node = terminal_node
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         if len(self.cases) == 0:
-            if self.terminal_node:
-                return self.terminal_node.generate_code(indent_level)
-            else:
-                return ''
+            return f'{indent(indent_level)}if {self.query.format(self.params, False)}:\n' + \
+                    NoopNode('').generate_code(indent_level + 1, True)
 
         hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.query.hint(self.params))
         if self.query.rv == BoolType:
@@ -156,13 +154,13 @@ class SwitchNode(Node):
                     # if (not) X, else return -> invert unless goto
                     assert self.terminal_node is not None
 
-                    if isinstance(self.terminal_node, GotoNode):
+                    if isinstance(self.terminal_node, NoopNode):
                         return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, not values[0])}:\n' + \
-                                self.out_edges[0].generate_code(indent_level + 1)
+                                self.out_edges[0].generate_code(indent_level + 1, True)
                     else:
                         __invert__s = '' if not values[0] else 'not '
                         return hint_s + f'{indent(indent_level)}if k{self.query.format(self.params, values[0])}):\n' + \
-                                self.terminal_node.generate_code(indent_level + 1) + \
+                                self.terminal_node.generate_code(indent_level + 1, True) + \
                                 self.out_edges[0].generate_code(indent_level)
             else:
                 # T/F explicitly spelled out
@@ -174,9 +172,9 @@ class SwitchNode(Node):
                 else:
                     false_node, true_node = self.out_edges
                 return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)}:\n' + \
-                        true_node.generate_code(indent_level + 1) + \
+                        true_node.generate_code(indent_level + 1, True) + \
                         f'{indent(indent_level)}else:\n' + \
-                        false_node.generate_code(indent_level + 1)
+                        false_node.generate_code(indent_level + 1, True)
         elif len(self.cases) == 1:
             # if [query] in (...), if [query] = X ... else return -> negate and return unless goto
             values = [*self.cases.values()][0]
@@ -187,16 +185,16 @@ class SwitchNode(Node):
             assert self.terminal_node is not None
 
             try:
-                if isinstance(self.terminal_node, GotoNode):
+                if isinstance(self.terminal_node, NoopNode):
                     op = f'== {self.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self.query.rv.format(v) for v in values) + ')'
 
                     return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)} {op}:\n' + \
-                            self.out_edges[0].generate_code(indent_level + 1)
+                            self.out_edges[0].generate_code(indent_level + 1, True)
                 else:
                     __invert__op = f'!= {self.query.rv.format(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(self.query.rv.format(v) for v in values) + ')'
 
                     return hint_s + f'{indent(indent_level)}if {self.query.format(self.params, False)} {__invert__op}:\n' + \
-                            self.terminal_node.generate_code(indent_level + 1) + \
+                            self.terminal_node.generate_code(indent_level + 1, True) + \
                             self.out_edges[0].generate_code(indent_level)
             except:
                 print(self.query, values)
@@ -214,7 +212,7 @@ class SwitchNode(Node):
                     op_s = f'== {self.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self.query.rv.format(v)  for v in sorted(values)) + ')'
                     cases.append(
                             f'{indent(indent_level)}{else_s}if {vname} {op_s}:\n' +
-                            [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1)
+                            [e for e in self.out_edges if e.name == event][0].generate_code(indent_level + 1, True)
                     )
                 except:
                     print(self.query, self.cases.values())
@@ -237,11 +235,11 @@ class ForkNode(Node):
         self.join_node = join_node
         self.forks = forks
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         s = f'{indent(indent_level)}fork:\n'
         self.join_node.disable()
         for i, e in enumerate(self.out_edges):
-            s += f'{indent(indent_level + 1)}branch{i}:\n{e.generate_code(indent_level + 2)}'
+            s += f'{indent(indent_level + 1)}branch{i}:\n{e.generate_code(indent_level + 2, True)}'
         self.join_node.enable()
         return s + self.join_node.generate_code(indent_level)
 
@@ -264,7 +262,7 @@ class JoinNode(Node):
     def enable(self) -> None:
         self.disabled = False
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         if not self.disabled:
             return "\n".join(e.generate_code(indent_level) for e in self.out_edges)
         else:
@@ -284,7 +282,7 @@ class SubflowNode(Node):
         self.nxt = nxt
         self.params = params.copy() if params else {}
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         ns = f'{self.ns}::' if self.ns else ''
         # todo: type-checked subflow params
         # todo: hints
@@ -307,7 +305,7 @@ class TerminalNode(Node):
     def add_out_edge(self, src: Node) -> None:
         pass
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         return f'{indent(indent_level)}return\n'
 
     def __str__(self) -> str:
@@ -315,14 +313,11 @@ class TerminalNode(Node):
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             ']'
 
-class DeadendTerminalNode(Node):
+class DeadendTerminalNode(TerminalNode):
     def __init__(self, name: str) -> None:
-        Node.__init__(self, name)
+        TerminalNode.__init__(self, name)
 
-    def add_out_edge(self, src: Node) -> None:
-        pass
-
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         return ''
 
     def __str__(self) -> str:
@@ -330,25 +325,15 @@ class DeadendTerminalNode(Node):
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             ']'
 
-class GotoNode(TerminalNode):
-    def __init__(self, name: str) -> None:
-        TerminalNode.__init__(self, name)
-
-    def generate_code(self, indent_level: int = 0) -> str:
-        return f'{indent(indent_level)}goto {self.name}\n'
-
-    def __str__(self) -> str:
-        return f'GotoNode[name={self.name}' + \
-            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
-            f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
-            ']'
-
 class NoopNode(Node):
     def __init__(self, name: str) -> None:
         Node.__init__(self, name)
 
-    def generate_code(self, indent_level: int = 0) -> str:
-        return f'{indent(indent_level)}pass\n'
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
+        if generate_pass:
+            return f'{indent(indent_level)}pass\n'
+        else:
+            return ''
 
     def __str__(self) -> str:
         return 'Noop' + Node.__str__(self)
@@ -358,7 +343,7 @@ class EntryPointNode(Node):
         Node.__init__(self, name)
         self.entry_label = self.name if entry_label is None else entry_label
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         return f'{indent(0)}entrypoint {self.entry_label}:\n' + '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
@@ -372,7 +357,7 @@ class GroupNode(Node):
     def __init__(self, root: Node) -> None:
         Node.__init__(self, f'grp!{root.name}')
         self.root = root
-        self.goto_node = GotoNode(f'grp-end!{root.name}')
+        self.pass_node = NoopNode(f'grp-end!{root.name}')
         self.nodes = self.__enumerate_group()
 
     def __enumerate_group(self) -> List[Node]:
@@ -393,9 +378,8 @@ class GroupNode(Node):
         for node in self.nodes:
             node.simplify()
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         return self.root.generate_code(indent_level) + \
-                (f'{indent(indent_level - 1)}{self.goto_node.name}::\n' if self.goto_node.in_edges else '') + \
                 '\n'.join(e.generate_code(indent_level) for e in self.out_edges)
 
     def __str__(self) -> str:
@@ -425,16 +409,16 @@ class IfElseNode(Node):
         if isinstance(self.rules[-1].node, NoopNode) and not isinstance(self.default, NoopNode):
             self.rules[-1], self.default = IfElseNode.Rule(~self.rules[-1].predicate, self.default), self.rules[-1].node
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         code = ''
         for predicate, node in self.rules:
             hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in predicate.hint())
             el_s = 'el' if code else ''
             code += hint_s
             code += indent(indent_level) + f'{el_s}if {predicate.generate_code()}:\n' + \
-                    node.generate_code(indent_level + 1)
+                    node.generate_code(indent_level + 1, True)
         if not isinstance(self.default, NoopNode):
-            code += f'{indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1)
+            code += f'{indent(indent_level)}else:\n' + self.default.generate_code(indent_level + 1, True)
         return code
 
     def del_out_edge(self, dest: Node) -> None:
@@ -464,11 +448,11 @@ class WhileNode(Node):
         self.loop_body = loop_body # should be detached from root (self)
         self.loop_exit = loop_exit
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.loop_cond.hint())
         code = hint_s
         code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}:\n'
-        code += self.loop_body.generate_code(indent_level + 1)
+        code += self.loop_body.generate_code(indent_level + 1, True)
         code += self.loop_exit.generate_code(indent_level)
         return code
 
@@ -498,11 +482,11 @@ class DoWhileNode(Node):
         self.loop_body = loop_body
         self.loop_exit = loop_exit
 
-    def generate_code(self, indent_level: int = 0) -> str:
+    def generate_code(self, indent_level: int = 0, generate_pass: bool = False) -> str:
         hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self.loop_cond.hint())
         code = ''
         code += f'{indent(indent_level)}do:\n'
-        code += self.loop_body.generate_code(indent_level + 1)
+        code += self.loop_body.generate_code(indent_level + 1, True)
         code += hint_s
         code += f'{indent(indent_level)}while {self.loop_cond.generate_code()}\n'
         code += self.loop_exit.generate_code(indent_level)

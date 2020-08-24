@@ -6,7 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 from datatype import Type
 from predicates import Predicate, ConstPredicate, QueryPredicate
 from actors import Param, Action, Query, Actor
-from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, GotoNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
+from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
 
 class CFG:
     def __init__(self, name: str) -> None:
@@ -564,11 +564,7 @@ class CFG:
             in_node.reroute_out_edge(root, sw)
         root.in_edges = []
 
-        inner_terminal: Node = sw.goto_node
-
-        # avoid goto -> return
-        if isinstance(end, TerminalNode):
-            inner_terminal = NoopNode(f'grp-end!{root.name}')
+        inner_terminal: Node = sw.pass_node
 
         s: List[Node] = [root]
         deleted = []
@@ -610,7 +606,7 @@ class CFG:
         #   extract to subflow
         for node in nodes:
             if len(set(node.in_edges)) >= 2 and self.__is_cut([node]) and \
-                    (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, GotoNode, NoopNode, EntryPointNode, SubflowNode))):
+                    (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, NoopNode, EntryPointNode, SubflowNode))):
                 # print('detaching', node.name, [n.name for n in node.in_edges])
                 self.__detach_node_as_sub(node)
             elif isinstance(node, GroupNode):
@@ -643,12 +639,6 @@ class CFG:
                 if isinstance(node, SubflowNode):
                     if node.called_root_name in remapped_entrypoints:
                         node.called_root_name = remapped_entrypoints[node.called_root_name]
-                elif isinstance(node, GotoNode):
-                    if node.name in remapped_entrypoints:
-                        print(node.name, remapped_entrypoints[node.name])
-                        del self.nodes[node.name]
-                        nodef.name = remapped_entrypoints[node.name]
-                        self.nodes[node.name] = node
 
     def __simplify_all(self) -> None:
         for node in self.nodes.values():
