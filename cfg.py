@@ -47,7 +47,7 @@ class CFG:
         for n in ns:
             reachable.update(self.__find_postorder(n))
         for n in reachable:
-            if reachable.intersection(n.in_edges) and n not in ns:
+            if set(n.in_edges) - reachable and n not in ns and not isinstance(n, TerminalNode):
                 return False
         return True
 
@@ -97,7 +97,8 @@ class CFG:
         return self.__detach_node_as_sub(entry_point)
 
     def __detach_node_as_sub(self, entry_point: Node) -> RootNode:
-        new_root = RootNode(f'sub_{entry_point.name}')
+        name = entry_point.name if not isinstance(entry_point, EntryPointNode) else entry_point.entry_label
+        new_root = RootNode(f'sub_{name}')
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
@@ -106,6 +107,11 @@ class CFG:
         entry_point.in_edges = [new_root]
         self.nodes[new_root.name] = new_root
         self.roots.append(new_root)
+
+        # may have been detached from a group, which is not in self.nodes
+        for n in self.__find_postorder(new_root):
+            if n not in self.nodes:
+                self.nodes[n.name] = n
 
         return new_root
 
@@ -126,7 +132,6 @@ class CFG:
 
         # for node in simple_connections:
         # probably should make a copy here
-            
 
     def __get_exclusive_subgraph(self, root: RootNode) -> Tuple[Set[Node], Set[Node]]:
         reachable = set(self.__find_postorder(root))

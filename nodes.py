@@ -30,11 +30,11 @@ class Node(ABC):
         self.out_edges.remove(dest)
 
     def reroute_in_edge(self, old_src: Node, new_src: Node) -> None:
-        if old_src in self.in_edges:
+        while old_src in self.in_edges:
             self.in_edges[self.in_edges.index(old_src)] = new_src
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
-        if old_dest in self.out_edges:
+        while old_dest in self.out_edges:
             self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
     def simplify(self) -> None:
