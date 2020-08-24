@@ -92,13 +92,41 @@ class CFG:
         dest.del_in_edge(src)
         new_call_node.add_in_edge(src)
 
+    def __find_root(self, node: Node) -> List[RootNode]:
+        # no good if graph isn't separated yet but..
+        s: List[Node] = [node]
+        visited: Set[Node] = set()
+        roots: List[RootNode] = []
+        while s:
+            node = s.pop()
+            if isinstance(node, RootNode):
+                roots.append(node)
+            if node.group_node is not None:
+                if node.group_node not in visited:
+                    s.append(node.group_node)
+                    visited.add(node.group_node)
+            else:
+                in_nodes = set(n for n in node.in_edges if n != node)
+                new_in_nodes = in_nodes - visited
+                for n in new_in_nodes:
+                    visited.add(n)
+                    s.append(n)
+
+        if not roots:
+            raise RuntimeError('root not found')
+
+        return roots
+
     def __detach_root(self, root: RootNode) -> RootNode:
         entry_point = root.out_edges[0]
-        return self.__detach_node_as_sub(entry_point)
+        return self.__detach_node_as_sub([root], entry_point)
 
-    def __detach_node_as_sub(self, entry_point: Node) -> RootNode:
+    def __detach_node_as_sub(self, roots: List[RootNode], entry_point: Node) -> RootNode:
         name = entry_point.name if not isinstance(entry_point, EntryPointNode) else entry_point.entry_label
-        new_root = RootNode(f'sub_{name}')
+        vardefs = roots[0].vardefs
+        for root in roots[1:]:
+            vardefs += root.vardefs
+        new_root = RootNode(f'sub_{name}', list(set(vardefs)))
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
@@ -619,7 +647,7 @@ class CFG:
         for node in nodes:
             if len(set(node.in_edges)) >= 2 and self.__is_cut([node]) and \
                     (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, NoopNode, EntryPointNode, SubflowNode))):
-                self.__detach_node_as_sub(node)
+                self.__detach_node_as_sub(self.__find_root(node), node)
             elif isinstance(node, GroupNode):
                 l = node.nodes[:]
                 l.remove(node.root)

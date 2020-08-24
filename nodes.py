@@ -14,6 +14,7 @@ class Node(ABC):
         self.name = name
         self.in_edges: List[Node] = []
         self.out_edges: List[Node] = []
+        self.group_node: Optional[GroupNode] = None
 
     def add_in_edge(self, src: Node) -> None:
         if src not in self.in_edges:
@@ -46,7 +47,7 @@ class Node(ABC):
 
     def __str__(self) -> str:
         return f'Node[name={self.name}' + \
-            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            ', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
@@ -63,6 +64,9 @@ class RootNode(Node):
 
         def __str__(self) -> str:
             return f'{self.name}: {self.type_} = {self.initial_value}'
+
+        def __hash__(self) -> str:
+            return hash(self.name) ^ hash(self.type_.type) ^ hash(self.initial_value)
 
     def __init__(self, name: str, vardefs: List[VarDef] = []) -> None:
         Node.__init__(self, name)
@@ -351,6 +355,8 @@ class GroupNode(Node):
         self.root = root
         self.pass_node = NoopNode(f'grp-end!{root.name}')
         self.nodes = self.__enumerate_group()
+
+        self.root.group_node = self
 
     def __enumerate_group(self) -> List[Node]:
         visited = {self.root}
