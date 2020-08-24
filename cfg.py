@@ -619,6 +619,37 @@ class CFG:
                 self.__extract_reused_blocks(l)
                 node.recalculate_group()
 
+    def __remove_redundant_entrypoints(self) -> None:
+        remapped_entrypoints: Dict[str, str] = {}
+        new_roots = []
+        for root in self.roots:
+            new_root = root
+            for node in self.__find_postorder(root):
+                if isinstance(node, (RootNode, EntryPointNode)) and len(node.out_edges) == 1 \
+                        and isinstance(node.out_edges[0], EntryPointNode):
+                    new_parent: Node
+                    if isinstance(node, RootNode):
+                        new_root = RootNode(node.name, node.vardefs)
+                        new_parent = new_root
+                        remapped_entrypoints[node.out_edges[0].entry_label] = node.name
+                    else:
+                        new_parent = EntryPointNode(node.name, node.entry_label)
+                        remapped_entrypoints[node.out_edges[0].entry_label] = node.entry_label
+                    self.__merge_coupled_nodes(node, node.out_edges[0], new_parent)
+            new_roots.append(new_root)
+        self.roots = new_roots
+        for root in self.roots:
+            for node in self.__find_postorder(root):
+                if isinstance(node, SubflowNode):
+                    if node.called_root_name in remapped_entrypoints:
+                        node.called_root_name = remapped_entrypoints[node.called_root_name]
+                elif isinstance(node, GotoNode):
+                    if node.name in remapped_entrypoints:
+                        print(node.name, remapped_entrypoints[node.name])
+                        del self.nodes[node.name]
+                        nodef.name = remapped_entrypoints[node.name]
+                        self.nodes[node.name] = node
+
     def __simplify_all(self) -> None:
         for node in self.nodes.values():
             node.simplify()
@@ -710,6 +741,7 @@ class CFG:
             self.__collapse_if()
             self.__collapse_cases()
             self.__extract_reused_blocks()
+            self.__remove_redundant_entrypoints()
 
             self.__simplify_all()
 
