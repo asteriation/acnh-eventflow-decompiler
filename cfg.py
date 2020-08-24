@@ -115,11 +115,18 @@ class CFG:
         #   inject a label, funnel connections through label
         #   disconnect subgraph from label via call
         excl, connections = self.__get_exclusive_subgraph(root)
-        labels = set([self.__convert_node_to_entrypoint(n, n.name) for n in connections])
+        simple_connections = [n for n in connections if not isinstance(n, GroupNode) and len(n.out_edges) <= 1 and all(type(o) == TerminalNode for o in n.out_edges)]
+        complex_connections = [n for n in connections if n not in simple_connections]
+
+        labels = set([self.__convert_node_to_entrypoint(n, n.name) for n in complex_connections])
         for node in excl:
             leaving_nodes: Set[EntryPointNode] = set(node.out_edges).intersection(labels) # type: ignore
             for label in leaving_nodes:
                 self.__detach_nodes_with_call(node, label, label.entry_label)
+
+        # for node in simple_connections:
+        # probably should make a copy here
+            
 
     def __get_exclusive_subgraph(self, root: RootNode) -> Tuple[Set[Node], Set[Node]]:
         reachable = set(self.__find_postorder(root))
