@@ -619,7 +619,6 @@ class CFG:
         for node in nodes:
             if len(set(node.in_edges)) >= 2 and self.__is_cut([node]) and \
                     (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, NoopNode, EntryPointNode, SubflowNode))):
-                # print('detaching', node.name, [n.name for n in node.in_edges])
                 self.__detach_node_as_sub(node)
             elif isinstance(node, GroupNode):
                 l = node.nodes[:]
