@@ -283,8 +283,6 @@ class CFG:
                 elif len(node.out_edges) == 1 and len(nxt.out_edges) == 1:
                     # check for while true pattern
                     if self.__is_contained_subgraph(nxt.out_edges[0], nxt):
-                        print('inf loop')
-
                         A = nxt.out_edges[0]
                         node.del_out_edge(nxt)
                         inf_terminal = DeadendTerminalNode(f'infloop!{nxt.name}')
