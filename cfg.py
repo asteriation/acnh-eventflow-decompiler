@@ -746,7 +746,10 @@ class CFG:
 
             self.__simplify_all()
 
-    def get_dot(self) -> str:
-        # return f'digraph {self.name}' + '{ compound=true; ' + ''.join(n.get_dot() for n in self.nodes.values()) + '}'
-        return f'digraph {self.name}' + '{ compound=true; ' + ''.join(n.get_dot() for r in self.roots for n in self.__find_postorder(r)) + '}'
+    def get_dot(self, search_from_roots: bool = False) -> str:
+        # search_from_roots = True may be more useful for debugging in some cases
+        if not search_from_roots:
+            return f'digraph {self.name}' + '{ compound=true; ' + ''.join(n.get_dot() for n in self.nodes.values()) + '}'
+        else:
+            return f'digraph {self.name}' + '{ compound=true; ' + ''.join(n.get_dot() for r in self.roots for n in self.__find_postorder(r)) + '}'
 
