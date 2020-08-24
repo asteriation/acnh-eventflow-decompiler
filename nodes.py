@@ -50,6 +50,10 @@ class Node(ABC):
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
+    def get_dot(self) -> str:
+        return f'n{id(self)} [label=<<b>{self.name}</b><br/>{type(self).__name__}>];' + \
+                ''.join(f'n{id(self)} -> n{id(nx)}' + (f'[lhead=cluster{id(nx)}]' if isinstance(nx, GroupNode) else '') + ';' for nx in self.out_edges)
+
 class RootNode(Node):
     @dataclass
     class VarDef:
@@ -388,6 +392,12 @@ class GroupNode(Node):
             f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
+
+    def get_dot(self) -> str:
+        return f'subgraph cluster{id(self)} {"{"} label=<<b>{self.name}</b><br/>{type(self).__name__}>;' + \
+                f'n{id(self)}[shape="none"][style="invis"][label=""];' + \
+                ''.join(n.get_dot() for n in self.nodes) + \
+                '}' + ''.join(f'n{id(self)} -> n{id(nx)}[ltail=cluster{id(self)}' + (f',lhead=cluster{id(nx)}' if isinstance(nx, GroupNode) else '') + '];' for nx in self.out_edges)
 
 class IfElseNode(Node):
     class Rule(NamedTuple):
