@@ -77,7 +77,7 @@ class CFG:
                         self.__convert_root_to_entrypoints(r)
 
     def __detach_nodes_with_noop(self, src: Node, dest: Node) -> None:
-        new_noop_node = NoopNode(f'noop!{src.name}-{dest.name}')
+        new_noop_node = NoopNode(f'noop_{src.name}-{dest.name}')
         self.nodes[new_noop_node.name] = new_noop_node
 
         src.reroute_out_edge(dest, new_noop_node)
@@ -85,7 +85,7 @@ class CFG:
         new_noop_node.add_in_edge(src)
 
     def __detach_nodes_with_call(self, src: Node, dest: Node, entry_point: str) -> None:
-        new_call_node = SubflowNode(f'ext!{src.name}-{dest.name}', '', entry_point)
+        new_call_node = SubflowNode(f'ext_{src.name}-{dest.name}', '', entry_point)
         self.nodes[new_call_node.name] = new_call_node
 
         src.reroute_out_edge(dest, new_call_node)
@@ -185,7 +185,7 @@ class CFG:
 
     def __add_terminal_nodes(self) -> None:
         for root in self.roots:
-            tn = TerminalNode(f'tm!{root.name}')
+            tn = TerminalNode(f'tm_{root.name}')
             for node in self.__find_postorder(root):
                 if len(node.out_edges) == 0 and not isinstance(node, TerminalNode):
                     node.add_out_edge(tn)
@@ -318,7 +318,7 @@ class CFG:
                     if self.__is_contained_subgraph(nxt.out_edges[0], nxt):
                         A = nxt.out_edges[0]
                         node.del_out_edge(nxt)
-                        inf_terminal = DeadendTerminalNode(f'infloop!{nxt.name}')
+                        inf_terminal = DeadendTerminalNode(f'infloop_{nxt.name}')
                         nxt.add_out_edge(inf_terminal)
                         inf_terminal.add_in_edge(nxt)
                         self.nodes[inf_terminal.name] = inf_terminal
@@ -344,7 +344,7 @@ class CFG:
                             else:
                                 assert B.name in node.cases and len(node.cases) == 1
                                 loop_cond = ~QueryPredicate(node.query, node.params, node.cases[B.name])
-                            do_while_node = DoWhileNode(f'dw!{nxt.name}', loop_cond, nxt, B)
+                            do_while_node = DoWhileNode(f'dw_{nxt.name}', loop_cond, nxt, B)
 
                             for in_edge in nxt.in_edges:
                                 in_edge.reroute_out_edge(nxt, do_while_node)

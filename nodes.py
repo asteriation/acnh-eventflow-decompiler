@@ -351,9 +351,9 @@ class EntryPointNode(Node):
 
 class GroupNode(Node):
     def __init__(self, root: Node) -> None:
-        Node.__init__(self, f'grp!{root.name}')
+        Node.__init__(self, f'grp_{root.name}')
         self.root = root
-        self.pass_node = NoopNode(f'grp-end!{root.name}')
+        self.pass_node = NoopNode(f'grp-end_{root.name}')
         self.nodes = self.__enumerate_group()
 
         self.root.group_node = self
@@ -426,7 +426,7 @@ class IfElseNode(Node):
         return code
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
+        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         Node.reroute_out_edge(self, old_dest, new_dest)
@@ -461,7 +461,7 @@ class WhileNode(Node):
         return code
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
+        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:
@@ -497,7 +497,7 @@ class DoWhileNode(Node):
         return code
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass!{self.name}')) # todo: this noop node is not in CFG.nodes
+        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:
