@@ -119,7 +119,7 @@ class CFG:
 
     def __detach_node_as_sub(self, root: RootNode, entry_point: Node) -> RootNode:
         name = entry_point.name if not isinstance(entry_point, EntryPointNode) else entry_point.entry_label
-        new_root = RootNode(f'sub_{name}', root.vardefs)
+        new_root = RootNode(f'Sub_{name}', root.vardefs)
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
