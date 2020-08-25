@@ -6658,7 +6658,7 @@
             },
             "HouseOwnerLooks": {
                 "params": {},
-                "return": "int8"
+                "return": "enum[Lazy,Jock,Cranky,Smug,Normal,Peppy,Snooty,Sisterly]"
             },
             "HouseIsTent": {
                 "params": {},
