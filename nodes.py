@@ -65,7 +65,7 @@ class RootNode(Node):
         def __str__(self) -> str:
             return f'{self.name}: {self.type_} = {self.initial_value}'
 
-        def __hash__(self) -> str:
+        def __hash__(self) -> int:
             return hash(self.name) ^ hash(self.type_.type) ^ hash(self.initial_value)
 
     def __init__(self, name: str, vardefs: List[VarDef] = []) -> None:
