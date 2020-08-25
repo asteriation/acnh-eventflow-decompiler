@@ -1846,7 +1846,8 @@
                     ]
                 },
                 "inverted": true,
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "IsDoneBcatProcess": {
                 "params": {},
@@ -1935,7 +1936,8 @@
                 "inverted": true,
                 "conversion": "<.name>(<NpcHouseType>) >= <Num>",
                 "conversion": "<.name>(<NpcHouseType>) < <Num>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "GlobalEventStart": {
                 "params": {
@@ -1957,7 +1959,8 @@
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNatural >= <BorderValue>",
                 "neg_conversion": "EventFlowSystemActor.VillageScoreNatural < <BorderValue>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "VillageScoreCheckLife": {
                 "params": {
@@ -1965,7 +1968,8 @@
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLife >= <BorderValue>",
                 "neg_conversion": "EventFlowSystemActor.VillageScoreLife < <BorderValue>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "VillageScoreVeryMessy": {
                 "params": {
@@ -1980,7 +1984,8 @@
                 },
                 "conversion": "<.name> >= <BorderValue>",
                 "neg_conversion": "<.name> < <BorderValue>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "VillageScoreCheckTreeNum": {
                 "params": {
@@ -1988,7 +1993,8 @@
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreTreeNum >= <BorderNum>",
                 "neg_conversion": "EventFlowSystemActor.VillageScoreTreeNum < <BorderNum>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "VillageScoreCheckLifeDeltaBeforeDay": {
                 "params": {
@@ -1996,7 +2002,8 @@
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay >= <DeltaPoint>",
                 "neg_conversion": "EventFlowSystemActor.VillageScoreLifeDeltaBeforeDay < <DeltaPoint>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "VillageScoreCheckNaturalDeltaBeforeDay": {
                 "params": {
@@ -2004,7 +2011,8 @@
                 },
                 "conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay >= <DeltaPoint>",
                 "neg_conversion": "EventFlowSystemActor.VillageScoreNaturalDeltaBeforeDay < <DeltaPoint>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "GeneralTalkChoice2": {
                 "params": {},
@@ -2158,7 +2166,8 @@
                         "<<Value>> > CheckValue>>"
                     ]
                 },
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "ShopLevel": {
                 "params": {},
@@ -2367,7 +2376,8 @@
                 "inverted": true,
                 "conversion": "<.name>(<IncludeNotLiving>) >= <Num>",
                 "neg_conversion": "<.name>(<IncludeNotLiving>) < <Num>",
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "RandomChoiceExcludePrevious9": {
                 "params": {
@@ -5110,7 +5120,8 @@
                         "event_flags_npc[<AccessKey>] > <Border>"
                     ]
                 },
-                "return": "bool"
+                "return": "bool",
+                "display_return": "int"
             },
             "LookToSky": {
                 "params": {},
