@@ -305,6 +305,33 @@
             "UIStampRallyMuseumFromStampRackHandling": {
                 "params": {}
             },
+            "1.0.0!UIItemSelectWindowHandling": {
+                "params": {
+                    "ItemUniqueID": "int",
+                    "ItemKindType": "str",
+                    "Mode": "str",
+                    "ItemFilterType": "str",
+                    "FilterType": "str"
+                }
+            },
+            "1.1.0!UIItemSelectWindowHandling": {
+                "params": {
+                    "ItemUniqueID": "int",
+                    "ItemKindType": "str",
+                    "Mode": "str",
+                    "ItemFilterType": "str",
+                    "FilterType": "str"
+                }
+            },
+            "1.1.4!UIItemSelectWindowHandling": {
+                "params": {
+                    "ItemUniqueID": "int",
+                    "ItemKindType": "str",
+                    "Mode": "str",
+                    "ItemFilterType": "str",
+                    "FilterType": "str"
+                }
+            },
             "UIItemSelectWindowHandling": {
                 "params": {
                     "ItemUniqueID": "int",
@@ -395,6 +422,9 @@
                 "params": {
                     "CamperRewardType": "str"
                 }
+            },
+            "1.0.0!UISelectNpcMoveOut": {
+                "params": {}
             },
             "UISelectNpcMoveOut": {
                 "params": {
@@ -840,6 +870,12 @@
                     "PlayReportKind": "str"
                 }
             },
+            "1.0.0!DeleteTargetItem": {
+                "params": {
+                    "ItemUniqueId": "int",
+                    "DeleteNum": "int"
+                }
+            },
             "DeleteTargetItem": {
                 "params": {
                     "ItemUniqueId": "int",
@@ -1213,6 +1249,12 @@
             "NextLPFadeOff": {
                 "params": {}
             },
+            "1.2.0!SystemBGMVolumeFadeOut": {
+                "params": {
+                    "FadeCurveType": "int",
+                    "FadeSec": "float"
+                }
+            },
             "SystemBGMVolumeFadeOut": {
                 "params": {
                     "FadeCurveType": "int",
@@ -1423,6 +1465,9 @@
             "DeleteRequireExchangeItem": {
                 "params": {}
             },
+            "1.0.0!SelectMysteryTour": {
+                "params": {}
+            },
             "SelectMysteryTour": {
                 "params": {
                     "TourSelectType": "int"
@@ -1485,6 +1530,16 @@
                     "ExcludeMainPlayer": "bool"
                 }
             },
+            "1.0.0!CeremonyLookAt": {
+                "params": {
+                    "Target": "str",
+                    "IsExcludeGuest": "bool",
+                    "IsExcludeRco": "bool",
+                    "OffsetX": "float",
+                    "OffsetY": "float",
+                    "OffsetZ": "float"
+                }
+            },
             "CeremonyLookAt": {
                 "params": {
                     "Target": "str",
@@ -1494,6 +1549,13 @@
                     "OffsetY": "float",
                     "OffsetZ": "float",
                     "IsExcludeFacilitator": "bool"
+                }
+            },
+            "1.0.0!CeremonyTurn": {
+                "params": {
+                    "Target": "str",
+                    "IsExcludeGuest": "bool",
+                    "IsExcludeRco": "bool"
                 }
             },
             "CeremonyTurn": {
@@ -1805,6 +1867,14 @@
             "EventCstmAction": {
                 "params": {
                     "Type": "int"
+                }
+            },
+            "SaveReservePlayerRegionLanguageUpdate": {
+                "params": {}
+            },
+            "Dummy": {
+                "params": {
+                    "Comment": "str"
                 }
             }
         },
@@ -2469,6 +2539,22 @@
                 "inverted": true,
                 "return": "bool"
             },
+            "1.0.0!PlayerIsEquipItem": {
+                "params": {
+                    "EquipRequireType": "str",
+                    "PutawayType": "bool",
+                    "ItemUniqueID1": "int",
+                    "ItemUniqueID2": "int",
+                    "ItemUniqueID3": "int",
+                    "ItemUniqueID4": "int",
+                    "ItemUniqueID5": "int",
+                    "ItemUniqueID6": "int",
+                    "ItemUniqueID7": "int",
+                    "ItemUniqueID8": "int"
+                },
+                "inverted": true,
+                "return": "bool"
+            },
             "PlayerIsEquipItem": {
                 "params": {
                     "EquipRequireType": "str",
@@ -2524,6 +2610,14 @@
             },
             "ItemIsDecoratedAtTalkNpcHouse": {
                 "params": {
+                    "JudgeTarget": "str"
+                },
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.0.0!UISelectedItemIsEquiped": {
+                "params": {
+                    "TargetCharacter": "int",
                     "JudgeTarget": "str"
                 },
                 "inverted": true,
@@ -2793,6 +2887,31 @@
                 "return": "bool"
             },
             "CanReturnToPocketFutureMailPresent": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.0.0!NetHasPOPID": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.1.0!NetHasPOPID": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.1.4!NetHasPOPID": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.2.0!NetHasPOPID": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.3.0!NetHasPOPID": {
                 "params": {},
                 "inverted": true,
                 "return": "bool"
@@ -3143,6 +3262,11 @@
             "NetIsDecidedVillage": {
                 "params": {},
                 "return": "int3"
+            },
+            "1.0.0!NetIsNeedPassword": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
             },
             "NetIsNeedPassword": {
                 "params": {
@@ -3699,6 +3823,25 @@
                 "params": {},
                 "inverted": true,
                 "return": "bool"
+            },
+            "MultiKindItemSelectIncludeChoice3": {
+                "params": {
+                    "JudgeTarget": "str",
+                    "ChoiceNumber": "int",
+                    "ItemKindTypeA": "str",
+                    "ItemKindTypeB": "str"
+                },
+                "return": "int3"
+            },
+            "EnvWeatherNNpcTalkCustom": {
+                "params": {},
+                "return": "int7"
+            },
+            "nDummy2": {
+                "params": {
+                    "Comment": "str"
+                },
+                "return": "int2"
             }
         }
     },
@@ -4929,6 +5072,41 @@
             },
             "TkkLiveSyncPlayerAction": {
                 "params": {}
+            },
+            "NpcDeleteBuyFtr": {
+                "params": {}
+            },
+            "NpcOpenTradeBanReasonMessage": {
+                "params": {}
+            },
+            "NpcVisitQuestGoHome": {
+                "params": {}
+            },
+            "NpcSetSurpriseVisitDate": {
+                "params": {}
+            },
+            "NpcSetTradeFtrInfo": {
+                "params": {
+                    "EntryVariableKeyInt_ItemPrice": "str"
+                }
+            },
+            "NpcDecideVisitPQuestReward": {
+                "params": {
+                    "RewardType": "int",
+                    "RewardTypeSub": "int"
+                }
+            },
+            "MakeVisitPRoomInfo": {
+                "params": {}
+            },
+            "SystemSetVisitQuestPlayerEnterFlag": {
+                "params": {}
+            },
+            "SystemSetVisitQuestKind": {
+                "params": {
+                    "VisitKind": "str",
+                    "VisitType": "str"
+                }
             }
         },
         "queries": {
@@ -4972,6 +5150,21 @@
                 "return": "bool"
             },
             "IsTargetNpcHouse": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.0.0!CanMoveUnit": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.1.0!CanMoveUnit": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "1.1.4!CanMoveUnit": {
                 "params": {},
                 "inverted": true,
                 "return": "bool"
@@ -5962,6 +6155,35 @@
             "CompareDayBirthdayLive": {
                 "params": {},
                 "return": "int3"
+            },
+            "NpcIsTradableFtr": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "NpcIsExistTradableFtr": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
+            },
+            "NpcVisitQuestFailureReason": {
+                "params": {
+                    "VisitType": "str"
+                },
+                "return": "int2"
+            },
+            "CheckVisitPLayout": {
+                "params": {},
+                "return": "int10"
+            },
+            "CheckCanInduceNpc": {
+                "params": {},
+                "return": "int6"
+            },
+            "CheckInduceFailReasonIsSellPlaceNothingOnly": {
+                "params": {},
+                "inverted": true,
+                "return": "bool"
             }
         }
     },

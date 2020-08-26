@@ -10,6 +10,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
     parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
     parser.add_argument('--actors', default='actors.json', help='actors.json file for actors\' actions and queries')
+    parser.add_argument('--version', default='0.0.0', help='where applicable, actions/queries prefixed with version will be used instead of unprefixed versions')
     parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
     parser.add_argument('--dump-actors', help='dump actors to text files in the specified directory')
     parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
@@ -17,6 +18,21 @@ if __name__ == '__main__':
 
     with Path(args.actors).open('rt') as af:
         actor_data = json.load(af)
+        for actor_name, data in actor_data.items():
+            version_prefixed_actions = [n for n in data['actions'].keys() if '!' in n]
+            for name in version_prefixed_actions:
+                if name.startswith(f'{args.version}!'):
+                    actual_name = name.split('!')[1]
+                    if actual_name in data['actions']:
+                        data['actions'][actual_name] = data['actions'][name]
+                del data['actions'][name]
+            version_prefixed_queries = [n for n in data['queries'].keys() if '!' in n]
+            for name in version_prefixed_queries:
+                if name.startswith(f'{args.version}!'):
+                    actual_name = name.split('!')[1]
+                    if actual_name in data['queries']:
+                        data['queries'][actual_name] = data['queries'][name]
+                del data['queries'][name]
 
     if args.hints:
         with Path(args.hints).open('rt') as hf:
@@ -27,7 +43,6 @@ if __name__ == '__main__':
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
             print(f'converting {fname}')
-            # populate_cfg.parse_bfevfl(f.read())
             cfg = populate_cfg.read(f.read(), actor_data)
             cfg.restructure()
 

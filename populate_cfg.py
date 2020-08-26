@@ -8,7 +8,7 @@ from bitstring import ConstBitStream
 
 from actors import Param, Action, Query, Actor
 from nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
-from datatype import BoolType, FloatType, IntType, Type, Argument
+from datatype import AnyType, BoolType, FloatType, IntType, StrType, Type, Argument
 from cfg import CFG
 
 @dataclass
@@ -16,8 +16,8 @@ class BFEVFLActor:
     name: str
     secondary_name: str
     argument_name: str
-    actions: List[Action]
-    queries: List[Query]
+    actions: List[Tuple[Action, bool]]
+    queries: List[Tuple[Query, bool]]
     entry_point_index: int
 
 @dataclass
@@ -44,13 +44,50 @@ class read_at_offset:
         if self.restore:
             self.bs.pos = self.old_pos
 
-def check_and_update_action(action: Action, params: Dict[str, Any]):
-    # todo
-    pass
+def infer_types(params: Dict[str, Any]) -> Dict[str, Type]:
+    types: Dict[str, Type] = {}
+    for pname, pval in params.items():
+        if isinstance(pval, bool):
+            types[pname] = BoolType
+        elif isinstance(pval, float):
+            types[pname] = FloatType
+        elif isinstance(pval, str):
+            types[pname] = StrType
+        elif isinstance(eval, int):
+            types[pname] = IntType
+        else:
+            types[pname] = AnyType
+    return types
 
-def check_and_update_query(query: Query, params: Dict[str, Any], rvs: Iterable[int]):
-    # todo
-    pass
+def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[str, Any]):
+    ptypes = infer_types(params)
+    if not actor.actions[action_index][1]:
+        actor.actions[action_index] = (Action(actor.name, actor.actions[action_index][0].name,
+                [Param(n, t) for n, t in ptypes.items()]), True)
+    else:
+        action = actor.actions[action_index][0]
+        assert len(action.params) == len(ptypes)
+        for i, param in enumerate(action.params):
+            pname, ptype = param
+            if ptypes[pname] != ptype:
+                action.params[i] = Param(pname, AnyType)
+
+def check_and_update_query(actor: BFEVFLActor, query_index: int, params: Dict[str, Any], rvs: Iterable[int]):
+    ptypes = infer_types(params)
+    if not actor.queries[query_index][1]:
+        rt = Type(f'int{max(rvs) + 1 if rvs else 0}')
+        actor.queries[query_index] = (Query(actor.name, actor.queries[query_index][0].name,
+                [Param(n, t) for n, t in ptypes.items()], rt), True)
+    else:
+        query = actor.queries[query_index][0]
+        assert len(query.params) == len(ptypes)
+        for i, param in enumerate(query.params):
+            pname, ptype = param
+            if ptypes[pname] != ptype:
+                query.params[i] = Param(pname, AnyType)
+        mx = max(rvs) + 1 if rvs else 0
+        if int(query.rv.type[3:]) < mx:
+            query.rv = Type(f'int{mx}')
 
 def _load_str(bs: ConstBitStream, offset: int, len_skipped: bool = False, **kwargs: Any) -> str:
     with read_at_offset(bs, offset - (2 if len_skipped else 0), **kwargs):
@@ -150,13 +187,13 @@ def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any
 
             if actions_ptr:
                 with read_at_offset(bs, actions_ptr):
-                    actions = [Action(name, _load_str(bs, bs.read('uintle:64'))[15:], []) for _ in range(num_actions)]
+                    actions = [(Action(name, _load_str(bs, bs.read('uintle:64'))[15:], []), False) for _ in range(num_actions)]
             else:
                 actions = []
 
             if queries_ptr:
                 with read_at_offset(bs, queries_ptr):
-                    queries = [Query(name, _load_str(bs, bs.read('uintle:64'))[14:], [], IntType) for _ in range(num_queries)]
+                    queries = [(Query(name, _load_str(bs, bs.read('uintle:64'))[14:], [], IntType), False) for _ in range(num_queries)]
             else:
                 queries = []
 
@@ -196,10 +233,9 @@ def _load_events(bs: ConstBitStream, offset: int, num_events: int, actors: List[
                     container = {}
 
                 actor = actors[actor_index]
-                action = actor.actions[actor_action_index]
-                check_and_update_action(action, container)
+                check_and_update_action(actor, actor_action_index, container)
 
-                events.append(ActionNode(name, action, container, next_))
+                events.append(ActionNode(name, actor.actions[actor_action_index][0], container, next_))
             elif event_type == 1: # Switch
                 num_cases = bs.read('uintle:16')
                 actor_index = bs.read('uintle:16')
@@ -225,8 +261,8 @@ def _load_events(bs: ConstBitStream, offset: int, num_events: int, actors: List[
                             bs.read('pad:16')
 
                 actor = actors[actor_index]
-                query = actor.queries[actor_query_index]
-                check_and_update_query(query, container, cases.keys())
+                check_and_update_query(actor, actor_query_index, container, cases.keys())
+                query = actor.queries[actor_query_index][0]
 
                 switch_node = SwitchNode(name, query, container)
                 for value, ev in cases.items():
@@ -401,14 +437,19 @@ def read(data: bytes, actor_data: Dict[str, Any]) -> CFG:
     bfevfl = parse_bfevfl(data)
 
     cfg = CFG(bfevfl.flowchart_name)
-    for r in bfevfl.actors:
-        actor = Actor(r.name) # secondary_name, argument_name, entry_point_index?
-        for action in r.actions:
-            actor.register_action(action)
-        for query in r.queries:
-            actor.register_query(query)
-        cfg.add_actor(actor)
     cfg.import_actors(actor_data)
+    for r in bfevfl.actors:
+        if r.name not in cfg.actors:
+            cfg.add_actor(Actor(r.name))
+        actor = cfg.actors[r.name]
+        for action, initialized in r.actions:
+            if initialized and action.name not in actor.actions:
+                # print(actor.name, action)
+                actor.register_action(action)
+        for query, initialized in r.queries:
+            if initialized and query.name not in actor.queries:
+                # print(actor.name, query)
+                actor.register_query(query)
 
     for node in bfevfl.nodes + bfevfl.roots: # type: ignore
         if isinstance(node, ActionNode):
