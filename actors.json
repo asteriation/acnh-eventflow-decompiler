@@ -2648,6 +2648,13 @@
                 "inverted": true,
                 "return": "bool"
             },
+            "KindItemSelect": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "pseudo": true,
+                "return": "ItemKind"
+            },
             "MultiKindItemSelectInclude": {
                 "params": {
                     "JudgeTarget": "str",
@@ -2661,8 +2668,15 @@
                     "ItemKindType8": "str"
                 },
                 "inverted": true,
-                "conversion": "any (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>)",
+                "conversion": "EventFlowSystemActor.KindItemSelect(<JudgeTarget>) in (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>)",
                 "return": "bool"
+            },
+            "ItemSelect": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "pseudo": true,
+                "return": "ItemUniqueID"
             },
             "MultiItemSelectInclude": {
                 "params": {
@@ -2677,7 +2691,7 @@
                     "ItemUniqueID8": "int"
                 },
                 "inverted": true,
-                "conversion": "any (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>) in EventFlowSystemActor.ItemSelect(<JudgeTarget>)",
+                "conversion": "EventFlowSystemActor.ItemSelect(<JudgeTarget>) in (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>)",
                 "return": "bool"
             },
             "HasKindItem": {
@@ -2771,6 +2785,13 @@
                 },
                 "return": "int5"
             },
+            "CategoryItemSelect": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "pseudo": true,
+                "return": "category(s)"
+            },
             "MultiMessageCategoryItemSelectInclude": {
                 "params": {
                     "JudgeTarget": "str",
@@ -2784,7 +2805,7 @@
                     "ItemCategoryType8": "str"
                 },
                 "inverted": true,
-                "conversion": "any (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>) in EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>)",
+                "conversion": "EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>) in (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>)",
                 "return": "bool"
             },
             "MultiKindItemSelectIncludeChoice4": {
@@ -3399,6 +3420,13 @@
                 "params": {},
                 "return": "int3"
             },
+            "FromItemSelect": {
+                "params": {
+                    "JudgeTarget": "str"
+                },
+                "pseudo": true,
+                "return": "ItemFrom"
+            },
             "MultiFromItemSelectInclude": {
                 "params": {
                     "JudgeTarget": "str",
@@ -3412,7 +3440,7 @@
                     "ItemFromType8": "str"
                 },
                 "inverted": true,
-                "conversion": "any (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>) in EventFlowSystemActor.FromItemSelect(<JudgeTarget>)",
+                "conversion": "EventFlowSystemActor.FromItemSelect(<JudgeTarget>) in (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>)",
                 "return": "bool"
             },
             "ExistPlayerAcceptingBirthDayMessage": {
