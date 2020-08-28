@@ -174,9 +174,9 @@ class Actor:
     def __str__(self):
         return f'Actor {self.name}\n' + '\n'.join([
             'actions:',
-            *[f'- {a}' for a in sorted(self.actions.values(), lambda x: x.name)],
+            *[f'- {a}' for a in sorted(self.actions.values(), key=lambda x: x.name)],
             'queries:',
-            *[f'- {q}' for q in sorted(self.queries.values(), lambda x: x.name)],
+            *[f'- {q}' for q in sorted(self.queries.values(), key=lambda x: x.name)],
         ])
 
     def export(self) -> Dict[str, Any]:
