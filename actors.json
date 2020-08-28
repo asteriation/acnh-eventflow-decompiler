@@ -6042,7 +6042,7 @@
             },
             "OwlDonationItemType": {
                 "params": {},
-                "return": "int7"
+                "return": "enum[Insect,NintendoWhatAreYouHiding,FossilUnknown,Fossil,FishOrDiveFish,PictureOrSculpture,PictureFakeOrSculptureFake]"
             },
             "OwlDonationFossilIsParts": {
                 "params": {},
