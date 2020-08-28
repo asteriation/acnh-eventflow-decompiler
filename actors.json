@@ -1439,9 +1439,9 @@
             },
             "EnvSetDemoTime": {
                 "params": {
-                    "Second": "int",
                     "Hour": "int",
-                    "Minute": "int"
+                    "Minute": "int",
+                    "Second": "int"
                 }
             },
             "UILogoAppear": {
@@ -2268,7 +2268,7 @@
             },
             "EnvTimeZone": {
                 "params": {},
-                "return": "enum[Morning0,Morning1,Afternoon0,Afternoon1,Evening0,Evening1]"
+                "return": "enum[05:00-07:59,08:00-11:59,12:00-15:59,16:00-18:59,19:00-23:59,00:00-04:59]"
             },
             "EnvSameDate": {
                 "params": {
@@ -2355,7 +2355,7 @@
             },
             "EnvSpecialWeather": {
                 "params": {},
-                "return": "enum[Normal0,HeavyShowerMorning,HeavyShowerAfternoon,HeavyShowerEvening,Rainbow,DoubleRainbow,AuroraBorealis0,AuroraBorealis1,Normal8,Normal9]"
+                "return": "enum[NormalWeather,HeavyShower_MorningBefore,HeavyShower_AfternoonBefore,HeavyShower_During,Rainbow,DoubleRainbow,AuroraBorealis_Before1800,AuroraBorealis,SpecialWeather8,SpecialWeather9]"
             },
             "EnvDayOfWeek": {
                 "params": {},
