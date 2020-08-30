@@ -6,6 +6,8 @@ from typing import Any, Dict, Iterable, List, Tuple, Union
 
 from bitstring import ConstBitStream
 
+from logger import LOG
+
 from actors import Param, Action, Query, Actor
 from nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
 from datatype import AnyType, BoolType, FloatType, IntType, StrType, Type, Argument
@@ -433,22 +435,20 @@ def parse_bfevfl(data: bytes) -> BFEVFL:
 
     return bfevfl
 
-def read(data: bytes, actor_data: Dict[str, Any]) -> CFG:
+def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
     bfevfl = parse_bfevfl(data)
 
     cfg = CFG(bfevfl.flowchart_name)
-    cfg.import_actors(actor_data)
+    cfg.import_functions([r.name for r in bfevfl.actors], actions, queries)
     for r in bfevfl.actors:
-        if r.name not in cfg.actors:
-            cfg.add_actor(Actor(r.name))
         actor = cfg.actors[r.name]
         for action, initialized in r.actions:
             if initialized and action.name not in actor.actions:
-                # print(actor.name, action)
+                LOG.warning(f'untyped action: {action}')
                 actor.register_action(action)
         for query, initialized in r.queries:
             if initialized and query.name not in actor.queries:
-                # print(actor.name, query)
+                LOG.warning(f'untyped query: {query}')
                 actor.register_query(query)
 
     for node in bfevfl.nodes + bfevfl.roots: # type: ignore

@@ -21,6 +21,7 @@ class Action:
 
     def format(self, params: Dict[str, Any]) -> str:
         conversion = self.conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
+        conversion = conversion.replace('<.actor>', f'{self.actor_name}')
         for p in self.params:
             try:
                 assert p.name in params
@@ -98,6 +99,7 @@ class Query:
         else:
             conversion = conversion_used
         conversion = conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
+        conversion = conversion.replace('<.actor>', f'{self.actor_name}')
         for p in self.params:
             try:
                 assert p.name in params

@@ -698,18 +698,18 @@ class CFG:
 
         return '\n'.join(stripped_code)
 
-    def import_actors(self, actor_data: Dict[str, Any]) -> None:
-        for actor_name, d in actor_data.items():
+    def import_functions(self, actors: List[str], actions: Dict[str, Any], queries: Dict[str, Any]) -> None:
+        for actor_name in actors:
             if actor_name not in self.actors:
                 self.actors[actor_name] = Actor(actor_name)
-            for action, info in d['actions'].items():
+            for action, info in actions.items():
                 self.actors[actor_name].register_action(Action(
                     actor_name,
                     action,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
                     info.get('conversion', None),
                 ))
-            for query, info in d['queries'].items():
+            for query, info in queries.items():
                 self.actors[actor_name].register_query(Query(
                     actor_name,
                     query,
