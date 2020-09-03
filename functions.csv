@@ -1072,7 +1072,7 @@ pseudo,Query,NpcEquipItem,EquipRequireType: str,,ItemUniqueID,,,,from NpcIsEquip
 9.9.9,Query,NpcHasPlayerProfileComment,,inverted_bool,,,,,
 9.9.9,Query,NpcHaveQuestType,IncludeFinish: str,int8,,,,,
 9.9.9,Query,NpcHitNum,Border: int,inverted_bool,,,,,
-9.9.9,Query,NpcHouseNum,NpcHouseType: str; Num: int,bool,int,,<.name>(<NpcHouseType>) >= <Num>,<.name>(<NpcHouseType>) < <Num>,
+9.9.9,Query,NpcHouseNum,NpcHouseType: str; Num: int,bool,int,,<.name>(<NpcHouseType>) < <Num>,<.name>(<NpcHouseType>) >= <Num>,
 9.9.9,Query,NpcInducementType,,int5,,,,,
 9.9.9,Query,NpcInviteCheck,Type: int,inverted_bool,,,,,
 9.9.9,Query,NpcIsAbleEquipSelectItem,,inverted_bool,,,,,
