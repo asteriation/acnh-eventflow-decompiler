@@ -63,7 +63,7 @@ MaxVersion,Type,Name,Parameters,Return,DisplayedReturn,ConversionKey,Conversion,
 9.9.9,Action,CreateSelectNpc,IsAmiibo: bool,,,,,,
 9.9.9,Action,CreateStaticField,,,,,,,
 9.9.9,Action,DecideEventReward,RewardType: str,,,,,,
-9.9.9,Action,DecideEventRewardDIYRecipe,UnlockType: str,,,,,,
+9.9.9,Action,DecideEventRewardDIYRecipe,UnlockType: str,,,,,,the last row in RecipeCraftParam with CraftUnlock=UnlockType is always the last reward
 9.9.9,Action,DecideFreeIReward,,,,,,,
 9.9.9,Action,DecideFreeIType,,,,,,,
 9.9.9,Action,DecideHandleNameMemory,SearchTarget: int,,,,,,
@@ -1141,7 +1141,7 @@ pseudo,Query,NpcEquipItem,EquipRequireType: str,,ItemUniqueID,,,,from NpcIsEquip
 9.9.9,Query,PlayerGetDemoCollectStatus,PlayerGetDemoCollectStatus: str,inverted_bool,,,,,
 9.9.9,Query,PlayerGetEasterEggRecipe,,inverted_bool,,,,,
 9.9.9,Query,PlayerHasCampCraftRecipe,,inverted_bool,,,,,
-9.9.9,Query,PlayerHasCraftRecipe,ItemUniqueId: int; UnlockType: str,inverted_bool,,,,,
+9.9.9,Query,PlayerHasCraftRecipe,ItemUniqueId: int; UnlockType: str,inverted_bool,,,,,"for ItemUniqueId=65534, checks if all UnlockType DIYs are learned"
 9.9.9,Query,PlayerHasExchaneableItem,CheckKindBury: bool; CheckKindPut: bool; CheckKindFishAndDiveFish: bool; CheckKindInsect: bool,inverted_bool,,,,,
 9.9.9,Query,PlayerHasLoan,,bool,,,,,
 9.9.9,Query,PlayerHouseLevel,,"enum[Homeless,PlacedTent,BaseHouse,HouseExpansion1,BackRoom,LeftRoom,RightRoom,SecondFloor,Basement]",,,,,
