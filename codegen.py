@@ -1,5 +1,11 @@
 from abc import ABC, abstractmethod
 from nodes import Node
+from predicates import Predicate
+
+from typing import Callable, Union
+
+NodeCodeGenerator = Callable[[Node, int, bool], str]
+PredicateCodeGenerator = Callable[[Predicate], str]
 
 class CodeGenerator(ABC):
     @abstractmethod

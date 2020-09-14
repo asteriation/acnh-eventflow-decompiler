@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Any, Dict, List
 
 from datatype import BoolType
 from actors import Query
 
 class Predicate(ABC):
-    @abstractmethod
-    def generate_code(self) -> str:
-        pass
-
     def hint(self) -> List[str]:
         return []
 
@@ -33,9 +29,6 @@ class ConstPredicate(Predicate):
     def __init__(self, value: bool) -> None:
         self.value = value
 
-    def generate_code(self) -> str:
-        return BoolType.format(self.value)
-
 class QueryPredicate(Predicate):
     def __init__(self, query: Query, params: Dict[str, Any], values: List[Any]) -> None:
         assert len(values) > 0
@@ -51,29 +44,6 @@ class QueryPredicate(Predicate):
         if query.inverted:
             self.negated = not self.negated
 
-    def generate_code(self) -> str:
-        if self.query.rv == BoolType:
-            if len(self.values) == 1:
-                return self.query.format(self.params, self.negated)
-            else:
-                return 'False' if self.negated else 'True'
-        else:
-            if len(self.values) == 1:
-                op = '!=' if self.negated else '=='
-                try:
-                    return f'{self.query.format(self.params, False)} {op} {self.query.rv.format(self.values[0])}'
-                except:
-                    print(self.query, self.values)
-                    raise
-            else:
-                op = 'not in' if self.negated else 'in'
-                try:
-                    vals_s = [self.query.rv.format(v) for v in self.values]
-                except:
-                    print(self.query, self.values)
-                    raise
-                return f'{self.query.format(self.params, False)} {op} ({", ".join(vals_s)})'
-
     def hint(self) -> List[str]:
         return self.query.hint(self.params)
 
@@ -86,18 +56,12 @@ class NotPredicate(Predicate):
     def __init__(self, inner: Predicate) -> None:
         self.inner = inner
 
-    def generate_code(self) -> str:
-        return f'not ({self.inner.generate_code()})'
-
     def __invert__(self) -> Predicate:
         return self.inner
 
 class AndPredicate(Predicate):
     def __init__(self, inners: List[Predicate]) -> None:
         self.inners = inners
-
-    def generate_code(self) -> str:
-        return ' and '.join([f'({inner.generate_code()})' for inner in self.inners])
 
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
@@ -120,9 +84,6 @@ class AndPredicate(Predicate):
 class OrPredicate(Predicate):
     def __init__(self, inners: List[Predicate]) -> None:
         self.inners = inners
-
-    def generate_code(self) -> str:
-        return ' or '.join([f'({inner.generate_code()})' for inner in self.inners])
 
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
