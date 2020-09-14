@@ -3,7 +3,7 @@ from collections import OrderedDict
 import csv
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 from logger import LOG
 
@@ -25,16 +25,8 @@ def compare_version(current_version: str, max_version: str) -> bool:
 
     return True
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
-    parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
-    parser.add_argument('--functions', default='functions.csv', help='functions.csv file for all actions and queries')
-    parser.add_argument('--version', default='0.0.0', help='where applicable, actions/queries prefixed with version will be used instead of unprefixed versions')
-    parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
-    parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
-    args = parser.parse_args()
-
-    with Path(args.functions).open('rt') as ff:
+def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    with Path(filename).open('rt') as ff:
         reader = csv.reader(ff)
         headers: Dict[str, int] = {}
 
@@ -102,11 +94,28 @@ if __name__ == '__main__':
             else:
                 raise ValueError(f'bad function type: {type_}')
 
+    return actions, queries
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
+    parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
+    parser.add_argument('--functions', default='functions.csv', help='functions.csv file for all actions and queries')
+    parser.add_argument('--version', default='0.0.0', help='where applicable, actions/queries prefixed with version will be used instead of unprefixed versions')
+    parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
+    parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
+    parser.add_argument('--target', default='evfl', choices=('evfl'), help='decompilation target')
+    args = parser.parse_args()
+
+    actions, queries = load_functions_csv(args.functions)
+
     if args.hints:
         with Path(args.hints).open('rt') as hf:
             HINTS.update(json.load(hf))
 
-    generator = EVFLCodeGenerator()
+    generator = {
+        'evfl': EVFLCodeGenerator
+    }[args.target]()
+
     for fname in args.bfevfl_files:
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
