@@ -19,26 +19,6 @@ class Action:
         self.default = conversion is None
         self.auto = False
 
-    def format(self, params: Dict[str, Any]) -> str:
-        conversion = self.conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
-        conversion = conversion.replace('<.actor>', f'{self.actor_name}')
-        for p in self.params:
-            try:
-                assert p.name in params
-                # some places do this with a string value instead of an Argument value
-                if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
-                    p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
-                    p.name == f'EntryVariableKeyFloat_{params[p.name]}':
-                    value = params[p.name]
-                else:
-                    value = p.type.format(params[p.name])
-            except:
-                print(self, p, params)
-                raise
-            conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
-            conversion = conversion.replace(f'<{p.name}>', value)
-        return conversion
-
     def hint(self, params: Dict[str, Any]) -> List[str]:
         return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
 
@@ -87,35 +67,6 @@ class Query:
         self.default = conversion is None
         self.auto = False
         self.num_values = rv.num_values()
-
-    def format(self, params: Dict[str, Any], negated: bool) -> str:
-        if negated:
-            conversion_used = self.neg_conversion
-        else:
-            conversion_used = self.conversion
-        if not isinstance(conversion_used, str):
-            pivot = params[conversion_used['key']]
-            conversion = conversion_used['values'][pivot]
-        else:
-            conversion = conversion_used
-        conversion = conversion.replace('<.name>', f'{self.actor_name}.{self.name}')
-        conversion = conversion.replace('<.actor>', f'{self.actor_name}')
-        for p in self.params:
-            try:
-                assert p.name in params
-                # some places do this with a string value instead of an Argument value
-                if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
-                    p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
-                    p.name == f'EntryVariableKeyFloat_{params[p.name]}':
-                    value = params[p.name]
-                else:
-                    value = p.type.format(params[p.name])
-            except:
-                print(self, p, params)
-                raise
-            conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
-            conversion = conversion.replace(f'<{p.name}>', value)
-        return conversion
 
     def hint(self, params: Dict[str, Any]) -> List[str]:
         return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]

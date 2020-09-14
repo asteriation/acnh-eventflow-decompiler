@@ -45,7 +45,7 @@ def ActionNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
     assert isinstance(self_node, ActionNode)
 
     hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self_node.action.hint(self_node.params))
-    return hint_s + f'{indent(indent_level)}{self_node.action.format(self_node.params)}\n' + \
+    return hint_s + f'{indent(indent_level)}{Action_format(self_node.action, self_node.params)}\n' + \
             '\n'.join(node_generate_code(n, indent_level) for n in self_node.out_edges)
 
 @node_generator(SwitchNode)
@@ -53,7 +53,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
     assert isinstance(self_node, SwitchNode)
 
     if len(self_node.cases) == 0:
-        return f'{indent(indent_level)}if {self_node.query.format(self_node.params, False)}:\n' + \
+        return f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)}:\n' + \
                 node_generate_code(NoopNode(''), indent_level + 1, True)
 
     hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self_node.query.hint(self_node.params))
@@ -68,11 +68,11 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
                 assert self_node.terminal_node is not None
 
                 if isinstance(self_node.terminal_node, NoopNode):
-                    return hint_s + f'{indent(indent_level)}if {self_node.query.format(self_node.params, not values[0])}:\n' + \
+                    return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, not values[0])}:\n' + \
                             node_generate_code(self_node.out_edges[0], indent_level + 1, True)
                 else:
                     not_s = '' if not values[0] else 'not '
-                    return hint_s + f'{indent(indent_level)}if {not_s}{self_node.query.format(self_node.params, values[0])}):\n' + \
+                    return hint_s + f'{indent(indent_level)}if {not_s}{Query_format(self_node.query, self_node.params, values[0])}):\n' + \
                             node_generate_code(self_node.terminal_node, indent_level + 1, True) + \
                             node_generate_code(self_node.out_edges[0], indent_level)
         else:
@@ -84,7 +84,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
                 true_node, false_node = self_node.out_edges
             else:
                 false_node, true_node = self_node.out_edges
-            return hint_s + f'{indent(indent_level)}if {self_node.query.format(self_node.params, False)}:\n' + \
+            return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)}:\n' + \
                     node_generate_code(true_node, indent_level + 1, True) + \
                     f'{indent(indent_level)}else:\n' + \
                     node_generate_code(false_node, indent_level + 1, True)
@@ -101,12 +101,12 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
             if isinstance(self_node.terminal_node, NoopNode):
                 op = f'== {self_node.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self_node.query.rv.format(v) for v in values) + ')'
 
-                return hint_s + f'{indent(indent_level)}if {self_node.query.format(self_node.params, False)} {op}:\n' + \
+                return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {op}:\n' + \
                         node_generate_code(self_node.out_edges[0], indent_level + 1, True)
             else:
                 not_op = f'!= {self_node.query.rv.format(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(self_node.query.rv.format(v) for v in values) + ')'
 
-                return hint_s + f'{indent(indent_level)}if {self_node.query.format(self_node.params, False)} {not_op}:\n' + \
+                return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {not_op}:\n' + \
                         node_generate_code(self_node.terminal_node, indent_level + 1, True) + \
                         node_generate_code(self_node.out_edges[0], indent_level)
         except:
@@ -131,7 +131,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
                 print(self_node.query, self_node.cases.values())
                 raise
 
-        return hint_s + f'{indent(indent_level)}{vname} = {self_node.query.format(self_node.params, False)}\n' + ''.join(cases)
+        return hint_s + f'{indent(indent_level)}{vname} = {Query_format(self_node.query, self_node.params, False)}\n' + ''.join(cases)
 
 @node_generator(ForkNode)
 def ForkNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
@@ -245,14 +245,14 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
 
     if self_pred.query.rv == BoolType:
         if len(self_pred.values) == 1:
-            return self_pred.query.format(self_pred.params, self_pred.negated)
+            return Query_format(self_pred.query, self_pred.params, self_pred.negated)
         else:
             return 'False' if self_pred.negated else 'True'
     else:
         if len(self_pred.values) == 1:
             op = '!=' if self_pred.negated else '=='
             try:
-                return f'{self_pred.query.format(self_pred.params, False)} {op} {self_pred.query.rv.format(self_pred.values[0])}'
+                return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {self_pred.query.rv.format(self_pred.values[0])}'
             except:
                 print(self_pred.query, self_pred.values)
                 raise
@@ -263,7 +263,7 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
             except:
                 print(self_pred.query, self_pred.values)
                 raise
-            return f'{self_pred.query.format(self_pred.params, False)} {op} ({", ".join(vals_s)})'
+            return f'{Query_format(self_pred.query, self_pred.params, False)} {op} ({", ".join(vals_s)})'
 
 @pred_generator(NotPredicate)
 def NotPredicate_generate_code(self_pred: Predicate) -> str:
@@ -283,3 +283,51 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
 
     return ' or '.join([f'({pred_generate_code(inner)})' for inner in self_pred.inners])
 
+def Action_format(action: Action, params: Dict[str, Any]) -> str:
+    conversion = action.conversion.replace('<.name>', f'{action.actor_name}.{action.name}')
+    conversion = conversion.replace('<.actor>', f'{action.actor_name}')
+    for p in action.params:
+        try:
+            assert p.name in params
+            # some places do this with a string value instead of an Argument value
+            if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
+                p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
+                p.name == f'EntryVariableKeyFloat_{params[p.name]}':
+                value = params[p.name]
+            else:
+                value = p.type.format(params[p.name])
+        except:
+            print(action, p, params)
+            raise
+        conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
+        conversion = conversion.replace(f'<{p.name}>', value)
+    return conversion
+
+def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
+    if negated:
+        conversion_used = query.neg_conversion
+    else:
+        conversion_used = query.conversion
+    if not isinstance(conversion_used, str):
+        pivot = params[conversion_used['key']]
+        conversion = conversion_used['values'][pivot]
+    else:
+        conversion = conversion_used
+    conversion = conversion.replace('<.name>', f'{query.actor_name}.{query.name}')
+    conversion = conversion.replace('<.actor>', f'{query.actor_name}')
+    for p in query.params:
+        try:
+            assert p.name in params
+            # some places do this with a string value instead of an Argument value
+            if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
+                p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
+                p.name == f'EntryVariableKeyFloat_{params[p.name]}':
+                value = params[p.name]
+            else:
+                value = p.type.format(params[p.name])
+        except:
+            print(query, p, params)
+            raise
+        conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
+        conversion = conversion.replace(f'<{p.name}>', value)
+    return conversion
