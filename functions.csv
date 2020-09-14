@@ -202,7 +202,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Action,NoticeGameStartForPlayReport,N/A,,,,,,,
 9.9.9,Action,NotifyUseNSOAppli,,Command: str; IsErrorHandling: bool,,,,,,
 9.9.9,Action,NpcAddBlackBoard,,Key: str; AddValue: int,,,,,,
-9.9.9,Action,NpcAddFriendship,,AddValue: int,,,,,,
+9.9.9,Action,NpcAddFriendship,Yes,AddValue: int,,,,,,cannot cause a drop in friendship level (e.g. NpcAddFriendship(-100) with 230 friendship points => 200 points (min for Lv6))
 9.9.9,Action,NpcAIDefaultSetting,,ClearPreset: int,,,,,,
 9.9.9,Action,NpcAISetCheckRobFunc,,TalkEventFlowName: str; TalkEntryPointName: str; AIEntryPointName: str; CheckRobType: str; IsUnregist: bool; RobContinue: bool,,,,,,
 9.9.9,Action,NpcAISetExitStrc,,Reaction: str; TriggerType: str; Frame: int,,,,,,
@@ -720,7 +720,6 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Query,CanSelectRumorMessage,,RumorType: int,inverted_bool,,,,,
 9.9.9,Query,CatalogItemFrom,,ItemFromType: str,inverted_bool,,,,,
 9.9.9,Query,CatchFesFreeQuery2,,CatchFesQueryType: str,inverted_bool,,,,,
-pseudo,Query,CategoryItemSelect,N/A,JudgeTarget: str,,ItemCategoryType,,,,from MultiMessageCategoryItemSelectInclude
 9.9.9,Query,CeremonyType,N/A,,int8,,,,,
 9.9.9,Query,CheckAmiiboNPC,,Kind: str,inverted_bool,,,,,
 9.9.9,Query,CheckCalledNpcNumNormal,,NpcNum: int,inverted_bool,,,,,
@@ -730,7 +729,7 @@ pseudo,Query,CategoryItemSelect,N/A,JudgeTarget: str,,ItemCategoryType,,,,from M
 9.9.9,Query,CheckClientNpcLook,N/A,,int8,,,,,
 9.9.9,Query,CheckCurrentNpcAIState,,StateName: str,int2,,,,,
 9.9.9,Query,CheckEntryVariableBool,,Value: str,inverted_bool,,,<<Value>>,,
-9.9.9,Query,CheckEntryVariableInt,,Value: str; CheckType: int; CheckValue: int,inverted_bool,int,CheckType,"<<Value>> != <CheckValue>
+9.9.9,Query,CheckEntryVariableInt,Yes,Value: str; CheckValue: int; CheckType: int6,bool,int,CheckType,"<<Value>> != <CheckValue>
 <<Value>> == <CheckValue>
 <<Value>> <= <CheckValue>
 <<Value>> < <CheckValue>
@@ -753,7 +752,7 @@ pseudo,Query,CategoryItemSelect,N/A,JudgeTarget: str,,ItemCategoryType,,,,from M
 9.9.9,Query,CheckNpcAIFlag,,AIFlag: str,inverted_bool,,,,,
 9.9.9,Query,CheckNpcApproachType,,,inverted_bool,,,,,
 9.9.9,Query,CheckNpcCharacterSize,N/A,,int4,,,,,
-9.9.9,Query,CheckNpcFavorLevel,N/A,,int6,,,,,
+9.9.9,Query,CheckNpcFavorLevel,N/A,,int6,,,,,"Inverted friendship level (0 = Lv6, 1 = Lv5, etc.)"
 9.9.9,Query,CheckNpcLook,N/A,,int,,,,,
 9.9.9,Query,CheckNpcMoveIn,,MoveInCheckType: str,inverted_bool,,,,,
 9.9.9,Query,CheckNpcTalkType,,,inverted_bool,,,,,
@@ -789,14 +788,15 @@ pseudo,Query,CategoryItemSelect,N/A,JudgeTarget: str,,ItemCategoryType,,,,from M
 9.9.9,Query,DonationDone,,,inverted_bool,,,,,
 9.9.9,Query,EmoticonCanGet,,,inverted_bool,,,,,
 9.9.9,Query,EnvCheckBetweenDate,,Month0: int; Day0: int; Month1: int; Day1: int; TimeType: str,inverted_bool,,,,,
-9.9.9,Query,EnvConstellation,,ConstellationCheckType: str,"enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]",,,,,
+9.9.9,Query,EnvConstellation,Yes,ConstellationCheckType: Enume8ae9b9bda5b,"enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]",,,,,
 9.9.9,Query,EnvDayOfWeek,N/A,,"enum[Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday]",,,,,
 9.9.9,Query,EnvHourCompare,,Hour: int; Minute: int; IsMidNight: bool; IsOverGrowUpTime: bool,int3,,,,,
-9.9.9,Query,EnvHourOverGrowUp,,,inverted_bool,,,,,whether it has passed 5am without GrowUp happening
+9.9.9,Query,EnvHourOverGrowUp,Yes,,inverted_bool,,,,,whether it has passed 5am without GrowUp happening
 9.9.9,Query,EnvHourTwentyFour,N/A,,int24,,,,,
 9.9.9,Query,EnvMonth,N/A,,"enum[January,February,March,April,May,June,July,August,September,October,November,December]",,,,,
-9.9.9,Query,EnvPublicAnnouncement,,EnvAnnounceQueryType: str,inverted_bool,,,,,
-9.9.9,Query,EnvSameDate,,CheckDateType: str; TimeType: str,inverted_bool,,,,,
+9.9.9,Query,EnvPublicAnnouncement,Yes,"EnvAnnounceQueryType: Enum785aaa93cf4f
+",inverted_bool,,,,,
+9.9.9,Query,EnvSameDate,,CheckDateType: Enumb1f07682b1ab; TimeType: Enumf8312ee2e001,inverted_bool,,,,,
 9.9.9,Query,EnvSeason,N/A,,"enum[Spring,Summer,Autumn,Winter]",,,,,
 9.9.9,Query,EnvSpecialWeather,N/A,,"enum[NormalWeather,HeavyShower_MorningBefore,HeavyShower_AfternoonBefore,HeavyShower_During,Rainbow,DoubleRainbow,AuroraBorealis_Before1800,AuroraBorealis,SpecialWeather8,SpecialWeather9]",,,,,
 9.9.9,Query,EnvTimeZone,N/A,,"enum[05:00-07:59,08:00-11:59,12:00-15:59,16:00-18:59,19:00-23:59,00:00-04:59]",,,,,
@@ -807,31 +807,33 @@ pseudo,Query,CategoryItemSelect,N/A,JudgeTarget: str,,ItemCategoryType,,,,from M
 9.9.9,Query,EventCheck,,EventLabelString: str,int,,,,,
 9.9.9,Query,EventFlagAllSharePlayPlayer,,AccessKey: str,inverted_bool,,,,,
 9.9.9,Query,EventFlagNpcBool,,AccessKey: str,inverted_bool,,,<.actor>.EventFlags[<AccessKey>],,
-9.9.9,Query,EventFlagNpcInt,,AccessKey: str; FlagCheckType: int; Border: int,bool,int,FlagCheckType,"<.actor>.EventFlags[<AccessKey>] != <Border>
+9.9.9,Query,EventFlagNpcInt,Yes,AccessKey: str; Border: int; FlagCheckType: int7,bool,int,FlagCheckType,"<.actor>.EventFlags[<AccessKey>] != <Border>
 <.actor>.EventFlags[<AccessKey>] == <Border>
 <.actor>.EventFlags[<AccessKey>] <= <Border>
 <.actor>.EventFlags[<AccessKey>] < <Border>
 <.actor>.EventFlags[<AccessKey>] >= <Border>
-<.actor>.EventFlags[<AccessKey>] > <Border>","<.actor>.EventFlags[<AccessKey>] == <Border>
+<.actor>.EventFlags[<AccessKey>] > <Border>
+bitcount(<.actor>.EventFlags[<AccessKey>]) < <Border>","<.actor>.EventFlags[<AccessKey>] == <Border>
 <.actor>.EventFlags[<AccessKey>] != <Border>
 <.actor>.EventFlags[<AccessKey>] > <Border>
 <.actor>.EventFlags[<AccessKey>] >= <Border>
 <.actor>.EventFlags[<AccessKey>] < <Border>
-<.actor>.EventFlags[<AccessKey>] <= <Border>",
+<.actor>.EventFlags[<AccessKey>] <= <Border>
+bitcount(<.actor>.EventFlags[<AccessKey>]) >= <Border>",
 9.9.9,Query,EventFlagSystemBool,,AccessKey: str,inverted_bool,,,System.EventFlags[<AccessKey>],,
-9.9.9,Query,EventFlagSystemInt,,AccessKey: str; FlagCheckType: int7; Border: int,bool,int,FlagCheckType,"System.EventFlags[<AccessKey>] != <Border>
+9.9.9,Query,EventFlagSystemInt,Yes,AccessKey: str; Border: int; FlagCheckType: int7,bool,int,FlagCheckType,"System.EventFlags[<AccessKey>] != <Border>
 System.EventFlags[<AccessKey>] == <Border>
 System.EventFlags[<AccessKey>] <= <Border>
 System.EventFlags[<AccessKey>] < <Border>
 System.EventFlags[<AccessKey>] >= <Border>
 System.EventFlags[<AccessKey>] > <Border>
-bitcount(System.EventFlags[<AccessKey>] < <Border>","System.EventFlags[<AccessKey>] == <Border>
+bitcount(System.EventFlags[<AccessKey>]) < <Border>","System.EventFlags[<AccessKey>] == <Border>
 System.EventFlags[<AccessKey>] != <Border>
 System.EventFlags[<AccessKey>] > <Border>
 System.EventFlags[<AccessKey>] >= <Border>
 System.EventFlags[<AccessKey>] < <Border>
 System.EventFlags[<AccessKey>] <= <Border>
-bitcount(System.EventFlags[<AccessKey>] >= <Border>",
+bitcount(System.EventFlags[<AccessKey>]) >= <Border>",
 9.9.9,Query,EventNpcSet,,EventLabelString: str,inverted_bool,,,,,
 9.9.9,Query,EventRewardItem,,ItemUniqueID: int,inverted_bool,,,,,
 9.9.9,Query,ExistPlayerAcceptingBirthDayMessage,,,inverted_bool,,,,,
@@ -847,7 +849,6 @@ bitcount(System.EventFlags[<AccessKey>] >= <Border>",
 9.9.9,Query,FoxCheckItemBuyVillager,,,inverted_bool,,,,,
 9.9.9,Query,FoxIsSoldOut,,,inverted_bool,,,,,
 9.9.9,Query,FoxItemCheck,,,inverted_bool,,,,,
-pseudo,Query,FromItemSelect,N/A,JudgeTarget: str,,ItemFrom,,,,from MultiFromItemSelectInclude
 9.9.9,Query,GeneralTalkChoice2,N/A,,int2,,,,,
 9.9.9,Query,GeneralTalkChoice3,N/A,,int3,,,,,
 9.9.9,Query,GeneralTalkChoice4,N/A,,int4,,,,,
@@ -982,24 +983,22 @@ pseudo,Query,FromItemSelect,N/A,JudgeTarget: str,,ItemFrom,,,,from MultiFromItem
 9.9.9,Query,IsWatchItemDonated,,,inverted_bool,,,,,
 9.9.9,Query,ItemIsDecoratedAtTalkNpcHouse,,JudgeTarget: str,inverted_bool,,,,,
 9.9.9,Query,ItemRemove,,,inverted_bool,,,,,
-pseudo,Query,ItemSelect,N/A,JudgeTarget: str,,ItemUniqueID,,,,from MultiItemSelectInclude
 9.9.9,Query,ItemValuables,,,inverted_bool,,,,,
 9.9.9,Query,JuneBrideScoreCheck,,ScoreTypeString: str; Num: int,inverted_bool,,,,,
 9.9.9,Query,KindBitParamItemSelectInclude,,BitParamType: str; JudgeTarget: str,inverted_bool,,,,,
-pseudo,Query,KindItemSelect,N/A,JudgeTarget: str,,ItemKindType,,,,from MultiKindItemSelectInclude
 9.9.9,Query,LandFruit,N/A,,int5,,,,,
 9.9.9,Query,LimitSendMailToFriend,,,inverted_bool,,,,,
 9.9.9,Query,LookToSky,,,inverted_bool,,,,,
 9.9.9,Query,MainPlayerIsBirthday,,IsCheckNpcReservePlayerBirthday: bool,inverted_bool,,,,,
 9.9.9,Query,MessageUseBCancel,,,inverted_bool,,,,,
 9.9.9,Query,MoneyCapacity,,AddMoney: int; SellType: str,int3,,,,,
-9.9.9,Query,MultiFromItemSelectInclude,,JudgeTarget: str; ItemFromType1: str; ItemFromType2: str; ItemFromType3: str; ItemFromType4: str; ItemFromType5: str; ItemFromType6: str; ItemFromType7: str; ItemFromType8: str,inverted_bool,,,"EventFlowSystemActor.FromItemSelect(<JudgeTarget>) in (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>)","EventFlowSystemActor.FromItemSelect(<JudgeTarget>) not in (<ItemFromType1>, <ItemFromType2>, <ItemFromType3>, <ItemFromType4>, <ItemFromType5>, <ItemFromType6>, <ItemFromType7>, <ItemFromType8>)",
-9.9.9,Query,MultiItemSelectInclude,,JudgeTarget: str; ItemUniqueID1: int; ItemUniqueID2: int; ItemUniqueID3: int; ItemUniqueID4: int; ItemUniqueID5: int; ItemUniqueID6: int; ItemUniqueID7: int; ItemUniqueID8: int,inverted_bool,,,"EventFlowSystemActor.ItemSelect(<JudgeTarget>) in (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>)","EventFlowSystemActor.ItemSelect(<JudgeTarget>) not in (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>)",
-9.9.9,Query,MultiKindItemSelectInclude,,JudgeTarget: str; ItemKindType1: str; ItemKindType2: str; ItemKindType3: str; ItemKindType4: str; ItemKindType5: str; ItemKindType6: str; ItemKindType7: str; ItemKindType8: str,inverted_bool,,,"EventFlowSystemActor.KindItemSelect(<JudgeTarget>) in (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>)","EventFlowSystemActor.KindItemSelect(<JudgeTarget>) not in (<ItemKindType1>, <ItemKindType2>, <ItemKindType3>, <ItemKindType4>, <ItemKindType5>, <ItemKindType6>, <ItemKindType7>, <ItemKindType8>)",
+9.9.9,Query,MultiFromItemSelectInclude,Yes,ItemFromType1: Enum45892a8e83be; ItemFromType2: Enum45892a8e83be; ItemFromType3: Enum45892a8e83be; ItemFromType4: Enum45892a8e83be; ItemFromType5: Enum45892a8e83be; ItemFromType6: Enum45892a8e83be; ItemFromType7: Enum45892a8e83be; ItemFromType8: Enum45892a8e83be; JudgeTarget: Enum8b1826325233,inverted_bool,,,,,
+9.9.9,Query,MultiItemSelectInclude,Yes,ItemUniqueID1: int; ItemUniqueID2: int; ItemUniqueID3: int; ItemUniqueID4: int; ItemUniqueID5: int; ItemUniqueID6: int; ItemUniqueID7: int; ItemUniqueID8: int; JudgeTarget: Enum8b1826325233,inverted_bool,,,,,
+9.9.9,Query,MultiKindItemSelectInclude,Yes,ItemKindType1: Enum5172ea14fa97; ItemKindType2: Enum5172ea14fa97; ItemKindType3: Enum5172ea14fa97; ItemKindType4: Enum5172ea14fa97; ItemKindType5: Enum5172ea14fa97; ItemKindType6: Enum5172ea14fa97; ItemKindType7: Enum5172ea14fa97; ItemKindType8: Enum5172ea14fa97; JudgeTarget: Enum8b1826325233,inverted_bool,,,,,
 9.9.9,Query,MultiKindItemSelectIncludeChoice3,,JudgeTarget: str; ChoiceNumber: int; ItemKindTypeA: str; ItemKindTypeB: str,int3,,,,,
 9.9.9,Query,MultiKindItemSelectIncludeChoice4,,JudgeTarget: str; ChoiceNumber: int; ItemKindTypeA: str; ItemKindTypeB: str; ItemKindTypeC: str,int4,,,,,
 9.9.9,Query,MultiKindItemSelectIncludeChoice5,,JudgeTarget: str; ChoiceNumber: int; ItemKindTypeA: str; ItemKindTypeB: str; ItemKindTypeC: str; ItemKindTypeD: str,int5,,,,,
-9.9.9,Query,MultiMessageCategoryItemSelectInclude,,JudgeTarget: str; ItemCategoryType1: str; ItemCategoryType2: str; ItemCategoryType3: str; ItemCategoryType4: str; ItemCategoryType5: str; ItemCategoryType6: str; ItemCategoryType7: str; ItemCategoryType8: str,inverted_bool,,,"EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>) in (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>)","EventFlowSystemActor.CategoryItemSelect(<JudgeTarget>) not in (<ItemCategoryType1>, <ItemCategoryType2>, <ItemCategoryType3>, <ItemCategoryType4>, <ItemCategoryType5>, <ItemCategoryType6>, <ItemCategoryType7>, <ItemCategoryType8>)",
+9.9.9,Query,MultiMessageCategoryItemSelectInclude,Yes,ItemCategoryType1: Enum53801c2056ab; ItemCategoryType2: Enum53801c2056ab; ItemCategoryType3: Enum53801c2056ab; ItemCategoryType4: Enum53801c2056ab; ItemCategoryType5: Enum53801c2056ab; ItemCategoryType6: Enum53801c2056ab; ItemCategoryType7: Enum53801c2056ab; ItemCategoryType8: Enum53801c2056ab; JudgeTarget: Enum8b1826325233,inverted_bool,,,,,
 9.9.9,Query,MuseumCeremonyType,N/A,,int2,,,,,
 9.9.9,Query,MuseumComplete,,,inverted_bool,,,,,
 9.9.9,Query,MuseumDonationNumCheck,,Border: int,inverted_bool,,,,,
@@ -1065,7 +1064,6 @@ pseudo,Query,KindItemSelect,N/A,JudgeTarget: str,,ItemKindType,,,,from MultiKind
 9.9.9,Query,NpcCheckPastDays,,AccessKey: str; Border: int,inverted_bool,,,,,
 9.9.9,Query,NpcCheckSameWordFromSwkbd,,CheckType: str,inverted_bool,,,,,
 9.9.9,Query,NpcCheckStateSelectTiming,,AISelectorTiming: str,inverted_bool,,,,,
-pseudo,Query,NpcEquipItem,N/A,EquipRequireType: str,,ItemUniqueID,,,,from NpcIsEquipItem
 9.9.9,Query,NpcFeelSource,N/A,,int3,,,,,
 9.9.9,Query,NpcGeneralTalkChoice,N/A,,int5,,,,,
 9.9.9,Query,NpcGreetTypeNegative,,,inverted_bool,,,,,
@@ -1080,7 +1078,7 @@ pseudo,Query,NpcEquipItem,N/A,EquipRequireType: str,,ItemUniqueID,,,,from NpcIsE
 9.9.9,Query,NpcIsAbleEquipSelectItem,,,inverted_bool,,,,,
 9.9.9,Query,NpcIsCreateAngle,,,inverted_bool,,,,,
 9.9.9,Query,NpcIsEquipedHandTool,,ToolType: int,inverted_bool,,,,,
-9.9.9,Query,NpcIsEquipItem,,EquipRequireType: str; ItemUniqueID1: int; ItemUniqueID2: int; ItemUniqueID3: int; ItemUniqueID4: int; ItemUniqueID5: int; ItemUniqueID6: int; ItemUniqueID7: int; ItemUniqueID8: int,bool,,,"MainNpc.NpcEquipItem(<EquipRequireType>) in  (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>)","MainNpc.NpcEquipItem(<EquipRequireType>) not in  (<ItemUniqueID1>, <ItemUniqueID2>, <ItemUniqueID3>, <ItemUniqueID4>, <ItemUniqueID5>, <ItemUniqueID6>, <ItemUniqueID7>, <ItemUniqueID8>)",
+9.9.9,Query,NpcIsEquipItem,Yes,ItemUniqueID1: int; ItemUniqueID2: int; ItemUniqueID3: int; ItemUniqueID4: int; ItemUniqueID5: int; ItemUniqueID6: int; ItemUniqueID7: int; ItemUniqueID8: int; EquipRequireType: Enum40cb6aebd626,inverted_bool,,,,,
 9.9.9,Query,NpcIsExistOtherNpc,,,inverted_bool,,,,,
 9.9.9,Query,NpcIsExistTradableFtr,,,inverted_bool,,,,,
 9.9.9,Query,NpcIsFleaHolder,,,inverted_bool,,,,,
