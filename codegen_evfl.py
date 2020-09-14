@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Callable, Dict, List
 
 from codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
-from datatype import AnyType, BoolType
+from datatype import AnyType, BoolType, Type, Argument
 from indent import indent
 from nodes import *
 from predicates import *
@@ -99,12 +99,12 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
 
         try:
             if isinstance(self_node.terminal_node, NoopNode):
-                op = f'== {self_node.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self_node.query.rv.format(v) for v in values) + ')'
+                op = f'== {Type_format(self_node.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(Type_format(self_node.query.rv, v) for v in values) + ')'
 
                 return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {op}:\n' + \
                         node_generate_code(self_node.out_edges[0], indent_level + 1, True)
             else:
-                not_op = f'!= {self_node.query.rv.format(values[0])}' if len(values) == 1 else 'not in (' + ', '.join(self_node.query.rv.format(v) for v in values) + ')'
+                not_op = f'!= {Type_format(self_node.query.rv, values[0])}' if len(values) == 1 else 'not in (' + ', '.join(Type_format(self_node.query.rv, v) for v in values) + ')'
 
                 return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {not_op}:\n' + \
                         node_generate_code(self_node.terminal_node, indent_level + 1, True) + \
@@ -122,7 +122,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
         for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
             try:
                 else_s = 'el' if cases else ''
-                op_s = f'== {self_node.query.rv.format(values[0])}' if len(values) == 1 else 'in (' + ', '.join(self_node.query.rv.format(v)  for v in sorted(values)) + ')'
+                op_s = f'== {Type_format(self_node.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(Type_format(self_node.query.rv, v)  for v in sorted(values)) + ')'
                 cases.append(
                         f'{indent(indent_level)}{else_s}if {vname} {op_s}:\n' +
                         node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 1, True)
@@ -155,7 +155,7 @@ def SubflowNode_generate_code(self_node: Node, indent_level: int = 0, generate_p
     ns = f'{self_node.ns}::' if self_node.ns else ''
     # todo: type-checked subflow params
     # todo: hints
-    param_s = ', '.join(f'{name}={AnyType.format(value)}' for name, value in self_node.params.items())
+    param_s = ', '.join(f'{name}={Type_format(AnyType, value)}' for name, value in self_node.params.items())
     return f'{indent(indent_level)}run {ns}{self_node.called_root_name}({param_s})\n' + \
             '\n'.join(node_generate_code(e, indent_level) for e in self_node.out_edges)
 
@@ -237,7 +237,7 @@ def DoWhileNode_generate_code(self_node: Node, indent_level: int = 0, generate_p
 def ConstPredicate_generate_code(self_pred: Predicate) -> str:
     assert isinstance(self_pred, ConstPredicate)
 
-    return BoolType.format(self_pred.value)
+    return Type_format(BoolType, self_pred.value)
 
 @pred_generator(QueryPredicate)
 def QueryPredicate_generate_code(self_pred: Predicate) -> str:
@@ -252,14 +252,14 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
         if len(self_pred.values) == 1:
             op = '!=' if self_pred.negated else '=='
             try:
-                return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {self_pred.query.rv.format(self_pred.values[0])}'
+                return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {Type_format(self_pred.query.rv, self_pred.values[0])}'
             except:
                 print(self_pred.query, self_pred.values)
                 raise
         else:
             op = 'not in' if self_pred.negated else 'in'
             try:
-                vals_s = [self_pred.query.rv.format(v) for v in self_pred.values]
+                vals_s = [Type_format(self_pred.query.rv, v) for v in self_pred.values]
             except:
                 print(self_pred.query, self_pred.values)
                 raise
@@ -295,7 +295,7 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
                 p.name == f'EntryVariableKeyFloat_{params[p.name]}':
                 value = params[p.name]
             else:
-                value = p.type.format(params[p.name])
+                value = Type_format(p.type, params[p.name])
         except:
             print(action, p, params)
             raise
@@ -324,10 +324,39 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
                 p.name == f'EntryVariableKeyFloat_{params[p.name]}':
                 value = params[p.name]
             else:
-                value = p.type.format(params[p.name])
+                value = Type_format(p.type, params[p.name])
         except:
             print(query, p, params)
             raise
         conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
         conversion = conversion.replace(f'<{p.name}>', value)
     return conversion
+
+def Type_format(type_: Type, value: Any) -> str:
+    if isinstance(value, Argument):
+        return str(value)
+
+    if type_.type.startswith('int'):
+        assert isinstance(value, int)
+        if type_.type != 'int':
+            n = int(type_.type[3:])
+            assert 0 <= value < n
+        return repr(int(value))
+    elif type_.type.startswith('enum'):
+        assert not isinstance(value, bool) and isinstance(value, int)
+        vals = type_.type[5:-1].split(',')
+        assert 0 <= value < len(vals)
+        return vals[value]
+    elif type_.type == 'float':
+        assert not isinstance(value, bool) and isinstance(value, (int, float))
+        return repr(float(value))
+    elif type_.type == 'str':
+        assert isinstance(value, str)
+        return repr(value)
+    elif type_.type == 'bool':
+        assert isinstance(value, bool) or (isinstance(value, int) and 0 <= value <= 1)
+        return 'true' if value else 'false'
+    elif type_.type == 'any':
+        return repr(value)
+    else:
+        raise ValueError(f'bad type: {type_.type}')
