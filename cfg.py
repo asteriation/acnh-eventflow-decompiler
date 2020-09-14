@@ -7,6 +7,7 @@ from datatype import Type
 from predicates import Predicate, ConstPredicate, QueryPredicate
 from actors import Param, Action, Query, Actor
 from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
+from codegen import CodeGenerator
 
 class CFG:
     def __init__(self, name: str) -> None:
@@ -676,9 +677,9 @@ class CFG:
         for node in self.nodes.values():
             node.simplify()
 
-    def generate_code(self) -> str:
+    def generate_code(self, generator: CodeGenerator) -> str:
         self.roots.sort(key=lambda x: x.name)
-        code = '\n'.join(root.generate_code() for root in self.roots).split('\n')
+        code = '\n'.join(generator.generate_code(root) for root in self.roots).split('\n')
 
         # strip ununsed labels
         goto_regex = re.compile('^\s*goto (\S+)')

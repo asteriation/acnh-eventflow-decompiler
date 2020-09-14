@@ -8,8 +8,9 @@ from typing import Any, Dict
 from logger import LOG
 
 from actors import HINTS
+import bfevfl
 from cfg import CFG
-import populate_cfg
+from codegen_evfl import EVFLCodeGenerator
 
 def compare_version(current_version: str, max_version: str) -> bool:
     cv = [int(v) for v in current_version.split('.')]
@@ -105,18 +106,19 @@ if __name__ == '__main__':
         with Path(args.hints).open('rt') as hf:
             HINTS.update(json.load(hf))
 
+    generator = EVFLCodeGenerator()
     for fname in args.bfevfl_files:
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
             LOG.info(f'converting {fname}')
-            cfg = populate_cfg.read(f.read(), actions, queries)
+            cfg = bfevfl.read(f.read(), actions, queries)
             cfg.restructure()
 
             if args.out_dir:
                 with (Path(args.out_dir) / Path(fname).name.replace('.bfevfl', '.evfl.txt')).open('wt') as of:
-                    print(cfg.generate_code(), file=of)
+                    print(cfg.generate_code(generator), file=of)
             else:
                 print(fname)
                 print('--------')
-                print(cfg.generate_code())
+                print(cfg.generate_code(generator))
 
