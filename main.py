@@ -62,7 +62,7 @@ def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
                 assert ':' in param and param.index(':') not in (0, len(param) - 1), f'bad param list for {name}'
                 pname, ptype = (x.strip() for x in param.split(':'))
                 assert ptype != 'inverted_bool', f'inverted_bool not allowed for param types for {name}'
-                info['params'][pname] = ptype
+                info['params'][pname] = ptype if not ptype.startswith('Enum') else 'str' # todo: proper EnumXYZ handling
 
             if row[headers['Return']]:
                 info['return'] = row[headers['Return']]
