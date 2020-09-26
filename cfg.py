@@ -15,6 +15,7 @@ class CFG:
         self.roots: List[RootNode] = []
         self.actors: Dict[str, Actor] = {}
         self.nodes: Dict[str, Node] = {}
+        self.secondary_names: Dict[str, str] = {}
 
     def __assign_components(self) -> List[List[RootNode]]:
         visited: Set[RootNode] = set()
@@ -678,8 +679,14 @@ class CFG:
             node.simplify()
 
     def generate_code(self, generator: CodeGenerator) -> str:
+        code: List[str] = []
+        for actor_name in sorted(self.secondary_names.keys()):
+            code.append(generator.generate_actor_annotation(actor_name, self.secondary_names[actor_name]))
+        if code:
+            code.append('')
+
         self.roots.sort(key=lambda x: x.name)
-        code = '\n'.join(generator.generate_code(root) for root in self.roots).split('\n')
+        code.extend('\n'.join(generator.generate_code(root) for root in self.roots).split('\n'))
 
         # strip ununsed labels
         goto_regex = re.compile('^\s*goto (\S+)')
@@ -699,8 +706,11 @@ class CFG:
 
         return '\n'.join(stripped_code)
 
-    def import_functions(self, actors: List[str], actions: Dict[str, Any], queries: Dict[str, Any]) -> None:
-        for actor_name in actors:
+    def import_functions(self, actors: List[Tuple[str, str]], actions: Dict[str, Any],
+                         queries: Dict[str, Any]) -> None:
+        for actor_name, sec_name in actors:
+            if sec_name:
+                self.secondary_names[actor_name] = sec_name
             if actor_name not in self.actors:
                 self.actors[actor_name] = Actor(actor_name)
             for action, info in actions.items():

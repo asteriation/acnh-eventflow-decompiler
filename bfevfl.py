@@ -17,10 +17,8 @@ from cfg import CFG
 class BFEVFLActor:
     name: str
     secondary_name: str
-    argument_name: str
     actions: List[Tuple[Action, bool]]
     queries: List[Tuple[Query, bool]]
-    entry_point_index: int
 
 @dataclass
 class BFEVFL:
@@ -187,6 +185,10 @@ def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any
             ep_index = bs.read('uintle:16')
             bs.read('pad:16')
 
+            assert argument_name == ''
+            assert parameters is None
+            assert ep_index == 0xffff
+
             if actions_ptr:
                 with read_at_offset(bs, actions_ptr):
                     actions = [(Action(name, _load_str(bs, bs.read('uintle:64'))[15:], []), False) for _ in range(num_actions)]
@@ -199,7 +201,7 @@ def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any
             else:
                 queries = []
 
-            actor = BFEVFLActor(name, secondary_name, argument_name, actions, queries, ep_index)
+            actor = BFEVFLActor(name, secondary_name, actions, queries)
             actors.append(actor)
     return actors
 
@@ -439,7 +441,7 @@ def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
     bfevfl = parse_bfevfl(data)
 
     cfg = CFG(bfevfl.flowchart_name)
-    cfg.import_functions([r.name for r in bfevfl.actors], actions, queries)
+    cfg.import_functions([(r.name, r.secondary_name) for r in bfevfl.actors], actions, queries)
     for r in bfevfl.actors:
         actor = cfg.actors[r.name]
         for action, initialized in r.actions:

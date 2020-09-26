@@ -30,6 +30,9 @@ def pred_generate_code(pred: Predicate) -> str:
     return pred_codegen[type(pred)](pred)
 
 class EVFLCodeGenerator(CodeGenerator):
+    def generate_actor_annotation(self, actor_name: str, secondary_name: str) -> str:
+        return f'@{actor_name}:{secondary_name}'
+
     def generate_code(self, node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
         return node_generate_code(node, indent_level, generate_pass)
 
