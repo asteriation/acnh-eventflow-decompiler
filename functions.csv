@@ -92,7 +92,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Action,EntryBirthDayMessage,N/A,,,,,,,
 9.9.9,Action,EntryPlayerVillager,N/A,,,,,,,
 9.9.9,Action,EntryVariableAdd,,Key: str; AddValue: int,,,,<<Key>> += <AddValue>,,
-9.9.9,Action,EntryVariableSet,,Key: str; SetValue: any,,,,<<Key>> = <SetValue>,,
+9.9.9,Action,EntryVariableSet,,Key: str; SetValue: int,,,,<<Key>> = <SetValue>,,
 9.9.9,Action,EnvSetDemoTime,,Hour: int; Minute: int; Second: int,,,,,,
 9.9.9,Action,EnvWeatherArea,,WeatherAreaLand: str,,,,,,
 9.9.9,Action,EquipCracker,N/A,,,,,,,
