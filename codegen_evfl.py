@@ -118,25 +118,25 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
     else:
         # generic case:
         # switch [query]:
-        #   case X:
-        #   case Y:
-        #     ...
-        #     break;
-        # default - implicit, not listed
+        #   case X, Y:
+        #   default - return
 
         cases: List[str] = []
         for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
             try:
                 cases.append(
-                        ''.join(f'{indent(indent_level + 1)}case {v}:\n' for v in values) +
-                        node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True) +
-                        f'{indent(indent_level + 2)}break\n'
+                        f'{indent(indent_level + 1)}case {", ".join(str(v) for v in values)}:\n' +
+                        node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
                 )
             except:
                 print(self_node.query, self_node.cases.values())
                 raise
 
-        return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}\n' + ''.join(cases)
+        default = ''
+        if sum(len(v) for v in self_node.cases.values()) < self_node.query.num_values:
+            default = f'{indent(indent_level + 1)}default:\n{indent(indent_level + 2)}return\n'
+        return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}\n' + \
+                ''.join(cases) + default
 
 @node_generator(ForkNode)
 def ForkNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
