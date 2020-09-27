@@ -135,7 +135,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
         default = ''
         if sum(len(v) for v in self_node.cases.values()) < self_node.query.num_values:
             default = f'{indent(indent_level + 1)}default:\n{indent(indent_level + 2)}return\n'
-        return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}\n' + \
+        return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}:\n' + \
                 ''.join(cases) + default
 
 @node_generator(ForkNode)
