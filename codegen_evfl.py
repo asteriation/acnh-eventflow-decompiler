@@ -145,7 +145,7 @@ def ForkNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass
 
     s = f'{indent(indent_level)}fork:\n'
     for i, e in enumerate(e for e in self_node.out_edges if e != self_node.join_node):
-        s += f'{indent(indent_level + 1)}branch{i}:\n{node_generate_code(e, indent_level + 2, True)}'
+        s += f'{indent(indent_level + 1)}branch:\n{node_generate_code(e, indent_level + 2, True)}'
     return s + node_generate_code(self_node.join_node, indent_level)
 
 @node_generator(JoinNode)
