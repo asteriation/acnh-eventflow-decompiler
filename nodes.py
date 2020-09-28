@@ -67,9 +67,10 @@ class RootNode(Node):
         def __hash__(self) -> int:
             return hash(self.name) ^ hash(self.type_.type) ^ hash(self.initial_value)
 
-    def __init__(self, name: str, vardefs: List[VarDef] = []) -> None:
+    def __init__(self, name: str, vardefs: List[VarDef] = [], local: bool = False) -> None:
         Node.__init__(self, name)
         self.vardefs = vardefs[:]
+        self.local = local
 
     def add_in_edge(self, src: Node) -> None:
         pass

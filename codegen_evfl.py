@@ -40,7 +40,8 @@ class EVFLCodeGenerator(CodeGenerator):
 def RootNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
     assert isinstance(self_node, RootNode)
 
-    return f'{indent(indent_level)}flow {self_node.name}({", ".join(str(v) for v in self_node.vardefs)}):\n' + \
+    local = 'local ' if self_node.local else ''
+    return f'{indent(indent_level)}{local}flow {self_node.name}({", ".join(str(v) for v in self_node.vardefs)}):\n' + \
             '\n'.join(node_generate_code(n, indent_level + 1) for n in self_node.out_edges)
 
 @node_generator(ActionNode)

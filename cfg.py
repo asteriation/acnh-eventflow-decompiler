@@ -121,7 +121,7 @@ class CFG:
 
     def __detach_node_as_sub(self, root: RootNode, entry_point: Node) -> RootNode:
         name = entry_point.name if not isinstance(entry_point, EntryPointNode) else entry_point.entry_label
-        new_root = RootNode(f'Sub_{name}', root.vardefs)
+        new_root = RootNode(f'Sub_{name}', root.vardefs, local=True)
         new_root.add_out_edge(entry_point)
 
         for caller in entry_point.in_edges[:]:
@@ -659,7 +659,7 @@ class CFG:
                         and isinstance(node.out_edges[0], EntryPointNode):
                     new_parent: Node
                     if isinstance(node, RootNode):
-                        new_root = RootNode(node.name, node.vardefs)
+                        new_root = RootNode(node.name, node.vardefs, node.local)
                         new_parent = new_root
                         remapped_entrypoints[node.out_edges[0].entry_label] = node.name
                     else:
@@ -679,16 +679,17 @@ class CFG:
                     and isinstance(root.out_edges[0], SubflowNode) \
                     and (not root.out_edges[0].out_edges or \
                             isinstance(root.out_edges[0].out_edges[0], TerminalNode)):
-                # todo: this, cleaner
-                if root.name.startswith('Sub_Event'):
+                if root.local:
                     if root.name not in remapped_roots:
                         remapped_roots[root.name] = (root.out_edges[0].ns, root.out_edges[0].called_root_name)
-                elif root.out_edges[0].called_root_name.startswith('Sub_Event') and \
-                        root.out_edges[0].ns == '' and \
+                elif root.out_edges[0].ns == '' and \
                         root.out_edges[0].called_root_name not in remapped_roots:
-                    called_root = [r for r in self.roots if r.name == root.out_edges[0].called_root_name][0]
-                    called_root.name, root.name = root.name, called_root.name
-                    remapped_roots[root.name] = ('', called_root.name)
+                    called_root_ = [r for r in self.roots if r.name == root.out_edges[0].called_root_name]
+                    if called_root_ and called_root_[0].local:
+                        called_root = called_root_[0]
+                        called_root.name, root.name = root.name, called_root.name
+                        called_root.local, root.local = root.local, called_root.local
+                        remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
         for root in self.roots:
