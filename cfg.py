@@ -681,9 +681,11 @@ class CFG:
                             isinstance(root.out_edges[0].out_edges[0], TerminalNode)):
                 # todo: this, cleaner
                 if root.name.startswith('Sub_Event'):
-                    remapped_roots[root.name] = (root.out_edges[0].ns, root.out_edges[0].called_root_name)
+                    if root.name not in remapped_roots:
+                        remapped_roots[root.name] = (root.out_edges[0].ns, root.out_edges[0].called_root_name)
                 elif root.out_edges[0].called_root_name.startswith('Sub_Event') and \
-                        root.out_edges[0].ns == '':
+                        root.out_edges[0].ns == '' and \
+                        root.out_edges[0].called_root_name not in remapped_roots:
                     called_root = [r for r in self.roots if r.name == root.out_edges[0].called_root_name][0]
                     called_root.name, root.name = root.name, called_root.name
                     remapped_roots[root.name] = ('', called_root.name)
