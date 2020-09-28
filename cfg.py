@@ -700,6 +700,18 @@ class CFG:
         for node in self.nodes.values():
             node.simplify()
 
+    def __remove_trailing_return(self) -> None:
+        for root in self.roots:
+            prev_node: Node = root
+            cur_node: Node = root
+            while cur_node.out_edges:
+                if len(cur_node.out_edges) != 1:
+                    break
+                prev_node, cur_node = cur_node, cur_node.out_edges[0]
+            if isinstance(cur_node, TerminalNode):
+                if not isinstance(prev_node, RootNode):
+                    prev_node.del_out_edge(cur_node)
+
     def generate_code(self, generator: CodeGenerator) -> str:
         code: List[str] = []
         for actor_name in sorted(self.secondary_names.keys()):
@@ -800,6 +812,8 @@ class CFG:
             self.__collapse_subflow_only_root()
 
             self.__simplify_all()
+
+        self.__remove_trailing_return()
 
     def get_dot(self, search_from_roots: bool = False) -> str:
         # search_from_roots = True may be more useful for debugging in some cases
