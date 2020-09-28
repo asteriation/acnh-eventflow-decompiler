@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, NamedTuple, Optional, Union
+from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple
 
 from datatype import Type
 from predicates import Predicate, NotPredicate, QueryPredicate
@@ -36,6 +36,10 @@ class Node(ABC):
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         while old_dest in self.out_edges:
             self.out_edges[self.out_edges.index(old_dest)] = new_dest
+
+    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
+        for node in self.out_edges:
+            node.remap_subflow(old, new)
 
     def simplify(self) -> None:
         pass
@@ -174,6 +178,11 @@ class SubflowNode(Node):
         self.nxt = nxt
         self.params = params.copy() if params else {}
 
+    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
+        if (self.ns, self.called_root_name) == old:
+            self.ns, self.called_root_name = new
+        super().remap_subflow(old, new)
+
     def __str__(self) -> str:
         return f'SubflowNode[name={self.name}' + \
             f', ns={self.ns}' + \
@@ -249,6 +258,11 @@ class GroupNode(Node):
     def simplify(self) -> None:
         for node in self.nodes:
             node.simplify()
+
+    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
+        for node in self.nodes:
+            node.remap_subflow(old, new)
+        super().remap_subflow(old, new)
 
     def __str__(self) -> str:
         return f'GroupNode[name={self.name}' + \

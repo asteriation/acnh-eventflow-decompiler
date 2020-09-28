@@ -669,10 +669,29 @@ class CFG:
             new_roots.append(new_root)
         self.roots = new_roots
         for root in self.roots:
-            for node in self.__find_postorder(root):
-                if isinstance(node, SubflowNode):
-                    if node.called_root_name in remapped_entrypoints:
-                        node.called_root_name = remapped_entrypoints[node.called_root_name]
+            for old, new in remapped_entrypoints.items():
+                root.remap_subflow(('', old), ('', new))
+
+    def __collapse_subflow_only_root(self) -> None:
+        remapped_roots: Dict[str, Tuple[str, str]] = {}
+        for root in self.roots:
+            if len(root.out_edges) == 1 \
+                    and isinstance(root.out_edges[0], SubflowNode) \
+                    and (not root.out_edges[0].out_edges or \
+                            isinstance(root.out_edges[0].out_edges[0], TerminalNode)):
+                # todo: this, cleaner
+                if root.name.startswith('Sub_Event'):
+                    remapped_roots[root.name] = (root.out_edges[0].ns, root.out_edges[0].called_root_name)
+                elif root.out_edges[0].called_root_name.startswith('Sub_Event') and \
+                        root.out_edges[0].ns == '':
+                    called_root = [r for r in self.roots if r.name == root.out_edges[0].called_root_name][0]
+                    called_root.name, root.name = root.name, called_root.name
+                    remapped_roots[root.name] = ('', called_root.name)
+
+        self.roots = [root for root in self.roots if root.name not in remapped_roots]
+        for root in self.roots:
+            for old, new in remapped_roots.items():
+                root.remap_subflow(('', old), new)
 
     def __simplify_all(self) -> None:
         for node in self.nodes.values():
@@ -775,6 +794,7 @@ class CFG:
             self.__collapse_cases()
             self.__extract_reused_blocks()
             self.__remove_redundant_entrypoints()
+            self.__collapse_subflow_only_root()
 
             self.__simplify_all()
 
