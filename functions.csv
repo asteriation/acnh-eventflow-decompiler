@@ -245,7 +245,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Action,NpcDecideVisitPQuestReward,,RewardType: int; RewardTypeSub: int,,,,,,
 9.9.9,Action,NpcDecideVisitPresent,,RewardType: int; RewardTypeSub: int,,,,,,
 9.9.9,Action,NpcDeleteBuyFtr,N/A,,,,,,,
-9.9.9,Action,NpcDelivery,,Option: str; Command: int,,,,,,
+9.9.9,Action,NpcDelivery,Yes,Command: int; Option: Enum4b96ad6a3600,,,,,,
 9.9.9,Action,NpcDisableServiceMotion,N/A,,,,,,,
 9.9.9,Action,NpcEnter,,NextInfoKey: str; Distance: int,,,,,,
 9.9.9,Action,NpcEnterDoor,,HoldOpen: bool,,,,,,
@@ -1195,7 +1195,7 @@ bitcount(System.EventFlags[<AccessKey>]) >= <Border>",
 9.9.9,Query,SeoAppearSide,N/A,,int2,,,,,
 9.9.9,Query,SeoCanReturnSwim,,,inverted_bool,,,,,
 9.9.9,Query,SettlerQuest,N/A,,int4,,,,,
-9.9.9,Query,ShopHasBellCount,,Rate: float,inverted_bool,,,,,
+9.9.9,Query,ShopHasBellCount,Yes,Rate: float,inverted_bool,,,,,"Checks Rate * Price, unless NPC is ""fox"", in which case it checks 1.5 * Price regardless of Rate, unless it's art, in which case it checks for 4980 bells regardless of Rate and Price"
 9.9.9,Query,ShopLevel,N/A,,"enum[InResServiceTent,NooksCrannyInitial,NooksCrannyUpgraded]",,,,,
 9.9.9,Query,ShoppingCapacity,Yes,CapacityCheckType: Enum61c5b016f883; ItemUniqueId: int,inverted_bool,,,,,
 9.9.9,Query,SkyVariation,N/A,,int6,,,,,
@@ -1279,3 +1279,35 @@ pseudo,Query,VillageScoreTreeNum,N/A,,,int,,,,from VillageScoreCheckTreeNum
 9.9.9,Query,VillageScorePutUnitIconNum,Yes,BorderValue: int,bool,int,,<.name> >= <BorderValue>,<.name> < <BorderValue>,
 9.9.9,Query,VillageScoreVeryMessy,Yes,BorderHalfUnit: int; BorderBlockNum: int,bool,,,,,check if at least BorderBlockNum entries in VillageScore.CollisionNum are at least BorderHalfUnit
 9.9.9,Query,YMD,Yes,Year: int; Month: int; Day: int; TimeType: Enumf8312ee2e001,int3,,,,,
+9.9.9,Action,BeginAsMovedOne,,AfterReceivingData: bool,,,,,,1.5.0 unverified
+9.9.9,Query,CheckEventStateAtSceneCreateTime,,EventLabelString: str,int4,,,,,1.5.0 unverified
+9.9.9,Query,CheckGetCandyMinute,,PassedTime: int,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,CheckNpcSchedule,,Schedule: str,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,DevideHalloweenEventState,,,int5,,,,,1.5.0 unverified
+9.9.9,Query,FlagNpcIntValue9,,AccessKey: str; ChoiceNumber: any,int9,,,,,1.5.0 unverified
+9.9.9,Query,FlagSystemIntValue4,,AccessKey: str; ChoiceNumber: any,int4,,,,,1.5.0 unverified
+9.9.9,Query,FlagSystemIntValue8,,AccessKey: str; ChoiceNumber: any,int8,,,,,1.5.0 unverified
+9.9.9,Action,GetAddEmoticon,,Reaction: str,,,,,,1.5.0 unverified
+9.9.9,Query,HalloweenFtrNum,,BorderNum: any,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsDIYHalloweenItem,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsDIYItemFenceHalloween,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsEqualPlayerNameAndSwkbdInput,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsLivingMyLandNpcForDream,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsPlayerDisguise,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,IsWrappingReturnDeliveryItem,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,NetHasDreamLogList,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,NetIsPublicDream,,,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Action,NetMoveFinishWait,,,,,,,,1.5.0 unverified
+9.9.9,Action,NetMoveSessionFinalize,,,,,,,,1.5.0 unverified
+9.9.9,Action,NetMoveSessionOpen,,,,,,,,1.5.0 unverified
+9.9.9,Action,NetMoveSessionSearch,,,,,,,,1.5.0 unverified
+9.9.9,Action,NetMoveStartWait,,,,,,,,1.5.0 unverified
+9.9.9,Action,NetUploadEmoticon,,SkipError: bool; Timeout: any; CheckHash: bool,,,,,,1.5.0 unverified
+9.9.9,Action,PlayerHalloweenTricked,,,,,,,,1.5.0 unverified
+9.9.9,Query,PlayerHaveGetColorSquash,,ScuashColor: str,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Query,PlayerHaveNewReaction,,Reaction: str,inverted_bool,,,,,1.5.0 unverified
+9.9.9,Action,SaveRegisterMoveInPlayerBuffer,,,,,,,,1.5.0 unverified
+9.9.9,Action,SaveUnregisterMoveInPlayerBuffer,,,,,,,,1.5.0 unverified
+9.9.9,Action,SetGetCandyTime,,,,,,,,1.5.0 unverified
+9.9.9,Action,UIDreamFavoriteListHandling,,,,,,,,1.5.0 unverified
+9.9.9,Query,UIIsMyDreamIDFromList,,,inverted_bool,,,,,1.5.0 unverified
