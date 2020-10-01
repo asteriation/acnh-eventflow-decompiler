@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-from nodes import Node
-from predicates import Predicate
 
 from typing import Callable, Union
+
+from .nodes import Node
+from .predicates import Predicate
 
 NodeCodeGenerator = Callable[[Node, int, bool], str]
 PredicateCodeGenerator = Callable[[Predicate], str]

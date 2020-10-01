@@ -6,12 +6,12 @@ from typing import Any, Dict, Iterable, List, Tuple, Union
 
 from bitstring import ConstBitStream
 
-from logger import LOG
+from .logger import LOG
 
-from actors import Param, Action, Query, Actor
-from nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
-from datatype import AnyType, BoolType, FloatType, IntType, StrType, Type, Argument
-from cfg import CFG
+from .actors import Param, Action, Query, Actor
+from .nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
+from .datatype import AnyType, BoolType, FloatType, IntType, StrType, Type, Argument
+from .cfg import CFG
 
 @dataclass
 class BFEVFLActor:

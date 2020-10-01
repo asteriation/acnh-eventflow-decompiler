@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC
 from typing import Any, Dict, List
 
-from datatype import BoolType
-from actors import Query
+from .datatype import BoolType
+from .actors import Query
 
 class Predicate(ABC):
     def hint(self) -> List[str]:

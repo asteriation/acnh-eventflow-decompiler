@@ -4,9 +4,9 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple
 
-from datatype import Type
-from predicates import Predicate, NotPredicate, QueryPredicate
-from actors import Action, Query
+from .datatype import Type
+from .predicates import Predicate, NotPredicate, QueryPredicate
+from .actors import Action, Query
 
 class Node(ABC):
     def __init__(self, name: str) -> None:

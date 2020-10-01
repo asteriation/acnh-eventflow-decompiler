@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List
 
-from codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
-from datatype import AnyType, BoolType, Type, Argument
-from indent import indent
-from nodes import *
-from predicates import *
+from .codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
+from .datatype import AnyType, BoolType, Type, Argument
+from .indent import indent
+from .nodes import *
+from .predicates import *
 
 node_codegen: Dict[type, NodeCodeGenerator] = {}
 pred_codegen: Dict[type, PredicateCodeGenerator] = {}

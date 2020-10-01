@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, NamedTuple, Optional, Union
 
-from datatype import AnyType, Type
+from .datatype import AnyType, Type
 
 HINTS: Dict[str, str] = {}
 

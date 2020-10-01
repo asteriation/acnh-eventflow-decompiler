@@ -3,11 +3,11 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
-from datatype import Type
-from predicates import Predicate, ConstPredicate, QueryPredicate
-from actors import Param, Action, Query, Actor
-from nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
-from codegen import CodeGenerator
+from .datatype import Type
+from .predicates import Predicate, ConstPredicate, QueryPredicate
+from .actors import Param, Action, Query, Actor
+from .nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
+from .codegen import CodeGenerator
 
 class CFG:
     def __init__(self, name: str) -> None:
