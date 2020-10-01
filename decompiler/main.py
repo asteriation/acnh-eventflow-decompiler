@@ -25,7 +25,7 @@ def compare_version(current_version: str, max_version: str) -> bool:
 
     return True
 
-def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+def load_functions_csv(filename: str, version: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     with Path(filename).open('rt') as ff:
         reader = csv.reader(ff)
         headers: Dict[str, int] = {}
@@ -48,7 +48,7 @@ def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
             name = row[headers['Name']]
             type_ = row[headers['Type']]
 
-            if max_version == 'pseudo' or not compare_version(args.version, max_version):
+            if max_version == 'pseudo' or not compare_version(version, max_version):
                 continue
             if (type_ == 'Action' and name in actions) or (type_ == 'Query' and name in queries):
                 continue
@@ -108,7 +108,7 @@ def main():
     parser.add_argument('--target', default='evfl', choices=('evfl',), help='decompilation target')
     args = parser.parse_args()
 
-    actions, queries = load_functions_csv(args.functions)
+    actions, queries = load_functions_csv(args.functions, args.version)
 
     if args.hints:
         with Path(args.hints).open('rt') as hf:
