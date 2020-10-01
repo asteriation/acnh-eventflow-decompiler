@@ -728,7 +728,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Query,CheckCanInduceNpc,N/A,,int6,,,,,
 9.9.9,Query,CheckClientNpcLook,N/A,,int8,,,,,
 9.9.9,Query,CheckCurrentNpcAIState,,StateName: str,int2,,,,,
-9.9.9,Query,CheckEntryVariableBool,,Value: str,inverted_bool,,,<<Value>>,,
+9.9.9,Query,CheckEntryVariableBool,Yes,Value: str,inverted_bool,,,<<Value>>,,
 9.9.9,Query,CheckEntryVariableInt,Yes,Value: str; CheckValue: int; CheckType: int6,bool,int,CheckType,"<<Value>> != <CheckValue>
 <<Value>> == <CheckValue>
 <<Value>> <= <CheckValue>
@@ -786,7 +786,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Query,DevideFireWorksEventState,N/A,,int6,,,,,
 9.9.9,Query,DisplayedNewBirthDayMessage,,,inverted_bool,,,,,
 9.9.9,Query,DonationDone,,,inverted_bool,,,,,
-9.9.9,Query,EmoticonCanGet,,,inverted_bool,,,,,
+9.9.9,Query,EmoticonCanGet,Yes,,bool,,,,,
 9.9.9,Query,EnvCheckBetweenDate,,Month0: int; Day0: int; Month1: int; Day1: int; TimeType: str,inverted_bool,,,,,
 9.9.9,Query,EnvConstellation,Yes,ConstellationCheckType: Enume8ae9b9bda5b,"enum[Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpius,Sagittarius]",,,,,
 9.9.9,Query,EnvDayOfWeek,N/A,,"enum[Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday]",,,,,
@@ -806,7 +806,7 @@ MaxVersion,Type,Name,Verified,Parameters,Return,DisplayedReturn,ConversionKey,Co
 9.9.9,Query,EventBranch,,CheckNowTime: bool; AddDay: int,int,,,,,
 9.9.9,Query,EventCheck,,EventLabelString: str,int,,,,,
 9.9.9,Query,EventFlagAllSharePlayPlayer,,AccessKey: str,inverted_bool,,,,,
-9.9.9,Query,EventFlagNpcBool,,AccessKey: str,inverted_bool,,,<.actor>.EventFlags[<AccessKey>],,
+9.9.9,Query,EventFlagNpcBool,Yes,AccessKey: str,inverted_bool,,,<.actor>.EventFlags[<AccessKey>],,
 9.9.9,Query,EventFlagNpcInt,Yes,AccessKey: str; Border: int; FlagCheckType: int7,bool,int,FlagCheckType,"<.actor>.EventFlags[<AccessKey>] != <Border>
 <.actor>.EventFlags[<AccessKey>] == <Border>
 <.actor>.EventFlags[<AccessKey>] <= <Border>
@@ -820,7 +820,7 @@ bitcount(<.actor>.EventFlags[<AccessKey>]) < <Border>","<.actor>.EventFlags[<Acc
 <.actor>.EventFlags[<AccessKey>] < <Border>
 <.actor>.EventFlags[<AccessKey>] <= <Border>
 bitcount(<.actor>.EventFlags[<AccessKey>]) >= <Border>",
-9.9.9,Query,EventFlagSystemBool,,AccessKey: str,inverted_bool,,,System.EventFlags[<AccessKey>],,
+9.9.9,Query,EventFlagSystemBool,Yes,AccessKey: str,inverted_bool,,,System.EventFlags[<AccessKey>],,
 9.9.9,Query,EventFlagSystemInt,Yes,AccessKey: str; Border: int; FlagCheckType: int7,bool,int,FlagCheckType,"System.EventFlags[<AccessKey>] != <Border>
 System.EventFlags[<AccessKey>] == <Border>
 System.EventFlags[<AccessKey>] <= <Border>
