@@ -100,10 +100,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('Converts .bfevfl files to a readable form')
     parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
     parser.add_argument('--functions', default='functions.csv', help='functions.csv file for all actions and queries')
-    parser.add_argument('--version', default='0.0.0', help='where applicable, actions/queries prefixed with version will be used instead of unprefixed versions')
+    parser.add_argument('--version', default='0.0.0', help='game version')
     parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
     parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
-    parser.add_argument('--target', default='evfl', choices=('evfl'), help='decompilation target')
+    parser.add_argument('--target', default='evfl', choices=('evfl',), help='decompilation target')
     args = parser.parse_args()
 
     actions, queries = load_functions_csv(args.functions)
