@@ -126,7 +126,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
         for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
             try:
                 cases.append(
-                        f'{indent(indent_level + 1)}case {", ".join(str(v) for v in values)}:\n' +
+                        f'{indent(indent_level + 1)}case {", ".join(Type_format(self_node.query.rv, v) for v in values)}:\n' +
                         node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
                 )
             except:
