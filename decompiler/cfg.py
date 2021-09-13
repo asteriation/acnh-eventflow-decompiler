@@ -830,13 +830,13 @@ class CFG:
         collapse_andor: bool = True,
         collapse_if: bool = True,
         collapse_case: bool = True,
+        remove_trailing_return: bool = True,
         extract_reused_blocks: bool = True,
         extract_single_statement: bool = False,
         remove_redundant_entrypoints: bool = True,
         collapse_subflow_only: bool = True,
         simplify_ifelse_order: bool = True,
-        remove_trailing_return: bool = True,
-        redundant_extract_max_iter: int = 10000,
+        secondary_max_iter: int = 10000,
     ) -> None:
         if remove_redundant_switch:
             self.__collapse_unconditional_switch()
@@ -850,7 +850,7 @@ class CFG:
             self.__collapse_cases()
         old_nodes = None
         i = 0
-        while i < redundant_extract_max_iter and old_nodes != set(self.nodes.values()):
+        while i < secondary_max_iter and old_nodes != set(self.nodes.values()):
             old_nodes = set(self.nodes.values())
             if extract_reused_blocks:
                 self.__extract_reused_blocks(extract_single_statement)

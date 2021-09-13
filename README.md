@@ -25,6 +25,8 @@ python3 main.py --functions functions.csv \
 
 This outputs the decompiled evfls into `out/1.0.0`.
 
+There are also a handful of flags starting with `--r` (use `--help` for a full list) that control which decompiler passes are run.
+
 ## License
 
 This software is licensed under the terms of the MIT License.

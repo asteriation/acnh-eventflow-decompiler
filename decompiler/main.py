@@ -106,6 +106,22 @@ def main():
     parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
     parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
     parser.add_argument('--target', default='evfl', choices=('evfl',), help='decompilation target')
+
+    passes = parser.add_argument_group('Primary Decompiler Passes', description='Decompiler passes to improve output code')
+    passes.add_argument('--rremove-redundant-switch', metavar='enabled', type=bool, default=False, help='Pass to eliminate unconditional switch statements (default: false)')
+    passes.add_argument('--rswitch-to-if', metavar='enabled', type=bool, default=True, help='Pass to convert switch statements to if/else (default: true)')
+    passes.add_argument('--rcollapse-andor', metavar='enabled', type=bool, default=True, help='Pass to convert chains of if/else to and/or (default: true)')
+    passes.add_argument('--rcollapse-if', metavar='enabled', type=bool, default=True, help='Pass to collapse if/else chains to if/elif/else (default: true)')
+    passes.add_argument('--rcollapse-case', metavar='enabled', type=bool, default=True, help='Pass to combine switchs into group to deduplicate shared end (default: true)')
+    passes.add_argument('--rremove-trailing-return', metavar='enabled', type=bool, default=True, help='Remove trailing return statements at end of flows (default: true)')
+
+    mpasses = parser.add_argument_group('Secondary Decompiler Passes', description='These passes are run multiple times, after the primary passes')
+    mpasses.add_argument('--rextract-reused-blocks', metavar='enabled', type=bool, default=True, help='Extract shared code as a subflow (default: true)')
+    mpasses.add_argument('--rextract-single-statement', metavar='enabled', type=bool, default=False, help='Extract shared single statements as subflows (does nothing if --rextract-reused-blocks (default: false)')
+    mpasses.add_argument('--rremove-redundant-entrypoints', metavar='enabled', type=bool, default=True, help='Remove redundant entrypoint statements (default: true)')
+    mpasses.add_argument('--rcollapse-subflow-only', metavar='enabled', type=bool, default=True, help='Collapse roots that only call a single subflow (default: true)')
+    mpasses.add_argument('--rsimplify-ifelse-order', metavar='enabled', type=bool, default=True, help='Reorder if/else for readability (default: true)')
+    mpasses.add_argument('--rsecondary-max-iter', metavar='iters', type=int, default=10000, help='Max number of iterations for secondary passes')
     args = parser.parse_args()
 
     actions, queries = load_functions_csv(args.functions, args.version)
@@ -118,12 +134,17 @@ def main():
         'evfl': EVFLCodeGenerator
     }[args.target]()
 
+    restructure_flags = dict(vars(args))
+    for k in list(restructure_flags.keys()):
+        if k.startswith('r'):
+            restructure_flags[k[1:]] = restructure_flags[k]
+        del restructure_flags[k]
     for fname in args.bfevfl_files:
         assert fname.endswith('.bfevfl')
         with Path(fname).open('rb') as f:
             LOG.info(f'converting {fname}')
             cfg = bfevfl.read(f.read(), actions, queries)
-            cfg.restructure()
+            cfg.restructure(**restructure_flags)
 
             if args.out_dir:
                 with (Path(args.out_dir) / Path(fname).name.replace('.bfevfl', '.evfl.txt')).open('wt') as of:
