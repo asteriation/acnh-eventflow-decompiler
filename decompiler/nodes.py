@@ -30,12 +30,18 @@ class Node(ABC):
         self.out_edges.remove(dest)
 
     def reroute_in_edge(self, old_src: Node, new_src: Node) -> None:
-        while old_src in self.in_edges:
-            self.in_edges[self.in_edges.index(old_src)] = new_src
+        if old_src in self.in_edges:
+            if new_src in self.in_edges:
+                del self.in_edges[self.in_edges.index(old_src)]
+            else:
+                self.in_edges[self.in_edges.index(old_src)] = new_src
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
-        while old_dest in self.out_edges:
-            self.out_edges[self.out_edges.index(old_dest)] = new_dest
+        if old_dest in self.out_edges:
+            if new_dest in self.out_edges:
+                del self.out_edges[self.out_edges.index(old_dest)]
+            else:
+                self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
     def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
         for node in self.out_edges:
