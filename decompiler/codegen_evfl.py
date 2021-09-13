@@ -57,87 +57,26 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
     assert isinstance(self_node, SwitchNode)
 
     if len(self_node.cases) == 0:
-        return f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)}:\n' + \
-                node_generate_code(NoopNode(''), indent_level + 1, True)
+        return f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}:\n' + \
+                f'{indent(indent_level + 1)}default:\n{indent(indent_level + 2)}return\n'
 
     hint_s = ''.join(f'{indent(indent_level)}# {hint}\n' for hint in self_node.query.hint(self_node.params))
-    if self_node.query.rv == BoolType:
-        if len(self_node.cases) == 1:
-            values = [*self_node.cases.values()][0]
-            if len(values) == 2:
-                # true/false branch are identical, no branch needed
-                return node_generate_code(self_node.out_edges[0], indent_level)
-            else:
-                # if (not) X, else return -> invert unless goto
-                assert self_node.terminal_node is not None
-
-                if isinstance(self_node.terminal_node, NoopNode):
-                    return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, not values[0])}:\n' + \
-                            node_generate_code(self_node.out_edges[0], indent_level + 1, True)
-                else:
-                    not_s = '' if not values[0] else 'not '
-                    return hint_s + f'{indent(indent_level)}if {not_s}{Query_format(self_node.query, self_node.params, values[0])}):\n' + \
-                            node_generate_code(self_node.terminal_node, indent_level + 1, True) + \
-                            node_generate_code(self_node.out_edges[0], indent_level)
-        else:
-            # T/F explicitly spelled out
-            true_node: Node
-            false_node: Node
-
-            if self_node.cases[self_node.out_edges[0].name][0]:
-                true_node, false_node = self_node.out_edges
-            else:
-                false_node, true_node = self_node.out_edges
-            return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)}:\n' + \
-                    node_generate_code(true_node, indent_level + 1, True) + \
-                    f'{indent(indent_level)}else:\n' + \
-                    node_generate_code(false_node, indent_level + 1, True)
-    elif len(self_node.cases) == 1:
-        # if [query] in (...), if [query] = X ... else return -> negate and return unless goto
-        values = [*self_node.cases.values()][0]
-        if len(values) == self_node.query.num_values:
-            # all branches identical, no branch needd
-            return node_generate_code(self_node.out_edges[0], indent_level)
-
-        assert self_node.terminal_node is not None
-
+    cases: List[str] = []
+    for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
         try:
-            if isinstance(self_node.terminal_node, NoopNode):
-                op = f'== {Type_format(self_node.query.rv, values[0])}' if len(values) == 1 else 'in (' + ', '.join(Type_format(self_node.query.rv, v) for v in values) + ')'
-
-                return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {op}:\n' + \
-                        node_generate_code(self_node.out_edges[0], indent_level + 1, True)
-            else:
-                not_op = f'!= {Type_format(self_node.query.rv, values[0])}' if len(values) == 1 else 'not in (' + ', '.join(Type_format(self_node.query.rv, v) for v in values) + ')'
-
-                return hint_s + f'{indent(indent_level)}if {Query_format(self_node.query, self_node.params, False)} {not_op}:\n' + \
-                        node_generate_code(self_node.terminal_node, indent_level + 1, True) + \
-                        node_generate_code(self_node.out_edges[0], indent_level)
+            cases.append(
+                    f'{indent(indent_level + 1)}case {", ".join(Type_format(self_node.query.rv, v) for v in values)}:\n' +
+                    node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
+            )
         except:
-            print(self_node.query, values)
+            print(self_node.query, self_node.cases.values())
             raise
-    else:
-        # generic case:
-        # switch [query]:
-        #   case X, Y:
-        #   default - return
 
-        cases: List[str] = []
-        for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
-            try:
-                cases.append(
-                        f'{indent(indent_level + 1)}case {", ".join(Type_format(self_node.query.rv, v) for v in values)}:\n' +
-                        node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
-                )
-            except:
-                print(self_node.query, self_node.cases.values())
-                raise
-
-        default = ''
-        if sum(len(v) for v in self_node.cases.values()) < self_node.query.num_values:
-            default = f'{indent(indent_level + 1)}default:\n{indent(indent_level + 2)}return\n'
-        return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}:\n' + \
-                ''.join(cases) + default
+    default = ''
+    if sum(len(v) for v in self_node.cases.values()) < self_node.query.num_values:
+        default = f'{indent(indent_level + 1)}default:\n{indent(indent_level + 2)}return\n'
+    return hint_s + f'{indent(indent_level)}switch {Query_format(self_node.query, self_node.params, False)}:\n' + \
+            ''.join(cases) + default
 
 @node_generator(ForkNode)
 def ForkNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:

@@ -463,5 +463,6 @@ def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
     for src, dest in bfevfl.edges:
         cfg.add_edge(src, dest)
 
+    cfg.prepare()
     return cfg
 

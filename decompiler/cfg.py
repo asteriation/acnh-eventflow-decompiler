@@ -189,11 +189,11 @@ class CFG:
         for root in self.roots:
             tn = TerminalNode(f'tm_{root.name}')
             for node in self.__find_postorder(root):
-                if len(node.out_edges) == 0 and not isinstance(node, TerminalNode):
+                if isinstance(node, SwitchNode):
+                    node.register_terminal_node(tn)
+                elif len(node.out_edges) == 0 and not isinstance(node, TerminalNode):
                     node.add_out_edge(tn)
                     tn.add_in_edge(node)
-                elif isinstance(node, SwitchNode):
-                    node.register_terminal_node(tn)
 
             if len(tn.in_edges) > 0:
                 self.nodes[tn.name] = tn
@@ -365,8 +365,9 @@ class CFG:
                 entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
                 self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label)
 
-                active.add(entrypoint)
-                replacement_nodes[nxt] = entrypoint
+                if nxt != entrypoint:
+                    active.add(entrypoint)
+                    replacement_nodes[nxt] = entrypoint
 
         active.remove(node)
         visited.add(node)
@@ -390,6 +391,28 @@ class CFG:
     def __split_loops(self) -> None:
         for root in self.roots:
             self.__split_loops_helper(root, set(), set(), {})
+
+    def __collapse_unconditional_switch(self) -> None:
+        for root in self.roots:
+            for node in self.__find_postorder(root):
+                if not isinstance(node, SwitchNode):
+                    continue
+                if len(node.cases) > 1:
+                    continue
+                if len(node.cases) == 0:
+                    # replace node with node.terminal_node
+                    assert node.terminal_node is not None
+                    replacement = node.terminal_node
+                elif sum(len(v) for v in node.cases.values()) == node.query.num_values:
+                    assert len(node.out_edges) == 1
+                    replacement = node.out_edges[0]
+                else:
+                    continue
+                for parent in node.in_edges:
+                    parent.reroute_out_edge(node, replacement)
+                    replacement.add_in_edge(parent)
+                replacement.del_in_edge(node)
+                del self.nodes[node.name]
 
     def __convert_switch_to_if(self) -> None:
         for root in self.roots:
@@ -632,7 +655,7 @@ class CFG:
 
         return sw
 
-    def __extract_reused_blocks(self, nodes: List[Node] = None) -> None:
+    def __extract_reused_blocks(self, extract_single: bool = False, nodes: List[Node] = None) -> None:
         if nodes is None:
             nodes = list(self.nodes.values())
 
@@ -641,12 +664,12 @@ class CFG:
         #   extract to subflow
         for node in nodes:
             if len(set(node.in_edges)) >= 2 and self.__is_cut([node]) and \
-                    (node.out_edges or not isinstance(node, (ActionNode, TerminalNode, NoopNode, EntryPointNode, SubflowNode))):
+                    (extract_single or node.out_edges or not isinstance(node, (ActionNode, TerminalNode, NoopNode, EntryPointNode, SubflowNode))):
                 self.__detach_node_as_sub(self.__find_root(node), node)
             elif isinstance(node, GroupNode):
                 l = node.nodes[:]
                 l.remove(node.root)
-                self.__extract_reused_blocks(l)
+                self.__extract_reused_blocks(extract_single, l)
                 node.recalculate_group()
 
     def __remove_redundant_entrypoints(self) -> None:
@@ -794,26 +817,53 @@ class CFG:
         src_node.add_out_edge(dest_node)
         dest_node.add_in_edge(src_node)
 
-    def restructure(self) -> None:
+    def prepare(self) -> None:
         self.__separate_overlapping_flows()
         self.__add_terminal_nodes()
 
-        old_nodes = None
-        while old_nodes != set(self.nodes.values()):
-            old_nodes = set(self.nodes.values())
+        self.__split_loops()
 
-            self.__split_loops()
+    def restructure(
+        self,
+        remove_redundant_switch: bool = False,
+        switch_to_if: bool = True,
+        collapse_andor: bool = True,
+        collapse_if: bool = True,
+        collapse_case: bool = True,
+        extract_reused_blocks: bool = True,
+        extract_single_statement: bool = False,
+        remove_redundant_entrypoints: bool = True,
+        collapse_subflow_only: bool = True,
+        simplify_ifelse_order: bool = True,
+        remove_trailing_return: bool = True,
+        redundant_extract_max_iter: int = 10000,
+    ) -> None:
+        if remove_redundant_switch:
+            self.__collapse_unconditional_switch()
+        if switch_to_if:
             self.__convert_switch_to_if()
+        if collapse_andor:
             self.__collapse_andor()
+        if collapse_if:
             self.__collapse_if()
+        if collapse_case:
             self.__collapse_cases()
-            self.__extract_reused_blocks()
-            self.__remove_redundant_entrypoints()
-            self.__collapse_subflow_only_root()
+        old_nodes = None
+        i = 0
+        while i < redundant_extract_max_iter and old_nodes != set(self.nodes.values()):
+            old_nodes = set(self.nodes.values())
+            if extract_reused_blocks:
+                self.__extract_reused_blocks(extract_single_statement)
+            if remove_redundant_entrypoints:
+                self.__remove_redundant_entrypoints()
+            if collapse_subflow_only:
+                self.__collapse_subflow_only_root()
+            if simplify_ifelse_order:
+                self.__simplify_all()
+            i += 1
 
-            self.__simplify_all()
-
-        self.__remove_trailing_return()
+        if remove_trailing_return:
+            self.__remove_trailing_return()
 
     def get_dot(self, search_from_roots: bool = False) -> str:
         # search_from_roots = True may be more useful for debugging in some cases
