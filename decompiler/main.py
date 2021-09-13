@@ -26,75 +26,79 @@ def compare_version(current_version: str, max_version: str) -> bool:
     return True
 
 def load_functions_csv(filename: str, version: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    with Path(filename).open('rt') as ff:
-        reader = csv.reader(ff)
-        headers: Dict[str, int] = {}
+    try:
+        with Path(filename).open('rt') as ff:
+            reader = csv.reader(ff)
+            headers: Dict[str, int] = {}
 
-        for i, col in enumerate(next(reader)):
-            headers[col] = i
+            for i, col in enumerate(next(reader)):
+                headers[col] = i
 
-        required_headers = (
-            'MaxVersion', 'Type', 'Name', 'Parameters', 'Return',
-            'ConversionKey', 'Conversion', 'NegatedConversion',
-        )
+            required_headers = (
+                'MaxVersion', 'Type', 'Name', 'Parameters', 'Return',
+                'ConversionKey', 'Conversion', 'NegatedConversion',
+            )
 
-        assert all(h in headers for h in required_headers)
+            assert all(h in headers for h in required_headers)
 
-        actions: Dict[str, Any] = {}
-        queries: Dict[str, Any] = {}
+            actions: Dict[str, Any] = {}
+            queries: Dict[str, Any] = {}
 
-        for row in reader:
-            max_version = row[headers['MaxVersion']]
-            name = row[headers['Name']]
-            type_ = row[headers['Type']]
+            for row in reader:
+                max_version = row[headers['MaxVersion']]
+                name = row[headers['Name']]
+                type_ = row[headers['Type']]
 
-            if max_version == 'pseudo' or not compare_version(version, max_version):
-                continue
-            if (type_ == 'Action' and name in actions) or (type_ == 'Query' and name in queries):
-                continue
+                if max_version == 'pseudo' or not compare_version(version, max_version):
+                    continue
+                if (type_ == 'Action' and name in actions) or (type_ == 'Query' and name in queries):
+                    continue
 
-            info: Dict[str, Any] = {}
+                info: Dict[str, Any] = {}
 
-            param_info = row[headers['Parameters']].split(';') if row[headers['Parameters']] else []
-            info['params'] = OrderedDict()
-            for param in param_info:
-                param = param.strip()
-                assert ':' in param and param.index(':') not in (0, len(param) - 1), f'bad param list for {name}'
-                pname, ptype = (x.strip() for x in param.split(':'))
-                assert ptype != 'inverted_bool', f'inverted_bool not allowed for param types for {name}'
-                info['params'][pname] = ptype if not ptype.startswith('Enum') else 'str' # todo: proper EnumXYZ handling
+                param_info = row[headers['Parameters']].split(';') if row[headers['Parameters']] else []
+                info['params'] = OrderedDict()
+                for param in param_info:
+                    param = param.strip()
+                    assert ':' in param and param.index(':') not in (0, len(param) - 1), f'bad param list for {name}'
+                    pname, ptype = (x.strip() for x in param.split(':'))
+                    assert ptype != 'inverted_bool', f'inverted_bool not allowed for param types for {name}'
+                    info['params'][pname] = ptype if not ptype.startswith('Enum') else 'str' # todo: proper EnumXYZ handling
 
-            if row[headers['Return']]:
-                info['return'] = row[headers['Return']]
-                if info['return'] == 'inverted_bool':
-                    info['return'] = 'bool'
-                    info['inverted'] = True
+                if row[headers['Return']]:
+                    info['return'] = row[headers['Return']]
+                    if info['return'] == 'inverted_bool':
+                        info['return'] = 'bool'
+                        info['inverted'] = True
 
-            if row[headers['ConversionKey']]:
-                if row[headers['Conversion']]:
-                    info['conversion'] = {
-                        'key': row[headers['ConversionKey']],
-                        'values': [x.strip() for x in row[headers['Conversion']].split('\n')]
-                    }
-                if row[headers['NegatedConversion']]:
-                    info['neg_conversion'] = {
-                        'key': row[headers['ConversionKey']],
-                        'values': [x.strip() for x in row[headers['NegatedConversion']].split('\n')]
-                    }
-            else:
-                if row[headers['Conversion']]:
-                    info['conversion'] = row[headers['Conversion']]
-                if row[headers['NegatedConversion']]:
-                    info['neg_conversion'] = row[headers['NegatedConversion']]
+                if row[headers['ConversionKey']]:
+                    if row[headers['Conversion']]:
+                        info['conversion'] = {
+                            'key': row[headers['ConversionKey']],
+                            'values': [x.strip() for x in row[headers['Conversion']].split('\n')]
+                        }
+                    if row[headers['NegatedConversion']]:
+                        info['neg_conversion'] = {
+                            'key': row[headers['ConversionKey']],
+                            'values': [x.strip() for x in row[headers['NegatedConversion']].split('\n')]
+                        }
+                else:
+                    if row[headers['Conversion']]:
+                        info['conversion'] = row[headers['Conversion']]
+                    if row[headers['NegatedConversion']]:
+                        info['neg_conversion'] = row[headers['NegatedConversion']]
 
-            if type_ == 'Action':
-                actions[name] = info
-            elif type_ == 'Query':
-                queries[name] = info
-            else:
-                raise ValueError(f'bad function type: {type_}')
+                if type_ == 'Action':
+                    actions[name] = info
+                elif type_ == 'Query':
+                    queries[name] = info
+                else:
+                    raise ValueError(f'bad function type: {type_}')
 
-    return actions, queries
+        return actions, queries
+    except FileNotFoundError:
+        LOG.warning(f'{filename} not found, proceeding without function signatures')
+        return {}, {}
 
 def main():
     parser = argparse.ArgumentParser(

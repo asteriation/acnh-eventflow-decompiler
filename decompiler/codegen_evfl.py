@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List
 
+from .logger import LOG
+
 from .codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
 from .datatype import AnyType, BoolType, Type, Argument
 from .indent import indent
@@ -69,7 +71,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
                     node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
             )
         except:
-            print(self_node.query, self_node.cases.values())
+            LOG.error(f'Encountered query that does not match signature: {self_node.query} {self_node.cases.values()}')
             raise
 
     default = ''
@@ -199,14 +201,14 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
             try:
                 return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {Type_format(self_pred.query.rv, self_pred.values[0])}'
             except:
-                print(self_pred.query, self_pred.values)
+                LOG.error(f'Encountered query that does not match signature: {self_pred.query} {self_pred.values}')
                 raise
         else:
             op = 'not in' if self_pred.negated else 'in'
             try:
                 vals_s = [Type_format(self_pred.query.rv, v) for v in self_pred.values]
             except:
-                print(self_pred.query, self_pred.values)
+                LOG.error(f'Encountered query that does not match signature: {self_pred.query} {self_pred.values}')
                 raise
             return f'{Query_format(self_pred.query, self_pred.params, False)} {op} ({", ".join(vals_s)})'
 
@@ -242,7 +244,7 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
             else:
                 value = Type_format(p.type, params[p.name])
         except:
-            print(action, p, params)
+            LOG.error(f'Encountered action that does not match signature {action} {p} {params}')
             raise
         conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
         conversion = conversion.replace(f'<{p.name}>', value)
@@ -271,7 +273,7 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
             else:
                 value = Type_format(p.type, params[p.name])
         except:
-            print(query, p, params)
+            LOG.error(f'Encountered query that does not match signature {query} {p} {params}')
             raise
         conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
         conversion = conversion.replace(f'<{p.name}>', value)

@@ -75,7 +75,7 @@ def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[
 def check_and_update_query(actor: BFEVFLActor, query_index: int, params: Dict[str, Any], rvs: Iterable[int]):
     ptypes = infer_types(params)
     if not actor.queries[query_index][1]:
-        rt = Type(f'int{max(rvs) + 1 if rvs else 0}')
+        rt = Type(f'int{max(max(rvs) + 1 if rvs else 0, 2)}')
         actor.queries[query_index] = (Query(actor.name, actor.queries[query_index][0].name,
                 [Param(n, t) for n, t in ptypes.items()], rt), True)
     else:
@@ -87,7 +87,7 @@ def check_and_update_query(actor: BFEVFLActor, query_index: int, params: Dict[st
                 query.params[i] = Param(pname, AnyType)
         mx = max(rvs) + 1 if rvs else 0
         if int(query.rv.type[3:]) < mx:
-            query.rv = Type(f'int{mx}')
+            query.rv = Type(f'int{max(mx, 2)}')
 
 def _load_str(bs: ConstBitStream, offset: int, len_skipped: bool = False, **kwargs: Any) -> str:
     with read_at_offset(bs, offset - (2 if len_skipped else 0), **kwargs):
