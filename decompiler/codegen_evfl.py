@@ -194,7 +194,7 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
         if len(self_pred.values) == 1:
             return Query_format(self_pred.query, self_pred.params, self_pred.negated)
         else:
-            return 'False' if self_pred.negated else 'True'
+            return 'false' if self_pred.negated else 'true'
     else:
         if len(self_pred.values) == 1:
             op = '!=' if self_pred.negated else '=='
