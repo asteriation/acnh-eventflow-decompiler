@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple
+from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple, Callable
 
 from .datatype import Type
 from .predicates import Predicate, NotPredicate, QueryPredicate
@@ -66,6 +66,9 @@ class RootNode(Node):
         name: str
         type_: Type
         initial_value: Union[int, bool, float]
+
+        def quoted(self, id_quote: Callable[[str], str] = lambda x: x) -> str:
+            return f'{id_quote(self.name)}: {id_quote(str(self.type_))} = {self.initial_value}'
 
         def __str__(self) -> str:
             return f'{self.name}: {self.type_} = {self.initial_value}'

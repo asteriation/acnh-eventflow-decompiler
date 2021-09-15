@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Callable, Dict, List
 
 from .logger import LOG
@@ -25,6 +26,14 @@ def pred_generator(typ: type) -> Callable[[PredicateCodeGenerator], PredicateCod
         return f
     return inner
 
+raw_identifier_regex = re.compile(r'[A-Za-z](?:[A-Za-z0-9_\-]*[A-Za-z0-9]| [A-Za-z0-9]*)')
+
+def id_(name: str) -> str:
+    if raw_identifier_regex.fullmatch(name) is not None:
+        return name
+    else:
+        return '`' + name.replace('\\', '\\\\').replace('`', '\\`') + '`'
+
 def node_generate_code(node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
     return node_codegen[type(node)](node, indent_level, generate_pass)
 
@@ -33,7 +42,7 @@ def pred_generate_code(pred: Predicate) -> str:
 
 class EVFLCodeGenerator(CodeGenerator):
     def generate_actor_annotation(self, actor_name: str, secondary_name: str) -> str:
-        return f'@{actor_name}:{secondary_name}'
+        return f'@{id_(actor_name)}:{id_(secondary_name)}'
 
     def generate_code(self, node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
         return node_generate_code(node, indent_level, generate_pass)
@@ -43,7 +52,7 @@ def RootNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass
     assert isinstance(self_node, RootNode)
 
     local = 'local ' if self_node.local else ''
-    return f'{indent(indent_level)}{local}flow {self_node.name}({", ".join(str(v) for v in self_node.vardefs)}):\n' + \
+    return f'{indent(indent_level)}{local}flow {id_(self_node.name)}({", ".join(v.quoted(id_) for v in self_node.vardefs)}):\n' + \
             '\n'.join(node_generate_code(n, indent_level + 1) for n in self_node.out_edges)
 
 @node_generator(ActionNode)
@@ -99,11 +108,11 @@ def JoinNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass
 def SubflowNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
     assert isinstance(self_node, SubflowNode)
 
-    ns = f'{self_node.ns}::' if self_node.ns else ''
+    ns = f'{id_(self_node.ns)}::' if self_node.ns else ''
     # todo: type-checked subflow params
     # todo: hints
-    param_s = ', '.join(f'{name}={Type_format(AnyType, value)}' for name, value in self_node.params.items())
-    return f'{indent(indent_level)}run {ns}{self_node.called_root_name}({param_s})\n' + \
+    param_s = ', '.join(f'{id_(name)}={Type_format(AnyType, value)}' for name, value in self_node.params.items())
+    return f'{indent(indent_level)}run {ns}{id_(self_node.called_root_name)}({param_s})\n' + \
             '\n'.join(node_generate_code(e, indent_level) for e in self_node.out_edges)
 
 @node_generator(TerminalNode)
@@ -131,7 +140,7 @@ def NoopNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass
 def EntryPointNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
     assert isinstance(self_node, EntryPointNode)
 
-    return f'{indent(0)}entrypoint {self_node.entry_label}:\n' + \
+    return f'{indent(0)}entrypoint {id_(self_node.entry_label)}:\n' + \
             '\n'.join(node_generate_code(e, indent_level) for e in self_node.out_edges)
 
 @node_generator(GroupNode)
@@ -231,8 +240,8 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
     return ' or '.join([f'({pred_generate_code(inner)})' for inner in self_pred.inners])
 
 def Action_format(action: Action, params: Dict[str, Any]) -> str:
-    conversion = action.conversion.replace('<.name>', f'{action.actor_name}.{action.name}')
-    conversion = conversion.replace('<.actor>', f'{action.actor_name}')
+    conversion = action.conversion.replace('<.name>', f'{id_(action.actor_name)}.{id_(action.name)}')
+    conversion = conversion.replace('<.actor>', f'{id_(action.actor_name)}')
     for p in action.params:
         try:
             assert p.name in params
@@ -246,7 +255,7 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
         except:
             LOG.error(f'Encountered action that does not match signature {action} {p} {params}')
             raise
-        conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
+        conversion = conversion.replace(f'<<{p.name}>>', id_(str(params[p.name])))
         conversion = conversion.replace(f'<{p.name}>', value)
     return conversion
 
@@ -260,8 +269,8 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
         conversion = conversion_used['values'][pivot]
     else:
         conversion = conversion_used
-    conversion = conversion.replace('<.name>', f'{query.actor_name}.{query.name}')
-    conversion = conversion.replace('<.actor>', f'{query.actor_name}')
+    conversion = conversion.replace('<.name>', f'{id_(query.actor_name)}.{id_(query.name)}')
+    conversion = conversion.replace('<.actor>', f'{id_(query.actor_name)}')
     for p in query.params:
         try:
             assert p.name in params
@@ -275,7 +284,7 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
         except:
             LOG.error(f'Encountered query that does not match signature {query} {p} {params}')
             raise
-        conversion = conversion.replace(f'<<{p.name}>>', str(params[p.name]))
+        conversion = conversion.replace(f'<<{p.name}>>', id_(str(params[p.name])))
         conversion = conversion.replace(f'<{p.name}>', value)
     return conversion
 
