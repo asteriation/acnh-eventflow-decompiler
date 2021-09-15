@@ -173,6 +173,8 @@ class CFG:
     def __convert_node_to_entrypoint(self, node: Node, name: str) -> EntryPointNode:
         if isinstance(node, EntryPointNode):
             return node
+        if f'{node.name}-entrypoint' in self.nodes:
+            return self.nodes[f'{node.name}-entrypoint']
 
         entry_point_node = EntryPointNode(f'{node.name}-entrypoint', name)
         entry_point_node.add_out_edge(node)
