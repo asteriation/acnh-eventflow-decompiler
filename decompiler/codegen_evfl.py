@@ -313,6 +313,8 @@ def Type_format(type_: Type, value: Any) -> str:
         assert isinstance(value, bool) or (isinstance(value, int) and 0 <= value <= 1)
         return 'true' if value else 'false'
     elif type_.type == 'any':
+        if isinstance(value, bool):
+            return 'true' if value else 'false'
         return repr(value)
     else:
         raise ValueError(f'bad type: {type_.type}')
