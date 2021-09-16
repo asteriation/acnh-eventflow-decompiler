@@ -79,7 +79,7 @@ def SwitchNode_generate_code(self_node: Node, indent_level: int = 0, generate_pa
     for event, values in sorted(self_node.cases.items(), key=lambda x: min(x[1])):
         try:
             cases.append(
-                    f'{indent(indent_level + 1)}case {", ".join(Type_format(self_node.query.rv, v) for v in values)}:\n' +
+                    f'{indent(indent_level + 1)}case {", ".join(Type_format(self_node.query.rv, v, True) for v in values)}:\n' +
                     node_generate_code([e for e in self_node.out_edges if e.name == event][0], indent_level + 2, True)
             )
         except:
@@ -211,14 +211,14 @@ def QueryPredicate_generate_code(self_pred: Predicate) -> str:
         if len(self_pred.values) == 1:
             op = '!=' if self_pred.negated else '=='
             try:
-                return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {Type_format(self_pred.query.rv, self_pred.values[0])}'
+                return f'{Query_format(self_pred.query, self_pred.params, False)} {op} {Type_format(self_pred.query.rv, self_pred.values[0], True)}'
             except:
                 LOG.error(f'Encountered query that does not match signature: {self_pred.query} {self_pred.values}')
                 raise
         else:
             op = 'not in' if self_pred.negated else 'in'
             try:
-                vals_s = [Type_format(self_pred.query.rv, v) for v in self_pred.values]
+                vals_s = [Type_format(self_pred.query.rv, v, True) for v in self_pred.values]
             except:
                 LOG.error(f'Encountered query that does not match signature: {self_pred.query} {self_pred.values}')
                 raise
@@ -291,7 +291,7 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
         conversion = conversion.replace(f'<{p.name}>', value)
     return conversion
 
-def Type_format(type_: Type, value: Any) -> str:
+def Type_format(type_: Type, value: Any, force_bool_to_int: bool = False) -> str:
     if isinstance(value, Argument):
         return str(value)
 
@@ -312,12 +312,12 @@ def Type_format(type_: Type, value: Any) -> str:
     elif type_.type == 'str':
         assert isinstance(value, str)
         return repr(value)
-    elif type_.type == 'bool':
+    elif type_.type == 'bool' or (type_.type == 'any' and isinstance(value, bool)):
         assert isinstance(value, bool) or (isinstance(value, int) and 0 <= value <= 1)
+        if force_bool_to_int:
+            return str(int(value))
         return 'true' if value else 'false'
     elif type_.type == 'any':
-        if isinstance(value, bool):
-            return 'true' if value else 'false'
         return repr(value)
     else:
         raise ValueError(f'bad type: {type_.type}')
