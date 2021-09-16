@@ -257,7 +257,7 @@ class CFG:
             return True
 
         node = dominatee
-        while node != tree[node]:
+        while node in tree and node != tree[node]:
             if tree[node] == dominator:
                 return True
             node = tree[node]
@@ -284,12 +284,14 @@ class CFG:
         src.del_in_edge(ptr_node)
         return rv
 
-    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], replacement_nodes: Dict[Node, Node]) -> None:
+    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], replacement_nodes: Dict[Node, Node]) -> bool:
         active.add(node)
 
         for nxt in node.out_edges[:]:
             if nxt not in visited and nxt not in active:
-                self.__split_loops_helper(nxt, active, visited, replacement_nodes)
+                rv = self.__split_loops_helper(nxt, active, visited, replacement_nodes)
+                if rv:
+                    return True
             elif nxt in active and nxt not in visited:
                 # loop starting at nxt, with a final node -> nxt edge to complete cycle
                 # while (...) {...} loop conditions
@@ -318,8 +320,8 @@ class CFG:
                             while_node = self.__inject_while(nxt, loop_cond, A, B)
                             active.add(while_node)
                             replacement_nodes[nxt] = while_node
-                            break
-                elif len(node.out_edges) == 1 and len(nxt.out_edges) == 1:
+                            return True
+                elif len(node.out_edges) == 1 and len(nxt.out_edges) == 1 and isinstance(nxt, SwitchNode):
                     # check for while true pattern
                     if self.__is_contained_subgraph(nxt.out_edges[0], nxt):
                         A = nxt.out_edges[0]
@@ -332,7 +334,7 @@ class CFG:
                         while_node = self.__inject_while(nxt, ConstPredicate(True), A, inf_terminal)
                         active.add(while_node)
                         replacement_nodes[nxt] = while_node
-                        break
+                        return True
                 elif len(node.out_edges) == 2 and isinstance(node, SwitchNode):
                     # check for do-while pattern
                     A, B = node.out_edges
@@ -357,13 +359,13 @@ class CFG:
                                 do_while_node.add_in_edge(in_edge)
                                 nxt.del_in_edge(in_edge)
                             do_while_node.add_out_edge(A)
-                            A.reroute_in_edge(node, do_while_node)
+                            A.add_in_edge(do_while_node)
                             do_while_node.add_out_edge(B)
                             B.reroute_in_edge(node, do_while_node)
                             self.nodes[do_while_node.name] = do_while_node
                             active.add(do_while_node)
                             replacement_nodes[nxt] = do_while_node
-                            break
+                            return True
 
                 # doesn't match our loop patterns, so rewrite with goto
                 entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
@@ -372,12 +374,14 @@ class CFG:
                 if nxt != entrypoint:
                     active.add(entrypoint)
                     replacement_nodes[nxt] = entrypoint
+                return True
 
         active.remove(node)
         visited.add(node)
         if node in replacement_nodes:
             active.remove(replacement_nodes[node])
             visited.add(replacement_nodes[node])
+        return False
 
     def __inject_while(self, loop_head, loop_cond, loop_body, loop_tail) -> WhileNode:
         while_node = WhileNode(loop_head.name, loop_cond, loop_body, loop_tail)
@@ -394,7 +398,8 @@ class CFG:
 
     def __split_loops(self) -> None:
         for root in self.roots:
-            self.__split_loops_helper(root, set(), set(), {})
+            while self.__split_loops_helper(root, set(), set(), {}):
+                pass
 
     def __collapse_unconditional_switch(self) -> None:
         for root in self.roots:
@@ -580,7 +585,7 @@ class CFG:
                 node = self.__try_collapse_block(root, node)
 
     def __find_block_end(self, node: Node, dom: Dict[Node, Node]) -> Optional[Node]:
-        if not all(dom[child] is node or isinstance(child, TerminalNode) for child in node.out_edges):
+        if not all((child in dom and dom[child] is node) or isinstance(child, TerminalNode) for child in node.out_edges):
             return None
 
         end: Optional[Node] = None
@@ -876,3 +881,9 @@ class CFG:
         else:
             return f'digraph {self.name}' + '{ compound=true; ' + ''.join(n.get_dot() for r in self.roots for n in self.__find_postorder(r)) + '}'
 
+    def check_graph(self) -> None:
+        for node in self.nodes.values():
+            for in_edge in node.in_edges:
+                assert node in in_edge.out_edges, f'{node} - {in_edge}'
+            for out_edge in node.out_edges:
+                assert node in out_edge.in_edges, f'{node} - {out_edge}'

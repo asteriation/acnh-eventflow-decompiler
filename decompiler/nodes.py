@@ -52,7 +52,7 @@ class Node(ABC):
 
     def __str__(self) -> str:
         return f'Node[name={self.name}' + \
-            ', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
+            f', in_edges=[{", ".join(n.name for n in self.in_edges)}]' + \
             f', out_edges=[{", ".join(n.name for n in self.out_edges)}]' + \
             ']'
 
@@ -308,7 +308,9 @@ class IfElseNode(Node):
             self.rules[-1], self.default = IfElseNode.Rule(~self.rules[-1].predicate, self.default), self.rules[-1].node
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
+        noop = NoopNode(f'pass_{self.name}')
+        self.reroute_out_edge(dest, noop) # todo: this noop node is not in CFG.nodes
+        noop.add_in_edge(self)
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         Node.reroute_out_edge(self, old_dest, new_dest)
@@ -335,7 +337,9 @@ class WhileNode(Node):
         self.loop_exit = loop_exit
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
+        noop = NoopNode(f'pass_{self.name}')
+        self.reroute_out_edge(dest, noop) # todo: this noop node is not in CFG.nodes
+        noop.add_in_edge(self)
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:
@@ -361,7 +365,9 @@ class DoWhileNode(Node):
         self.loop_exit = loop_exit
 
     def del_out_edge(self, dest: Node) -> None:
-        self.reroute_out_edge(dest, NoopNode(f'pass_{self.name}')) # todo: this noop node is not in CFG.nodes
+        noop = NoopNode(f'pass_{self.name}')
+        self.reroute_out_edge(dest, noop) # todo: this noop node is not in CFG.nodes
+        noop.add_in_edge(self)
 
     def reroute_out_edge(self, old_dest: Node, new_dest: Node) -> None:
         if old_dest == self.loop_body:

@@ -276,7 +276,7 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
     conversion = conversion.replace('<.actor>', f'{id_(query.actor_name)}')
     for p in query.params:
         try:
-            assert p.name in params
+            assert p.name in params, p.name
             # some places do this with a string value instead of an Argument value
             if p.name == f'EntryVariableKeyInt_{params[p.name]}' or \
                 p.name == f'EntryVariableKeyBool_{params[p.name]}' or \
