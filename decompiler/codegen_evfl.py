@@ -305,7 +305,7 @@ def Type_format(type_: Type, value: Any) -> str:
         assert not isinstance(value, bool) and isinstance(value, int)
         vals = type_.type[5:-1].split(',')
         assert 0 <= value < len(vals)
-        return quote_id(vals[value])
+        return quote_id(vals[value].strip())
     elif type_.type == 'float':
         assert not isinstance(value, bool) and isinstance(value, (int, float))
         return repr(float(value))
