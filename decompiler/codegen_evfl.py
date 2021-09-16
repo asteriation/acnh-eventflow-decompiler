@@ -32,7 +32,10 @@ def id_(name: str) -> str:
     if raw_identifier_regex.fullmatch(name) is not None:
         return name
     else:
-        return '`' + name.replace('\\', '\\\\').replace('`', '\\`') + '`'
+        return quote_id(name)
+
+def quote_id(s: str) -> str:
+    return '`' + s.replace('\\', '\\\\').replace('`', '\\`') + '`'
 
 def node_generate_code(node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
     return node_codegen[type(node)](node, indent_level, generate_pass)
@@ -302,7 +305,7 @@ def Type_format(type_: Type, value: Any) -> str:
         assert not isinstance(value, bool) and isinstance(value, int)
         vals = type_.type[5:-1].split(',')
         assert 0 <= value < len(vals)
-        return vals[value]
+        return quote_id(vals[value])
     elif type_.type == 'float':
         assert not isinstance(value, bool) and isinstance(value, (int, float))
         return repr(float(value))
