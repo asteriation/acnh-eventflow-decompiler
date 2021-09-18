@@ -26,7 +26,7 @@ def pred_generator(typ: type) -> Callable[[PredicateCodeGenerator], PredicateCod
         return f
     return inner
 
-raw_identifier_regex = re.compile(r'[A-Za-z](?:[A-Za-z0-9_\-]*[A-Za-z0-9]| [A-Za-z0-9]*)')
+raw_identifier_regex = re.compile(r'[A-Za-z](?:[A-Za-z0-9_\-]*[A-Za-z0-9]|[A-Za-z0-9]*)')
 
 def id_(name: str) -> str:
     if raw_identifier_regex.fullmatch(name) is not None:
