@@ -700,9 +700,9 @@ class CFG:
                     self.__merge_coupled_nodes(node, node.out_edges[0], new_parent)
             new_roots.append(new_root)
         self.roots = new_roots
+        remap = {('', old): ('', new) for old, new in remapped_entrypoints.items()}
         for root in self.roots:
-            for old, new in remapped_entrypoints.items():
-                root.remap_subflow(('', old), ('', new))
+            root.remap_subflow(remap)
 
     def __collapse_subflow_only_root(self) -> None:
         remapped_roots: Dict[str, Tuple[str, str]] = {}
@@ -724,9 +724,9 @@ class CFG:
                         remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
+        remap = {('', old): new for old, new in remapped_roots.items()}
         for root in self.roots:
-            for old, new in remapped_roots.items():
-                root.remap_subflow(('', old), new)
+            root.remap_subflow(remap)
 
     def __simplify_all(self) -> None:
         for node in self.nodes.values():

@@ -43,9 +43,13 @@ class Node(ABC):
             else:
                 self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
-    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
+    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str]], visited: Optional[Set[Node]] = None) -> None:
+        if visited is None:
+            visited = set()
+        visited.add(self)
         for node in self.out_edges:
-            node.remap_subflow(old, new)
+            if node not in visited:
+                node.remap_subflow(remap, visited)
 
     def simplify(self) -> None:
         pass
@@ -190,10 +194,11 @@ class SubflowNode(Node):
         self.nxt = nxt
         self.params = params.copy() if params else {}
 
-    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
-        if (self.ns, self.called_root_name) == old:
-            self.ns, self.called_root_name = new
-        super().remap_subflow(old, new)
+    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str]], visited: Optional[Set[Node]] = None) -> None:
+        my = (self.ns, self.called_root_name)
+        if my in remap:
+            self.ns, self.called_root_name = remap[my]
+        super().remap_subflow(remap, visited)
 
     def __str__(self) -> str:
         return f'SubflowNode[name={self.name}' + \
@@ -271,10 +276,10 @@ class GroupNode(Node):
         for node in self.nodes:
             node.simplify()
 
-    def remap_subflow(self, old: Tuple[str, str], new: Tuple[str, str]) -> None:
+    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str]], visited: Optional[Set[Node]] = None) -> None:
         for node in self.nodes:
-            node.remap_subflow(old, new)
-        super().remap_subflow(old, new)
+            node.remap_subflow(remap, visited)
+        super().remap_subflow(remap, visited)
 
     def __str__(self) -> str:
         return f'GroupNode[name={self.name}' + \
