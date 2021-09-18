@@ -67,11 +67,13 @@ class RootNode(Node):
         type_: Type
         initial_value: Union[int, bool, float]
 
-        def quoted(self, id_quote: Callable[[str], str] = lambda x: x) -> str:
-            return f'{id_quote(self.name)}: {id_quote(str(self.type_))} = {self.initial_value}'
+        def quoted(self,
+                   id_quote: Callable[[str], str] = lambda x: x,
+                   Type_format: Callable[[Type, Any], str] = lambda x, y: str(y)) -> str:
+            return f'{id_quote(self.name)}: {id_quote(str(self.type_))} = {Type_format(self.type_, self.initial_value)}'
 
         def __str__(self) -> str:
-            return f'{self.name}: {self.type_} = {self.initial_value}'
+            return f'{self.name}: {self.type_} = {initial_value}'
 
         def __hash__(self) -> int:
             return hash(self.name) ^ hash(self.type_.type) ^ hash(self.initial_value)

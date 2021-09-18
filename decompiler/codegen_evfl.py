@@ -55,7 +55,7 @@ def RootNode_generate_code(self_node: Node, indent_level: int = 0, generate_pass
     assert isinstance(self_node, RootNode)
 
     local = 'local ' if self_node.local else ''
-    return f'{indent(indent_level)}{local}flow {id_(self_node.name)}({", ".join(v.quoted(id_) for v in self_node.vardefs)}):\n' + \
+    return f'{indent(indent_level)}{local}flow {id_(self_node.name)}({", ".join(v.quoted(id_, Type_format) for v in self_node.vardefs)}):\n' + \
             '\n'.join(node_generate_code(n, indent_level + 1) for n in self_node.out_edges)
 
 @node_generator(ActionNode)
