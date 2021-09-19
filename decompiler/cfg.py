@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
-from .datatype import Type
+from .datatype import AnyType, Type, Argument
 from .predicates import Predicate, ConstPredicate, QueryPredicate
 from .actors import Param, Action, Query, Actor
 from .nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
@@ -52,6 +52,59 @@ class CFG:
             if set(n.in_edges) - reachable and n not in ns and not isinstance(n, TerminalNode):
                 return False
         return True
+
+    def __update_vardefs(self, root: RootNode, name: str, type_: Type) -> None:
+        for vardef in root.vardefs:
+            if vardef.name == name:
+                vardef.type_ = type_
+                return
+        root.vardefs.append(RootNode.VarDef(name, type_, initial_value=None))
+
+    def __add_implicit_vardefs(self) -> None:
+        known_roots = {r.name: {v.name: v.type_ for v in r.vardefs} for r in self.roots}
+        placeholder_type = Type('_placeholder')
+        changed = True
+        while changed:
+            changed = False
+            for root in self.roots:
+                vardefs = known_roots[root.name]
+                for node in self.__find_reverse_postorder(root):
+                    if isinstance(node, (ActionNode, SwitchNode)):
+                        params = node.params
+                        for name, value in params.items():
+                            if isinstance(value, Argument):
+                                function = node.action if isinstance(node, ActionNode) else node.query
+                                old_value = vardefs.get(value, None)
+                                vardefs[value] = [p.type for p in function.params if p.name == name][0]
+                                if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
+                                    print(function, old_value, vardefs[value], name, value)
+                                    vardefs[value] = AnyType
+                                if vardefs[value] != old_value:
+                                    changed = True
+                                    self.__update_vardefs(root, value, vardefs[value])
+                    elif isinstance(node, SubflowNode):
+                        params = node.params
+                        for name, value in params.items():
+                            if isinstance(value, Argument):
+                                signature = {} if node.ns else known_roots.get(node.called_root_name, {})
+                                old_value = vardefs.get(value, None)
+                                vardefs[value] = signature.get(name, placeholder_type)
+                                if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
+                                    if vardefs[value] != placeholder_type:
+                                        print(function, old_value, vardefs[value], name, value)
+                                        vardefs[value] = AnyType
+                                    else:
+                                        vardefs[value] = old_value
+                                if vardefs[value] != old_value:
+                                    changed = True
+                                    self.__update_vardefs(root, name, vardefs[value])
+
+        for root in self.roots:
+            vardefs = known_roots[root.name]
+            for name, type_ in vardefs.items():
+                if type_ == placeholder_type:
+                    print(root.name, name)
+                    self.__update_vardefs(root, name, AnyType)
 
     def __separate_overlapping_flows(self) -> None:
         components = self.__assign_components()
@@ -827,6 +880,7 @@ class CFG:
         dest_node.add_in_edge(src_node)
 
     def prepare(self) -> None:
+        self.__add_implicit_vardefs()
         self.__separate_overlapping_flows()
         self.__add_terminal_nodes()
 

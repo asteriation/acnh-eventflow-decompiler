@@ -69,12 +69,15 @@ class RootNode(Node):
     class VarDef:
         name: str
         type_: Type
-        initial_value: Union[int, bool, float]
+        initial_value: Optional[Union[int, bool, float]]
 
         def quoted(self,
                    id_quote: Callable[[str], str] = lambda x: x,
                    Type_format: Callable[[Type, Any], str] = lambda x, y: str(y)) -> str:
-            return f'{id_quote(self.name)}: {id_quote(str(self.type_))} = {Type_format(self.type_, self.initial_value)}'
+            if self.initial_value is not None:
+                return f'{id_quote(self.name)}: {id_quote(str(self.type_))} = {Type_format(self.type_, self.initial_value)}'
+            else:
+                return f'{id_quote(self.name)}: {id_quote(str(self.type_))}'
 
         def __str__(self) -> str:
             return f'{self.name}: {self.type_} = {initial_value}'
