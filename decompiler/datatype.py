@@ -37,3 +37,20 @@ FloatType = Type('float')
 IntType = Type('int')
 StrType = Type('str')
 
+def infer_type(pval: Any) -> Type:
+    if isinstance(pval, bool):
+        return BoolType
+    elif isinstance(pval, float):
+        return FloatType
+    elif isinstance(pval, str):
+        return StrType
+    elif isinstance(pval, int):
+        return IntType
+    else:
+        return AnyType
+
+def infer_types(params: Dict[str, Any]) -> Dict[str, Type]:
+    types: Dict[str, Type] = {}
+    for pname, pval in params.items():
+        types[pname] = infer_type(pval)
+    return types

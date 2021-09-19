@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple
 
-from .datatype import AnyType, Type, Argument
+from .datatype import AnyType, Type, Argument, infer_type
 from .predicates import Predicate, ConstPredicate, QueryPredicate
 from .actors import Param, Action, Query, Actor
 from .nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
@@ -77,7 +77,6 @@ class CFG:
                                 old_value = vardefs.get(value, None)
                                 vardefs[value] = [p.type for p in function.params if p.name == name][0]
                                 if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
-                                    print(function, old_value, vardefs[value], name, value)
                                     vardefs[value] = AnyType
                                 if vardefs[value] != old_value:
                                     changed = True
@@ -91,19 +90,37 @@ class CFG:
                                 vardefs[value] = signature.get(name, placeholder_type)
                                 if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
                                     if vardefs[value] != placeholder_type:
-                                        print(function, old_value, vardefs[value], name, value)
                                         vardefs[value] = AnyType
                                     else:
                                         vardefs[value] = old_value
                                 if vardefs[value] != old_value:
                                     changed = True
                                     self.__update_vardefs(root, name, vardefs[value])
+                        if node.ns == '':
+                            expected = known_roots[node.called_root_name] = known_roots.get(node.called_root_name, {})
+                            for name, value in params.items():
+                                old_value = expected.get(name, None)
+                                if isinstance(value, Argument):
+                                    if vardefs[value] != placeholder_type or old_value == placeholder_type or old_value is None:
+                                        expected[name] = vardefs[value]
+                                else:
+                                    expected[name] = infer_type(value)
+                                if old_value is not None and old_value != placeholder_type and expected[name] != old_value:
+                                    expected[name] = AnyType
+                                if expected[name] != old_value:
+                                    changed = True
+                                    other_root = self.nodes[node.called_root_name]
+                                    assert isinstance(other_root, RootNode)
+                                    self.__update_vardefs(other_root, name, expected[name])
+                            for name, type_ in expected.items():
+                                if name not in params:
+                                    params[name] = Argument(name)
+                                    changed = True
 
         for root in self.roots:
             vardefs = known_roots[root.name]
             for name, type_ in vardefs.items():
                 if type_ == placeholder_type:
-                    print(root.name, name)
                     self.__update_vardefs(root, name, AnyType)
 
     def __separate_overlapping_flows(self) -> None:
@@ -139,8 +156,9 @@ class CFG:
         dest.del_in_edge(src)
         new_noop_node.add_in_edge(src)
 
-    def __detach_nodes_with_call(self, src: Node, dest: Node, entry_point: str) -> None:
-        new_call_node = SubflowNode(f'ext_{src.name}-{dest.name}', '', entry_point)
+    def __detach_nodes_with_call(self, src: Node, dest: Node, entry_point: str, vardefs: List[RootNode.VarDef]) -> None:
+        new_call_node = SubflowNode(f'ext_{src.name}-{dest.name}', '', entry_point,
+                params={v.name: Argument(v.name) for v in vardefs})
         self.nodes[new_call_node.name] = new_call_node
 
         src.reroute_out_edge(dest, new_call_node)
@@ -174,15 +192,15 @@ class CFG:
 
     def __detach_node_as_sub(self, root: RootNode, entry_point: Node) -> RootNode:
         name = entry_point.name if not isinstance(entry_point, EntryPointNode) else entry_point.entry_label
-        new_root = RootNode(f'Sub_{name}', root.vardefs, local=True)
+        new_root = RootNode(f'Sub_{name}', [RootNode.VarDef(v.name, v.type_, None) for v in root.vardefs], local=True)
         new_root.add_out_edge(entry_point)
 
-        for caller in entry_point.in_edges[:]:
-            self.__detach_nodes_with_call(caller, entry_point, new_root.name)
-
-        entry_point.in_edges = [new_root]
         self.nodes[new_root.name] = new_root
         self.roots.append(new_root)
+
+        for caller in entry_point.in_edges[:]:
+            self.__detach_nodes_with_call(caller, entry_point, new_root.name, new_root.vardefs)
+        entry_point.in_edges = [new_root]
 
         # may have been detached from a group, which is not in self.nodes
         for n in self.__find_postorder(new_root):
@@ -204,7 +222,7 @@ class CFG:
         for node in excl:
             leaving_nodes: Set[EntryPointNode] = set(node.out_edges).intersection(labels) # type: ignore
             for label in leaving_nodes:
-                self.__detach_nodes_with_call(node, label, label.entry_label)
+                self.__detach_nodes_with_call(node, label, label.entry_label, root.vardefs)
 
         # for node in simple_connections:
         # probably should make a copy here
@@ -337,12 +355,12 @@ class CFG:
         src.del_in_edge(ptr_node)
         return rv
 
-    def __split_loops_helper(self, node: Node, active: Set[Node], visited: Set[Node], replacement_nodes: Dict[Node, Node]) -> bool:
+    def __split_loops_helper(self, root: RootNode, node: Node, active: Set[Node], visited: Set[Node], replacement_nodes: Dict[Node, Node]) -> bool:
         active.add(node)
 
         for nxt in node.out_edges[:]:
             if nxt not in visited and nxt not in active:
-                rv = self.__split_loops_helper(nxt, active, visited, replacement_nodes)
+                rv = self.__split_loops_helper(root, nxt, active, visited, replacement_nodes)
                 if rv:
                     return True
             elif nxt in active and nxt not in visited:
@@ -422,7 +440,7 @@ class CFG:
 
                 # doesn't match our loop patterns, so rewrite with goto
                 entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
-                self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label)
+                self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label, root.vardefs)
 
                 if nxt != entrypoint:
                     active.add(entrypoint)
@@ -451,7 +469,7 @@ class CFG:
 
     def __split_loops(self) -> None:
         for root in self.roots:
-            while self.__split_loops_helper(root, set(), set(), {}):
+            while self.__split_loops_helper(root, root, set(), set(), {}):
                 pass
 
     def __collapse_unconditional_switch(self) -> None:

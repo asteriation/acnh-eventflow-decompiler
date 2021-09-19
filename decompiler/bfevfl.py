@@ -10,7 +10,7 @@ from .logger import LOG
 
 from .actors import Param, Action, Query, Actor
 from .nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
-from .datatype import AnyType, BoolType, FloatType, IntType, StrType, Type, Argument
+from .datatype import AnyType, BoolType, FloatType, IntType, Type, Argument, infer_types
 from .cfg import CFG
 
 @dataclass
@@ -43,21 +43,6 @@ class read_at_offset:
     def __exit__(self, *args: Any) -> None:
         if self.restore:
             self.bs.pos = self.old_pos
-
-def infer_types(params: Dict[str, Any]) -> Dict[str, Type]:
-    types: Dict[str, Type] = {}
-    for pname, pval in params.items():
-        if isinstance(pval, bool):
-            types[pname] = BoolType
-        elif isinstance(pval, float):
-            types[pname] = FloatType
-        elif isinstance(pval, str):
-            types[pname] = StrType
-        elif isinstance(eval, int):
-            types[pname] = IntType
-        else:
-            types[pname] = AnyType
-    return types
 
 def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[str, Any]):
     ptypes = infer_types(params)
