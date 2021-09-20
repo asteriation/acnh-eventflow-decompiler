@@ -416,6 +416,8 @@ class CFG:
                             # delete node and funnel nxt inputs through a DoWhileNode
                             for in_edge in node.in_edges:
                                 in_edge.del_out_edge(node)
+                            for out_edge in node.out_edges:
+                                out_edge.del_in_edge(node)
                             del self.nodes[node.name]
 
                             if A.name in node.cases:
@@ -432,7 +434,7 @@ class CFG:
                             do_while_node.add_out_edge(A)
                             A.add_in_edge(do_while_node)
                             do_while_node.add_out_edge(B)
-                            B.reroute_in_edge(node, do_while_node)
+                            B.add_in_edge(do_while_node)
                             self.nodes[do_while_node.name] = do_while_node
                             active.add(do_while_node)
                             replacement_nodes[nxt] = do_while_node
