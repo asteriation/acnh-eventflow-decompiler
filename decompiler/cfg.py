@@ -222,7 +222,7 @@ class CFG:
         for node in excl:
             leaving_nodes: Set[EntryPointNode] = set(node.out_edges).intersection(labels) # type: ignore
             for label in leaving_nodes:
-                self.__detach_nodes_with_call(node, label, label.entry_label, root.vardefs)
+                self.__detach_nodes_with_call(node, label, label.entry_label, [])
 
         # for node in simple_connections:
         # probably should make a copy here
@@ -440,7 +440,7 @@ class CFG:
 
                 # doesn't match our loop patterns, so rewrite with goto
                 entrypoint = self.__convert_node_to_entrypoint(nxt, nxt.name)
-                self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label, root.vardefs)
+                self.__detach_nodes_with_call(node, entrypoint, entrypoint.entry_label, [])
 
                 if nxt != entrypoint:
                     active.add(entrypoint)
@@ -753,7 +753,7 @@ class CFG:
                 node.recalculate_group()
 
     def __remove_redundant_entrypoints(self) -> None:
-        remapped_entrypoints: Dict[str, str] = {}
+        remapped_entrypoints: Dict[str, Tuple[str, List[RootNode.VarDef]]] = {}
         new_roots = []
         for root in self.roots:
             new_root = root
@@ -764,14 +764,14 @@ class CFG:
                     if isinstance(node, RootNode):
                         new_root = RootNode(node.name, node.vardefs, node.local)
                         new_parent = new_root
-                        remapped_entrypoints[node.out_edges[0].entry_label] = node.name
+                        remapped_entrypoints[node.out_edges[0].entry_label] = (node.name, node.vardefs)
                     else:
                         new_parent = EntryPointNode(node.name, node.entry_label)
-                        remapped_entrypoints[node.out_edges[0].entry_label] = node.entry_label
+                        remapped_entrypoints[node.out_edges[0].entry_label] = (node.entry_label, [])
                     self.__merge_coupled_nodes(node, node.out_edges[0], new_parent)
             new_roots.append(new_root)
         self.roots = new_roots
-        remap = {('', old): ('', new) for old, new in remapped_entrypoints.items()}
+        remap = {('', old): ('', new[0], new[1]) for old, new in remapped_entrypoints.items()}
         for root in self.roots:
             root.remap_subflow(remap)
 
@@ -795,7 +795,7 @@ class CFG:
                         remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
-        remap = {('', old): new for old, new in remapped_roots.items()}
+        remap = {('', old): (new[0], new[1], None) for old, new in remapped_roots.items()}
         for root in self.roots:
             root.remap_subflow(remap)
 
