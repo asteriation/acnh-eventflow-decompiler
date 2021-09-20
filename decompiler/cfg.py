@@ -244,10 +244,6 @@ class CFG:
     def __convert_node_to_entrypoint(self, node: Node, name: str) -> EntryPointNode:
         if isinstance(node, EntryPointNode):
             return node
-        if f'{node.name}-entrypoint' in self.nodes:
-            entrypoint = self.nodes[f'{node.name}-entrypoint']
-            assert isinstance(entrypoint, EntryPointNode)
-            return entrypoint
 
         entry_point_node = EntryPointNode(f'{node.name}-entrypoint', name)
         entry_point_node.add_out_edge(node)
@@ -427,10 +423,10 @@ class CFG:
                                 loop_cond = ~QueryPredicate(node.query, node.params, node.cases[B.name])
                             do_while_node = DoWhileNode(f'dw_{nxt.name}', loop_cond, nxt, B)
 
-                            for in_edge in nxt.in_edges:
-                                in_edge.reroute_out_edge(nxt, do_while_node)
+                            for in_edge in A.in_edges:
+                                in_edge.reroute_out_edge(A, do_while_node)
                                 do_while_node.add_in_edge(in_edge)
-                                nxt.del_in_edge(in_edge)
+                                A.del_in_edge(in_edge)
                             do_while_node.add_out_edge(A)
                             A.add_in_edge(do_while_node)
                             do_while_node.add_out_edge(B)
