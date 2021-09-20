@@ -625,17 +625,19 @@ class CFG:
                 self.__merge_coupled_nodes(node, else_branch, ifelse_node)
 
     def __merge_coupled_nodes(self, parent_node: Node, child_node: Node, new_node: Node) -> None:
-        assert child_node.in_edges == [parent_node]
-
-        new_node.in_edges = parent_node.in_edges
         for caller in parent_node.in_edges:
+            new_node.in_edges.append(caller)
             caller.reroute_out_edge(parent_node, new_node)
 
+        for caller in child_node.in_edges:
+            if caller is not parent_node:
+                new_node.in_edges.append(caller)
+                caller.reroute_out_edge(child_node, new_node)
+
         for parent_out in parent_node.out_edges:
-            if parent_out is child_node:
-                continue
-            new_node.add_out_edge(parent_out)
-            parent_out.reroute_in_edge(parent_node, new_node)
+            if parent_out is not child_node:
+                new_node.add_out_edge(parent_out)
+                parent_out.reroute_in_edge(parent_node, new_node)
 
         for exit_node in child_node.out_edges:
             new_node.add_out_edge(exit_node)
@@ -716,6 +718,11 @@ class CFG:
 
             if n in end.in_edges:
                 end.del_in_edge(n)
+
+            if isinstance(n, EntryPointNode):
+                for node in n.in_edges:
+                    if node not in dom:
+                        self.__detach_nodes_with_call(node, n, n.entry_label, [])
 
             if n.name in self.nodes:
                 del self.nodes[n.name]
