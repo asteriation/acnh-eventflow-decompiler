@@ -854,6 +854,7 @@ class CFG:
                         called_root = called_root_[0]
                         called_root.name, root.name = root.name, called_root.name
                         called_root.local, root.local = root.local, called_root.local
+                        called_root.vardefs, root.vardefs = root.vardefs, called_root.vardefs
                         remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
