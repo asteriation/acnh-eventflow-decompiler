@@ -243,6 +243,8 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
     actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '')
     conversion = action.conversion.replace('<.name>', f'{actor_name}.{id_(action.name)}')
     conversion = conversion.replace('<.actor>', f'{actor_name}')
+    conversion = conversion.replace('<.actor_name>', f'{id_(action.actor_name[0])}')
+    conversion = conversion.replace('<.actor_secondary>', f'@{id_(action.actor_name[1])}' if action.actor_name[1] else '')
     for p in action.params:
         try:
             assert p.name in params
@@ -273,6 +275,8 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
         conversion = conversion_used
     conversion = conversion.replace('<.name>', f'{actor_name}.{id_(query.name)}')
     conversion = conversion.replace('<.actor>', f'{actor_name}')
+    conversion = conversion.replace('<.actor_name>', f'{id_(query.actor_name[0])}')
+    conversion = conversion.replace('<.actor_secondary>', f'@{id_(query.actor_name[1])}' if query.actor_name[1] else '')
     for p in query.params:
         try:
             assert p.name in params, p.name
