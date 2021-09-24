@@ -13,9 +13,8 @@ class CFG:
     def __init__(self, name: str) -> None:
         self.name = name
         self.roots: List[RootNode] = []
-        self.actors: Dict[str, Actor] = {}
+        self.actors: Dict[Tuple[str, str], Actor] = {}
         self.nodes: Dict[str, Node] = {}
-        self.secondary_names: Dict[str, str] = {}
 
     def __assign_components(self) -> List[List[RootNode]]:
         visited: Set[RootNode] = set()
@@ -884,8 +883,6 @@ class CFG:
 
     def generate_code(self, generator: CodeGenerator) -> str:
         code: List[str] = []
-        for actor_name in sorted(self.secondary_names.keys()):
-            code.append(generator.generate_actor_annotation(actor_name, self.secondary_names[actor_name]))
         if code:
             code.append('')
 
@@ -913,20 +910,19 @@ class CFG:
     def import_functions(self, actors: List[Tuple[str, str]], actions: Dict[str, Any],
                          queries: Dict[str, Any]) -> None:
         for actor_name, sec_name in actors:
-            if sec_name:
-                self.secondary_names[actor_name] = sec_name
+            full_actor_name = (actor_name, sec_name)
             if actor_name not in self.actors:
-                self.actors[actor_name] = Actor(actor_name)
+                self.actors[full_actor_name] = Actor(full_actor_name)
             for action, info in actions.items():
-                self.actors[actor_name].register_action(Action(
-                    actor_name,
+                self.actors[full_actor_name].register_action(Action(
+                    full_actor_name,
                     action,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
                     info.get('conversion', None),
                 ))
             for query, info in queries.items():
-                self.actors[actor_name].register_query(Query(
-                    actor_name,
+                self.actors[full_actor_name].register_query(Query(
+                    full_actor_name,
                     query,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
                     Type(info.get('return', 'any')),

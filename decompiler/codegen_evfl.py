@@ -44,9 +44,6 @@ def pred_generate_code(pred: Predicate) -> str:
     return pred_codegen[type(pred)](pred)
 
 class EVFLCodeGenerator(CodeGenerator):
-    def generate_actor_annotation(self, actor_name: str, secondary_name: str) -> str:
-        return f'@{id_(actor_name)}:{id_(secondary_name)}'
-
     def generate_code(self, node: Node, indent_level: int = 0, generate_pass: bool = False) -> str:
         return node_generate_code(node, indent_level, generate_pass)
 
@@ -243,8 +240,9 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
     return ' or '.join([f'({pred_generate_code(inner)})' for inner in self_pred.inners])
 
 def Action_format(action: Action, params: Dict[str, Any]) -> str:
-    conversion = action.conversion.replace('<.name>', f'{id_(action.actor_name)}.{id_(action.name)}')
-    conversion = conversion.replace('<.actor>', f'{id_(action.actor_name)}')
+    actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '')
+    conversion = action.conversion.replace('<.name>', f'{actor_name}.{id_(action.name)}')
+    conversion = conversion.replace('<.actor>', f'{actor_name}')
     for p in action.params:
         try:
             assert p.name in params
@@ -263,6 +261,7 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
     return conversion
 
 def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
+    actor_name = id_(query.actor_name[0]) + ('@' + id_(query.actor_name[1]) if query.actor_name[1] else '')
     if negated:
         conversion_used = query.neg_conversion
     else:
@@ -272,8 +271,8 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
         conversion = conversion_used['values'][pivot]
     else:
         conversion = conversion_used
-    conversion = conversion.replace('<.name>', f'{id_(query.actor_name)}.{id_(query.name)}')
-    conversion = conversion.replace('<.actor>', f'{id_(query.actor_name)}')
+    conversion = conversion.replace('<.name>', f'{actor_name}.{id_(query.name)}')
+    conversion = conversion.replace('<.actor>', f'{actor_name}')
     for p in query.params:
         try:
             assert p.name in params, p.name

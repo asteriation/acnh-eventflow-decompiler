@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, NamedTuple, Optional, Union
+from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple
 
 from .datatype import AnyType, Type
 
@@ -11,7 +11,7 @@ class Param(NamedTuple):
     type: Type = AnyType
 
 class Action:
-    def __init__(self, actor_name: str, name: str, params: List[Param], conversion: Optional[str] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], conversion: Optional[str] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
@@ -23,16 +23,15 @@ class Action:
         return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
 
     def __str__(self) -> str:
-        name = self.name
         if self.default:
             auto_s = ' (auto)' if self.auto else ''
-            conv = self.conversion.replace('<.name>', name)
+            conv = self.conversion.replace('<.name>', self.name)
             for p in self.params:
                 conv = conv.replace(f'<<{p.name}>>', f'{p.name}: {p.type}')
                 conv = conv.replace(f'<{p.name}>', f'{p.name}: {p.type}')
             return conv + auto_s
         else:
-            return f'{name}: {self.conversion}'
+            return f'{self.name}: {self.conversion}'
 
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
@@ -46,7 +45,7 @@ class Action:
         }
 
 class Query:
-    def __init__(self, actor_name: str, name: str, params: List[Param], rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
@@ -103,7 +102,7 @@ class Query:
         }
 
 class Actor:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: Tuple[str, str]) -> None:
         self.name = name
         self.actions: Dict[str, Action] = {}
         self.queries: Dict[str, Query] = {}
@@ -125,7 +124,7 @@ class Actor:
         self.locked = True
 
     def __str__(self):
-        return f'Actor {self.name}\n' + '\n'.join([
+        return f'Actor {self.name[0]}{"@" + self.name[1] if self.name[1] else ""}\n' + '\n'.join([
             'actions:',
             *[f'- {a}' for a in sorted(self.actions.values(), key=lambda x: x.name)],
             'queries:',
@@ -142,6 +141,6 @@ class Actor:
         for query in self.queries.values():
             e['queries'].update(query.export())
         return {
-            self.name: e
+            f'{self.name[0]}{"@" + self.name[1] if self.name[1] else ""}': e
         }
 
