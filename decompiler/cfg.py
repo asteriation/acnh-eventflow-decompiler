@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
 
 from .datatype import AnyType, Type, Argument, infer_type
 from .predicates import Predicate, ConstPredicate, QueryPredicate
@@ -269,18 +269,32 @@ class CFG:
             if len(tn.in_edges) > 0:
                 self.nodes[tn.name] = tn
 
-    def __find_dominator_tree(self, root: Node) -> Dict[Node, Node]:
-        # https://www.cs.rice.edu/~keith/Embed/dom.pdf
-        dom = {root: root}
+    def __find_dominator_tree(self, root: Node, reverse: bool = False) -> Dict[Node, Node]:
+        back_edges = self.__add_while_back_edge()
+        if reverse:
+            roots = self.__find_terminals(root)
+        else:
+            roots = [root]
+        dummy_root = NoopNode('')
+        for root in roots:
+            if not reverse:
+                dummy_root.out_edges.append(root)
+                root.in_edges.append(dummy_root)
+            else:
+                dummy_root.in_edges.append(root)
+                root.out_edges.append(dummy_root)
+        dom = {dummy_root: dummy_root}
 
-        rpo = self.__find_reverse_postorder(root)
+        # https://www.cs.rice.edu/~keith/Embed/dom.pdf
+        rpo = self.__find_reverse_postorder(dummy_root, reverse=reverse)
         rpo_index = {k: i for i, k in enumerate(rpo)}
         changed = True
         while changed:
             changed = False
-            for b in rpo[1:]: # exclude root
+            for b in rpo[1:]: # skip dummy_root
+
                 new_idom: Optional[Node] = None
-                for p in b.in_edges:
+                for p in (b.in_edges if not reverse else b.out_edges):
                     if p in dom:
                         if new_idom is None:
                             new_idom = p
@@ -291,29 +305,44 @@ class CFG:
                             while rpo_index[p] < rpo_index[new_idom]:
                                 new_idom = dom[new_idom]
 
-                assert new_idom is not None
+                assert new_idom is not None, str([r.name for r in rpo])
 
                 if b not in dom or dom[b] is not new_idom:
                     dom[b] = new_idom
                     changed = True
+        for root in roots:
+            if not reverse:
+                root.in_edges.remove(dummy_root)
+            else:
+                root.out_edges.remove(dummy_root)
+            dom[root] = root
+        for n in list(dom.keys()):
+            if dom[n] is dummy_root:
+                del dom[n]
+        self.__del_while_back_edge(back_edges)
         return dom
 
-    def __find_postorder_helper(self, root: Node, pred: Callable[[Node], bool], visited: Set[str]) -> List[Node]:
+    def __find_postorder_helper(self, root: Node, pred: Callable[[Node], bool], visited: Set[str], reverse: bool = False) -> List[Node]:
         po: List[Node] = []
         if not pred(root):
             return po
-        for node in root.out_edges:
+        for node in (root.out_edges if not reverse else root.in_edges):
             if node.name not in visited:
                 visited.add(node.name)
-                po.extend(self.__find_postorder_helper(node, pred, visited))
+                po.extend(self.__find_postorder_helper(node, pred, visited, reverse))
         po.append(root)
         return po
 
-    def __find_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
-        return self.__find_postorder_helper(root, pred, set())
+    def __find_postorder(self, roots: Union[Node, List[Node]], pred: Callable[[Node], bool] = lambda n: True, reverse: bool = False) -> List[Node]:
+        roots = [roots] if isinstance(roots, Node) else roots
+        out = []
+        visited = set()
+        for root in roots:
+            out.extend(self.__find_postorder_helper(root, pred, visited, reverse))
+        return out
 
-    def __find_reverse_postorder(self, root: Node, pred: Callable[[Node], bool] = lambda n: True) -> List[Node]:
-        return self.__find_postorder(root, pred)[::-1]
+    def __find_reverse_postorder(self, roots: Union[Node, List[Node]], pred: Callable[[Node], bool] = lambda n: True, reverse: bool = False) -> List[Node]:
+        return self.__find_postorder(roots, pred, reverse)[::-1]
 
     def __path_exists(self, src: Node, dest: Node) -> bool:
         # todo: don't be this dumb
@@ -330,6 +359,22 @@ class CFG:
             node = tree[node]
 
         return False
+
+    def __add_while_back_edge(self) -> List[Tuple[Node, Node]]:
+        edges: List[Tuple[Node, Node]] = []
+        for node in self.nodes.values():
+            if isinstance(node, (WhileNode, DoWhileNode)):
+                terminals = self.__find_terminals(node.loop_body)
+                for terminal in terminals:
+                    terminal.out_edges.append(node)
+                    node.in_edges.append(terminal)
+                    edges.append((terminal, node))
+        return edges
+
+    def __del_while_back_edge(self, edges: List[Tuple[Node, Node]]) -> None:
+        for from_, to in edges:
+            from_.out_edges.remove(to)
+            to.in_edges.remove(from_)
 
     def __is_contained_subgraph(self, src: Node, dest: Node) -> bool:
         # check that dest dominates all reachable nodes via paths not through src,
@@ -384,6 +429,7 @@ class CFG:
                                 assert B.name in nxt.cases and len(nxt.cases) == 1
                                 loop_cond = ~QueryPredicate(nxt.query, nxt.params, nxt.cases[B.name])
                             node.del_out_edge(nxt)
+                            nxt.del_in_edge(node)
                             while_node = self.__inject_while(nxt, loop_cond, A, B)
                             active.add(while_node)
                             replacement_nodes[nxt] = while_node
@@ -610,8 +656,9 @@ class CFG:
 
                 # don't join with ifelse block if endpoint would change
                 dom = self.__find_dominator_tree(root)
-                cur_end = self.__find_block_end(node, dom)
-                else_end = self.__find_block_end(else_branch, dom)
+                rdom = self.__find_dominator_tree(node, reverse=True)
+                cur_end = self.__find_block_end(node, dom, rdom)
+                else_end = self.__find_block_end(else_branch, dom, rdom)
                 if cur_end != else_end:
                     continue
 
@@ -655,34 +702,44 @@ class CFG:
 
                 node = self.__try_collapse_block(root, node)
 
-    def __find_block_end(self, node: Node, dom: Dict[Node, Node]) -> Optional[Node]:
+    def __find_terminals(self, node: Node) -> List[TerminalNode]:
+        return [n for n in self.__find_postorder(node) if not n.out_edges]
+
+    def __find_block_end(self, node: Node, dom: Dict[Node, Node], rdom: Dict[Node, Node]) -> Optional[Node]:
+        if node not in rdom:
+            return None
+
         if not all((child in dom and dom[child] is node) or isinstance(child, TerminalNode) for child in node.out_edges):
             return None
 
-        end: Optional[Node] = None
-        for k in self.__find_postorder(node)[:-1]:
-            if k not in dom:
-                continue
-            if isinstance(k, TerminalNode):
-                inner_dom = self.__find_dominator_tree(node)
-                if inner_dom[k] is not node:
-                    continue
-            elif dom[k] is not node:
-                continue
+        end = rdom[node]
+        if end not in dom:
+            return None
 
-            if not all(self.__path_exists(child, k) for child in node.out_edges):
-                continue
+        if isinstance(end, TerminalNode):
+            inner_dom = self.__find_dominator_tree(node)
+            if inner_dom[end] is not node:
+                return None
+        elif dom[end] is not node:
+            return None
 
-            end = k
-            break
+        if not all(self.__path_exists(child, end) for child in node.out_edges):
+            return None
 
         return end
 
-    def __try_collapse_block(self, entry: Node, root: Node) -> Node:
+    def __try_collapse_block(self, entry: RootNode, root: Node) -> Node:
         dom = self.__find_dominator_tree(entry)
-        end = self.__find_block_end(root, dom)
+        rdom = self.__find_dominator_tree(entry, reverse=True)
+        end = self.__find_block_end(root, dom, rdom)
 
         # print(entry.name, root.name, end)
+        # print('Dominator Tree')
+        # for name, node in dom.items():
+            # print('\t', name.name, '->', node.name)
+        # print('Reverse Dominator Tree')
+        # for name, node in rdom.items():
+            # print('\t', name.name, '->', node.name)
 
         if end is None: # no end found, do not collapse
             return root
@@ -813,6 +870,9 @@ class CFG:
             prev_node: Node = root
             cur_node: Node = root
             while cur_node.out_edges:
+                if isinstance(cur_node, (WhileNode, DoWhileNode)):
+                    prev_node, cur_node = cur_node, cur_node.loop_exit
+                    continue
                 if len(cur_node.out_edges) != 1:
                     break
                 prev_node, cur_node = cur_node, cur_node.out_edges[0]
