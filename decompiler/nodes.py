@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple, Callable
+from typing import Any, Dict, List, NamedTuple, Optional, Union, Tuple, Callable, Set
 
 from .datatype import Argument, Type
 from .predicates import Predicate, NotPredicate, QueryPredicate
@@ -43,7 +43,7 @@ class Node(ABC):
             else:
                 self.out_edges[self.out_edges.index(old_dest)] = new_dest
 
-    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
+    def remap_subflow(self, remap: Dict[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
         if visited is None:
             visited = set()
         visited.add(self)
@@ -197,7 +197,7 @@ class SubflowNode(Node):
         self.nxt = nxt
         self.params = params.copy() if params else {}
 
-    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
+    def remap_subflow(self, remap: Dict[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
         my = (self.ns, self.called_root_name)
         while my in remap:
             self.ns, self.called_root_name = remap[my][:2]
@@ -282,7 +282,7 @@ class GroupNode(Node):
         for node in self.nodes:
             node.simplify()
 
-    def remap_subflow(self, remap: Map[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
+    def remap_subflow(self, remap: Dict[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]], visited: Optional[Set[Node]] = None) -> None:
         for node in self.nodes:
             node.remap_subflow(remap, visited)
         super().remap_subflow(remap, visited)

@@ -73,7 +73,7 @@ class CFG:
                         params = node.params
                         for name, value in params.items():
                             if isinstance(value, Argument):
-                                function = node.action if isinstance(node, ActionNode) else node.query
+                                function: Union[Action, Query] = node.action if isinstance(node, ActionNode) else node.query
                                 old_value = vardefs.get(value, None)
                                 vardefs[value] = [p.type for p in function.params if p.name == name][0]
                                 if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
@@ -271,6 +271,7 @@ class CFG:
 
     def __find_dominator_tree(self, root: Node, reverse: bool = False) -> Dict[Node, Node]:
         back_edges = self.__add_while_back_edge()
+        roots: List[Node]
         if reverse:
             roots = self.__find_terminals(root)
         else:
@@ -283,7 +284,7 @@ class CFG:
             else:
                 dummy_root.in_edges.append(root)
                 root.out_edges.append(dummy_root)
-        dom = {dummy_root: dummy_root}
+        dom: Dict[Node, Node] = {dummy_root: dummy_root}
 
         # https://www.cs.rice.edu/~keith/Embed/dom.pdf
         rpo = self.__find_reverse_postorder(dummy_root, reverse=reverse)
@@ -336,7 +337,7 @@ class CFG:
     def __find_postorder(self, roots: Union[Node, List[Node]], pred: Callable[[Node], bool] = lambda n: True, reverse: bool = False) -> List[Node]:
         roots = [roots] if isinstance(roots, Node) else roots
         out = []
-        visited = set()
+        visited: Set[str] = set()
         for root in roots:
             out.extend(self.__find_postorder_helper(root, pred, visited, reverse))
         return out
@@ -702,7 +703,7 @@ class CFG:
 
                 node = self.__try_collapse_block(root, node)
 
-    def __find_terminals(self, node: Node) -> List[TerminalNode]:
+    def __find_terminals(self, node: Node) -> List[Node]:
         return [n for n in self.__find_postorder(node) if not n.out_edges]
 
     def __find_block_end(self, node: Node, dom: Dict[Node, Node], rdom: Dict[Node, Node]) -> Optional[Node]:
@@ -858,7 +859,7 @@ class CFG:
                         remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
-        remap = {('', old): (new[0], new[1], None) for old, new in remapped_roots.items()}
+        remap: Dict[Tuple[str, str], Tuple[str, str, List[RootNode.VarDef]]] = {('', old): (new[0], new[1], []) for old, new in remapped_roots.items()}
         for root in self.roots:
             root.remap_subflow(remap)
 
