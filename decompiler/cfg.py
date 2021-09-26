@@ -60,13 +60,14 @@ class CFG:
         root.vardefs.append(RootNode.VarDef(name, type_, initial_value=None))
 
     def __add_implicit_vardefs(self) -> None:
-        known_roots = {r.name: {v.name: v.type_ for v in r.vardefs} for r in self.roots}
+        known_roots_types = {r.name: {v.name: v.type_ for v in r.vardefs} for r in self.roots}
+        initial_values = {r.name: {v.name: v.initial_value for v in r.vardefs} for r in self.roots}
         placeholder_type = Type('_placeholder')
         changed = True
         while changed:
             changed = False
             for root in self.roots:
-                vardefs = known_roots[root.name]
+                vardefs = known_roots_types[root.name]
                 for node in self.__find_reverse_postorder(root):
                     if isinstance(node, (ActionNode, SwitchNode)):
                         params = node.params
@@ -84,7 +85,7 @@ class CFG:
                         params = node.params
                         for name, value in params.items():
                             if isinstance(value, Argument):
-                                signature = {} if node.ns else known_roots.get(node.called_root_name, {})
+                                signature = {} if node.ns else known_roots_types.get(node.called_root_name, {})
                                 old_value = vardefs.get(value, None)
                                 vardefs[value] = signature.get(name, placeholder_type)
                                 if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
@@ -96,7 +97,7 @@ class CFG:
                                     changed = True
                                     self.__update_vardefs(root, name, vardefs[value])
                         if node.ns == '':
-                            expected = known_roots[node.called_root_name] = known_roots.get(node.called_root_name, {})
+                            expected = known_roots_types[node.called_root_name] = known_roots_types.get(node.called_root_name, {})
                             for name, value in params.items():
                                 old_value = expected.get(name, None)
                                 if isinstance(value, Argument):
@@ -111,13 +112,18 @@ class CFG:
                                     other_root = self.nodes[node.called_root_name]
                                     assert isinstance(other_root, RootNode)
                                     self.__update_vardefs(other_root, name, expected[name])
+                            expected = {**expected}
+                            for name in list(expected.keys()):
+                                if name in initial_values[node.called_root_name]:
+                                    del expected[name]
+                                    print('deleted', name)
                             for name, type_ in expected.items():
                                 if name not in params:
                                     params[name] = Argument(name)
                                     changed = True
 
         for root in self.roots:
-            vardefs = known_roots[root.name]
+            vardefs = known_roots_types[root.name]
             for name, type_ in vardefs.items():
                 if type_ == placeholder_type:
                     self.__update_vardefs(root, name, AnyType)
