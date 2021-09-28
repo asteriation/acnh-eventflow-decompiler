@@ -116,7 +116,6 @@ class CFG:
                             for name in list(expected.keys()):
                                 if name in initial_values[node.called_root_name]:
                                     del expected[name]
-                                    print('deleted', name)
                             for name, type_ in expected.items():
                                 if name not in params:
                                     params[name] = Argument(name)
