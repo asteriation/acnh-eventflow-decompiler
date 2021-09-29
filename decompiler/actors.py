@@ -15,12 +15,15 @@ class Action:
         self.actor_name = actor_name
         self.name = name
         self.params = params
+        self.param_names = set(param.name for param in params)
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
         self.default = conversion is None
         self.auto = False
 
     def hint(self, params: Dict[str, Any]) -> List[str]:
-        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
+        extra_params = '; '.join(f'{name} = {repr(value)}' for name, value in params.items() if name not in self.param_names)
+        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS] + \
+               ([f'Extra Params: {extra_params}'] if extra_params else [])
 
     def __str__(self) -> str:
         if self.default:
@@ -49,6 +52,7 @@ class Query:
         self.actor_name = actor_name
         self.name = name
         self.params = params
+        self.param_names = set(param.name for param in params)
         self.rv = rv
         self.inverted = inverted
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
@@ -68,7 +72,9 @@ class Query:
         self.num_values = rv.num_values()
 
     def hint(self, params: Dict[str, Any]) -> List[str]:
-        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS]
+        extra_params = '; '.join(f'{name} = {value}' for name, value in params.items() if name not in self.param_names)
+        return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS] + \
+               ([f'Extra Params: {extra_params}'] if extra_params else [])
 
     def __str__(self) -> str:
         name = self.name
@@ -107,6 +113,9 @@ class Actor:
         self.actions: Dict[str, Action] = {}
         self.queries: Dict[str, Query] = {}
         self.locked = False
+
+        # This is also hard-coded in the game binaries.
+        self.register_action(Action(name, 'ExitFlowchart', [], None))
 
     def register_action(self, action: Action) -> None:
         if action.name not in self.actions or True:

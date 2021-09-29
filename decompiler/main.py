@@ -13,20 +13,7 @@ from .actors import HINTS
 from .cfg import CFG
 from .codegen_evfl import EVFLCodeGenerator
 
-def compare_version(current_version: str, max_version: str) -> bool:
-    cv = [int(v) for v in current_version.split('.')]
-    mv = [int(v) for v in max_version.split('.')]
-    assert len(cv) == len(mv)
-
-    for c, m in zip(cv, mv):
-        if c < m:
-            return True
-        if c > m:
-            return False
-
-    return True
-
-def load_functions_csv(filename: str, version: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     try:
         with Path(filename).open('rt') as ff:
             reader = csv.reader(ff)
@@ -36,7 +23,7 @@ def load_functions_csv(filename: str, version: str) -> Tuple[Dict[str, Any], Dic
                 headers[col] = i
 
             required_headers = (
-                'MaxVersion', 'Type', 'Name', 'Parameters', 'Return',
+                'Type', 'Name', 'Parameters', 'Return',
                 'ConversionKey', 'Conversion', 'NegatedConversion',
             )
 
@@ -46,12 +33,9 @@ def load_functions_csv(filename: str, version: str) -> Tuple[Dict[str, Any], Dic
             queries: Dict[str, Any] = {}
 
             for row in reader:
-                max_version = row[headers['MaxVersion']]
                 name = row[headers['Name']]
                 type_ = row[headers['Type']]
 
-                if max_version == 'pseudo' or not compare_version(version, max_version):
-                    continue
                 if (type_ == 'Action' and name in actions) or (type_ == 'Query' and name in queries):
                     continue
 
@@ -107,7 +91,6 @@ def main():
     )
     parser.add_argument('bfevfl_files', nargs='+', help='.bfevfl file(s) to convert')
     parser.add_argument('--functions', default='functions.csv', help='functions.csv file for all actions and queries')
-    parser.add_argument('--version', default='0.0.0', help='game version')
     parser.add_argument('--hints', help='hints.json file for suggestion text based on string parameter values')
     parser.add_argument('--out-dir', help='output directory for .evfl.txt files (default: stdout)')
     parser.add_argument('--target', default='evfl', choices=('evfl',), help='decompilation target')
@@ -130,7 +113,7 @@ def main():
     mpasses.add_argument('--rsecondary-max-iter', metavar='iters', type=int, default=10000, help='Max number of iterations for secondary passes')
     args = parser.parse_args()
 
-    actions, queries = load_functions_csv(args.functions, args.version)
+    actions, queries = load_functions_csv(args.functions)
 
     if args.hints:
         with Path(args.hints).open('rt') as hf:

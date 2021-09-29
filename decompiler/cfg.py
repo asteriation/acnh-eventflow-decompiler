@@ -75,7 +75,11 @@ class CFG:
                             if isinstance(value, Argument):
                                 function: Union[Action, Query] = node.action if isinstance(node, ActionNode) else node.query
                                 old_value = vardefs.get(value, None)
-                                vardefs[value] = [p.type for p in function.params if p.name == name][0]
+                                candidates = [p.type for p in function.params if p.name == name]
+                                if not candidates:
+                                    continue
+                                else:
+                                    vardefs[value] = candidates[0]
                                 if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
                                     vardefs[value] = AnyType
                                 if vardefs[value] != old_value:
