@@ -434,15 +434,11 @@ def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
         for action, initialized in r.actions:
             if initialized and action.name not in actor.actions:
                 LOG.warning(f'untyped action: {action}')
-                action.params = []
-                action.varargs = True
-                actor.register_action(action)
+                actor.register_action(Action(action.actor_name, action.name, [], True))
         for query, initialized in r.queries:
             if initialized and query.name not in actor.queries:
                 LOG.warning(f'untyped query: {query}')
-                query.params = []
-                query.varargs = True
-                actor.register_query(query)
+                actor.register_query(Query(query.actor_name, query.name, [], True, query.rv))
 
     for node in bfevfl.nodes + bfevfl.roots: # type: ignore
         if isinstance(node, ActionNode):
