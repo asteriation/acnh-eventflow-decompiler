@@ -2,6 +2,10 @@
 
 Tool to decompile eventflow flowcharts (bfevfl) from *Animal Crossing: New Horizons* into a readable, code-like format.
 
+## Installation
+
+This compiler uses several libraries, which can be installed with `python3 -m pip install -r requirements.txt`.
+
 ## Usage
 
 The decompiler may be run through `main.py` using Python 3.7+.
