@@ -241,7 +241,7 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
 
 def Action_format(action: Action, params: Dict[str, Any]) -> str:
     actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '')
-    conversion = action.conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
+    conversion = action.conversion if action.conversion is not None else f'<.name>(' + ', '.join(f'<{p}>' for p in params) + ')'
     conversion = action.conversion.replace('<.name>', f'{actor_name}.{id_(action.name)}')
     conversion = conversion.replace('<.actor>', f'{actor_name}')
     conversion = conversion.replace('<.actor_name>', f'{id_(action.actor_name[0])}')

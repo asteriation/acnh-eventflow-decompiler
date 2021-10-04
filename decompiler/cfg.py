@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union, Sequence
 
 from .datatype import AnyType, Type, Argument, infer_type
 from .predicates import Predicate, ConstPredicate, QueryPredicate
@@ -75,7 +75,8 @@ class CFG:
             changed = False
             for root in self.roots:
                 vardefs = known_roots_types[root.name]
-                i, q = 0, [root]
+                i = 0
+                q: List[Node] = [root]
                 while i < len(q):
                     for node in self.__find_reverse_postorder(q[i]):
                         if isinstance(node, SubflowNode):
@@ -84,9 +85,9 @@ class CFG:
                                 if isinstance(value, Argument):
                                     signature = {} if node.ns else known_roots_types.get(node.called_root_name, {})
                                     type_ = signature.get(name, placeholder_type)
-                                    type_ = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
-                                    if type_ is not None or value not in vardefs:
-                                        vardefs[value] = type_ or placeholder_type
+                                    result = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
+                                    if result is not None or value not in vardefs:
+                                        vardefs[value] = result if result is not None else placeholder_type
                                         changed = True
                             if node.ns == '':
                                 expected = known_roots_types[node.called_root_name] = known_roots_types.get(node.called_root_name, {})
@@ -100,9 +101,9 @@ class CFG:
 
                                     other_root = self.nodes[node.called_root_name]
                                     assert isinstance(other_root, RootNode)
-                                    type_ = self.__update_vardefs(other_root, name, expected.get(name, placeholder_type), type_)
-                                    if type_ is not None or name not in expected:
-                                        expected[name] = type_ or placeholder_type
+                                    result = self.__update_vardefs(other_root, name, expected.get(name, placeholder_type), type_)
+                                    if result is not None or name not in expected:
+                                        expected[name] = result if result is not None else placeholder_type
                                         changed = True
                                 expected = {**expected}
                                 for name in list(expected.keys()):
@@ -115,7 +116,7 @@ class CFG:
                         elif isinstance(node, GroupNode):
                             q.append(node.root)
                         else:
-                            calls: List[Tuple[Union[Action, Query], Dict[str, Any]]] = []
+                            calls: Sequence[Tuple[Union[Action, Query], Dict[str, Any]]] = []
                             if isinstance(node, ActionNode):
                                 calls = [(node.action, node.params)]
                             elif isinstance(node, SwitchNode):
@@ -132,9 +133,9 @@ class CFG:
                                             type_ = placeholder_type
                                         else:
                                             type_ = candidates[0]
-                                        type_ = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
-                                        if type_ is not None or value not in vardefs:
-                                            vardefs[value] = type_ or placeholder_type
+                                        result = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
+                                        if result is not None or value not in vardefs:
+                                            vardefs[value] = result if result is not None else placeholder_type
                                             changed = True
                     i += 1
 

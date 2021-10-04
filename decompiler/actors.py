@@ -119,7 +119,7 @@ class Actor:
         self.locked = False
 
         # This is also hard-coded in the game binaries.
-        self.register_action(Action(name, 'ExitFlowchart', [], None))
+        self.register_action(Action(name, 'ExitFlowchart', [], False, None))
 
     def register_action(self, action: Action) -> None:
         if action.name not in self.actions or True:
