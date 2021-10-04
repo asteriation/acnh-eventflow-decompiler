@@ -6,7 +6,7 @@ from typing import Callable, Dict, List
 from .logger import LOG
 
 from .codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
-from .datatype import AnyType, BoolType, Type, Argument
+from .datatype import AnyType, BoolType, Type, Argument, infer_type
 from .indent import indent
 from .nodes import *
 from .predicates import *
@@ -241,6 +241,7 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
 
 def Action_format(action: Action, params: Dict[str, Any]) -> str:
     actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '')
+    conversion = action.conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
     conversion = action.conversion.replace('<.name>', f'{actor_name}.{id_(action.name)}')
     conversion = conversion.replace('<.actor>', f'{actor_name}')
     conversion = conversion.replace('<.actor_name>', f'{id_(action.actor_name[0])}')
@@ -260,6 +261,15 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
             raise
         conversion = conversion.replace(f'<<{p.name}>>', id_(str(params[p.name])))
         conversion = conversion.replace(f'<{p.name}>', value)
+    if action.default:
+        extra_params = []
+        specified_params = set(p.name for p in action.params)
+        for name, value in params.items():
+            if name not in specified_params:
+                extra_params.append(f'{name}={Type_format(infer_type(value), value)}')
+        if extra_params:
+            extra_params.sort()
+            conversion = conversion[:-1] + (', ' if specified_params else '') + ', '.join(extra_params) + ')'
     return conversion
 
 def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
@@ -292,6 +302,15 @@ def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
             raise
         conversion = conversion.replace(f'<<{p.name}>>', id_(str(params[p.name])))
         conversion = conversion.replace(f'<{p.name}>', value)
+    if query.default:
+        extra_params = []
+        specified_params = set(p.name for p in query.params)
+        for name, value in params.items():
+            if name not in specified_params:
+                extra_params.append(f'{name}={Type_format(infer_type(value), value)}')
+        if extra_params:
+            extra_params.sort()
+            conversion = conversion[:-1] + (', ' if specified_params else '') + ', '.join(extra_params) + ')'
     return conversion
 
 def Type_format(type_: Type, value: Any, force_bool_to_int: bool = False) -> str:

@@ -49,7 +49,7 @@ def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[
     actor_name = (actor.name, actor.secondary_name)
     if not actor.actions[action_index][1]:
         actor.actions[action_index] = (Action(actor_name, actor.actions[action_index][0].name,
-                [Param(n, t) for n, t in ptypes.items()]), True)
+                [Param(n, t) for n, t in ptypes.items()], False), True)
     else:
         action = actor.actions[action_index][0]
         assert len(action.params) == len(ptypes)
@@ -64,7 +64,7 @@ def check_and_update_query(actor: BFEVFLActor, query_index: int, params: Dict[st
     if not actor.queries[query_index][1]:
         rt = Type(f'int{max(max(rvs) + 1 if rvs else 0, 2)}')
         actor.queries[query_index] = (Query(actor_name, actor.queries[query_index][0].name,
-                [Param(n, t) for n, t in ptypes.items()], rt), True)
+                [Param(n, t) for n, t in ptypes.items()], False, rt), True)
     else:
         query = actor.queries[query_index][0]
         assert len(query.params) == len(ptypes)
@@ -178,13 +178,13 @@ def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any
 
             if actions_ptr:
                 with read_at_offset(bs, actions_ptr):
-                    actions = [(Action((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[15:], []), False) for _ in range(num_actions)]
+                    actions = [(Action((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[15:], [], False), False) for _ in range(num_actions)]
             else:
                 actions = []
 
             if queries_ptr:
                 with read_at_offset(bs, queries_ptr):
-                    queries = [(Query((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[14:], [], IntType), False) for _ in range(num_queries)]
+                    queries = [(Query((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[14:], [], False, IntType), False) for _ in range(num_queries)]
             else:
                 queries = []
 
@@ -434,10 +434,14 @@ def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
         for action, initialized in r.actions:
             if initialized and action.name not in actor.actions:
                 LOG.warning(f'untyped action: {action}')
+                action.params = []
+                action.varargs = True
                 actor.register_action(action)
         for query, initialized in r.queries:
             if initialized and query.name not in actor.queries:
                 LOG.warning(f'untyped query: {query}')
+                query.params = []
+                query.varargs = True
                 actor.register_query(query)
 
     for node in bfevfl.nodes + bfevfl.roots: # type: ignore

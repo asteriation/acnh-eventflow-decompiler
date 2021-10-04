@@ -52,12 +52,19 @@ class CFG:
                 return False
         return True
 
-    def __update_vardefs(self, root: RootNode, name: str, type_: Type) -> None:
+    def __update_vardefs(self, root: RootNode, name: str, old_type: Type, new_type: Type) -> Optional[Type]:
+        if old_type == new_type or old_type == AnyType:
+            return None
+        if new_type.type == '_placeholder' and old_type.type != '_placeholder':
+            return None
+        if old_type.type != '_placeholder':
+            new_type = AnyType
         for vardef in root.vardefs:
             if vardef.name == name:
-                vardef.type_ = type_
-                return
-        root.vardefs.append(RootNode.VarDef(name, type_, initial_value=None))
+                vardef.type_ = new_type
+                return new_type
+        root.vardefs.append(RootNode.VarDef(name, new_type, initial_value=None))
+        return new_type
 
     def __add_implicit_vardefs(self) -> None:
         known_roots_types = {r.name: {v.name: v.type_ for v in r.vardefs} for r in self.roots}
@@ -68,68 +75,74 @@ class CFG:
             changed = False
             for root in self.roots:
                 vardefs = known_roots_types[root.name]
-                for node in self.__find_reverse_postorder(root):
-                    if isinstance(node, (ActionNode, SwitchNode)):
-                        params = node.params
-                        for name, value in params.items():
-                            if isinstance(value, Argument):
-                                function: Union[Action, Query] = node.action if isinstance(node, ActionNode) else node.query
-                                old_value = vardefs.get(value, None)
-                                candidates = [p.type for p in function.params if p.name == name]
-                                if not candidates:
-                                    continue
-                                else:
-                                    vardefs[value] = candidates[0]
-                                if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
-                                    vardefs[value] = AnyType
-                                if vardefs[value] != old_value:
-                                    changed = True
-                                    self.__update_vardefs(root, value, vardefs[value])
-                    elif isinstance(node, SubflowNode):
-                        params = node.params
-                        for name, value in params.items():
-                            if isinstance(value, Argument):
-                                signature = {} if node.ns else known_roots_types.get(node.called_root_name, {})
-                                old_value = vardefs.get(value, None)
-                                vardefs[value] = signature.get(name, placeholder_type)
-                                if old_value is not None and old_value != placeholder_type and old_value != vardefs[value]:
-                                    if vardefs[value] != placeholder_type:
-                                        vardefs[value] = AnyType
-                                    else:
-                                        vardefs[value] = old_value
-                                if vardefs[value] != old_value:
-                                    changed = True
-                                    self.__update_vardefs(root, name, vardefs[value])
-                        if node.ns == '':
-                            expected = known_roots_types[node.called_root_name] = known_roots_types.get(node.called_root_name, {})
+                i, q = 0, [root]
+                while i < len(q):
+                    for node in self.__find_reverse_postorder(q[i]):
+                        if isinstance(node, SubflowNode):
+                            params = node.params
                             for name, value in params.items():
-                                old_value = expected.get(name, None)
                                 if isinstance(value, Argument):
-                                    if vardefs[value] != placeholder_type or old_value == placeholder_type or old_value is None:
-                                        expected[name] = vardefs[value]
-                                else:
-                                    expected[name] = infer_type(value)
-                                if old_value is not None and old_value != placeholder_type and expected[name] != old_value:
-                                    expected[name] = AnyType
-                                if expected[name] != old_value:
-                                    changed = True
+                                    signature = {} if node.ns else known_roots_types.get(node.called_root_name, {})
+                                    type_ = signature.get(name, placeholder_type)
+                                    type_ = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
+                                    if type_ is not None or value not in vardefs:
+                                        vardefs[value] = type_ or placeholder_type
+                                        changed = True
+                            if node.ns == '':
+                                expected = known_roots_types[node.called_root_name] = known_roots_types.get(node.called_root_name, {})
+                                for name, value in params.items():
+                                    type_ = placeholder_type
+                                    if isinstance(value, Argument):
+                                        if value in vardefs:
+                                            type_ = vardefs[value]
+                                    else:
+                                        type_ = infer_type(value)
+
                                     other_root = self.nodes[node.called_root_name]
                                     assert isinstance(other_root, RootNode)
-                                    self.__update_vardefs(other_root, name, expected[name])
-                            expected = {**expected}
-                            for name in list(expected.keys()):
-                                if name in initial_values[node.called_root_name]:
-                                    del expected[name]
-                            for name, type_ in expected.items():
-                                if name not in params:
-                                    params[name] = Argument(name)
-                                    changed = True
+                                    type_ = self.__update_vardefs(other_root, name, expected.get(name, placeholder_type), type_)
+                                    if type_ is not None or name not in expected:
+                                        expected[name] = type_ or placeholder_type
+                                        changed = True
+                                expected = {**expected}
+                                for name in list(expected.keys()):
+                                    if name in initial_values[node.called_root_name]:
+                                        del expected[name]
+                                for name, type_ in expected.items():
+                                    if name not in params:
+                                        params[name] = Argument(name)
+                                        changed = True
+                        elif isinstance(node, GroupNode):
+                            q.append(node.root)
+                        else:
+                            calls: List[Tuple[Union[Action, Query], Dict[str, Any]]] = []
+                            if isinstance(node, ActionNode):
+                                calls = [(node.action, node.params)]
+                            elif isinstance(node, SwitchNode):
+                                calls = [(node.query, node.params)]
+                            elif isinstance(node, (WhileNode, DoWhileNode)):
+                                calls = node.loop_cond.get_queries()
+                            elif isinstance(node, IfElseNode):
+                                calls = sum((r.predicate.get_queries() for r in node.rules), [])
+                            for function, params in calls:
+                                for name, value in params.items():
+                                    if isinstance(value, Argument):
+                                        candidates = [p.type for p in function.params if p.name == name]
+                                        if not candidates:
+                                            type_ = placeholder_type
+                                        else:
+                                            type_ = candidates[0]
+                                        type_ = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
+                                        if type_ is not None or value not in vardefs:
+                                            vardefs[value] = type_ or placeholder_type
+                                            changed = True
+                    i += 1
 
         for root in self.roots:
             vardefs = known_roots_types[root.name]
             for name, type_ in vardefs.items():
                 if type_ == placeholder_type:
-                    self.__update_vardefs(root, name, AnyType)
+                    self.__update_vardefs(root, name, placeholder_type, AnyType)
 
     def __separate_overlapping_flows(self) -> None:
         components = self.__assign_components()
@@ -864,6 +877,7 @@ class CFG:
                         called_root.name, root.name = root.name, called_root.name
                         called_root.local, root.local = root.local, called_root.local
                         called_root.vardefs, root.vardefs = root.vardefs, called_root.vardefs
+                        self.nodes[root.name], self.nodes[called_root.name] = root, called_root
                         remapped_roots[root.name] = ('', called_root.name)
 
         self.roots = [root for root in self.roots if root.name not in remapped_roots]
@@ -927,6 +941,7 @@ class CFG:
                     full_actor_name,
                     action,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
+                    info.get('varargs'),
                     info.get('conversion', None),
                 ))
             for query, info in queries.items():
@@ -934,6 +949,7 @@ class CFG:
                     full_actor_name,
                     query,
                     [Param(name, Type(type_)) for name, type_ in info['params'].items()],
+                    info.get('varargs'),
                     Type(info.get('return', 'any')),
                     info.get('inverted', False),
                     info.get('conversion', None),
@@ -970,7 +986,6 @@ class CFG:
         dest_node.add_in_edge(src_node)
 
     def prepare(self) -> None:
-        self.__add_implicit_vardefs()
         self.__separate_overlapping_flows()
         self.__add_terminal_nodes()
 
@@ -1017,6 +1032,9 @@ class CFG:
 
         if remove_trailing_return:
             self.__remove_trailing_return()
+
+    def final_pass(self) -> None:
+        self.__add_implicit_vardefs()
 
     def get_dot(self, search_from_roots: bool = False) -> str:
         # search_from_roots = True may be more useful for debugging in some cases

@@ -11,17 +11,18 @@ class Param(NamedTuple):
     type: Type = AnyType
 
 class Action:
-    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], conversion: Optional[str] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], varargs: bool, conversion: Optional[str] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
         self.param_names = set(param.name for param in params)
+        self.varargs = varargs
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
         self.default = conversion is None
         self.auto = False
 
     def hint(self, params: Dict[str, Any]) -> List[str]:
-        extra_params = '; '.join(f'{name} = {repr(value)}' for name, value in params.items() if name not in self.param_names)
+        extra_params = '; '.join(f'{name} = {repr(value)}' for name, value in params.items() if name not in self.param_names and not self.varargs)
         return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS] + \
                ([f'Extra Params: {extra_params}'] if extra_params else [])
 
@@ -39,6 +40,7 @@ class Action:
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
             'params': {p.name: p.type for p in self.params},
+            'varargs': self.varargs
         }
         if not self.default:
             e['conversion'] = self.conversion
@@ -48,11 +50,12 @@ class Action:
         }
 
 class Query:
-    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], varargs: bool, rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
         self.param_names = set(param.name for param in params)
+        self.varargs = varargs
         self.rv = rv
         self.inverted = inverted
         self.conversion = conversion or f'<.name>(' + ', '.join(f'<{p.name}>' for p in params) + ')'
@@ -72,7 +75,7 @@ class Query:
         self.num_values = rv.num_values()
 
     def hint(self, params: Dict[str, Any]) -> List[str]:
-        extra_params = '; '.join(f'{name} = {value}' for name, value in params.items() if name not in self.param_names)
+        extra_params = '; '.join(sorted(f'{name} = {value}' for name, value in params.items() if name not in self.param_names and not self.varargs))
         return [HINTS[p] for p in params.values() if isinstance(p, str) and p in HINTS] + \
                ([f'Extra Params: {extra_params}'] if extra_params else [])
 
@@ -95,6 +98,7 @@ class Query:
     def export(self) -> Dict[str, Any]:
         e: Dict[str, Any] = {
             'params': {p.name: p.type for p in self.params},
+            'varargs': self.varargs
         }
         if self.inverted:
             e['inverted'] = True

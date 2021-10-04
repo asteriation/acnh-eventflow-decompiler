@@ -43,6 +43,11 @@ def load_functions_csv(filename: str) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
                 param_info = row[headers['Parameters']].split(';') if row[headers['Parameters']] else []
                 info['params'] = OrderedDict()
+                if param_info and param_info[-1].strip() == '...':
+                    info['varargs'] = True
+                    param_info.pop()
+                else:
+                    info['varargs'] = False
                 for param in param_info:
                     param = param.strip()
                     assert ':' in param and param.index(':') not in (0, len(param) - 1), f'bad param list for {name}'
@@ -134,6 +139,7 @@ def main():
             LOG.info(f'converting {fname}')
             cfg = bfevfl.read(f.read(), actions, queries)
             cfg.restructure(**restructure_flags)
+            cfg.final_pass()
 
             if args.out_dir:
                 with (Path(args.out_dir) / Path(fname).name.replace('.bfevfl', '.evfl.txt')).open('wt') as of:

@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 from abc import ABC
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from .datatype import BoolType
 from .actors import Query
 
 class Predicate(ABC):
     def hint(self) -> List[str]:
+        return []
+
+    def get_queries(self) -> List[Tuple[Query, Dict[str, Any]]]:
         return []
 
     def __invert__(self) -> Predicate:
@@ -47,6 +50,9 @@ class QueryPredicate(Predicate):
     def hint(self) -> List[str]:
         return self.query.hint(self.params)
 
+    def get_queries(self) -> List[Tuple[Query, Dict[str, Any]]]:
+        return [(self.query, self.params)]
+
     def __invert__(self) -> Predicate:
         qp = QueryPredicate(self.query, self.params, self.values)
         qp.negated = not self.negated
@@ -56,13 +62,20 @@ class NotPredicate(Predicate):
     def __init__(self, inner: Predicate) -> None:
         self.inner = inner
 
+    def get_queries(self) -> List[Tuple[Query, Dict[str, Any]]]:
+        return self.inner.get_queries()
+
     def __invert__(self) -> Predicate:
         return self.inner
 
-class AndPredicate(Predicate):
+class NaryPredicate(Predicate):
     def __init__(self, inners: List[Predicate]) -> None:
         self.inners = inners
 
+    def get_queries(self) -> List[Tuple[Query, Dict[str, Any]]]:
+        return sum((p.get_queries() for p in self.inners), [])
+
+class AndPredicate(NaryPredicate):
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
         num_not_predicates = sum(
@@ -81,10 +94,7 @@ class AndPredicate(Predicate):
         else:
             return AndPredicate(self.inners + [other])
 
-class OrPredicate(Predicate):
-    def __init__(self, inners: List[Predicate]) -> None:
-        self.inners = inners
-
+class OrPredicate(NaryPredicate):
     def __invert__(self) -> Predicate:
         # if the majority of inner predicates are negated, convert to or
         num_not_predicates = sum(1 for p in self.inners if isinstance(p, NotPredicate) or (isinstance(p, QueryPredicate) and p.negated))
