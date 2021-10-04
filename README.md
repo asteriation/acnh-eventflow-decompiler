@@ -16,13 +16,12 @@ And finally, you will also need to supply the bfevfl files to be decompiled.
 mkdir -p out/
 
 python3 main.py --functions functions.csv \
-                --version 1.0.0 \
                 --hints hints.json \
-                --out-dir out/1.0.0 \
+                --out-dir out/ \
                 romfs/EventFlow/*.bfevfl
 ```
 
-This outputs the decompiled evfls into `out/1.0.0`.
+This outputs the decompiled evfls into `out`.
 
 There are also a handful of flags starting with `--r` (use `--help` for a full list) that control which decompiler passes are run.
 
