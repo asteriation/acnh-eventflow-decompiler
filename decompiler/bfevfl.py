@@ -10,13 +10,14 @@ from .logger import LOG
 
 from .actors import Param, Action, Query, Actor
 from .nodes import Node, RootNode, ActionNode, SwitchNode, ForkNode, JoinNode, SubflowNode
-from .datatype import AnyType, BoolType, FloatType, IntType, Type, Argument, infer_types
+from .datatype import ActorMarker, AnyType, BoolType, FloatType, IntType, Type, Argument, infer_types
 from .cfg import CFG
 
 @dataclass
 class BFEVFLActor:
     name: str
     secondary_name: str
+    argument_name: str
     actions: List[Tuple[Action, bool]]
     queries: List[Tuple[Query, bool]]
 
@@ -46,7 +47,7 @@ class read_at_offset:
 
 def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[str, Any]):
     ptypes = infer_types(params)
-    actor_name = (actor.name, actor.secondary_name)
+    actor_name = (actor.name, actor.secondary_name, actor.argument_name)
     if not actor.actions[action_index][1]:
         actor.actions[action_index] = (Action(actor_name, actor.actions[action_index][0].name,
                 [Param(n, t) for n, t in ptypes.items()], False), True)
@@ -60,7 +61,7 @@ def check_and_update_action(actor: BFEVFLActor, action_index: int, params: Dict[
 
 def check_and_update_query(actor: BFEVFLActor, query_index: int, params: Dict[str, Any], rvs: Iterable[int]):
     ptypes = infer_types(params)
-    actor_name = (actor.name, actor.secondary_name)
+    actor_name = (actor.name, actor.secondary_name, actor.argument_name)
     if not actor.queries[query_index][1]:
         rt = Type(f'int{max(max(rvs) + 1 if rvs else 0, 2)}')
         actor.queries[query_index] = (Query(actor_name, actor.queries[query_index][0].name,
@@ -146,7 +147,8 @@ def _load_container_item(bs: ConstBitStream, offset: int, **kwargs: Any) -> Any:
             raise RuntimeError(f'wstring unsupported')
         elif data_type == 12: # Actor identifier
             assert num_items == 2
-            raise RuntimeError(f'actor id unsupported')
+            rv = [_load_str(bs, bs.read('uintle:64')) for _ in range(num_items)]
+            return ActorMarker(*rv)
         else:
             raise ValueError(f'bad data type: {data_type}')
 
@@ -172,23 +174,29 @@ def _load_actors(bs: ConstBitStream, offset: int, num_actors: int, **kwargs: Any
             ep_index = bs.read('uintle:16')
             bs.read('pad:16')
 
-            assert argument_name == ''
+            if argument_name:
+                # not really a safe assumption..?
+                assert '(' in secondary_name and secondary_name.split('(')[1][:-1] == argument_name
+                secondary_name = secondary_name.split('(')[0]
             assert parameters is None
-            assert ep_index == 0xffff
+            if ep_index != 0xffff:
+                # this only marks which entrypoint the actor is used? in
+                # not really important for decompile
+                pass
 
             if actions_ptr:
                 with read_at_offset(bs, actions_ptr):
-                    actions = [(Action((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[15:], [], False), False) for _ in range(num_actions)]
+                    actions = [(Action((name, secondary_name, argument_name), _load_str(bs, bs.read('uintle:64'))[15:], [], False), False) for _ in range(num_actions)]
             else:
                 actions = []
 
             if queries_ptr:
                 with read_at_offset(bs, queries_ptr):
-                    queries = [(Query((name, secondary_name), _load_str(bs, bs.read('uintle:64'))[14:], [], False, IntType), False) for _ in range(num_queries)]
+                    queries = [(Query((name, secondary_name, argument_name), _load_str(bs, bs.read('uintle:64'))[14:], [], False, IntType), False) for _ in range(num_queries)]
             else:
                 queries = []
 
-            actor = BFEVFLActor(name, secondary_name, actions, queries)
+            actor = BFEVFLActor(name, secondary_name, argument_name, actions, queries)
             actors.append(actor)
     return actors
 
@@ -354,7 +362,6 @@ def _load_entrypoints(bs: ConstBitStream, offset: int, num_entrypoints: int, nam
             ep_name = names[index]
             node = RootNode(ep_name, vardefs)
             roots.append((node, main_event_index))
-
     return roots
 
 def parse_bfevfl(data: bytes) -> BFEVFL:
@@ -428,9 +435,9 @@ def read(data: bytes, actions: Dict[str, Any], queries: Dict[str, Any]) -> CFG:
     bfevfl = parse_bfevfl(data)
 
     cfg = CFG(bfevfl.flowchart_name)
-    cfg.import_functions([(r.name, r.secondary_name) for r in bfevfl.actors], actions, queries)
+    cfg.import_functions([(r.name, r.secondary_name, r.argument_name) for r in bfevfl.actors], actions, queries)
     for r in bfevfl.actors:
-        actor = cfg.actors[(r.name, r.secondary_name)]
+        actor = cfg.actors[(r.name, r.secondary_name, r.argument_name)]
         for action, initialized in r.actions:
             if initialized and action.name not in actor.actions:
                 LOG.warning(f'untyped action: {action}')

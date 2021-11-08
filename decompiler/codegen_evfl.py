@@ -6,7 +6,7 @@ from typing import Callable, Dict, List
 from .logger import LOG
 
 from .codegen import CodeGenerator, NodeCodeGenerator, PredicateCodeGenerator
-from .datatype import AnyType, BoolType, Type, Argument, infer_type
+from .datatype import ActorMarker, AnyType, BoolType, Type, Argument, infer_type
 from .indent import indent
 from .nodes import *
 from .predicates import *
@@ -240,7 +240,7 @@ def OrPredicate_generate_code(self_pred: Predicate) -> str:
     return ' or '.join([f'({pred_generate_code(inner)})' for inner in self_pred.inners])
 
 def Action_format(action: Action, params: Dict[str, Any]) -> str:
-    actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '')
+    actor_name = id_(action.actor_name[0]) + ('@' + id_(action.actor_name[1]) if action.actor_name[1] else '') + ('(' + id_(action.actor_name[2]) + ')' if action.actor_name[2] else '')
     conversion = action.conversion if action.conversion is not None else f'<.name>(' + ', '.join(f'<{p}>' for p in params) + ')'
     conversion = action.conversion.replace('<.name>', f'{actor_name}.{id_(action.name)}')
     conversion = conversion.replace('<.actor>', f'{actor_name}')
@@ -273,7 +273,7 @@ def Action_format(action: Action, params: Dict[str, Any]) -> str:
     return conversion
 
 def Query_format(query: Query, params: Dict[str, Any], negated: bool) -> str:
-    actor_name = id_(query.actor_name[0]) + ('@' + id_(query.actor_name[1]) if query.actor_name[1] else '')
+    actor_name = id_(query.actor_name[0]) + ('@' + id_(query.actor_name[1]) if query.actor_name[1] else '') + ('(' + id_(query.actor_name[2]) + ')' if query.actor_name[2] else '')
     if negated:
         conversion_used = query.neg_conversion
     else:
@@ -321,7 +321,7 @@ def Type_format(type_: Type, value: Any, force_bool_to_int: bool = False) -> str
         assert isinstance(value, int)
         if type_.type != 'int':
             n = int(type_.type[3:])
-            assert 0 <= value < n
+            # assert 0 <= value < n
         return repr(int(value))
     elif type_.type.startswith('enum'):
         assert not isinstance(value, bool) and isinstance(value, int)
@@ -339,6 +339,9 @@ def Type_format(type_: Type, value: Any, force_bool_to_int: bool = False) -> str
         if force_bool_to_int:
             return str(int(value))
         return 'true' if value else 'false'
+    elif type_.type == 'actor' or isinstance(value, ActorMarker):
+        assert isinstance(value, ActorMarker)
+        return id_(value.name) + ('@' + id_(value.secondary_name) if value.secondary_name else '')
     elif type_.type == 'any':
         return repr(value)
     else:

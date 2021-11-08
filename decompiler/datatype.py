@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, NamedTuple
 
 class Argument(str):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -31,11 +31,16 @@ class Type:
     def __hash__(self) -> int:
         return hash(self.type)
 
+class ActorMarker(NamedTuple):
+    name: str
+    secondary_name: str
+
 AnyType = Type('any')
 BoolType = Type('bool')
 FloatType = Type('float')
 IntType = Type('int')
 StrType = Type('str')
+ActorType = Type('actor')
 
 def infer_type(pval: Any) -> Type:
     if isinstance(pval, bool):
@@ -46,6 +51,8 @@ def infer_type(pval: Any) -> Type:
         return StrType
     elif isinstance(pval, int):
         return IntType
+    elif isinstance(pval, ActorMarker):
+        return ActorType
     else:
         return AnyType
 

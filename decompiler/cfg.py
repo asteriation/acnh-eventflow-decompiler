@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, Union, Sequence
 
-from .datatype import AnyType, Type, Argument, infer_type
+from .datatype import AnyType, ActorType, Type, Argument, infer_type
 from .predicates import Predicate, ConstPredicate, QueryPredicate
 from .actors import Param, Action, Query, Actor
 from .nodes import Node, RootNode, ActionNode, SwitchNode, SubflowNode, TerminalNode, DeadendTerminalNode, NoopNode, EntryPointNode, GroupNode, IfElseNode, WhileNode, DoWhileNode
@@ -13,7 +13,7 @@ class CFG:
     def __init__(self, name: str) -> None:
         self.name = name
         self.roots: List[RootNode] = []
-        self.actors: Dict[Tuple[str, str], Actor] = {}
+        self.actors: Dict[Tuple[str, str, str], Actor] = {}
         self.nodes: Dict[str, Node] = {}
 
     def __assign_components(self) -> List[List[RootNode]]:
@@ -126,6 +126,13 @@ class CFG:
                             elif isinstance(node, IfElseNode):
                                 calls = sum((r.predicate.get_queries() for r in node.rules), [])
                             for function, params in calls:
+                                if function.actor_name[2]:
+                                    value = function.actor_name[2]
+                                    type_ = ActorType
+                                    result = self.__update_vardefs(root, value, vardefs.get(value, placeholder_type), type_)
+                                    if result is not None or value not in vardefs:
+                                        vardefs[value] = result if result is not None else placeholder_type
+                                        changed = True
                                 for name, value in params.items():
                                     if isinstance(value, Argument):
                                         candidates = [p.type for p in function.params if p.name == name]
@@ -931,10 +938,10 @@ class CFG:
 
         return '\n'.join(stripped_code)
 
-    def import_functions(self, actors: List[Tuple[str, str]], actions: Dict[str, Any],
+    def import_functions(self, actors: List[Tuple[str, str, str]], actions: Dict[str, Any],
                          queries: Dict[str, Any]) -> None:
-        for actor_name, sec_name in actors:
-            full_actor_name = (actor_name, sec_name)
+        for actor_name, sec_name, arg_name in actors:
+            full_actor_name = (actor_name, sec_name, arg_name)
             if actor_name not in self.actors:
                 self.actors[full_actor_name] = Actor(full_actor_name)
             for action, info in actions.items():

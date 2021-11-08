@@ -11,7 +11,7 @@ class Param(NamedTuple):
     type: Type = AnyType
 
 class Action:
-    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], varargs: bool, conversion: Optional[str] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str, str], name: str, params: List[Param], varargs: bool, conversion: Optional[str] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
@@ -50,7 +50,7 @@ class Action:
         }
 
 class Query:
-    def __init__(self, actor_name: Tuple[str, str], name: str, params: List[Param], varargs: bool, rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
+    def __init__(self, actor_name: Tuple[str, str, str], name: str, params: List[Param], varargs: bool, rv: Type = AnyType, inverted: bool = False, conversion: Optional[Union[str, Dict[str, Any]]] = None, neg_conversion: Optional[Union[str, Dict[str, Any]]] = None) -> None:
         self.actor_name = actor_name
         self.name = name
         self.params = params
@@ -112,7 +112,7 @@ class Query:
         }
 
 class Actor:
-    def __init__(self, name: Tuple[str, str]) -> None:
+    def __init__(self, name: Tuple[str, str, str]) -> None:
         self.name = name
         self.actions: Dict[str, Action] = {}
         self.queries: Dict[str, Query] = {}
@@ -137,7 +137,7 @@ class Actor:
         self.locked = True
 
     def __str__(self):
-        return f'Actor {self.name[0]}{"@" + self.name[1] if self.name[1] else ""}\n' + '\n'.join([
+        return f'Actor {self.name[0]}{"@" + self.name[1] if self.name[1] else ""}{"(" + self.name[2] if self.name[2] + ")" else ""}\n' + '\n'.join([
             'actions:',
             *[f'- {a}' for a in sorted(self.actions.values(), key=lambda x: x.name)],
             'queries:',
@@ -154,6 +154,6 @@ class Actor:
         for query in self.queries.values():
             e['queries'].update(query.export())
         return {
-            f'{self.name[0]}{"@" + self.name[1] if self.name[1] else ""}': e
+            f'{self.name[0]}{"@" + self.name[1] if self.name[1] else ""}{"(" + self.name[2] + ")" if self.name[2] else ""}': e
         }
 
